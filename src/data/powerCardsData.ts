@@ -1,0 +1,208 @@
+import { PowerCardItem } from '../types/rules';
+
+export const POWER_CARDS_DATA: PowerCardItem[] = [
+  {
+    id: 'adrenaline',
+    points: 0,
+    charges: 1,
+    name: {
+      en: 'Adrenaline Rush',
+      de: 'Adrenalinschub',
+      it: 'Scarica di Adrenalina',
+      fr: 'Montée d’Adrénaline',
+    },
+    description: {
+      en: 'Take an immediate extra turn after finishing your current one. Worth 0 points at round end.',
+      de: 'Mache sofort einen zusätzlichen Spielzug nach deinem aktuellen Zug. Zählt 0 Punkte am Rundenende.',
+      it: 'Fai un turno extra immediato subito dopo quello corrente. Vale 0 punti a fine round.',
+      fr: 'Jouez un tour supplémentaire immédiat après votre tour. Vaut 0 point en fin de manche.',
+    },
+  },
+  {
+    id: 'force-field',
+    points: 0,
+    charges: 1,
+    name: {
+      en: 'Force Field',
+      de: 'Kraftfeld',
+      it: 'Campo di Forza',
+      fr: 'Champ de Force',
+    },
+    description: {
+      en: 'Completely block an attack card or negative event effect targeted at you. Worth 0 points at round end.',
+      de: 'Wehrt eine Angriffskarte oder einen negativen Ereigniseffekt vollständig ab. Zählt 0 Punkte.',
+      it: 'Blocca completamente una carta attacco o un effetto evento negativo diretto a te. Vale 0 punti.',
+      fr: 'Bloque totalement une attaque ou un événement négatif ciblé sur vous. Vaut 0 point.',
+    },
+  },
+  {
+    id: 'recycler',
+    points: 0,
+    charges: 2,
+    name: {
+      en: 'Recycler',
+      de: 'Recycler',
+      it: 'Riciclatore',
+      fr: 'Recycleur',
+    },
+    description: {
+      en: 'Take any non-special number card from the discard pile directly into your hand. Worth 0 points.',
+      de: 'Nimm eine beliebige Zahlenkarte aus dem Ablagestapel auf deine Hand. Zählt 0 Punkte.',
+      it: 'Prendi una carta numero a scelta dalla pila degli scarti direttamente in mano. Vale 0 punti.',
+      fr: 'Récupérez une carte numéro de la défausse dans votre main. Vaut 0 point.',
+    },
+  },
+  {
+    id: 'overload',
+    points: 0,
+    charges: 1,
+    name: {
+      en: 'Overload',
+      de: 'Überladung',
+      it: 'Sovraccarico',
+      fr: 'Surcharge',
+    },
+    description: {
+      en: 'Forces an opponent to draw 3 cards when they thought they were safe. Worth 0 points at round end.',
+      de: 'Zwingt eine beliebige Person dazu, sofort 3 Karten zu ziehen. Zählt 0 Punkte am Rundenende.',
+      it: 'Costringe un avversario a pescare 3 carte all’improvviso. Vale 0 punti a fine round.',
+      fr: 'Force un adversaire à piocher 3 cartes immédiatement. Vaut 0 point en fin de manche.',
+    },
+  },
+  {
+    id: 'teleport',
+    points: 0,
+    charges: 1,
+    name: {
+      en: 'Teleport',
+      de: 'Teleport',
+      it: 'Teletrasporto',
+      fr: 'Téléportation',
+    },
+    description: {
+      en: 'Swap hands with any player holding fewer cards than you. Worth 0 points at round end.',
+      de: 'Tausche deine Handkarten mit einer Person, die weniger Karten hat als du. Zählt 0 Punkte.',
+      it: 'Scambia la tua mano con un giocatore che ha meno carte di te. Vale 0 punti a fine round.',
+      fr: 'Échangez votre main avec un joueur ayant moins de cartes que vous. Vaut 0 point.',
+    },
+  },
+  {
+    id: 'clairvoyance',
+    points: 0,
+    charges: 2,
+    name: {
+      en: 'Clairvoyance',
+      de: 'Hellsicht',
+      it: 'Chiaroveggenza',
+      fr: 'Clairvoyance',
+    },
+    description: {
+      en: 'Inspect all cards in an opponent’s hand or look at the top 3 cards of the deck. Worth 0 points.',
+      de: 'Schaue dir alle Handkarten einer Person an oder sieh dir die obersten 3 Deckkarten an. Zählt 0 Punkte.',
+      it: 'Guarda tutte le carte in mano a un avversario o guarda le prime 3 carte del mazzo. Vale 0 punti.',
+      fr: 'Regardez la main complète d’un joueur ou les 3 premières cartes de la pioche. Vaut 0 point.',
+    },
+  },
+  {
+    id: 'deflector',
+    points: 0,
+    charges: 1,
+    name: {
+      en: 'Deflector',
+      de: 'Deflektor',
+      it: 'Deflettore',
+      fr: 'Déflecteur',
+    },
+    description: {
+      en: 'Redirect any incoming penalty or card effect to another player of your choice. Worth 0 points.',
+      de: 'Leite eine Strafe oder einen Karteneffekt auf eine andere Person deiner Wahl um. Zählt 0 Punkte.',
+      it: 'Reindirizza una penalità o effetto subito verso un altro giocatore a tua scelta. Vale 0 punti.',
+      fr: 'Redirigez une pénalité ou un effet reçu vers un autre joueur de votre choix. Vaut 0 point.',
+    },
+  },
+  {
+    id: 'emp-blast',
+    points: 0,
+    charges: 1,
+    name: {
+      en: 'EMP Blast',
+      de: 'EMP-Impuls',
+      it: 'Impulso EMP',
+      fr: 'Impulsion EMP',
+    },
+    description: {
+      en: 'Disables all other players’ active power cards until the end of the round. Worth 0 points.',
+      de: 'Deaktiviert alle Powerkarten der Mitspielenden bis zum Ende dieser Runde. Zählt 0 Punkte.',
+      it: 'Disattiva le carte potere di tutti gli avversari fino alla fine del round. Vale 0 punti.',
+      fr: 'Désactive toutes les cartes pouvoir des adversaires jusqu’à la fin de la manche. Vaut 0 point.',
+    },
+  },
+  {
+    id: 'stasis',
+    points: 0,
+    charges: 1,
+    name: {
+      en: 'Stasis',
+      de: 'Stasis',
+      it: 'Stasi',
+      fr: 'Stase',
+    },
+    description: {
+      en: 'Freeze a player: they cannot play any special cards on their next turn. Worth 0 points.',
+      de: 'Friere jemanden ein: Die Person darf im nächsten Zug keine Spezialkarten legen. Zählt 0 Punkte.',
+      it: 'Congela un giocatore: non potrà giocare carte speciali nel suo prossimo turno. Vale 0 punti.',
+      fr: 'Gèle un joueur : il ne pourra jouer aucune carte spéciale lors de son prochain tour. Vaut 0 point.',
+    },
+  },
+  {
+    id: 'bounty-hunter',
+    points: 0,
+    charges: 1,
+    name: {
+      en: 'Bounty Hunter',
+      de: 'Kopfgeldjäger',
+      it: 'Cacciatore di Taglie',
+      fr: 'Chasseur de Primes',
+    },
+    description: {
+      en: 'Choose a target player: if they finish this round with cards, they take +5 extra penalty points. Worth 0 points.',
+      de: 'Wähle eine Zielperson: Bleibt sie auf Karten sitzen, erhält sie +5 Zusatz-Strafpunkte. Zählt 0 Punkte.',
+      it: 'Designa un bersaglio: se finisce il round con carte, subisce +5 punti penalità extra. Vale 0 punti.',
+      fr: 'Ciblez un joueur : s’il lui reste des cartes en fin de manche, il subit +5 points de pénalité. Vaut 0 point.',
+    },
+  },
+  {
+    id: 'purge',
+    points: 0,
+    charges: 1,
+    name: {
+      en: 'Purge',
+      de: 'Säuberung',
+      it: 'Purga',
+      fr: 'Purge',
+    },
+    description: {
+      en: 'Discard up to 2 number cards from your hand without playing them. Worth 0 points at round end.',
+      de: 'Wirf bis zu 2 Zahlenkarten aus deiner Hand direkt ab, ohne sie regulär zu spielen. Zählt 0 Punkte.',
+      it: 'Scarta fino a 2 carte numero dalla mano senza doverle giocare sul tavolo. Vale 0 punti.',
+      fr: 'Défaussez jusqu’à 2 cartes numéro de votre main sans les jouer. Vaut 0 point.',
+    },
+  },
+  {
+    id: 'phoenix',
+    points: 0,
+    charges: 1,
+    name: {
+      en: 'Phoenix Feather',
+      de: 'Phönixfeder',
+      it: 'Piuma di Fenice',
+      fr: 'Plume de Phénix',
+    },
+    description: {
+      en: 'If this round would eliminate you, reduce your round score by 15 points. Worth 0 points.',
+      de: 'Falls dich diese Runde eliminieren würde, verringert sie deine Rundenpunkte um 15. Zählt 0 Punkte.',
+      it: 'Se questo round ti farebbe superare il limite, riduci il tuo punteggio del round di 15. Vale 0 punti.',
+      fr: 'Si cette manche devait vous éliminer, réduisez votre score de manche de 15 points. Vaut 0 point.',
+    },
+  },
+];
