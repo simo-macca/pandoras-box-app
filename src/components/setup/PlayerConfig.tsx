@@ -84,28 +84,29 @@ export const PlayerConfig: React.FC<PlayerConfigProps> = ({
                       <button
                         key={colorOption}
                         type="button"
+                        disabled={isTakenByOther}
                         onClick={() => {
+                          if (isTakenByOther) return;
                           soundEffects.playClick();
                           onUpdatePlayer(player.id, { color: colorOption });
                         }}
                         className={`flex h-7 w-7 items-center justify-center rounded-full transition-all ${
                           isSelected
-                            ? `ring-2 ring-offset-2 ring-offset-white dark:ring-offset-neutral-900 ${theme.ringColor} scale-110 shadow-md`
+                            ? `scale-110 shadow-md ring-2 ring-offset-2 ring-offset-white dark:ring-offset-neutral-900 ${theme.ringColor}`
                             : isTakenByOther
-                              ? 'opacity-35 hover:opacity-75'
-                              : 'opacity-80 hover:scale-105 hover:opacity-100'
+                              ? 'cursor-not-allowed opacity-25 hover:scale-100'
+                              : 'opacity-85 hover:scale-105 hover:opacity-100'
                         }`}
                         style={{ backgroundColor: theme.hex }}
-                        title={`${theme.label[language] || theme.label.en}${isTakenByOther ? ' (in use)' : ''}`}
+                        title={`${theme.label[language] || theme.label.en}${isTakenByOther ? ' (Already picked)' : ''}`}
                       >
                         {isSelected && (
-                          <div
-                            className={`h-2 w-2 rounded-full ${
-                              colorOption === 'white'
-                                ? 'bg-neutral-900'
-                                : 'bg-white'
-                            }`}
-                          />
+                          <div className="h-2 w-2 rounded-full bg-white" />
+                        )}
+                        {isTakenByOther && (
+                          <span className="text-[10px] font-black text-white drop-shadow-sm">
+                            ✕
+                          </span>
                         )}
                       </button>
                     );

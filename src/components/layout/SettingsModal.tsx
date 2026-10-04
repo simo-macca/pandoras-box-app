@@ -11,7 +11,6 @@ import {
   Smartphone,
   AlertTriangle,
   CheckCircle2,
-  ShieldCheck,
   Scale,
   ExternalLink,
   Info,
@@ -20,6 +19,7 @@ import {
 import { Language, ThemeMode } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
 import { soundEffects } from '../../utils/sound';
+import { LanguageSelector } from './LanguageSelector';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -124,25 +124,25 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   };
 
   return (
-    <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-      <div className="relative flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-800 dark:bg-neutral-900">
+    <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-2 backdrop-blur-sm sm:p-4">
+      <div className="relative flex max-h-[90dvh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xl dark:border-neutral-800 dark:bg-neutral-900">
         {/* Header with Title and Close Button */}
-        <div className="flex items-center justify-between border-b border-neutral-200 bg-neutral-50 px-6 pb-3 pt-4 dark:border-neutral-800 dark:bg-neutral-900/60">
+        <div className="flex shrink-0 items-center justify-between gap-2 border-b border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-900/60">
           {/* Tabs Selector */}
-          <div className="flex items-center gap-1.5 rounded-2xl bg-neutral-200/60 p-1 dark:bg-neutral-800/80">
+          <div className="flex items-center gap-1 rounded-2xl bg-neutral-200/60 p-1 dark:bg-neutral-800/80 sm:gap-1.5">
             <button
               type="button"
               onClick={() => {
                 soundEffects.playClick();
                 setActiveTab('settings');
               }}
-              className={`flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-bold transition-all sm:px-3 ${
                 activeTab === 'settings'
                   ? 'bg-white text-neutral-900 shadow-sm dark:bg-neutral-700 dark:text-white'
                   : 'text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'
               }`}
             >
-              <SettingsIcon className="h-3.5 w-3.5" />
+              <SettingsIcon className="h-3.5 w-3.5 shrink-0" />
               <span>{t.settings.title}</span>
             </button>
 
@@ -152,13 +152,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 soundEffects.playClick();
                 setActiveTab('legal');
               }}
-              className={`flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-bold transition-all sm:px-3 ${
                 activeTab === 'legal'
                   ? 'bg-white text-neutral-900 shadow-sm dark:bg-neutral-700 dark:text-white'
                   : 'text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'
               }`}
             >
-              <Scale className="h-3.5 w-3.5 text-amber-500" />
+              <Scale className="h-3.5 w-3.5 shrink-0 text-amber-500" />
               <span>{t.settings.aboutLegalTitle}</span>
             </button>
           </div>
@@ -166,58 +166,59 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl p-2 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white"
+            aria-label="Close"
+            className="shrink-0 rounded-xl p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white sm:p-2"
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5 shrink-0" />
           </button>
         </div>
 
         {/* Modal Scrollable Body */}
-        <div className="flex-1 space-y-6 overflow-y-auto p-6">
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-3">
           {activeTab === 'settings' ? (
             <>
               {/* Appearance */}
               <div>
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 sm:text-sm">
                   {t.settings.appearance}
                 </h3>
                 <div className="grid grid-cols-3 gap-2">
                   <button
                     type="button"
                     onClick={() => onThemeChange('system')}
-                    className={`flex flex-col items-center justify-center rounded-2xl border p-3 transition-all ${
+                    className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 transition-all sm:p-3 ${
                       theme === 'system'
                         ? 'border-blue-500 bg-blue-500/10 font-bold text-blue-600 dark:text-blue-400'
                         : 'border-neutral-200 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:text-neutral-300 dark:hover:border-neutral-700'
                     }`}
                   >
-                    <Laptop className="mb-1 h-5 w-5" />
+                    <Laptop className="mb-1 h-5 w-5 shrink-0" />
                     <span className="text-xs">{t.settings.themeSystem}</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => onThemeChange('light')}
-                    className={`flex flex-col items-center justify-center rounded-2xl border p-3 transition-all ${
+                    className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 transition-all sm:p-3 ${
                       theme === 'light'
                         ? 'border-amber-500 bg-amber-500/10 font-bold text-amber-600'
                         : 'border-neutral-200 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:text-neutral-300 dark:hover:border-neutral-700'
                     }`}
                   >
-                    <Sun className="mb-1 h-5 w-5" />
+                    <Sun className="mb-1 h-5 w-5 shrink-0" />
                     <span className="text-xs">{t.settings.themeLight}</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => onThemeChange('dark')}
-                    className={`flex flex-col items-center justify-center rounded-2xl border p-3 transition-all ${
+                    className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 transition-all sm:p-3 ${
                       theme === 'dark'
                         ? 'border-purple-500 bg-purple-500/10 font-bold text-purple-400'
                         : 'border-neutral-200 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:text-neutral-300 dark:hover:border-neutral-700'
                     }`}
                   >
-                    <Moon className="mb-1 h-5 w-5" />
+                    <Moon className="mb-1 h-5 w-5 shrink-0" />
                     <span className="text-xs">{t.settings.themeDark}</span>
                   </button>
                 </div>
@@ -225,31 +226,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
               {/* Language */}
               <div>
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 sm:text-sm">
                   {t.settings.language}
                 </h3>
-                <div className="grid grid-cols-4 gap-2">
-                  {[
-                    { code: 'en' as Language, label: 'English', flag: '🇬🇧' },
-                    { code: 'de' as Language, label: 'Deutsch', flag: '🇩🇪' },
-                    { code: 'it' as Language, label: 'Italiano', flag: '🇮🇹' },
-                    { code: 'fr' as Language, label: 'Français', flag: '🇫🇷' },
-                  ].map((item) => (
-                    <button
-                      key={item.code}
-                      type="button"
-                      onClick={() => onLanguageChange(item.code)}
-                      className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 transition-all ${
-                        language === item.code
-                          ? 'border-amber-500 bg-amber-500/10 font-bold text-amber-600 shadow-sm dark:text-amber-400'
-                          : 'border-neutral-200 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:text-neutral-300 dark:hover:border-neutral-700'
-                      }`}
-                    >
-                      <span className="mb-1 text-lg">{item.flag}</span>
-                      <span className="text-xs">{item.label}</span>
-                    </button>
-                  ))}
-                </div>
+                <LanguageSelector
+                  currentLanguage={language}
+                  onSelectLanguage={onLanguageChange}
+                />
               </div>
 
               {/* Audio & Haptic Feedback */}
@@ -268,9 +251,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     }`}
                   >
                     {soundEnabled ? (
-                      <Volume2 className="h-5 w-5" />
+                      <Volume2 className="h-5 w-5 shrink-0" />
                     ) : (
-                      <VolumeX className="h-5 w-5" />
+                      <VolumeX className="h-5 w-5 shrink-0" />
                     )}
                     <div className="text-left">
                       <div className="text-xs font-bold">
@@ -291,7 +274,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                         : 'border-neutral-200 text-neutral-500 dark:border-neutral-800'
                     }`}
                   >
-                    <Smartphone className="h-5 w-5" />
+                    <Smartphone className="h-5 w-5 shrink-0" />
                     <div className="text-left">
                       <div className="text-xs font-bold">
                         {t.settings.hapticsEnabled}
@@ -315,7 +298,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     onClick={handleExport}
                     className="flex items-center justify-center gap-2 rounded-2xl border border-neutral-200 bg-neutral-100 p-3 text-xs font-semibold text-neutral-800 transition-colors hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/50 dark:text-neutral-200 dark:hover:border-neutral-700"
                   >
-                    <Download className="h-4 w-4 text-blue-500" />
+                    <Download className="h-4 w-4 shrink-0 text-blue-500" />
                     <span>{t.settings.exportBackup}</span>
                   </button>
 
@@ -324,7 +307,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     onClick={() => fileInputRef.current?.click()}
                     className="flex items-center justify-center gap-2 rounded-2xl border border-neutral-200 bg-neutral-100 p-3 text-xs font-semibold text-neutral-800 transition-colors hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/50 dark:text-neutral-200 dark:hover:border-neutral-700"
                   >
-                    <Upload className="h-4 w-4 text-emerald-500" />
+                    <Upload className="h-4 w-4 shrink-0 text-emerald-500" />
                     <span>{t.settings.importBackup}</span>
                   </button>
                   <input
@@ -358,7 +341,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     onClick={() => setShowResetConfirm(true)}
                     className="flex w-full items-center justify-center gap-2 rounded-2xl border border-red-500/30 bg-red-500/10 p-3 text-xs font-bold text-red-600 transition-colors hover:bg-red-500/20 dark:text-red-400"
                   >
-                    <AlertTriangle className="h-4 w-4" />
+                    <AlertTriangle className="h-4 w-4 shrink-0" />
                     <span>{t.settings.resetGame}</span>
                   </button>
                 ) : (
@@ -390,24 +373,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 )}
               </div>
 
-              {/* Quick Legal Link Card */}
-              <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50 p-3.5 dark:border-neutral-800 dark:bg-neutral-800/40">
-                <div className="flex items-center gap-2 text-xs text-neutral-600 dark:text-neutral-400">
-                  <ShieldCheck className="h-4 w-4 shrink-0 text-amber-500" />
-                  <span className="truncate">{t.settings.disclaimerShort}</span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    soundEffects.playClick();
-                    setActiveTab('legal');
-                  }}
-                  className="ml-2 shrink-0 text-xs font-bold text-amber-600 hover:underline dark:text-amber-400"
-                >
-                  {t.settings.disclaimerTitle}
-                </button>
-              </div>
-
               {/* Footer note */}
               <div className="space-y-0.5 pt-1 text-center text-[11px] text-neutral-400">
                 <p className="font-semibold text-neutral-500 dark:text-neutral-400">
@@ -418,20 +383,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </>
           ) : (
             /* Dedicated About & Legal / Disclaimer Tab */
-            <div className="animate-fade-in space-y-5">
-              {/* Header Badge */}
-              <div className="flex items-center gap-2 rounded-2xl border border-amber-500/25 bg-amber-500/10 p-3 text-amber-700 dark:text-amber-300">
-                <ShieldCheck className="h-5 w-5 shrink-0 text-amber-500" />
-                <div>
-                  <h4 className="text-xs font-black uppercase tracking-wider">
-                    {t.settings.unofficialNotice}
-                  </h4>
-                  <p className="mt-0.5 text-[11px] opacity-80">
-                    {t.settings.disclaimerShort}
-                  </p>
-                </div>
-              </div>
-
+            <div className="animate-fade-in space-y-4">
               {/* Full Legal Disclaimer Card */}
               <div className="space-y-2 rounded-2xl border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-800/40">
                 <div className="flex items-center gap-2">
@@ -469,7 +421,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   className="flex w-full items-center justify-center gap-2 rounded-xl border border-purple-500/25 bg-purple-500/10 px-4 py-2.5 text-xs font-bold text-purple-600 shadow-sm transition-all hover:bg-purple-500/20 dark:text-purple-400"
                 >
                   <span>{t.settings.visitRulefactory}</span>
-                  <ExternalLink className="h-3.5 w-3.5 opacity-70" />
+                  <ExternalLink className="h-3.5 w-3.5 shrink-0 opacity-70" />
                 </a>
               </div>
 
@@ -489,6 +441,17 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               </div>
             </div>
           )}
+        </div>
+
+        {/* Modal Footer / Actions */}
+        <div className="flex shrink-0 items-center justify-end gap-2 border-t border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-900/50">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-xl bg-neutral-200 px-4 py-2 text-xs font-bold text-neutral-800 transition-colors hover:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
+          >
+            {t.setup.cancel || 'Close'}
+          </button>
         </div>
       </div>
     </div>

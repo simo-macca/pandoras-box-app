@@ -1,5 +1,11 @@
 import React from 'react';
-import { Trophy, PlusCircle, AlertTriangle, ShieldCheck } from 'lucide-react';
+import {
+  Trophy,
+  PlusCircle,
+  AlertTriangle,
+  ShieldCheck,
+  RotateCcw,
+} from 'lucide-react';
 import { PlayerStats } from '../../hooks/useGameState';
 import { RoundEntry, Player, Language } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
@@ -21,6 +27,7 @@ interface LeaderboardProps {
   onDeleteRound?: (roundNumber: number) => void;
   onClearActiveRuleCard?: () => void;
   onOpenRuleCardDrawer?: () => void;
+  onStartNewGame?: () => void;
   language: Language;
 }
 
@@ -36,6 +43,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
   onDeleteRound,
   onClearActiveRuleCard,
   onOpenRuleCardDrawer,
+  onStartNewGame,
   language,
 }) => {
   const t = TRANSLATIONS[language];
@@ -45,7 +53,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
   );
 
   return (
-    <div className="space-y-6 pb-20 md:pb-6">
+    <div className="space-y-4 pb-20 sm:space-y-6 md:pb-6">
       {/* Active Rule Card Banner */}
       {onOpenRuleCardDrawer && (
         <ActiveRuleCardBanner
@@ -57,26 +65,26 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
       )}
 
       {/* Top Stats Overview */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-          <div className="space-y-0.5">
+      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3">
+        <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 sm:p-4">
+          <div className="min-w-0 space-y-0.5">
             <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">
               {t.scoreboard.currentLeader}
             </span>
-            <div className="flex items-center gap-1.5 text-base font-black text-neutral-900 dark:text-white sm:text-lg">
-              <span>{leader?.name || '—'}</span>
-              <span className="font-mono text-xs text-amber-500">
+            <div className="flex items-center gap-1.5 truncate text-base font-black text-neutral-900 dark:text-white sm:text-lg">
+              <span className="truncate">{leader?.name || '—'}</span>
+              <span className="whitespace-nowrap font-mono text-xs font-bold tabular-nums text-amber-500">
                 ({leader?.totalScore} pts)
               </span>
             </div>
           </div>
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-amber-500/30 bg-amber-500/15 text-amber-500">
-            <Trophy className="h-5 w-5 stroke-[2.2]" />
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-amber-500/30 bg-amber-500/15 text-amber-500 sm:h-10 sm:w-10">
+            <Trophy className="h-5 w-5 shrink-0 stroke-[2.2]" />
           </div>
         </div>
 
-        <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-          <div className="space-y-0.5">
+        <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 sm:p-4">
+          <div className="min-w-0 space-y-0.5">
             <div className="flex items-center gap-1.5">
               <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">
                 {t.scoreboard.eliminationLimit}
@@ -87,17 +95,17 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                 align="left"
               />
             </div>
-            <div className="font-mono text-base font-black text-rose-500 sm:text-lg">
+            <div className="whitespace-nowrap font-mono text-base font-black tabular-nums text-rose-500 sm:text-lg">
               {targetScore} {t.scoreboard.pts}
             </div>
           </div>
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-rose-500/30 bg-rose-500/15 text-rose-500">
-            <AlertTriangle className="h-5 w-5 stroke-[2.2]" />
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-rose-500/30 bg-rose-500/15 text-rose-500 sm:h-10 sm:w-10">
+            <AlertTriangle className="h-5 w-5 shrink-0 stroke-[2.2]" />
           </div>
         </div>
 
-        <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-          <div className="space-y-0.5">
+        <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 sm:p-4">
+          <div className="min-w-0 space-y-0.5">
             <div className="flex items-center gap-1.5">
               <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">
                 {t.scoreboard.dangerZone}
@@ -110,7 +118,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
             </div>
             <div className="text-base font-black text-neutral-800 dark:text-neutral-200 sm:text-lg">
               {playersInDanger.length > 0 ? (
-                <span className="font-bold text-rose-500">
+                <span className="whitespace-nowrap font-bold tabular-nums text-rose-500">
                   {playersInDanger.length} in Danger Zone
                 </span>
               ) : (
@@ -118,11 +126,11 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
               )}
             </div>
           </div>
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-100 text-neutral-400 dark:border-neutral-700 dark:bg-neutral-800">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-100 text-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 sm:h-10 sm:w-10">
             {playersInDanger.length > 0 ? (
-              <AlertTriangle className="h-5 w-5 text-rose-500" />
+              <AlertTriangle className="h-5 w-5 shrink-0 text-rose-500" />
             ) : (
-              <ShieldCheck className="h-5 w-5 text-emerald-500" />
+              <ShieldCheck className="h-5 w-5 shrink-0 text-emerald-500" />
             )}
           </div>
         </div>
@@ -130,28 +138,45 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
 
       {/* Main Leaderboard Cards */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h2 className="flex items-center gap-2 text-lg font-black text-neutral-900 dark:text-white">
-            <span>{t.scoreboard.title}</span>
-            <span className="text-xs font-medium text-neutral-500">
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="flex min-w-0 items-center gap-1.5 text-base font-black text-neutral-900 dark:text-white sm:gap-2 sm:text-lg md:text-xl">
+            <span className="truncate">{t.scoreboard.title}</span>
+            <span className="hidden text-xs font-medium text-neutral-500 sm:inline">
               (Lowest score is leading)
             </span>
           </h2>
 
-          <button
-            type="button"
-            onClick={() => {
-              soundEffects.playClick();
-              onOpenScoreModal();
-            }}
-            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-3.5 py-1.5 text-xs font-black text-neutral-950 shadow-md shadow-amber-500/20 transition-all hover:from-amber-400 active:scale-95"
-          >
-            <PlusCircle className="h-4 w-4 stroke-[2.5]" />
-            <span>{t.tabs.logRound}</span>
-          </button>
+          <div className="flex shrink-0 items-center gap-2">
+            {onStartNewGame && (
+              <button
+                type="button"
+                onClick={() => {
+                  soundEffects.playClick();
+                  onStartNewGame();
+                }}
+                className="flex items-center gap-1.5 rounded-xl border border-neutral-300 bg-white px-2.5 py-1.5 text-xs font-bold text-neutral-700 shadow-sm transition-all hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 sm:gap-2 sm:px-3"
+                title={t.nav.newGame}
+              >
+                <RotateCcw className="h-3.5 w-3.5 shrink-0 stroke-[2.2]" />
+                <span className="whitespace-nowrap">{t.nav.newGame}</span>
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={() => {
+                soundEffects.playClick();
+                onOpenScoreModal();
+              }}
+              className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1.5 text-xs font-black text-neutral-950 shadow-md shadow-amber-500/20 transition-all hover:from-amber-400 active:scale-95 sm:gap-2 sm:px-3.5"
+            >
+              <PlusCircle className="h-4 w-4 shrink-0 stroke-[2.5]" />
+              <span className="whitespace-nowrap">{t.tabs.logRound}</span>
+            </button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-2.5 sm:gap-3 md:grid-cols-2">
           {playerStats.map((player) => (
             <PlayerCard
               key={player.id}

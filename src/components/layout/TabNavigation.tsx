@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, Sparkles, BookOpen, RotateCcw } from 'lucide-react';
+import { Trophy, Sparkles, BookOpen } from 'lucide-react';
 import { Language } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
 import { soundEffects } from '../../utils/sound';
@@ -10,27 +10,18 @@ interface TabNavigationProps {
   activeTab: ActiveTab;
   onSelectTab: (tab: ActiveTab) => void;
   language: Language;
-  onStartNewGame?: () => void;
 }
 
 export const TabNavigation: React.FC<TabNavigationProps> = ({
   activeTab,
   onSelectTab,
   language,
-  onStartNewGame,
 }) => {
   const t = TRANSLATIONS[language];
 
   const handleTabClick = (tab: ActiveTab) => {
     soundEffects.playClick();
     onSelectTab(tab);
-  };
-
-  const handleNewGame = () => {
-    soundEffects.playClick();
-    if (onStartNewGame) {
-      onStartNewGame();
-    }
   };
 
   const navItems = [
@@ -76,7 +67,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
                   }`}
                 >
                   <Icon
-                    className={`h-4 w-4 ${
+                    className={`h-4 w-4 shrink-0 ${
                       isActive
                         ? 'text-amber-500 dark:text-amber-400'
                         : 'text-neutral-500 dark:text-neutral-400'
@@ -87,24 +78,12 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
               );
             })}
           </div>
-
-          {onStartNewGame && (
-            <button
-              type="button"
-              onClick={handleNewGame}
-              className="flex items-center gap-2 rounded-2xl bg-amber-500 px-4 py-2 text-xs font-black uppercase tracking-wider text-neutral-950 shadow-sm transition-all hover:bg-amber-400 hover:shadow-md active:scale-95"
-              title={t.nav.newGame}
-            >
-              <RotateCcw className="h-4 w-4 stroke-[2.5]" />
-              <span>{t.nav.newGame}</span>
-            </button>
-          )}
         </div>
       </nav>
 
       {/* Mobile Bottom Bar */}
-      <div className="pb-safe fixed bottom-0 left-0 right-0 z-40 border-t border-neutral-200 bg-white/95 px-3 pt-1 shadow-[0_-4px_25px_rgba(0,0,0,0.15)] backdrop-blur-lg dark:border-neutral-800 dark:bg-neutral-900/95 dark:shadow-[0_-4px_25px_rgba(0,0,0,0.5)] md:hidden">
-        <div className="mx-auto grid h-16 max-w-lg grid-cols-4 items-center">
+      <div className="pb-safe fixed bottom-0 left-0 right-0 z-40 border-t border-neutral-200 bg-white/95 px-2 pb-2 pt-1 shadow-[0_-4px_25px_rgba(0,0,0,0.15)] backdrop-blur-lg dark:border-neutral-800 dark:bg-neutral-900/95 dark:shadow-[0_-4px_25px_rgba(0,0,0,0.5)] sm:pb-0 md:hidden">
+        <div className="mx-auto grid h-16 max-w-lg grid-cols-3 items-center gap-1">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -114,38 +93,25 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
                 key={item.id}
                 type="button"
                 onClick={() => handleTabClick(item.id)}
-                className={`flex h-full flex-col items-center justify-center rounded-xl py-1 transition-colors ${
+                className={`flex h-full flex-col items-center justify-center rounded-xl px-1 py-1 transition-colors ${
                   isActive
                     ? 'font-bold text-amber-600 dark:text-amber-400'
                     : 'text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200'
                 }`}
               >
                 <Icon
-                  className={`mb-1 h-5 w-5 ${
+                  className={`mb-1 h-5 w-5 shrink-0 transition-transform ${
                     isActive
                       ? 'scale-110 text-amber-600 dark:text-amber-400'
                       : 'text-neutral-500 dark:text-neutral-400'
                   }`}
                 />
-                <span className="max-w-[70px] truncate text-[10px]">
+                <span className="w-full truncate px-0.5 text-center text-xs sm:text-sm">
                   {item.label}
                 </span>
               </button>
             );
           })}
-
-          {/* New Game Button for Mobile */}
-          <button
-            type="button"
-            onClick={handleNewGame}
-            className="flex h-full flex-col items-center justify-center rounded-xl py-1 text-neutral-500 transition-colors hover:text-amber-600 dark:text-neutral-400 dark:hover:text-amber-400"
-            title={t.nav.newGame}
-          >
-            <RotateCcw className="mb-1 h-5 w-5 text-amber-500" />
-            <span className="max-w-[70px] truncate text-[10px] font-bold text-amber-600 dark:text-amber-400">
-              {t.nav.newGame}
-            </span>
-          </button>
         </div>
       </div>
     </>

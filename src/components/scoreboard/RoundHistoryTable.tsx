@@ -59,10 +59,10 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
   return (
     <div className="space-y-4">
       {/* Header bar */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <h3 className="flex items-center gap-2 text-base font-bold text-neutral-900 dark:text-white">
           <span>{t.scoreboard.historyTitle}</span>
-          <span className="rounded-full bg-neutral-200 px-2.5 py-0.5 font-mono text-xs font-bold text-amber-500 dark:bg-neutral-800">
+          <span className="rounded-full bg-neutral-200 px-2.5 py-0.5 font-mono text-xs font-bold tabular-nums text-amber-500 dark:bg-neutral-800">
             {rounds.length}
           </span>
         </h3>
@@ -70,11 +70,11 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
         <button
           type="button"
           onClick={handleUndo}
-          className="flex items-center gap-1.5 rounded-xl border border-neutral-200 bg-neutral-100 px-3 py-1.5 text-xs font-semibold text-neutral-700 transition-all hover:bg-neutral-200 active:scale-95 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
+          className="flex shrink-0 items-center gap-1.5 rounded-xl border border-neutral-200 bg-neutral-100 px-3 py-1.5 text-xs font-semibold text-neutral-700 transition-all hover:bg-neutral-200 active:scale-95 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
           title="Revert the scores of the most recent round"
         >
-          <RotateCcw className="h-3.5 w-3.5 text-amber-500" />
-          <span>{t.scoreboard.undoRound}</span>
+          <RotateCcw className="h-3.5 w-3.5 shrink-0 text-amber-500" />
+          <span className="whitespace-nowrap">{t.scoreboard.undoRound}</span>
         </button>
       </div>
 
@@ -88,17 +88,17 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
           return (
             <div
               key={round.roundNumber}
-              className="rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm transition-all dark:border-neutral-800 dark:bg-neutral-900"
+              className="rounded-3xl border border-neutral-200 bg-white p-3 shadow-sm transition-all dark:border-neutral-800 dark:bg-neutral-900 sm:p-4"
             >
               {/* Round Header */}
               <div className="mb-3 flex items-center justify-between gap-2 border-b border-neutral-100 pb-3 dark:border-neutral-800">
-                <div className="flex items-center gap-2">
-                  <span className="rounded-xl border border-amber-500/30 bg-amber-500/15 px-2.5 py-1 text-xs font-black text-amber-600 dark:text-amber-400">
+                <div className="flex min-w-0 items-center gap-2">
+                  <span className="shrink-0 whitespace-nowrap rounded-xl border border-amber-500/30 bg-amber-500/15 px-2.5 py-1 text-xs font-black tabular-nums text-amber-600 dark:text-amber-400">
                     {t.scoreboard.round} {round.roundNumber}
                   </span>
 
                   {activeRuleCard && (
-                    <span className="flex max-w-[200px] items-center gap-1 truncate rounded-xl border border-purple-500/30 bg-purple-500/15 px-2.5 py-1 text-xs font-bold text-purple-600 dark:text-purple-400">
+                    <span className="flex max-w-[160px] items-center gap-1 truncate rounded-xl border border-purple-500/30 bg-purple-500/15 px-2 py-1 text-xs font-bold text-purple-600 dark:text-purple-400 sm:max-w-[200px] sm:px-2.5">
                       <Sparkles className="h-3 w-3 shrink-0" />
                       <span className="truncate">
                         {activeRuleCard.name[language]}
@@ -108,7 +108,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                 </div>
 
                 {/* Actions: Edit / Delete */}
-                <div className="flex items-center gap-1">
+                <div className="flex shrink-0 items-center gap-1">
                   {onEditRound && (
                     <button
                       type="button"
@@ -116,7 +116,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                       className="rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-amber-500 dark:hover:bg-neutral-800"
                       title={t.scoreboard.editRound}
                     >
-                      <Edit3 className="h-3.5 w-3.5" />
+                      <Edit3 className="h-3.5 w-3.5 shrink-0" />
                     </button>
                   )}
 
@@ -151,7 +151,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                           className="rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-red-500/10 hover:text-red-500"
                           title={t.scoreboard.deleteRound}
                         >
-                          <Trash2 className="h-3.5 w-3.5" />
+                          <Trash2 className="h-3.5 w-3.5 shrink-0" />
                         </button>
                       )}
                     </>
@@ -160,7 +160,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
               </div>
 
               {/* Player Scores Grid */}
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 sm:gap-2">
                 {players.map((player) => {
                   const score = round.scores[player.id];
                   const theme = getPlayerColorTheme(player.color);
@@ -169,7 +169,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                   return (
                     <div
                       key={player.id}
-                      className={`rounded-2xl border p-2.5 transition-all ${
+                      className={`rounded-2xl border p-2 transition-all sm:p-2.5 ${
                         score.isWinner
                           ? 'border-emerald-500/50 bg-emerald-500/10'
                           : 'border-neutral-100 bg-neutral-50 dark:border-neutral-800/80 dark:bg-neutral-800/30'
@@ -192,7 +192,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                       </div>
 
                       <div className="mt-1 flex items-baseline justify-between">
-                        <span className="text-base font-black text-neutral-900 dark:text-white">
+                        <span className="whitespace-nowrap text-base font-black tabular-nums text-neutral-900 dark:text-white">
                           {score.totalPoints}{' '}
                           <span className="text-[10px] font-semibold text-neutral-400">
                             pts
@@ -200,14 +200,14 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                         </span>
 
                         {score.isDoomsday && (
-                          <span className="flex items-center gap-0.5 text-[10px] font-bold text-purple-500">
-                            <Skull className="h-3 w-3" />
+                          <span className="flex items-center gap-0.5 text-[10px] font-bold tabular-nums text-purple-500">
+                            <Skull className="h-3 w-3 shrink-0" />
                             50
                           </span>
                         )}
 
                         {score.timeBombModifier !== 'none' && (
-                          <Bomb className="h-3 w-3 text-amber-500" />
+                          <Bomb className="h-3 w-3 shrink-0 text-amber-500" />
                         )}
                       </div>
                     </div>

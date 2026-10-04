@@ -90,17 +90,15 @@ export function App() {
     : null;
 
   return (
-    <div className="flex min-h-screen flex-col bg-neutral-100 font-sans text-neutral-900 transition-colors selection:bg-amber-500 selection:text-black dark:bg-neutral-950 dark:text-neutral-100">
+    <div className="flex min-h-screen flex-col overflow-x-clip bg-neutral-100 font-sans text-neutral-900 transition-colors selection:bg-amber-500 selection:text-black dark:bg-neutral-950 dark:text-neutral-100">
       {/* Top Navigation */}
       <Navbar
         language={language}
-        onSelectLanguage={setLanguage}
         theme={theme}
         onThemeChange={setTheme}
         roundsCount={gameState.rounds.length}
         targetScore={gameState.config.targetScore}
         onOpenSetup={() => setIsSetupModalOpen(true)}
-        onStartNewGame={() => setIsSetupModalOpen(true)}
         onOpenSettings={() => handleOpenSettings('settings')}
       />
 
@@ -109,11 +107,10 @@ export function App() {
         activeTab={activeTab}
         onSelectTab={setActiveTab}
         language={language}
-        onStartNewGame={() => setIsSetupModalOpen(true)}
       />
 
       {/* Main View Area */}
-      <main className="mx-auto w-full max-w-7xl flex-1 px-3 py-4 sm:px-6 sm:py-6">
+      <main className="mx-auto w-full max-w-7xl flex-1 px-3 py-4 pb-24 sm:px-6 sm:py-6 md:pb-6">
         {activeTab === 'scoreboard' && (
           <Leaderboard
             playerStats={playerStats}
@@ -127,6 +124,7 @@ export function App() {
             onDeleteRound={deleteRound}
             onClearActiveRuleCard={() => setActiveRuleCardIds([])}
             onOpenRuleCardDrawer={() => setActiveTab('rulecards')}
+            onStartNewGame={() => setIsSetupModalOpen(true)}
             language={language}
           />
         )}

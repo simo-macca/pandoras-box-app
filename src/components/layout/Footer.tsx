@@ -18,15 +18,11 @@ export const Footer: React.FC<FooterProps> = ({
   return (
     <footer className="mt-auto border-t border-neutral-200/80 bg-white/50 px-3 py-4 pb-20 backdrop-blur-sm transition-colors dark:border-neutral-800/80 dark:bg-neutral-900/50 sm:px-6 md:pb-4">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-xs text-neutral-500 dark:text-neutral-400 sm:flex-row">
-        {/* Left: Copyright and short disclaimer */}
+        {/* Left: Copyright */}
         <div className="flex flex-col items-center gap-1 text-center sm:flex-row sm:gap-2 sm:text-left">
-          <span className="font-semibold text-neutral-600 dark:text-neutral-300">
+          <span className="shrink-0 font-semibold text-neutral-600 dark:text-neutral-300">
             © {currentYear}
           </span>
-          <span className="hidden text-neutral-300 dark:text-neutral-700 sm:inline">
-            •
-          </span>
-          <span>{t.settings.disclaimerShort}</span>
         </div>
 
         {/* Right: Credit link and disclaimer modal trigger */}

@@ -176,7 +176,6 @@ export interface TranslationStrings {
     aboutLegalTitle: string;
     disclaimerTitle: string;
     fullDisclaimer: string;
-    disclaimerShort: string;
     visitRulefactory: string;
     unofficialNotice: string;
   };
@@ -373,8 +372,6 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       disclaimerTitle: 'Disclaimer & Legal Notice',
       fullDisclaimer:
         "Pandora's Box is a game created and published by Rulefactory. This website is an unofficial, non-commercial companion tool designed solely for scorekeeping and rule reference. It is not affiliated with, endorsed, or sponsored by Rulefactory. All trademarks, logos, and copyrighted materials belong to their respective owners.",
-      disclaimerShort:
-        "Unofficial, non-commercial companion app for Pandora's Box & Frantic by Rulefactory.",
       visitRulefactory: 'Official Rulefactory Website',
       unofficialNotice: 'Unofficial Companion Tool',
     },
@@ -570,8 +567,6 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       disclaimerTitle: 'Rechtlicher Hinweis & Disclaimer',
       fullDisclaimer:
         "Pandora's Box ist ein von Rulefactory entwickeltes und veröffentlichtes Spiel. Diese Website ist ein inoffizielles, nicht-kommerzielles Begleitwerkzeug, das ausschließlich zur Punktezählung und als Regelreferenz dient. Sie steht in keiner Verbindung zu Rulefactory und wird von diesen weder unterstützt noch gesponsert. Alle Marken, Logos und urheberrechtlich geschützten Materialien gehören ihren jeweiligen Eigentümern.",
-      disclaimerShort:
-        "Inoffizielle, nicht-kommerzielle Begleit-App für Pandora's Box & Frantic von Rulefactory.",
       visitRulefactory: 'Offizielle Rulefactory-Website',
       unofficialNotice: 'Inoffizielles Begleitwerkzeug',
     },
@@ -766,8 +761,6 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       disclaimerTitle: 'Disclaimer Legale',
       fullDisclaimer:
         "Pandora's Box è un gioco creato e pubblicato da Rulefactory. Questo sito web è uno strumento complementare non ufficiale e non commerciale, progettato esclusivamente per il conteggio dei punti e la consultazione delle regole. Non è affiliato, approvato o sponsorizzato da Rulefactory. Tutti i marchi, loghi e materiali protetti da copyright appartengono ai rispettivi proprietari.",
-      disclaimerShort:
-        "App complementare non ufficiale e non commerciale per Pandora's Box & Frantic di Rulefactory.",
       visitRulefactory: 'Sito Ufficiale Rulefactory',
       unofficialNotice: 'Strumento Complementare Non Ufficiale',
     },
@@ -964,8 +957,6 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       disclaimerTitle: 'Avertissement Légal',
       fullDisclaimer:
         "Pandora's Box est un jeu créé et publié par Rulefactory. Ce site est un outil compagnon non officiel et non commercial, conçu uniquement pour le décompte des points et la consultation des règles. Il n'est ni affilié, ni approuvé, ni sponsorisé par Rulefactory. Toutes les marques, logos et contenus protégés par le droit d'auteur appartiennent à leurs propriétaires respectifs.",
-      disclaimerShort:
-        "Application compagnon non officielle et non commerciale pour Pandora's Box & Frantic par Rulefactory.",
       visitRulefactory: 'Site Officiel de Rulefactory',
       unofficialNotice: 'Outil Compagnon Non Officiel',
     },

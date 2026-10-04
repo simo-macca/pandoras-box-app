@@ -55,7 +55,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl border p-4 transition-all duration-300 ${
+      className={`relative overflow-hidden rounded-2xl border p-3 transition-all duration-300 sm:p-4 ${
         player.isLeader
           ? 'border-amber-500/60 bg-gradient-to-br from-game-surface via-slate-800/90 to-amber-950/20 shadow-[0_0_20px_rgba(245,158,11,0.15)] ring-1 ring-amber-500/40'
           : player.isEliminated
@@ -70,21 +70,21 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
         style={{ backgroundColor: theme.hex }}
       />
 
-      <div className="flex items-start justify-between gap-3 pt-1">
-        <div className="flex min-w-0 items-center gap-3">
+      <div className="flex items-start justify-between gap-2 pt-1 sm:gap-3">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
           <div
-            className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-xl text-xs ${rankBadge.bg}`}
+            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-xs ${rankBadge.bg}`}
           >
             {player.isLeader ? (
-              <Crown className="h-4 w-4 fill-current text-neutral-950" />
+              <Crown className="h-4 w-4 shrink-0 fill-current text-neutral-950" />
             ) : (
-              <span>{rankBadge.label}</span>
+              <span className="font-bold tabular-nums">{rankBadge.label}</span>
             )}
           </div>
 
           <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <span className="truncate text-base font-bold text-white sm:text-lg">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="truncate text-sm font-bold text-white sm:text-base md:text-lg">
                 {player.name}
               </span>
               <div
@@ -93,22 +93,25 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
               />
             </div>
 
-            <div className="mt-0.5 flex items-center gap-2">
+            <div className="mt-0.5 flex flex-wrap items-center gap-1.5 sm:gap-2">
               {player.isLeader && (
                 <span className="flex items-center gap-1 text-[11px] font-semibold text-amber-400">
-                  <span>👑 {t.scoreboard.leading}</span>
+                  <span className="shrink-0">👑</span>
+                  <span className="truncate">{t.scoreboard.leading}</span>
                 </span>
               )}
               {player.isInDanger && (
                 <span className="flex animate-pulse items-center gap-1 text-[11px] font-bold text-rose-400">
-                  <AlertTriangle className="h-3.5 w-3.5" />
-                  <span>DANGER ({player.pointsRemaining} pts to loss)</span>
+                  <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+                  <span className="whitespace-nowrap tabular-nums">
+                    DANGER ({player.pointsRemaining} pts to loss)
+                  </span>
                 </span>
               )}
               {player.isEliminated && (
                 <span className="flex items-center gap-1 text-[11px] font-bold text-rose-400">
-                  <Skull className="h-3.5 w-3.5" />
-                  <span>
+                  <Skull className="h-3.5 w-3.5 shrink-0" />
+                  <span className="whitespace-nowrap tabular-nums">
                     EXCEEDED LIMIT ({player.totalScore}/{targetScore})
                   </span>
                 </span>
@@ -117,10 +120,10 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
           </div>
         </div>
 
-        <div className="flex-shrink-0 text-right">
+        <div className="shrink-0 text-right">
           <div className="flex items-baseline justify-end gap-1">
             <span
-              className={`font-mono text-2xl font-black tracking-tight sm:text-3xl ${
+              className={`whitespace-nowrap font-mono text-xl font-black tabular-nums tracking-tight sm:text-2xl md:text-3xl ${
                 player.isLeader
                   ? 'text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]'
                   : player.isEliminated
@@ -130,12 +133,12 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
             >
               {player.totalScore}
             </span>
-            <span className="text-xs font-semibold text-slate-400">
+            <span className="whitespace-nowrap text-xs font-semibold tabular-nums text-slate-400">
               / {targetScore} {t.scoreboard.pts}
             </span>
           </div>
 
-          <div className="text-[11px] text-slate-400">
+          <div className="whitespace-nowrap text-[11px] tabular-nums text-slate-400">
             {player.pointsRemaining > 0 ? (
               <span>{player.pointsRemaining} pts safety buffer</span>
             ) : (
@@ -147,10 +150,10 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
         </div>
       </div>
 
-      <div className="mt-4 space-y-1.5">
+      <div className="mt-3 space-y-1.5 sm:mt-4">
         <div className="flex items-center justify-between text-[11px] font-medium text-slate-400">
           <span>Proximity to Loss:</span>
-          <span className="font-mono font-bold text-slate-300">
+          <span className="whitespace-nowrap font-mono font-bold tabular-nums text-slate-300">
             {player.progressPct.toFixed(0)}%
           </span>
         </div>

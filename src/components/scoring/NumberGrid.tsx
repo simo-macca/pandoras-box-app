@@ -34,41 +34,46 @@ export const NumberGrid: React.FC<NumberGridProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-5 gap-2">
+    <div className="grid grid-cols-2 gap-1.5 min-[440px]:grid-cols-5 sm:gap-2">
       {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => {
         const count = counts[num] || 0;
         return (
           <div
             key={num}
-            className={`flex flex-col items-center justify-between rounded-2xl border p-2 transition-all ${
+            className={`flex flex-row items-center justify-between rounded-2xl border p-2 transition-all min-[440px]:flex-col min-[440px]:justify-between ${
               count > 0
                 ? 'border-amber-500 bg-amber-500/15 shadow-sm'
                 : 'border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-800/40'
             } ${disabled ? 'pointer-events-none opacity-40' : ''}`}
           >
-            {/* Number Badge */}
-            <div className="mb-1 flex w-full items-center justify-between">
-              <span className="flex h-5 w-5 items-center justify-center rounded-md bg-neutral-900 text-[11px] font-black text-white">
+            {/* Number Badge & Points */}
+            <div className="flex items-center gap-1.5 min-[440px]:mb-1.5 min-[440px]:w-full min-[440px]:justify-between">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-neutral-900 text-xs font-black text-white dark:bg-neutral-100 dark:text-neutral-900">
                 {num}
               </span>
-              <span className="text-[10px] font-bold text-neutral-400">
+              <span className="whitespace-nowrap text-[10px] font-bold tabular-nums text-neutral-400">
                 {num * count} pts
               </span>
             </div>
 
             {/* Stepper Buttons */}
-            <div className="mt-1 flex w-full items-center justify-between">
+            <div className="flex items-center justify-between gap-1 min-[440px]:mt-1 min-[440px]:w-full">
               <button
                 type="button"
                 onClick={() => handleDecrement(num)}
                 disabled={count === 0 || disabled}
-                className="flex h-6 w-6 items-center justify-center rounded-lg bg-neutral-200 text-neutral-800 transition-colors hover:bg-neutral-300 disabled:opacity-30 dark:bg-neutral-700/80 dark:text-neutral-200 dark:hover:bg-neutral-600"
+                aria-label={`Decrease number ${num}`}
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs text-neutral-800 transition-colors hover:bg-neutral-300 disabled:opacity-30 dark:bg-neutral-700/80 dark:text-neutral-200 dark:hover:bg-neutral-600 sm:h-8 sm:w-8 sm:text-sm"
               >
-                <Minus className="h-3 w-3" />
+                <Minus className="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5" />
               </button>
 
               <span
-                className={`text-sm font-extrabold ${count > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-neutral-400'}`}
+                className={`min-w-[1rem] whitespace-nowrap text-center text-xs font-extrabold tabular-nums sm:min-w-[1.25rem] sm:text-sm ${
+                  count > 0
+                    ? 'text-amber-600 dark:text-amber-400'
+                    : 'text-neutral-400'
+                }`}
               >
                 {count}
               </span>
@@ -77,9 +82,10 @@ export const NumberGrid: React.FC<NumberGridProps> = ({
                 type="button"
                 onClick={() => handleIncrement(num)}
                 disabled={disabled}
-                className="flex h-6 w-6 items-center justify-center rounded-lg bg-amber-500 font-bold text-neutral-950 shadow-sm transition-colors hover:bg-amber-400"
+                aria-label={`Increase number ${num}`}
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-amber-500 text-xs font-bold text-neutral-950 shadow-sm transition-colors hover:bg-amber-400 sm:h-8 sm:w-8 sm:text-sm"
               >
-                <Plus className="h-3 w-3 stroke-[2.5]" />
+                <Plus className="h-3 w-3 shrink-0 stroke-[2.5] sm:h-3.5 sm:w-3.5" />
               </button>
             </div>
           </div>

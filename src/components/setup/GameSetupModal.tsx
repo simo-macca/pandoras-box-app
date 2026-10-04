@@ -40,7 +40,23 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      setDraftPlayers(currentPlayers);
+      const used = new Set<PlayerColor>();
+      const sanitized = currentPlayers.map((p, idx) => {
+        let color = p.color;
+        if (
+          color === ('white' as PlayerColor) ||
+          color === ('black' as PlayerColor) ||
+          used.has(color) ||
+          !ALL_PLAYER_COLORS.includes(color)
+        ) {
+          const available = ALL_PLAYER_COLORS.find((c) => !used.has(c));
+          color =
+            available || ALL_PLAYER_COLORS[idx % ALL_PLAYER_COLORS.length];
+        }
+        used.add(color);
+        return { ...p, color };
+      });
+      setDraftPlayers(sanitized);
       setDraftConfig(currentConfig);
       setShowConfirmReset(false);
       setCustomValue(
@@ -74,6 +90,19 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
   };
 
   const handleUpdatePlayer = (id: string, updates: Partial<Player>) => {
+    if (updates.color) {
+      const isTaken = draftPlayers.some(
+        (p) => p.id !== id && p.color === updates.color
+      );
+      if (
+        isTaken ||
+        updates.color === ('white' as PlayerColor) ||
+        updates.color === ('black' as PlayerColor) ||
+        !ALL_PLAYER_COLORS.includes(updates.color)
+      ) {
+        return;
+      }
+    }
     setDraftPlayers(
       draftPlayers.map((p) => (p.id === id ? { ...p, ...updates } : p))
     );
@@ -126,30 +155,31 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
   };
 
   return (
-    <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
-      <div className="relative flex max-h-[90vh] w-full max-w-xl flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-800 dark:bg-neutral-900">
+    <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-2 backdrop-blur-sm sm:p-4">
+      <div className="relative flex max-h-[90dvh] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-800 dark:bg-neutral-900">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-neutral-200 bg-neutral-50 px-6 py-4 dark:border-neutral-800 dark:bg-neutral-900/60">
-          <div>
-            <h2 className="flex items-center gap-2 text-xl font-bold text-neutral-900 dark:text-white">
-              <span>👥</span>
-              <span>{t.setup.title}</span>
+        <div className="flex shrink-0 items-center justify-between border-b border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-900/60 sm:px-6 sm:py-4">
+          <div className="min-w-0">
+            <h2 className="flex items-center gap-2 text-lg font-bold text-neutral-900 dark:text-white sm:text-xl">
+              <span className="shrink-0">👥</span>
+              <span className="truncate">{t.setup.title}</span>
             </h2>
-            <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">
+            <p className="mt-0.5 truncate text-xs text-neutral-500 dark:text-neutral-400">
               {t.setup.description}
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl p-2 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white"
+            aria-label="Close"
+            className="shrink-0 rounded-xl p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white sm:p-2"
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5 shrink-0" />
           </button>
         </div>
 
         {/* Body */}
-        <div className="space-y-6 overflow-y-auto p-6">
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-3 sm:space-y-6 sm:p-6">
           {/* Players Config */}
           <PlayerConfig
             players={draftPlayers}
@@ -248,31 +278,31 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
         </div>
 
         {/* Footer Actions */}
-        <div className="border-t border-neutral-200 bg-neutral-50 p-4 px-6 dark:border-neutral-800 dark:bg-neutral-900/60">
+        <div className="shrink-0 border-t border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-900/60 sm:px-6 sm:py-4">
           {!showConfirmReset ? (
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center justify-between gap-2 sm:gap-3">
               <button
                 type="button"
                 onClick={() => setShowConfirmReset(true)}
-                className="flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-xs font-bold text-red-600 transition-all hover:border-red-500 dark:text-red-400 sm:text-sm"
+                className="flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-bold text-red-600 transition-all hover:border-red-500 dark:text-red-400 sm:px-4 sm:py-2.5 sm:text-sm"
               >
-                <RotateCcw className="h-4 w-4" />
-                <span>{t.setup.newGame}</span>
+                <RotateCcw className="h-4 w-4 shrink-0" />
+                <span className="whitespace-nowrap">{t.setup.newGame}</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleSaveOnly}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-2.5 text-xs font-extrabold text-white shadow-md transition-all hover:from-amber-400 hover:to-amber-500 active:scale-95 sm:text-sm"
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-xs font-extrabold text-white shadow-md transition-all hover:from-amber-400 hover:to-amber-500 active:scale-95 sm:px-6 sm:py-2.5 sm:text-sm"
               >
-                <Play className="h-4 w-4 fill-white" />
-                <span>{t.setup.startMatch}</span>
+                <Play className="h-4 w-4 shrink-0 fill-white" />
+                <span className="whitespace-nowrap">{t.setup.startMatch}</span>
               </button>
             </div>
           ) : (
             <div className="space-y-3">
               <div className="flex items-center justify-center gap-2 text-xs font-bold text-red-600 dark:text-red-400">
-                <AlertTriangle className="h-4 w-4" />
+                <AlertTriangle className="h-4 w-4 shrink-0" />
                 <span>{t.setup.confirmResetMessage}</span>
               </div>
               <div className="flex gap-2">

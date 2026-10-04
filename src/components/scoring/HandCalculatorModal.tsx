@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { X, Trophy, Check, Sparkles, RefreshCw, Bomb } from 'lucide-react';
+import {
+  X,
+  Trophy,
+  Check,
+  Sparkles,
+  RefreshCw,
+  Bomb,
+  ChevronDown,
+} from 'lucide-react';
 import {
   Player,
   HandScore,
@@ -202,17 +210,17 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
   const activeColorTheme = getPlayerColorTheme(activePlayer.color);
 
   return (
-    <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 backdrop-blur-sm sm:p-4">
-      <div className="relative flex max-h-[94vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-800 dark:bg-neutral-900">
+    <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-2 backdrop-blur-sm sm:p-4">
+      <div className="relative flex max-h-[90dvh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-800 dark:bg-neutral-900 sm:rounded-3xl">
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-neutral-200 bg-neutral-50 px-5 py-3.5 dark:border-neutral-800 dark:bg-neutral-900/60">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🧮</span>
-            <div>
-              <h2 className="text-base font-bold leading-tight text-neutral-900 dark:text-white sm:text-lg">
+        <div className="flex shrink-0 items-center justify-between gap-2 border-b border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-900/60">
+          <div className="flex min-w-0 items-center gap-2">
+            <span className="shrink-0 text-xl">🧮</span>
+            <div className="min-w-0">
+              <h2 className="truncate text-base font-bold leading-tight text-neutral-900 dark:text-white sm:text-lg">
                 {isEditing ? t.scoring.editModalTitle : t.scoring.modalTitle}
               </h2>
-              <span className="text-xs font-semibold text-amber-500">
+              <span className="truncate whitespace-nowrap text-xs font-semibold tabular-nums text-amber-500">
                 {t.scoring.roundNumber} {roundNumber}
               </span>
             </div>
@@ -221,77 +229,81 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white"
+            aria-label="Close"
+            className="shrink-0 rounded-xl p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white"
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5 shrink-0" />
           </button>
         </div>
 
-        {/* Player Tabs Bar */}
-        <div className="no-scrollbar flex items-center gap-2 overflow-x-auto border-b border-neutral-200 bg-neutral-100/60 px-4 py-2 dark:border-neutral-800 dark:bg-neutral-900/40">
-          {players.map((p) => {
-            const isSelected = p.id === selectedPlayerId;
-            const pTheme = getPlayerColorTheme(p.color);
-            const pScore = scores[p.id];
-            const pts = pScore ? pScore.totalPoints : 0;
-            const isPWinner = pScore?.isWinner;
-
-            return (
-              <button
-                key={p.id}
-                type="button"
-                onClick={() => setSelectedPlayerId(p.id)}
-                className={`flex shrink-0 items-center gap-2 rounded-xl border px-3 py-1.5 text-xs font-bold transition-all ${
-                  isSelected
-                    ? 'border-amber-500 bg-white text-neutral-900 shadow-sm dark:bg-neutral-800 dark:text-white'
-                    : 'border-transparent text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200'
-                }`}
+        {/* Player Selection Dropdown */}
+        <div className="shrink-0 border-b border-neutral-200 bg-neutral-100/60 px-3 py-2.5 dark:border-neutral-800 dark:bg-neutral-900/40 sm:px-4">
+          <div className="flex items-center gap-2">
+            <label
+              htmlFor="scoring-player-select"
+              className="shrink-0 text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400"
+            >
+              {t.setup.playerName}:
+            </label>
+            <div className="relative flex-1">
+              <div
+                className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 shrink-0 -translate-y-1/2 rounded-full shadow-sm"
+                style={{ backgroundColor: activeColorTheme.hex }}
+              />
+              <select
+                id="scoring-player-select"
+                value={selectedPlayerId}
+                onChange={(e) => {
+                  soundEffects.playClick();
+                  setSelectedPlayerId(e.target.value);
+                }}
+                className="w-full appearance-none rounded-xl border border-neutral-300 bg-white py-2 pl-9 pr-8 text-xs font-bold text-neutral-800 shadow-sm transition-all focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 sm:text-sm"
               >
-                <div
-                  className="h-3 w-3 shrink-0 rounded-full"
-                  style={{ backgroundColor: pTheme.hex }}
-                />
-                <span className="max-w-[90px] truncate">{p.name}</span>
-                <span
-                  className={`rounded-md px-1.5 py-0.5 text-[10px] font-black ${
-                    isPWinner
-                      ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400'
-                      : 'bg-neutral-200 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300'
-                  }`}
-                >
-                  {isPWinner ? 'WIN' : `${pts} pt`}
-                </span>
-              </button>
-            );
-          })}
+                {players.map((p) => {
+                  const pScore = scores[p.id];
+                  const pts = pScore ? pScore.totalPoints : 0;
+                  const isPWinner = pScore?.isWinner;
+                  const status = isPWinner ? '🏆 WIN' : `(${pts} pts)`;
+                  return (
+                    <option key={p.id} value={p.id}>
+                      {p.name} {status}
+                    </option>
+                  );
+                })}
+              </select>
+              <div className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400">
+                <ChevronDown className="h-4 w-4 shrink-0" />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Scrollable Form Body */}
-        <div className="flex-1 space-y-5 overflow-y-auto p-4 sm:p-6">
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-3">
           {/* Active Player Banner & Total */}
-          <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50 p-3.5 dark:border-neutral-700/80 dark:bg-neutral-800/60">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50 p-3 dark:border-neutral-700/80 dark:bg-neutral-800/60 sm:p-3.5">
+            <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
               <div
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl text-base font-black text-white shadow-sm"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl text-sm font-black text-white shadow-sm sm:h-10 sm:w-10 sm:text-base"
                 style={{ backgroundColor: activeColorTheme.hex }}
               >
                 {activePlayer.name.slice(0, 2).toUpperCase()}
               </div>
-              <div>
-                <div className="text-sm font-black text-neutral-900 dark:text-white">
+              <div className="min-w-0">
+                <div className="truncate text-sm font-black text-neutral-900 dark:text-white sm:text-base">
                   {activePlayer.name}
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex shrink-0 items-center gap-2 sm:gap-3">
               <button
                 type="button"
                 onClick={handleResetCurrentPlayer}
                 className="flex items-center gap-1 rounded-lg p-1.5 text-xs font-semibold text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-700 dark:hover:text-white"
                 title={t.scoring.quickZero}
               >
-                <RefreshCw className="h-3.5 w-3.5" />
+                <RefreshCw className="h-3.5 w-3.5 shrink-0" />
                 <span className="hidden sm:inline">{t.scoring.quickZero}</span>
               </button>
 
@@ -299,7 +311,7 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
                 <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
                   {t.scoring.playerTotal}
                 </div>
-                <div className="text-2xl font-black text-amber-500">
+                <div className="whitespace-nowrap text-xl font-black tabular-nums text-amber-500 sm:text-2xl">
                   {currentScore.totalPoints}{' '}
                   <span className="text-xs font-semibold text-neutral-400">
                     pts
@@ -321,13 +333,13 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
           >
             <div className="flex items-center gap-3">
               <div
-                className={`flex h-8 w-8 items-center justify-center rounded-xl ${
+                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${
                   currentScore.isWinner
                     ? 'bg-emerald-500 text-white'
                     : 'bg-neutral-200 text-neutral-400 dark:bg-neutral-700'
                 }`}
               >
-                <Trophy className="h-4 w-4" />
+                <Trophy className="h-4 w-4 shrink-0" />
               </div>
               <div className="text-left">
                 <div className="text-xs font-black">{t.scoring.isWinner}</div>
@@ -338,14 +350,14 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
             </div>
 
             <div
-              className={`flex h-6 w-6 items-center justify-center rounded-lg border ${
+              className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border ${
                 currentScore.isWinner
                   ? 'border-emerald-500 bg-emerald-500 text-white'
                   : 'border-neutral-300 dark:border-neutral-700'
               }`}
             >
               {currentScore.isWinner && (
-                <Check className="h-4 w-4 stroke-[3]" />
+                <Check className="h-4 w-4 shrink-0 stroke-[3]" />
               )}
             </div>
           </button>
@@ -354,7 +366,7 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
           <div>
             <div className="mb-2 flex items-center justify-between">
               <label className="flex items-center gap-1.5 text-xs font-bold text-neutral-700 dark:text-neutral-300">
-                <span>🔢</span>
+                <span className="shrink-0">🔢</span>
                 <span>{t.scoring.numberCardsTitle}</span>
               </label>
               <span className="text-[11px] text-neutral-400">
@@ -374,7 +386,7 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
           <div>
             <div className="mb-2 flex items-center justify-between">
               <label className="flex items-center gap-1.5 text-xs font-bold text-neutral-700 dark:text-neutral-300">
-                <Sparkles className="h-3.5 w-3.5 text-purple-400" />
+                <Sparkles className="h-3.5 w-3.5 shrink-0 text-purple-400" />
                 <span>{t.scoring.specialCardsTitle}</span>
               </label>
             </div>
@@ -391,9 +403,9 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
           </div>
 
           {/* Event Modifiers Section */}
-          <div className="space-y-3 rounded-2xl border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-800/30">
+          <div className="space-y-3 rounded-2xl border border-neutral-200 bg-neutral-50 p-3 dark:border-neutral-800 dark:bg-neutral-800/30 sm:p-4">
             <h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-700 dark:text-neutral-300">
-              <span>⚡</span>
+              <span className="shrink-0">⚡</span>
               <span>{t.scoring.eventsAndModifiers}</span>
             </h4>
 
@@ -416,14 +428,14 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
                 </div>
               </div>
               <div
-                className={`flex h-5 w-5 items-center justify-center rounded-md border ${
+                className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${
                   currentScore.isDoomsday
                     ? 'border-purple-600 bg-purple-600 text-white'
                     : 'border-neutral-400 dark:border-neutral-600'
                 }`}
               >
                 {currentScore.isDoomsday && (
-                  <Check className="h-3.5 w-3.5 stroke-[3]" />
+                  <Check className="h-3.5 w-3.5 shrink-0 stroke-[3]" />
                 )}
               </div>
             </button>
@@ -431,7 +443,7 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
             {/* Time Bomb Selector */}
             <div className="space-y-1">
               <label className="flex items-center gap-1 text-[11px] font-bold text-neutral-600 dark:text-neutral-400">
-                <Bomb className="h-3.5 w-3.5 text-amber-500" />
+                <Bomb className="h-3.5 w-3.5 shrink-0 text-amber-500" />
                 <span>{t.scoring.timeBombModifier}</span>
               </label>
               <select
@@ -479,11 +491,11 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
         </div>
 
         {/* Footer Actions */}
-        <div className="flex items-center justify-between gap-3 border-t border-neutral-200 bg-neutral-50 p-4 px-6 dark:border-neutral-800 dark:bg-neutral-900/60">
+        <div className="flex shrink-0 items-center justify-between gap-2 border-t border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-900/60 sm:gap-3">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl bg-neutral-200 px-5 py-2.5 text-xs font-semibold text-neutral-700 transition-colors hover:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 sm:text-sm"
+            className="rounded-xl bg-neutral-200 px-4 py-2.5 text-xs font-semibold text-neutral-700 transition-colors hover:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 sm:px-5 sm:text-sm"
           >
             {t.scoring.cancel}
           </button>
@@ -491,9 +503,9 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
           <button
             type="button"
             onClick={handleSubmit}
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-rose-500 to-amber-600 px-6 py-2.5 text-xs font-extrabold text-white shadow-md transition-all hover:from-amber-400 hover:to-amber-500 active:scale-95 sm:text-sm"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-rose-500 to-amber-600 px-4 py-2.5 text-xs font-extrabold text-white shadow-md transition-all hover:from-amber-400 hover:to-amber-500 active:scale-95 sm:px-6 sm:text-sm"
           >
-            <Check className="h-4 w-4 stroke-[3]" />
+            <Check className="h-4 w-4 shrink-0 stroke-[3]" />
             <span>
               {isEditing ? t.scoring.saveChanges : t.scoring.submitRound}
             </span>

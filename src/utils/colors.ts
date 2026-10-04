@@ -167,8 +167,8 @@ export const ALL_PLAYER_COLORS: PlayerColor[] = [
   'yellow',
   'purple',
   'orange',
-  'white',
-  'black',
+  'cyan',
+  'pink',
 ];
 
 export const ALL_PAWN_COLORS: PlayerColor[] = ALL_PLAYER_COLORS;

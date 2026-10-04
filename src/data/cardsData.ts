@@ -451,7 +451,27 @@ export const CARDS_DATA: CardItem[] = [
     },
   },
 
-  // UNIQUE SPECIAL CARDS (Curse = 13, The End = 17, Fuck You = 42, Mimicry = 7)
+  // UNIQUE SPECIAL CARDS (Mimicry = 7, Curse = 13, The End = 17, Fuck You = 42)
+  {
+    id: 'mimicry',
+    name: {
+      en: 'Mimicry',
+      de: 'Mimikry',
+      it: 'Mimetismo',
+      fr: 'Mimétisme',
+    },
+    points: 7,
+    category: 'unique',
+    subCategory: 'unique',
+    badgeColor: 'bg-teal-600/20 text-teal-400 border-teal-500/40',
+    icon: 'CopyCheck',
+    description: {
+      en: 'Copies any played card’s property or color. Worth 7 penalty points at round end.',
+      de: 'Kopiert die Eigenschaft oder Farbe einer beliebigen Karte. Zählt 7 Strafpunkte.',
+      it: 'Copia colore ed effetto di una qualsiasi carta giocata. Vale 7 punti penalità.',
+      fr: 'Copie l’effet ou la couleur d’une carte jouée. Vaut 7 points de pénalité.',
+    },
+  },
   {
     id: 'curse',
     name: {
@@ -529,26 +549,6 @@ export const CARDS_DATA: CardItem[] = [
       de: 'Bleibt man am Rundenende darauf sitzen, droht die sofortige Niederlage!',
       it: 'Restare con questa carta in mano a fine round è letale per la vittoria!',
       fr: 'Garder cette carte en fin de manche est presque synonyme de défaite !',
-    },
-  },
-  {
-    id: 'mimicry',
-    name: {
-      en: 'Mimicry',
-      de: 'Mimikry',
-      it: 'Mimetismo',
-      fr: 'Mimétisme',
-    },
-    points: 7,
-    category: 'unique',
-    subCategory: 'unique',
-    badgeColor: 'bg-teal-600/20 text-teal-400 border-teal-500/40',
-    icon: 'CopyCheck',
-    description: {
-      en: 'Copies any played card’s property or color. Worth 7 penalty points at round end.',
-      de: 'Kopiert die Eigenschaft oder Farbe einer beliebigen Karte. Zählt 7 Strafpunkte.',
-      it: 'Copia colore ed effetto di una qualsiasi carta giocata. Vale 7 punti penalità.',
-      fr: 'Copie l’effet ou la couleur d’une carte jouée. Vaut 7 points de pénalité.',
     },
   },
 ];

@@ -4,37 +4,38 @@ import { Language } from '../../types/game';
 interface LanguageSelectorProps {
   currentLanguage: Language;
   onSelectLanguage: (lang: Language) => void;
+  className?: string;
 }
 
 const LANGUAGES: { code: Language; label: string; flag: string }[] = [
-  { code: 'en', label: 'EN', flag: '🇬🇧' },
-  { code: 'de', label: 'DE', flag: '🇩🇪' },
-  { code: 'it', label: 'IT', flag: '🇮🇹' },
-  { code: 'fr', label: 'FR', flag: '🇫🇷' },
+  { code: 'en', label: 'English', flag: '🇬🇧' },
+  { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
+  { code: 'it', label: 'Italiano', flag: '🇮🇹' },
+  { code: 'fr', label: 'Français', flag: '🇫🇷' },
 ];
 
 export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   currentLanguage,
   onSelectLanguage,
+  className = '',
 }) => {
   return (
-    <div className="inline-flex items-center rounded-lg border border-slate-700/60 bg-slate-900/80 p-0.5 shadow-inner">
-      {LANGUAGES.map((lang) => {
-        const isActive = currentLanguage === lang.code;
+    <div className={`grid grid-cols-2 gap-2 sm:grid-cols-4 ${className}`}>
+      {LANGUAGES.map((item) => {
+        const isActive = currentLanguage === item.code;
         return (
           <button
-            key={lang.code}
+            key={item.code}
             type="button"
-            onClick={() => onSelectLanguage(lang.code)}
-            className={`flex items-center gap-1 rounded-md px-2 py-1 text-xs font-semibold transition-all ${
+            onClick={() => onSelectLanguage(item.code)}
+            className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 transition-all sm:p-3 ${
               isActive
-                ? 'bg-amber-500 text-neutral-950 shadow-sm'
-                : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
+                ? 'border-amber-500 bg-amber-500/10 font-bold text-amber-600 shadow-sm dark:text-amber-400'
+                : 'border-neutral-200 bg-neutral-50/50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300 dark:hover:border-neutral-700'
             }`}
-            title={`Switch to ${lang.label}`}
           >
-            <span className="text-xs leading-none">{lang.flag}</span>
-            <span>{lang.label}</span>
+            <span className="mb-1 shrink-0 text-lg">{item.flag}</span>
+            <span className="text-xs">{item.label}</span>
           </button>
         );
       })}

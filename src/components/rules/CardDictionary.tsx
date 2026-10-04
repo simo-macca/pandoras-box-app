@@ -8,8 +8,8 @@ import {
   X,
   HelpCircle,
   BookOpen,
-  FileText,
   ExternalLink,
+  ChevronDown,
 } from 'lucide-react';
 import { CARDS_DATA } from '../../data/cardsData';
 import { EVENTS_DATA } from '../../data/eventsData';
@@ -144,11 +144,12 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
           href={OFFICIAL_PDF_LINKS[language] || OFFICIAL_PDF_LINKS.en}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 rounded-2xl border border-purple-500/25 bg-purple-500/10 px-4 py-2 text-xs font-bold text-purple-600 shadow-sm transition-all hover:bg-purple-500/20 dark:text-purple-400 sm:text-sm"
+          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-500/15 to-indigo-500/15 px-4 py-2 text-xs font-bold text-purple-700 shadow-sm transition-all hover:border-purple-500/50 hover:from-purple-500/25 hover:to-indigo-500/25 hover:shadow-md dark:border-purple-500/30 dark:text-purple-300 sm:text-sm"
+          title={`View Official Rules (${language.toUpperCase()})`}
         >
-          <FileText className="h-4 w-4" />
-          <span>{t.rules.openPdf} (PDF)</span>
-          <ExternalLink className="h-3.5 w-3.5 opacity-70" />
+          <BookOpen className="h-4 w-4 shrink-0 text-purple-600 dark:text-purple-400" />
+          <span>View Official Rules ({language.toUpperCase()})</span>
+          <ExternalLink className="h-3.5 w-3.5 shrink-0 opacity-70" />
         </a>
       </div>
 
@@ -191,52 +192,34 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
               )}
             </div>
 
-            {/* Category Pills */}
-            <div className="no-scrollbar flex items-center gap-2 overflow-x-auto pt-1">
-              {[
-                { id: 'all' as CategoryType, label: t.rules.allCategories },
-                {
-                  id: 'specials' as CategoryType,
-                  label: t.rules.specials,
-                  icon: Sparkles,
-                },
-                {
-                  id: 'events' as CategoryType,
-                  label: t.rules.events,
-                  icon: Flame,
-                },
-                {
-                  id: 'power' as CategoryType,
-                  label: t.rules.powerCards,
-                  icon: Zap,
-                },
-                {
-                  id: 'rules' as CategoryType,
-                  label: t.rules.ruleCards,
-                  icon: Layers,
-                },
-              ].map((tab) => {
-                const isSelected = activeCategory === tab.id;
-                const Icon = tab.icon;
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => {
-                      soundEffects.playClick();
-                      setActiveCategory(tab.id);
-                    }}
-                    className={`flex shrink-0 items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-bold transition-all ${
-                      isSelected
-                        ? 'border-amber-500 bg-amber-500/20 text-amber-400 shadow-sm'
-                        : 'border-neutral-800 bg-neutral-800/60 text-neutral-400 hover:border-neutral-700 hover:text-neutral-200'
-                    }`}
-                  >
-                    {Icon && <Icon className="h-3.5 w-3.5" />}
-                    <span>{tab.label}</span>
-                  </button>
-                );
-              })}
+            {/* Category Filter Dropdown */}
+            <div className="flex items-center gap-2 pt-1">
+              <label
+                htmlFor="category-select"
+                className="shrink-0 text-xs font-bold uppercase tracking-wider text-neutral-400"
+              >
+                Category:
+              </label>
+              <div className="relative w-full sm:max-w-xs">
+                <select
+                  id="category-select"
+                  value={activeCategory}
+                  onChange={(e) => {
+                    soundEffects.playClick();
+                    setActiveCategory(e.target.value as CategoryType);
+                  }}
+                  className="w-full appearance-none rounded-xl border border-neutral-700 bg-neutral-800 py-2 pl-3.5 pr-8 text-xs font-bold text-white shadow-sm transition-all focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 sm:text-sm"
+                >
+                  <option value="all">🌟 {t.rules.allCategories}</option>
+                  <option value="specials">✨ {t.rules.specials}</option>
+                  <option value="events">🔥 {t.rules.events}</option>
+                  <option value="power">⚡ {t.rules.powerCards}</option>
+                  <option value="rules">📜 {t.rules.ruleCards}</option>
+                </select>
+                <div className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400">
+                  <ChevronDown className="h-4 w-4 shrink-0" />
+                </div>
+              </div>
             </div>
           </div>
 
