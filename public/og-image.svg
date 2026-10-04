@@ -1,0 +1,216 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e0a1a" />
+      <stop offset="45%" stop-color="#140f26" />
+      <stop offset="100%" stop-color="#07050d" />
+    </linearGradient>
+
+    <radialGradient id="meshAmber" cx="80%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.22" />
+      <stop offset="50%" stop-color="#f59e0b" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+
+    <radialGradient id="meshPurple" cx="20%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.25" />
+      <stop offset="55%" stop-color="#ec4899" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Gold Gradient -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="35%" stop-color="#f59e0b" />
+      <stop offset="70%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+
+    <linearGradient id="titleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="50%" stop-color="#f43f5e" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+
+    <linearGradient id="boxFront" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#312252" />
+      <stop offset="100%" stop-color="#18102a" />
+    </linearGradient>
+
+    <linearGradient id="boxSide" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#211738" />
+      <stop offset="100%" stop-color="#0d0817" />
+    </linearGradient>
+
+    <linearGradient id="boxLid" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#442c6f" />
+      <stop offset="100%" stop-color="#23143d" />
+    </linearGradient>
+
+    <radialGradient id="magicGlow" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="25%" stop-color="#fef08a" stop-opacity="0.8" />
+      <stop offset="50%" stop-color="#f59e0b" stop-opacity="0.5" />
+      <stop offset="75%" stop-color="#d946ef" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0" />
+    </radialGradient>
+
+    <linearGradient id="beamGrad" x1="50%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95" />
+      <stop offset="35%" stop-color="#fde047" stop-opacity="0.75" />
+      <stop offset="70%" stop-color="#ec4899" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0" />
+    </linearGradient>
+
+    <linearGradient id="borderGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.5" />
+      <stop offset="50%" stop-color="#8b5cf6" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#ec4899" stop-opacity="0.5" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="1200" height="630" fill="url(#bgGrad)" />
+  <rect width="1200" height="630" fill="url(#meshAmber)" />
+  <rect width="1200" height="630" fill="url(#meshPurple)" />
+
+  <!-- Outer Border Frame -->
+  <rect x="24" y="24" width="1152" height="582" rx="28" fill="none" stroke="url(#borderGlow)" stroke-width="2" />
+  <rect x="32" y="32" width="1136" height="566" rx="22" fill="none" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1" />
+
+  <!-- Top Accent Banner Line -->
+  <path d="M 80 24 L 320 24" stroke="url(#goldGrad)" stroke-width="4" stroke-linecap="round" />
+
+  <!-- ================= LEFT COLUMN: BRANDING & DETAILS ================= -->
+
+  <!-- Sub-badge -->
+  <g transform="translate(80, 80)">
+    <rect x="0" y="0" width="220" height="34" rx="17" fill="#8b5cf6" fill-opacity="0.18" stroke="#a855f7" stroke-opacity="0.4" stroke-width="1.5" />
+    <circle cx="16" cy="17" r="5" fill="#f59e0b" />
+    <text x="32" y="22" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="800" fill="#e9d5ff" letter-spacing="1.5">RULEFACTORY COMPANION</text>
+  </g>
+
+  <!-- Main Titles -->
+  <g transform="translate(80, 150)">
+    <text x="0" y="50" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="62" font-weight="900" fill="#ffffff" letter-spacing="3">FRANTIC</text>
+    
+    <text x="0" y="118" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="50" font-weight="900" fill="url(#titleGrad)" letter-spacing="2">PANDORA'S BOX</text>
+
+    <!-- Subtitle text (2 lines with generous space) -->
+    <text x="0" y="165" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="500" fill="#cbd5e1" letter-spacing="0.3">
+      The ultimate digital companion for scoring,
+    </text>
+    <text x="0" y="194" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="500" fill="#94a3b8" letter-spacing="0.3">
+      card interactions, and digital d20 events.
+    </text>
+  </g>
+
+  <!-- Feature Pills Grid -->
+  <g transform="translate(80, 390)">
+    <!-- Pill 1: Scoreboard -->
+    <g transform="translate(0, 0)">
+      <rect x="0" y="0" width="245" height="46" rx="14" fill="#1e1833" stroke="#f59e0b" stroke-opacity="0.3" stroke-width="1.2" />
+      <text x="18" y="29" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14.5" font-weight="700" fill="#fbbf24">📊 Fast Round Scoring</text>
+    </g>
+
+    <!-- Pill 2: d20 Event Roller -->
+    <g transform="translate(260, 0)">
+      <rect x="0" y="0" width="245" height="46" rx="14" fill="#1e1833" stroke="#ec4899" stroke-opacity="0.3" stroke-width="1.2" />
+      <text x="18" y="29" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14.5" font-weight="700" fill="#f472b6">🎲 Digital d20 Roller</text>
+    </g>
+
+    <!-- Pill 3: Rules in 4 Languages -->
+    <g transform="translate(0, 58)">
+      <rect x="0" y="0" width="245" height="46" rx="14" fill="#1e1833" stroke="#8b5cf6" stroke-opacity="0.3" stroke-width="1.2" />
+      <text x="18" y="29" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14.5" font-weight="700" fill="#c084fc">📖 Official Rules &amp; FAQ</text>
+    </g>
+
+    <!-- Pill 4: Multilingual Badge -->
+    <g transform="translate(260, 58)">
+      <rect x="0" y="0" width="245" height="46" rx="14" fill="#1e1833" stroke="#10b981" stroke-opacity="0.3" stroke-width="1.2" />
+      <text x="18" y="29" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14.5" font-weight="700" fill="#34d399">🌍 EN • IT • DE • FR</text>
+    </g>
+  </g>
+
+  <!-- Footer Disclaimer -->
+  <g transform="translate(80, 560)">
+    <text x="0" y="0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="500" fill="#94a3b8" opacity="0.85">
+      Unofficial, non-commercial companion app for Pandora's Box &amp; Frantic by Rulefactory.
+    </text>
+  </g>
+
+  <!-- ================= RIGHT COLUMN: PANDORA'S BOX EMBLEM ================= -->
+  <g transform="translate(735, 80)">
+    <!-- Container Card (Dark Glassmorphic squircle) -->
+    <rect x="0" y="0" width="385" height="440" rx="44" fill="#130e24" stroke="url(#goldGrad)" stroke-width="3" stroke-opacity="0.5" />
+    <rect x="6" y="6" width="373" height="428" rx="38" fill="none" stroke="#a855f7" stroke-opacity="0.25" stroke-width="1.5" />
+
+    <!-- Radiant Core Glow -->
+    <circle cx="192" cy="200" r="155" fill="url(#magicGlow)" />
+
+    <!-- Light Beams -->
+    <path d="M 158 210 L 88 40 L 155 55 Z" fill="url(#beamGrad)" opacity="0.65" />
+    <path d="M 192 195 L 188 25 L 218 35 Z" fill="url(#beamGrad)" opacity="0.85" />
+    <path d="M 226 210 L 298 50 L 246 40 Z" fill="url(#beamGrad)" opacity="0.65" />
+
+    <!-- Chest Body Front -->
+    <!-- Glowing interior lip -->
+    <polygon points="96,200 288,200 260,170 124,170" fill="#f59e0b" opacity="0.85" />
+    <polygon points="96,200 288,200 260,170 124,170" fill="#ffffff" opacity="0.9" />
+
+    <!-- Main Chest Structure -->
+    <path d="M 76 200 L 308 200 L 288 350 L 96 350 Z" fill="url(#boxFront)" />
+    <!-- 3D Side depth -->
+    <path d="M 76 200 L 96 350 L 74 338 L 60 196 Z" fill="url(#boxSide)" opacity="0.8" />
+
+    <!-- Gold Bands -->
+    <polygon points="72,196 312,196 308,212 76,212" fill="url(#goldGrad)" />
+    <polygon points="94,340 290,340 286,356 98,356" fill="url(#goldGrad)" />
+    <!-- Vertical Straps -->
+    <polygon points="132,196 152,196 148,345 128,345" fill="url(#goldGrad)" />
+    <polygon points="232,196 252,196 256,345 236,345" fill="url(#goldGrad)" />
+
+    <!-- Corner Accents -->
+    <path d="M 76 212 L 98 212 L 98 234 L 91 234 L 91 219 L 76 219 Z" fill="#fef08a" />
+    <path d="M 308 212 L 286 212 L 286 234 L 293 234 L 293 219 L 308 219 Z" fill="#fef08a" />
+    <path d="M 96 340 L 118 340 L 118 318 L 111 318 L 111 333 L 96 333 Z" fill="#fef08a" />
+    <path d="M 288 340 L 266 340 L 266 318 L 273 318 L 273 333 L 288 333 Z" fill="#fef08a" />
+
+    <!-- Escutcheon & Keyhole -->
+    <circle cx="192" cy="270" r="27" fill="url(#goldGrad)" stroke="#fef08a" stroke-width="2" />
+    <circle cx="192" cy="270" r="16" fill="#180e2b" />
+    <circle cx="192" cy="270" r="8" fill="#f59e0b" />
+    <path d="M 190 270 L 194 270 L 196 282 L 188 282 Z" fill="#fde68a" />
+
+    <!-- Open Lid angled -->
+    <g transform="rotate(-18 192 135)">
+      <polygon points="58,118 306,118 276,90 88,90" fill="url(#boxLid)" stroke="url(#goldGrad)" stroke-width="4" />
+      <polygon points="54,114 310,114 306,126 58,126" fill="url(#goldGrad)" />
+      <polygon points="172,114 212,114 202,94 192,102 182,94" fill="#fef08a" />
+    </g>
+
+    <!-- Floating Cards -->
+    <!-- Card 1 (Red card) -->
+    <g transform="translate(90, 115) rotate(-22)">
+      <rect x="-23" y="-35" width="46" height="70" rx="6" fill="#ffffff" stroke="url(#goldGrad)" stroke-width="2.5" />
+      <circle cx="0" cy="0" r="12" fill="#ef4444" />
+      <path d="M -5 -7 L 5 -7 L 0 7 Z" fill="#ffffff" />
+    </g>
+
+    <!-- Card 2 (Special black card) -->
+    <g transform="translate(295, 125) rotate(24)">
+      <rect x="-23" y="-35" width="46" height="70" rx="6" fill="#120c1e" stroke="#c084fc" stroke-width="2.5" />
+      <circle cx="0" cy="0" r="12" fill="#8b5cf6" />
+      <path d="M 0 -7 Q 0 0 7 0 Q 0 0 0 7 Q 0 0 -7 0 Q 0 0 0 -7 Z" fill="#fde047" />
+    </g>
+
+    <!-- Brilliant Starbursts -->
+    <g transform="translate(192, 165)">
+      <path d="M 0 -32 Q 0 0 32 0 Q 0 0 0 32 Q 0 0 -32 0 Q 0 0 0 -32 Z" fill="#ffffff" />
+      <circle cx="0" cy="0" r="6" fill="#fde047" />
+    </g>
+    <path d="M 125 80 Q 125 92 137 92 Q 125 92 125 104 Q 125 92 113 92 Q 125 92 125 80 Z" fill="#fde68a" />
+    <path d="M 260 70 Q 260 82 272 82 Q 260 82 260 94 Q 260 82 248 82 Q 260 82 260 70 Z" fill="#f472b6" />
+  </g>
+</svg>

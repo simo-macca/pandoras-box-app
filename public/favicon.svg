@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18122B" />
+      <stop offset="50%" stop-color="#0f0c1b" />
+      <stop offset="100%" stop-color="#07050d" />
+    </linearGradient>
+
+    <!-- Box Base Gradients -->
+    <linearGradient id="boxFront" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#312252" />
+      <stop offset="100%" stop-color="#18102a" />
+    </linearGradient>
+    <linearGradient id="boxSide" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#211738" />
+      <stop offset="100%" stop-color="#0d0817" />
+    </linearGradient>
+    <linearGradient id="boxLid" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#442c6f" />
+      <stop offset="100%" stop-color="#23143d" />
+    </linearGradient>
+
+    <!-- Gold Trim Gradients -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="30%" stop-color="#f59e0b" />
+      <stop offset="70%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+    <linearGradient id="goldLight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="40%" stop-color="#fef08a" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+
+    <!-- Magic Light & Beams -->
+    <radialGradient id="magicGlow" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+      <stop offset="25%" stop-color="#fef08a" stop-opacity="0.95" />
+      <stop offset="50%" stop-color="#f59e0b" stop-opacity="0.65" />
+      <stop offset="75%" stop-color="#d946ef" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0" />
+    </radialGradient>
+
+    <linearGradient id="beamGrad" x1="50%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="35%" stop-color="#fde047" stop-opacity="0.7" />
+      <stop offset="70%" stop-color="#ec4899" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0" />
+    </linearGradient>
+
+    <filter id="glowFilter" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <filter id="sparkleGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Squircle App Icon Background -->
+  <rect x="12" y="12" width="488" height="488" rx="116" fill="url(#bgGrad)" />
+  <rect x="12" y="12" width="488" height="488" rx="116" fill="none" stroke="url(#goldGrad)" stroke-width="4.5" stroke-opacity="0.4" />
+  <rect x="18" y="18" width="476" height="476" rx="110" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-opacity="0.25" />
+
+  <!-- Ambient Internal Glow Behind Box -->
+  <circle cx="256" cy="235" r="170" fill="url(#magicGlow)" opacity="0.65" />
+
+  <!-- Radiant Light Beams shooting out -->
+  <path d="M 215 240 L 130 55 L 210 75 Z" fill="url(#beamGrad)" opacity="0.6" />
+  <path d="M 256 225 L 252 35 L 286 45 Z" fill="url(#beamGrad)" opacity="0.85" />
+  <path d="M 295 240 L 380 65 L 315 55 Z" fill="url(#beamGrad)" opacity="0.6" />
+
+  <!-- Pandora's Box Body (Slight Perspective) -->
+  <!-- Glowing interior reservoir -->
+  <polygon points="146,230 366,230 330,195 182,195" fill="#f59e0b" opacity="0.85" filter="url(#glowFilter)" />
+  <polygon points="146,230 366,230 330,195 182,195" fill="#ffffff" opacity="0.9" />
+
+  <!-- Chest Body Main -->
+  <path d="M 126 230 L 386 230 L 364 394 L 148 394 Z" fill="url(#boxFront)" />
+  <!-- Shadow / 3D Side depth -->
+  <path d="M 126 230 L 148 394 L 124 382 L 108 226 Z" fill="url(#boxSide)" opacity="0.75" />
+
+  <!-- Gold Trim Bands on Body -->
+  <!-- Top lip -->
+  <polygon points="122,226 390,226 386,244 126,244" fill="url(#goldGrad)" />
+  <!-- Bottom base -->
+  <polygon points="146,384 366,384 362,400 150,400" fill="url(#goldGrad)" />
+  <!-- Vertical Gold Straps -->
+  <polygon points="188,226 210,226 206,388 184,388" fill="url(#goldGrad)" />
+  <polygon points="302,226 324,226 328,388 306,388" fill="url(#goldGrad)" />
+
+  <!-- Corner Brackets -->
+  <path d="M 126 244 L 150 244 L 150 268 L 142 268 L 142 252 L 126 252 Z" fill="url(#goldLight)" />
+  <path d="M 386 244 L 362 244 L 362 268 L 370 268 L 370 252 L 386 252 Z" fill="url(#goldLight)" />
+  <path d="M 148 384 L 172 384 L 172 360 L 164 360 L 164 376 L 148 376 Z" fill="url(#goldLight)" />
+  <path d="M 364 384 L 340 384 L 340 360 L 348 360 L 348 376 L 364 376 Z" fill="url(#goldLight)" />
+
+  <!-- Center Escutcheon / Medallion with glowing gem & keyhole -->
+  <circle cx="256" cy="308" r="30" fill="url(#goldGrad)" stroke="#fef08a" stroke-width="2" />
+  <circle cx="256" cy="308" r="18" fill="#180e2b" />
+  <circle cx="256" cy="308" r="9" fill="#f59e0b" filter="url(#sparkleGlow)" />
+  <!-- Keyhole notch -->
+  <path d="M 254 308 L 258 308 L 260 322 L 252 322 Z" fill="#fde68a" />
+
+  <!-- Tilted Open Lid (floating slightly above, beaming energy) -->
+  <g transform="rotate(-18 256 160)">
+    <polygon points="106,140 384,140 352,108 138,108" fill="url(#boxLid)" stroke="url(#goldGrad)" stroke-width="4.5" />
+    <!-- Lid Gold Trim -->
+    <polygon points="102,136 388,136 384,150 106,150" fill="url(#goldGrad)" />
+    <!-- Gold Ornament on Lid -->
+    <polygon points="234,136 278,136 268,112 256,120 244,112" fill="url(#goldLight)" />
+  </g>
+
+  <!-- Floating Glowing Mini Playing Cards (Frantic theme) -->
+  <!-- Card 1 (Left, angled red card) -->
+  <g transform="translate(142, 135) rotate(-22)">
+    <rect x="-25" y="-38" width="50" height="76" rx="7" fill="#ffffff" stroke="url(#goldGrad)" stroke-width="2.5" filter="url(#sparkleGlow)" />
+    <circle cx="0" cy="0" r="14" fill="#ef4444" />
+    <path d="M -5 -7 L 5 -7 L 0 7 Z" fill="#ffffff" />
+  </g>
+
+  <!-- Card 2 (Right, angled black/purple card) -->
+  <g transform="translate(370, 145) rotate(25)">
+    <rect x="-25" y="-38" width="50" height="76" rx="7" fill="#120c1e" stroke="#c084fc" stroke-width="2.5" filter="url(#sparkleGlow)" />
+    <circle cx="0" cy="0" r="14" fill="#8b5cf6" />
+    <!-- Star symbol on card -->
+    <path d="M 0 -8 Q 0 0 8 0 Q 0 0 0 8 Q 0 0 -8 0 Q 0 0 0 -8 Z" fill="#fde047" />
+  </g>
+
+  <!-- Brilliant Sparkles / Star Bursts -->
+  <!-- Main Star burst in center of light -->
+  <g transform="translate(256, 192)" filter="url(#sparkleGlow)">
+    <path d="M 0 -38 Q 0 0 38 0 Q 0 0 0 38 Q 0 0 -38 0 Q 0 0 0 -38 Z" fill="#ffffff" />
+    <circle cx="0" cy="0" r="7" fill="#fde047" />
+  </g>
+
+  <!-- Secondary sparkles -->
+  <path d="M 180 95 Q 180 110 195 110 Q 180 110 180 125 Q 180 110 165 110 Q 180 110 180 95 Z" fill="#fde68a" filter="url(#sparkleGlow)" />
+  <path d="M 335 85 Q 335 98 348 98 Q 335 98 335 111 Q 335 98 322 98 Q 335 98 335 85 Z" fill="#f472b6" filter="url(#sparkleGlow)" />
+  <path d="M 215 48 Q 215 58 225 58 Q 215 58 215 68 Q 215 58 205 58 Q 215 58 215 48 Z" fill="#ffffff" filter="url(#sparkleGlow)" />
+  <path d="M 300 62 Q 300 71 309 71 Q 300 71 300 80 Q 300 71 291 71 Q 300 71 300 62 Z" fill="#fde047" filter="url(#sparkleGlow)" />
+
+  <!-- Magic floating particles -->
+  <circle cx="155" cy="65" r="4" fill="#fde047" opacity="0.9" />
+  <circle cx="365" cy="75" r="3.5" fill="#ec4899" opacity="0.9" />
+  <circle cx="280" cy="105" r="3" fill="#ffffff" opacity="0.9" />
+  <circle cx="125" cy="180" r="3.5" fill="#a855f7" opacity="0.85" />
+  <circle cx="395" cy="210" r="4" fill="#fbbf24" opacity="0.85" />
+</svg>

@@ -1,0 +1,29 @@
+{
+  "name": "Frantic: Pandora's Box — Companion",
+  "short_name": "Pandora's Box",
+  "description": "Unofficial companion app for Pandora's Box & Frantic by Rulefactory. Fast round scoring, digital d20 event roller, official rulebooks, and interactive card dictionary.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0c0f17",
+  "theme_color": "#0c0f17",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["games", "utilities", "entertainment"]
+}

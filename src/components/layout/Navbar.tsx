@@ -1,8 +1,9 @@
 import React from 'react';
-import { Settings, Sparkles } from 'lucide-react';
+import { Settings } from 'lucide-react';
 import { Language, ThemeMode } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
 import { ThemeToggle } from './ThemeToggle';
+import { AppLogo } from '../common/AppLogo';
 
 interface NavbarProps {
   language: Language;
@@ -29,9 +30,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="sticky top-0 z-30 w-full border-b border-neutral-200 bg-white/90 shadow-sm backdrop-blur-md transition-colors dark:border-neutral-800 dark:bg-neutral-900/90">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 overflow-x-hidden px-3 sm:px-6">
         <div className="flex min-w-0 items-center gap-2 sm:gap-2.5">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500 via-rose-500 to-purple-600 font-black text-white shadow-[0_0_15px_rgba(245,158,11,0.3)] sm:h-10 sm:w-10">
-            <Sparkles className="h-4 w-4 shrink-0 stroke-[2.2] sm:h-5 sm:w-5" />
-          </div>
+          <AppLogo className="h-9 w-9 sm:h-10 sm:w-10" />
 
           <div className="min-w-0">
             <div className="flex items-center gap-1.5 sm:gap-2">
