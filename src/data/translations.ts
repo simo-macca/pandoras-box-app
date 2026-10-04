@@ -141,8 +141,12 @@ export interface TranslationStrings {
     dictionaryTab: string;
     officialPdfTitle: string;
     officialPdfDesc: string;
+    overviewPdfTitle: string;
+    overviewPdfDesc: string;
     openPdf: string;
     downloadPdf: string;
+    fullRulebook: string;
+    quickReference: string;
     timings?: {
       play: string;
       passing: string;
@@ -318,8 +322,12 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       dictionaryTab: 'Card Dictionary',
       officialPdfTitle: 'Official Rulefactory Rulebook',
       officialPdfDesc: 'View or download the complete 22-page official Pandora’s Box rulebook.',
-      openPdf: 'Open PDF',
+      overviewPdfTitle: 'Official Overview Cards',
+      overviewPdfDesc: 'Quick reference cards with summaries of all card effects, timing, and rules.',
+      openPdf: 'Open in New Tab',
       downloadPdf: 'Download PDF',
+      fullRulebook: 'Full Rulebook',
+      quickReference: 'Overview Cards',
       timings: {
         play: 'Play Timing',
         passing: 'Passing Timing',
@@ -493,8 +501,12 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       dictionaryTab: 'Kartenlexikon',
       officialPdfTitle: 'Offizielles Rulefactory Regelwerk',
       officialPdfDesc: 'Das vollständige offizielle 22-seitige Pandora’s Box Regelwerk ansehen oder herunterladen.',
-      openPdf: 'PDF öffnen',
+      overviewPdfTitle: 'Offizielle Übersichtskarten',
+      overviewPdfDesc: 'Kompakte Übersichtskarten mit Zusammenfassungen aller Karteneffekte und Timings.',
+      openPdf: 'In neuem Tab öffnen',
       downloadPdf: 'PDF herunterladen',
+      fullRulebook: 'Gesamtregelwerk',
+      quickReference: 'Übersichtskarten',
       timings: {
         play: 'Ausspielen',
         passing: 'Passieren',
@@ -668,8 +680,12 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       dictionaryTab: 'Dizionario delle Carte',
       officialPdfTitle: 'Regolamento Ufficiale Rulefactory',
       officialPdfDesc: 'Visualizza o scarica il regolamento ufficiale completo di 22 pagine di Pandora’s Box.',
-      openPdf: 'Apri PDF',
+      overviewPdfTitle: 'Carte Riassuntive Ufficiali',
+      overviewPdfDesc: 'Schede di consultazione rapida con tutti gli effetti delle carte e tempi di gioco.',
+      openPdf: 'Apri in una nuova scheda',
       downloadPdf: 'Scarica PDF',
+      fullRulebook: 'Regolamento Completo',
+      quickReference: 'Carte Riassuntive',
       timings: {
         play: 'Fase Giocata',
         passing: 'Al Passaggio',
@@ -843,8 +859,12 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       dictionaryTab: 'Dictionnaire des Cartes',
       officialPdfTitle: 'Règles Officielles Rulefactory',
       officialPdfDesc: 'Consultez ou téléchargez le livret complet de 22 pages des règles officielles de Pandora’s Box.',
-      openPdf: 'Ouvrir le PDF',
+      overviewPdfTitle: 'Cartes de Référence Officielles',
+      overviewPdfDesc: 'Cartes mémo avec un résumé des effets de toutes les cartes et leurs timings.',
+      openPdf: 'Ouvrir dans un nouvel onglet',
       downloadPdf: 'Télécharger le PDF',
+      fullRulebook: 'Règles Complètes',
+      quickReference: 'Cartes de Référence',
       timings: {
         play: 'Pose',
         passing: 'Dépassement',
