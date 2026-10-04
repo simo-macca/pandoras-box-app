@@ -258,7 +258,7 @@ The **Pandora's Box** expansion adds two key mechanics:
 ## 📂 Project Folder Structure
 
 ```text
-frantic-pandoras-box-companion/
+pandoras-box-app/
 ├── index.html                   # HTML entry point with metadata, icons, and viewport config
 ├── netlify.toml                 # Netlify deployment configuration & redirect rules
 ├── package.json                 # Project dependencies, scripts, and metadata
@@ -364,8 +364,8 @@ Ensure you have the following installed on your development machine:
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/simonemaccario/frantic-pandoras-box-companion.git
-   cd frantic-pandoras-box-companion
+   git clone https://github.com/simonemaccario/pandoras-box-app.git
+   cd pandoras-box-app
    ```
 
 2. **Install dependencies**:
@@ -408,7 +408,7 @@ This project enforces automated quality checks before any commit is finalized:
 
 #### 1. State Management (`useGameState.ts`)
 
-The entire application state is governed by the `useGameState` custom hook located in [`src/hooks/useGameState.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/hooks/useGameState.ts).
+The entire application state is governed by the `useGameState` custom hook located in [`src/hooks/useGameState.ts`](file:///Users/simonemaccario/Desktop/pandoras-box-app/src/hooks/useGameState.ts).
 
 - **Single Source of Truth**: Stores players, game config (target score), rounds history, active rule card, and game-over state in a single `GameState` object.
 - **Computed Stats**: Uses `useMemo` to compute `playerStats` (cumulative scores, rankings, leader flag, danger zone status, points remaining, and round win tallies).
@@ -417,7 +417,7 @@ The entire application state is governed by the `useGameState` custom hook locat
 
 #### 2. Hand Calculation Engine
 
-Hand points are computed deterministically using the pure function `calculateHandPoints()` in [`src/hooks/useGameState.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/hooks/useGameState.ts):
+Hand points are computed deterministically using the pure function `calculateHandPoints()` in [`src/hooks/useGameState.ts`](file:///Users/simonemaccario/Desktop/pandoras-box-app/src/hooks/useGameState.ts):
 
 ```typescript
 export function calculateHandPoints(
@@ -455,7 +455,7 @@ export function calculateHandPoints(
 
 #### 3. Procedural Sound System (`sound.ts`)
 
-To keep the bundle lightweight and eliminate external network requests or audio asset licensing issues, [`src/utils/sound.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/utils/sound.ts) generates sound effects using standard Web Audio API oscillators:
+To keep the bundle lightweight and eliminate external network requests or audio asset licensing issues, [`src/utils/sound.ts`](file:///Users/simonemaccario/Desktop/pandoras-box-app/src/utils/sound.ts) generates sound effects using standard Web Audio API oscillators:
 
 - **`playDiceRoll()`**: Plays rapid decaying frequency bursts simulating tumbling dice, paired with vibration haptics.
 - **`playClick()`**: High-frequency click impulse for button taps.
@@ -463,7 +463,7 @@ To keep the bundle lightweight and eliminate external network requests or audio 
 
 #### 4. Theming & Colors (`colors.ts` & `useTheme.ts`)
 
-Player colors are managed through [`src/utils/colors.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/utils/colors.ts). Each color provides hex values, badges, avatars, and ring-glow styles that automatically adapt to both light and dark backgrounds.
+Player colors are managed through [`src/utils/colors.ts`](file:///Users/simonemaccario/Desktop/pandoras-box-app/src/utils/colors.ts). Each color provides hex values, badges, avatars, and ring-glow styles that automatically adapt to both light and dark backgrounds.
 
 ---
 
@@ -473,12 +473,12 @@ Player colors are managed through [`src/utils/colors.ts`](file:///Users/simonema
 
 All card definitions are organized inside `src/data/`:
 
-- **Special Cards**: [`src/data/cardsData.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/data/cardsData.ts)
-- **Events**: [`src/data/eventsData.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/data/eventsData.ts)
-- **Power Cards**: [`src/data/powerCardsData.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/data/powerCardsData.ts)
-- **Rule Cards**: [`src/data/ruleCardsData.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/data/ruleCardsData.ts)
+- **Special Cards**: [`src/data/cardsData.ts`](file:///Users/simonemaccario/Desktop/pandoras-box-app/src/data/cardsData.ts)
+- **Events**: [`src/data/eventsData.ts`](file:///Users/simonemaccario/Desktop/pandoras-box-app/src/data/eventsData.ts)
+- **Power Cards**: [`src/data/powerCardsData.ts`](file:///Users/simonemaccario/Desktop/pandoras-box-app/src/data/powerCardsData.ts)
+- **Rule Cards**: [`src/data/ruleCardsData.ts`](file:///Users/simonemaccario/Desktop/pandoras-box-app/src/data/ruleCardsData.ts)
 
-To add a new card, add an entry matching the corresponding interface from [`src/types/rules.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/types/rules.ts):
+To add a new card, add an entry matching the corresponding interface from [`src/types/rules.ts`](file:///Users/simonemaccario/Desktop/pandoras-box-app/src/types/rules.ts):
 
 ```typescript
 {
@@ -508,7 +508,7 @@ To add a new card, add an entry matching the corresponding interface from [`src/
 
 #### Adding or Modifying Translations
 
-Translations are typed and maintained in [`src/data/translations.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/data/translations.ts):
+Translations are typed and maintained in [`src/data/translations.ts`](file:///Users/simonemaccario/Desktop/pandoras-box-app/src/data/translations.ts):
 
 1. Locate the `TRANSLATIONS` record object.
 2. Edit or add keys under the corresponding language (`en`, `de`, `it`, `fr`).
@@ -518,9 +518,9 @@ Translations are typed and maintained in [`src/data/translations.ts`](file:///Us
 
 If a new house rule or expansion changes point calculations:
 
-1. Update `calculateHandPoints()` in [`src/hooks/useGameState.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/hooks/useGameState.ts).
-2. Update the corresponding input counters in [`src/components/scoring/SpecialCounters.tsx`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/components/scoring/SpecialCounters.tsx) and [`src/components/scoring/HandCalculatorModal.tsx`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/components/scoring/HandCalculatorModal.tsx).
-3. Update the `HandScore` type in [`src/types/game.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/types/game.ts).
+1. Update `calculateHandPoints()` in [`src/hooks/useGameState.ts`](file:///Users/simonemaccario/Desktop/pandoras-box-app/src/hooks/useGameState.ts).
+2. Update the corresponding input counters in [`src/components/scoring/SpecialCounters.tsx`](file:///Users/simonemaccario/Desktop/pandoras-box-app/src/components/scoring/SpecialCounters.tsx) and [`src/components/scoring/HandCalculatorModal.tsx`](file:///Users/simonemaccario/Desktop/pandoras-box-app/src/components/scoring/HandCalculatorModal.tsx).
+3. Update the `HandScore` type in [`src/types/game.ts`](file:///Users/simonemaccario/Desktop/pandoras-box-app/src/types/game.ts).
 
 ---
 
@@ -530,7 +530,7 @@ The application is bundled into static HTML/CSS/JS and can be hosted on any stat
 
 ### Netlify (Configured)
 
-The repository includes a [`netlify.toml`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/netlify.toml) file:
+The repository includes a [`netlify.toml`](file:///Users/simonemaccario/Desktop/pandoras-box-app/netlify.toml) file:
 
 ```toml
 [build]
