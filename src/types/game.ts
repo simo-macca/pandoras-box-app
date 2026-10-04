@@ -1,20 +1,21 @@
-export type PlayerColor = 
-  | 'red' 
-  | 'blue' 
-  | 'green' 
-  | 'yellow' 
-  | 'purple' 
-  | 'orange' 
-  | 'white' 
-  | 'black' 
-  | 'cyan' 
+export type PlayerColor =
+  | 'red'
+  | 'blue'
+  | 'green'
+  | 'yellow'
+  | 'purple'
+  | 'orange'
+  | 'white'
+  | 'black'
+  | 'cyan'
   | 'pink';
 
 export type Language = 'en' | 'de' | 'it' | 'fr';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 
-export type TimeBombModifier = 'none' | 'winner_bonus' | 'loser_penalty' | 'expired_double';
+export type TimeBombModifier =
+  'none' | 'winner_bonus' | 'loser_penalty' | 'expired_double';
 
 export interface Player {
   id: string;

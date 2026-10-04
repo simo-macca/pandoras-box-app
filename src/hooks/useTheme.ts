@@ -7,7 +7,10 @@ export function useTheme() {
   const [theme, setThemeState] = useState<ThemeMode>(() => {
     if (typeof window === 'undefined') return 'system';
     const saved = localStorage.getItem(THEME_STORAGE_KEY) as ThemeMode | null;
-    if (saved && (saved === 'system' || saved === 'light' || saved === 'dark')) {
+    if (
+      saved &&
+      (saved === 'system' || saved === 'light' || saved === 'dark')
+    ) {
       return saved;
     }
     return 'system';
@@ -19,12 +22,10 @@ export function useTheme() {
     const root = document.documentElement;
 
     const applyTheme = () => {
-      let isDark = false;
-      if (theme === 'system') {
-        isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      } else {
-        isDark = theme === 'dark';
-      }
+      const isDark =
+        theme === 'system'
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          : theme === 'dark';
 
       if (isDark) {
         root.classList.add('dark');

@@ -20,7 +20,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: '1-colour',
-    badgeColor: 'bg-amber-500/15 text-amber-500 dark:text-amber-300 border-amber-500/30',
+    badgeColor:
+      'bg-amber-500/15 text-amber-500 dark:text-amber-300 border-amber-500/30',
     icon: 'UserX',
     description: {
       en: 'Target player skips their next turn immediately.',
@@ -46,7 +47,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: '1-colour',
-    badgeColor: 'bg-emerald-500/15 text-emerald-500 dark:text-emerald-300 border-emerald-500/30',
+    badgeColor:
+      'bg-emerald-500/15 text-emerald-500 dark:text-emerald-300 border-emerald-500/30',
     icon: 'Gift',
     description: {
       en: 'Give 2 cards from your hand to another player. You choose the cards; the recipient cannot refuse.',
@@ -72,7 +74,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: '1-colour',
-    badgeColor: 'bg-blue-500/15 text-blue-500 dark:text-blue-300 border-blue-500/30',
+    badgeColor:
+      'bg-blue-500/15 text-blue-500 dark:text-blue-300 border-blue-500/30',
     icon: 'ArrowLeftRight',
     description: {
       en: 'Trade 1 card from your hand blindly or openly with an opponent.',
@@ -98,7 +101,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: '1-colour',
-    badgeColor: 'bg-cyan-500/15 text-cyan-500 dark:text-cyan-300 border-cyan-500/30',
+    badgeColor:
+      'bg-cyan-500/15 text-cyan-500 dark:text-cyan-300 border-cyan-500/30',
     icon: 'RotateCcw',
     description: {
       en: 'You immediately get to take another turn right away.',
@@ -124,7 +128,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: '2-colour',
-    badgeColor: 'bg-purple-500/15 text-purple-500 dark:text-purple-300 border-purple-500/30',
+    badgeColor:
+      'bg-purple-500/15 text-purple-500 dark:text-purple-300 border-purple-500/30',
     icon: 'Pipette',
     description: {
       en: 'Changes the active color of the discard pile to the other color depicted on the card.',
@@ -150,7 +155,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: '1-colour',
-    badgeColor: 'bg-rose-500/15 text-rose-500 dark:text-rose-300 border-rose-500/30',
+    badgeColor:
+      'bg-rose-500/15 text-rose-500 dark:text-rose-300 border-rose-500/30',
     icon: 'Grab',
     description: {
       en: 'Steal 1 random card from an opponent’s hand and add it to yours.',
@@ -176,7 +182,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: '1-colour',
-    badgeColor: 'bg-red-500/15 text-red-500 dark:text-red-300 border-red-500/30',
+    badgeColor:
+      'bg-red-500/15 text-red-500 dark:text-red-300 border-red-500/30',
     icon: 'Flame',
     description: {
       en: 'Target player must draw 2 cards immediately from the draw deck.',
@@ -202,7 +209,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: 'open-wish',
-    badgeColor: 'bg-yellow-500/15 text-yellow-500 dark:text-yellow-300 border-yellow-500/30',
+    badgeColor:
+      'bg-yellow-500/15 text-yellow-500 dark:text-yellow-300 border-yellow-500/30',
     icon: 'BatteryCharging',
     description: {
       en: 'Recharge your Power Cards (Supercharge expansion) or choose the active colour.',
@@ -222,7 +230,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: 'open-wish',
-    badgeColor: 'bg-indigo-500/15 text-indigo-500 dark:text-indigo-300 border-indigo-500/30',
+    badgeColor:
+      'bg-indigo-500/15 text-indigo-500 dark:text-indigo-300 border-indigo-500/30',
     icon: 'Star',
     description: {
       en: 'Wild card! Can be played on anything. You choose the next colour.',
@@ -242,7 +251,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: 'open-wish',
-    badgeColor: 'bg-violet-500/15 text-violet-500 dark:text-violet-300 border-violet-500/30',
+    badgeColor:
+      'bg-violet-500/15 text-violet-500 dark:text-violet-300 border-violet-500/30',
     icon: 'Sparkles',
     description: {
       en: 'Wild card: Choose colour, and target player draws 4 cards!',
@@ -262,7 +272,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: '1-colour',
-    badgeColor: 'bg-orange-500/15 text-orange-500 dark:text-orange-300 border-orange-500/30',
+    badgeColor:
+      'bg-orange-500/15 text-orange-500 dark:text-orange-300 border-orange-500/30',
     icon: 'ShieldAlert',
     description: {
       en: 'Defend against an attack and bounce the effect back to the attacker or someone else.',
@@ -282,7 +293,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: '1-colour',
-    badgeColor: 'bg-teal-500/15 text-teal-500 dark:text-teal-300 border-teal-500/30',
+    badgeColor:
+      'bg-teal-500/15 text-teal-500 dark:text-teal-300 border-teal-500/30',
     icon: 'Equal',
     description: {
       en: 'All players who have fewer cards than you must draw until they have as many cards as you do.',
@@ -302,7 +314,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: '1-colour',
-    badgeColor: 'bg-amber-600/15 text-amber-600 dark:text-amber-400 border-amber-600/30',
+    badgeColor:
+      'bg-amber-600/15 text-amber-600 dark:text-amber-400 border-amber-600/30',
     icon: 'Scale',
     description: {
       en: 'Forces card redistribution creating stark imbalances across the table.',
@@ -322,7 +335,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: 'open-wish',
-    badgeColor: 'bg-lime-500/15 text-lime-600 dark:text-lime-300 border-lime-500/30',
+    badgeColor:
+      'bg-lime-500/15 text-lime-600 dark:text-lime-300 border-lime-500/30',
     icon: 'Clover',
     description: {
       en: 'Discards your hand down to match whoever holds the lowest card count.',
@@ -342,7 +356,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: '1-colour',
-    badgeColor: 'bg-pink-500/15 text-pink-500 dark:text-pink-300 border-pink-500/30',
+    badgeColor:
+      'bg-pink-500/15 text-pink-500 dark:text-pink-300 border-pink-500/30',
     icon: 'ThumbsDown',
     description: {
       en: 'Cancels the played card effect completely right before it resolves.',
@@ -362,7 +377,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: '1-colour',
-    badgeColor: 'bg-emerald-600/15 text-emerald-600 dark:text-emerald-400 border-emerald-600/30',
+    badgeColor:
+      'bg-emerald-600/15 text-emerald-600 dark:text-emerald-400 border-emerald-600/30',
     icon: 'Handshake',
     description: {
       en: 'Demand a card of a specified colour or number from any opponent.',
@@ -382,7 +398,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: 'open-wish',
-    badgeColor: 'bg-yellow-400/15 text-yellow-600 dark:text-yellow-300 border-yellow-400/30',
+    badgeColor:
+      'bg-yellow-400/15 text-yellow-600 dark:text-yellow-300 border-yellow-400/30',
     icon: 'Lightbulb',
     description: {
       en: 'Invent a new rule or condition valid until Edison is covered by another card.',
@@ -402,7 +419,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: '1-colour',
-    badgeColor: 'bg-blue-600/15 text-blue-600 dark:text-blue-400 border-blue-600/30',
+    badgeColor:
+      'bg-blue-600/15 text-blue-600 dark:text-blue-400 border-blue-600/30',
     icon: 'RefreshCw',
     description: {
       en: 'All players must refresh their hands by discarding 1 card and drawing 1 card.',
@@ -422,7 +440,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 7,
     category: 'special',
     subCategory: 'open-wish',
-    badgeColor: 'bg-stone-500/15 text-stone-600 dark:text-stone-300 border-stone-500/30',
+    badgeColor:
+      'bg-stone-500/15 text-stone-600 dark:text-stone-300 border-stone-500/30',
     icon: 'Wrench',
     description: {
       en: 'Choose any standard special card effect and trigger it immediately.',
@@ -496,7 +515,8 @@ export const CARDS_DATA: CardItem[] = [
     points: 42,
     category: 'unique',
     subCategory: 'unique',
-    badgeColor: 'bg-red-500 text-white font-extrabold shadow-[0_0_15px_rgba(239,68,68,0.5)]',
+    badgeColor:
+      'bg-red-500 text-white font-extrabold shadow-[0_0_15px_rgba(239,68,68,0.5)]',
     icon: 'Zap',
     description: {
       en: 'The most infamous card: 42 PENALTY POINTS! Can only be passed under strict conditions.',
@@ -532,4 +552,3 @@ export const CARDS_DATA: CardItem[] = [
     },
   },
 ];
-

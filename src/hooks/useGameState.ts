@@ -1,5 +1,12 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { Player, RoundEntry, GameConfig, GameState, Language, HandScore } from '../types/game';
+import {
+  Player,
+  RoundEntry,
+  GameConfig,
+  GameState,
+  Language,
+  HandScore,
+} from '../types/game';
 import { soundEffects } from '../utils/sound';
 
 const STORAGE_KEY = 'frantic_game_state_v2';
@@ -22,7 +29,9 @@ export function getRecommendedPresets(playerCount: number) {
   return playerCount <= 4 ? SCORE_PRESETS.few : SCORE_PRESETS.many;
 }
 
-export function calculateHandPoints(hand: Omit<HandScore, 'totalPoints'> | HandScore): number {
+export function calculateHandPoints(
+  hand: Omit<HandScore, 'totalPoints'> | HandScore
+): number {
   if (hand.isDoomsday) {
     return 50;
   }
@@ -32,7 +41,7 @@ export function calculateHandPoints(hand: Omit<HandScore, 'totalPoints'> | HandS
     if (hand.timeBombModifier === 'winner_bonus') {
       pts -= 10;
     }
-    pts += (hand.customModifier || 0);
+    pts += hand.customModifier || 0;
     return Math.max(0, pts);
   }
 
@@ -60,7 +69,7 @@ export function calculateHandPoints(hand: Omit<HandScore, 'totalPoints'> | HandS
     total -= 10;
   }
 
-  total += (hand.customModifier || 0);
+  total += hand.customModifier || 0;
   return Math.max(0, total);
 }
 
@@ -144,12 +153,12 @@ export function useGameState() {
     const targetScore = config.targetScore;
 
     const totals: Record<string, { score: number; wins: number }> = {};
-    players.forEach(p => {
+    players.forEach((p) => {
       totals[p.id] = { score: 0, wins: 0 };
     });
 
-    rounds.forEach(round => {
-      players.forEach(p => {
+    rounds.forEach((round) => {
+      players.forEach((p) => {
         const roundScore = round.scores[p.id];
         if (roundScore) {
           totals[p.id].score += roundScore.totalPoints;
@@ -161,10 +170,13 @@ export function useGameState() {
     });
 
     // In Frantic, lower score is better!
-    const stats: PlayerStats[] = players.map(p => {
+    const stats: PlayerStats[] = players.map((p) => {
       const totalScore = totals[p.id]?.score || 0;
       const wins = totals[p.id]?.wins || 0;
-      const progressPct = Math.min(100, Math.round((totalScore / targetScore) * 100));
+      const progressPct = Math.min(
+        100,
+        Math.round((totalScore / targetScore) * 100)
+      );
       const pointsRemaining = Math.max(0, targetScore - totalScore);
       const isEliminated = totalScore >= targetScore;
       const isInDanger = totalScore >= targetScore * 0.8 && !isEliminated;
@@ -195,18 +207,24 @@ export function useGameState() {
   useEffect(() => {
     if (gameState.rounds.length === 0) {
       if (gameState.isGameOver) {
-        setGameState(prev => ({ ...prev, isGameOver: false, winnerId: null }));
+        setGameState((prev) => ({
+          ...prev,
+          isGameOver: false,
+          winnerId: null,
+        }));
       }
       return;
     }
 
-    const someoneExceeded = playerStats.some(p => p.totalScore >= gameState.config.targetScore);
+    const someoneExceeded = playerStats.some(
+      (p) => p.totalScore >= gameState.config.targetScore
+    );
     const lowestScorePlayer = playerStats[0];
 
     if (someoneExceeded) {
       if (!gameState.isGameOver) {
         soundEffects.playWinner();
-        setGameState(prev => ({
+        setGameState((prev) => ({
           ...prev,
           isGameOver: true,
           winnerId: lowestScorePlayer?.id || null,
@@ -214,19 +232,24 @@ export function useGameState() {
       }
     } else {
       if (gameState.isGameOver) {
-        setGameState(prev => ({
+        setGameState((prev) => ({
           ...prev,
           isGameOver: false,
           winnerId: null,
         }));
       }
     }
-  }, [playerStats, gameState.rounds.length, gameState.config.targetScore, gameState.isGameOver]);
+  }, [
+    playerStats,
+    gameState.rounds.length,
+    gameState.config.targetScore,
+    gameState.isGameOver,
+  ]);
 
   const addRound = useCallback(
     (scores: Record<string, HandScore>, notes?: string) => {
       soundEffects.playDiceFinish(false);
-      setGameState(prev => {
+      setGameState((prev) => {
         const nextRoundNumber = prev.rounds.length + 1;
         const newRound: RoundEntry = {
           roundNumber: nextRoundNumber,
@@ -245,11 +268,15 @@ export function useGameState() {
   );
 
   const editRound = useCallback(
-    (roundNumber: number, scores: Record<string, HandScore>, notes?: string) => {
+    (
+      roundNumber: number,
+      scores: Record<string, HandScore>,
+      notes?: string
+    ) => {
       soundEffects.playClick();
-      setGameState(prev => ({
+      setGameState((prev) => ({
         ...prev,
-        rounds: prev.rounds.map(r =>
+        rounds: prev.rounds.map((r) =>
           r.roundNumber === roundNumber
             ? { ...r, scores, notes: notes !== undefined ? notes : r.notes }
             : r
@@ -261,8 +288,8 @@ export function useGameState() {
 
   const deleteRound = useCallback((roundNumber: number) => {
     soundEffects.playClick();
-    setGameState(prev => {
-      const filtered = prev.rounds.filter(r => r.roundNumber !== roundNumber);
+    setGameState((prev) => {
+      const filtered = prev.rounds.filter((r) => r.roundNumber !== roundNumber);
       const renumbered = filtered.map((r, idx) => ({
         ...r,
         roundNumber: idx + 1,
@@ -276,7 +303,7 @@ export function useGameState() {
 
   const undoLastRound = useCallback(() => {
     soundEffects.playClick();
-    setGameState(prev => {
+    setGameState((prev) => {
       if (prev.rounds.length === 0) return prev;
       return {
         ...prev,
@@ -287,32 +314,35 @@ export function useGameState() {
 
   const setActiveRuleCardIds = useCallback((ids: string[]) => {
     soundEffects.playClick();
-    setGameState(prev => ({
+    setGameState((prev) => ({
       ...prev,
       activeRuleCardIds: ids,
     }));
   }, []);
 
-  const startNewGame = useCallback((players?: Player[], config?: GameConfig) => {
-    soundEffects.playClick();
-    setGameState(prev => {
-      const finalPlayers = players || prev.players;
-      const finalConfig = config || prev.config;
-      return {
-        players: finalPlayers,
-        config: finalConfig,
-        rounds: [],
-        activeRuleCardIds: [],
-        isGameStarted: true,
-        isGameOver: false,
-        winnerId: null,
-      };
-    });
-  }, []);
+  const startNewGame = useCallback(
+    (players?: Player[], config?: GameConfig) => {
+      soundEffects.playClick();
+      setGameState((prev) => {
+        const finalPlayers = players || prev.players;
+        const finalConfig = config || prev.config;
+        return {
+          players: finalPlayers,
+          config: finalConfig,
+          rounds: [],
+          activeRuleCardIds: [],
+          isGameStarted: true,
+          isGameOver: false,
+          winnerId: null,
+        };
+      });
+    },
+    []
+  );
 
   const resetCurrentGame = useCallback(() => {
     soundEffects.playClick();
-    setGameState(prev => ({
+    setGameState((prev) => ({
       ...prev,
       rounds: [],
       activeRuleCardIds: [],
@@ -338,7 +368,11 @@ export function useGameState() {
       const parsed = JSON.parse(jsonString);
       const stateToLoad: GameState = parsed.gameState || parsed;
 
-      if (!stateToLoad.players || !Array.isArray(stateToLoad.players) || !stateToLoad.config) {
+      if (
+        !stateToLoad.players ||
+        !Array.isArray(stateToLoad.players) ||
+        !stateToLoad.config
+      ) {
         throw new Error('Invalid game state structure');
       }
 

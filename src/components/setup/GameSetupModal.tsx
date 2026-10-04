@@ -11,7 +11,11 @@ interface GameSetupModalProps {
   onClose: () => void;
   currentPlayers: Player[];
   currentConfig: GameConfig;
-  onSaveAndStart: (players: Player[], config: GameConfig, isResetRounds: boolean) => void;
+  onSaveAndStart: (
+    players: Player[],
+    config: GameConfig,
+    isResetRounds: boolean
+  ) => void;
   language: Language;
 }
 
@@ -28,7 +32,9 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
   const [draftPlayers, setDraftPlayers] = useState<Player[]>(currentPlayers);
   const [draftConfig, setDraftConfig] = useState<GameConfig>(currentConfig);
   const [customValue, setCustomValue] = useState<string>(
-    currentConfig.presetName === 'custom' ? String(currentConfig.targetScore) : '150'
+    currentConfig.presetName === 'custom'
+      ? String(currentConfig.targetScore)
+      : '150'
   );
   const [showConfirmReset, setShowConfirmReset] = useState(false);
 
@@ -38,7 +44,9 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
       setDraftConfig(currentConfig);
       setShowConfirmReset(false);
       setCustomValue(
-        currentConfig.presetName === 'custom' ? String(currentConfig.targetScore) : '150'
+        currentConfig.presetName === 'custom'
+          ? String(currentConfig.targetScore)
+          : '150'
       );
     }
   }, [isOpen, currentPlayers, currentConfig]);
@@ -47,7 +55,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
 
   const handleAddPlayer = () => {
     if (draftPlayers.length >= 8) return;
-    const usedColors = new Set(draftPlayers.map(p => p.color));
+    const usedColors = new Set(draftPlayers.map((p) => p.color));
     const nextColor: PlayerColor =
       ALL_PLAYER_COLORS.find((c: PlayerColor) => !usedColors.has(c)) ||
       ALL_PLAYER_COLORS[draftPlayers.length % ALL_PLAYER_COLORS.length];
@@ -62,11 +70,13 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
 
   const handleRemovePlayer = (id: string) => {
     if (draftPlayers.length <= 2) return;
-    setDraftPlayers(draftPlayers.filter(p => p.id !== id));
+    setDraftPlayers(draftPlayers.filter((p) => p.id !== id));
   };
 
   const handleUpdatePlayer = (id: string, updates: Partial<Player>) => {
-    setDraftPlayers(draftPlayers.map(p => (p.id === id ? { ...p, ...updates } : p)));
+    setDraftPlayers(
+      draftPlayers.map((p) => (p.id === id ? { ...p, ...updates } : p))
+    );
   };
 
   // Inlined official score limits: 113, 137, 154, 179 pts
@@ -85,10 +95,10 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
         score === 113
           ? 'short'
           : score === 137
-          ? 'short'
-          : score === 154
-          ? 'medium'
-          : 'long',
+            ? 'short'
+            : score === 154
+              ? 'medium'
+              : 'long',
     });
   };
 
@@ -116,30 +126,30 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
+      <div className="relative flex max-h-[90vh] w-full max-w-xl flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-800 dark:bg-neutral-900">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60">
+        <div className="flex items-center justify-between border-b border-neutral-200 bg-neutral-50 px-6 py-4 dark:border-neutral-800 dark:bg-neutral-900/60">
           <div>
-            <h2 className="text-xl font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+            <h2 className="flex items-center gap-2 text-xl font-bold text-neutral-900 dark:text-white">
               <span>👥</span>
               <span>{t.setup.title}</span>
             </h2>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+            <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">
               {t.setup.description}
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-neutral-400 hover:text-neutral-700 dark:hover:text-white hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors"
+            className="rounded-xl p-2 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white"
           >
-            <X className="w-5 h-5" />
+            <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Body */}
-        <div className="p-6 space-y-6 overflow-y-auto">
+        <div className="space-y-6 overflow-y-auto p-6">
           {/* Players Config */}
           <PlayerConfig
             players={draftPlayers}
@@ -154,8 +164,8 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
           {/* Inlined score limit buttons (113, 137, 154, 179 pts + Custom) */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-sm font-bold text-neutral-800 dark:text-neutral-200 flex items-center gap-2">
-                <Target className="w-4 h-4 text-amber-500" />
+              <label className="flex items-center gap-2 text-sm font-bold text-neutral-800 dark:text-neutral-200">
+                <Target className="h-4 w-4 text-amber-500" />
                 <span>{t.setup.targetScore}</span>
               </label>
               <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
@@ -163,8 +173,8 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
               </span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {scorePresets.map(preset => {
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {scorePresets.map((preset) => {
                 const isSelected =
                   draftConfig.presetName !== 'custom' &&
                   draftConfig.targetScore === preset.score;
@@ -174,16 +184,16 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
                     key={preset.score}
                     type="button"
                     onClick={() => handleSelectScorePreset(preset.score)}
-                    className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-all ${
+                    className={`flex flex-col items-center justify-center rounded-2xl border p-3 transition-all ${
                       isSelected
-                        ? 'border-amber-500 bg-amber-500/15 text-amber-600 dark:text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.2)] font-bold'
-                        : 'border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 bg-neutral-50 dark:bg-neutral-800/40 text-neutral-700 dark:text-neutral-300'
+                        ? 'border-amber-500 bg-amber-500/15 font-bold text-amber-600 shadow-[0_0_15px_rgba(245,158,11,0.2)] dark:text-amber-400'
+                        : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300 dark:hover:border-neutral-700'
                     }`}
                   >
                     <span className="text-lg font-black text-neutral-900 dark:text-white">
                       {preset.score}
                     </span>
-                    <span className="text-[10px] text-neutral-400 font-semibold">
+                    <span className="text-[10px] font-semibold text-neutral-400">
                       {preset.note}
                     </span>
                   </button>
@@ -199,81 +209,84 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
                   const parsed = parseInt(customValue, 10) || 150;
                   setDraftConfig({ targetScore: parsed, presetName: 'custom' });
                 }}
-                className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
+                className={`rounded-xl border px-3 py-2 text-xs font-bold transition-all ${
                   draftConfig.presetName === 'custom'
-                    ? 'border-amber-500 bg-amber-500/15 text-amber-600 dark:text-amber-400 font-bold'
-                    : 'border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 bg-neutral-50 dark:bg-neutral-800/40 text-neutral-700 dark:text-neutral-300'
+                    ? 'border-amber-500 bg-amber-500/15 font-bold text-amber-600 dark:text-amber-400'
+                    : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300 dark:hover:border-neutral-700'
                 }`}
               >
                 {t.setup.customGame}
               </button>
 
-              <div className="flex-1 relative">
+              <div className="relative flex-1">
                 <input
                   type="number"
                   min="10"
                   max="999"
                   value={customValue}
-                  onChange={e => handleCustomChange(e.target.value)}
+                  onChange={(e) => handleCustomChange(e.target.value)}
                   onFocus={() => {
                     const parsed = parseInt(customValue, 10) || 150;
-                    setDraftConfig({ targetScore: parsed, presetName: 'custom' });
+                    setDraftConfig({
+                      targetScore: parsed,
+                      presetName: 'custom',
+                    });
                   }}
                   placeholder="150"
-                  className="w-full px-3 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full rounded-xl border border-neutral-300 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-900 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
                 />
-                <span className="absolute right-3 top-2 text-xs font-semibold text-neutral-400 pointer-events-none">
+                <span className="pointer-events-none absolute right-3 top-2 text-xs font-semibold text-neutral-400">
                   {t.setup.points}
                 </span>
               </div>
             </div>
 
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            <p className="text-xs leading-relaxed text-neutral-500 dark:text-neutral-400">
               {t.setup.description}
             </p>
           </div>
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 px-6 border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60">
+        <div className="border-t border-neutral-200 bg-neutral-50 p-4 px-6 dark:border-neutral-800 dark:bg-neutral-900/60">
           {!showConfirmReset ? (
             <div className="flex items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={() => setShowConfirmReset(true)}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-red-500/30 hover:border-red-500 bg-red-500/10 text-red-600 dark:text-red-400 text-xs sm:text-sm font-bold transition-all"
+                className="flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-xs font-bold text-red-600 transition-all hover:border-red-500 dark:text-red-400 sm:text-sm"
               >
-                <RotateCcw className="w-4 h-4" />
+                <RotateCcw className="h-4 w-4" />
                 <span>{t.setup.newGame}</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleSaveOnly}
-                className="flex-1 flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all active:scale-95"
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-2.5 text-xs font-extrabold text-white shadow-md transition-all hover:from-amber-400 hover:to-amber-500 active:scale-95 sm:text-sm"
               >
-                <Play className="w-4 h-4 fill-white" />
+                <Play className="h-4 w-4 fill-white" />
                 <span>{t.setup.startMatch}</span>
               </button>
             </div>
           ) : (
             <div className="space-y-3">
-              <div className="flex items-center gap-2 text-xs text-red-600 dark:text-red-400 font-bold justify-center">
-                <AlertTriangle className="w-4 h-4" />
+              <div className="flex items-center justify-center gap-2 text-xs font-bold text-red-600 dark:text-red-400">
+                <AlertTriangle className="h-4 w-4" />
                 <span>{t.setup.confirmResetMessage}</span>
               </div>
               <div className="flex gap-2">
                 <button
                   type="button"
                   onClick={() => setShowConfirmReset(false)}
-                  className="flex-1 py-2 px-3 rounded-xl bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 text-xs font-semibold"
+                  className="flex-1 rounded-xl bg-neutral-200 px-3 py-2 text-xs font-semibold text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200"
                 >
                   {t.setup.cancel}
                 </button>
                 <button
                   type="button"
                   onClick={handleResetAndStart}
-                  className="flex-1 py-2 px-3 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold"
+                  className="flex-1 rounded-xl bg-red-600 px-3 py-2 text-xs font-bold text-white hover:bg-red-700"
                 >
                   {t.setup.confirm}
                 </button>

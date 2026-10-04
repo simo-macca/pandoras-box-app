@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
     extend: {
@@ -22,7 +19,7 @@ export default {
           yellow: '#facc15',
           white: '#f8fafc',
           black: '#18181b',
-        }
+        },
       },
       keyframes: {
         'dice-spin': {
@@ -40,9 +37,8 @@ export default {
       animation: {
         'dice-spin': 'dice-spin 0.65s cubic-bezier(0.34, 1.56, 0.64, 1)',
         'pulse-subtle': 'pulse-subtle 2s ease-in-out infinite',
-      }
+      },
     },
   },
   plugins: [],
 };
-

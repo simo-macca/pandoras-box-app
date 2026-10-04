@@ -11,7 +11,10 @@ class SoundEffectsManager {
   private getAudioContext(): AudioContext | null {
     if (typeof window === 'undefined') return null;
     if (!this.audioCtx) {
-      const AudioCtxClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const AudioCtxClass =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext })
+          .webkitAudioContext;
       if (AudioCtxClass) {
         this.audioCtx = new AudioCtxClass();
       }
@@ -29,7 +32,7 @@ class SoundEffectsManager {
 
     const now = ctx.currentTime;
     const clicks = [0, 0.05, 0.11, 0.18, 0.26, 0.35, 0.46, 0.58, 0.72];
-    
+
     clicks.forEach((timeOffset, idx) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -66,7 +69,7 @@ class SoundEffectsManager {
       osc.frequency.setValueAtTime(523.25, now); // C5
       osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
       osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
-      osc.frequency.setValueAtTime(1046.50, now + 0.3); // C6
+      osc.frequency.setValueAtTime(1046.5, now + 0.3); // C6
 
       gain.gain.setValueAtTime(0.35, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
@@ -148,7 +151,11 @@ class SoundEffectsManager {
 
   public triggerHaptic(pattern: number | number[]) {
     if (!this.hapticEnabled) return;
-    if (typeof window !== 'undefined' && 'navigator' in window && 'vibrate' in navigator) {
+    if (
+      typeof window !== 'undefined' &&
+      'navigator' in window &&
+      'vibrate' in navigator
+    ) {
       try {
         navigator.vibrate(pattern);
       } catch {

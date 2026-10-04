@@ -116,7 +116,7 @@ Below is a summary of the official rules of **Frantic** and the **Pandora's Box*
 1. On your turn, play **1 card** from your hand matching the top card of the discard pile by:
    - **Colour**, **Number**, or **Symbol**.
 2. If you cannot or choose not to play a card, draw **1 card** from the draw pile. If the drawn card is playable, you may play it immediately.
-3. **"Last Card" Rule**: When you have only 1 card left in hand, you must announce *"Last Card!"* before the next player takes their turn. If caught forgetting, you must draw **4 penalty cards**.
+3. **"Last Card" Rule**: When you have only 1 card left in hand, you must announce _"Last Card!"_ before the next player takes their turn. If caught forgetting, you must draw **4 penalty cards**.
 4. **A round ends immediately when**:
    - A player successfully plays their final card (they score **0 points** for the round).
    - A player must draw a card, but the draw pile is completely exhausted.
@@ -133,16 +133,16 @@ Below is a summary of the official rules of **Frantic** and the **Pandora's Box*
 
 When a round concludes, players calculate penalty points for the cards remaining in their hands:
 
-| Card Type | Examples | Penalty Points | Notes |
-|:---|:---|:---:|:---|
-| **Number Cards** | `1` to `10` (any colour or black) | **Face value (1–10 pts)** | A `7` is 7 pts, a `10` is 10 pts, etc. |
-| **Standard Specials** | *Skip, Gift, Exchange, Second Chance, Colour Swap, Thief, Troublemaker, Recharge* | **7 pts** | Includes 1-colour and 2-colour variants |
-| **Wish / Unique Specials** | *Fantastic, Fantastic Four, Equality, Inequality, Nice Try, Lucky Bastard, Counterattack* | **7 pts** | All standard special effects |
-| **Mimicry** | *Mimicry* | **7 pts** | Copies any special card |
-| **Curse** | *Curse* | **13 pts** | **Unplayable**: Cannot be discarded normally! |
-| **The End** | *The End* | **17 pts** | Can only be played as your **very last card** |
-| **Fuck You** | *Fuck You* | **42 pts** | Can only be played when holding **exactly 10 cards**! |
-| **Supercharge Power Cards** | *Adrenaline, Teleport, Deflector, etc.* | **0 pts** | Power cards never grant penalty points |
+| Card Type                   | Examples                                                                                  |      Penalty Points       | Notes                                                 |
+| :-------------------------- | :---------------------------------------------------------------------------------------- | :-----------------------: | :---------------------------------------------------- |
+| **Number Cards**            | `1` to `10` (any colour or black)                                                         | **Face value (1–10 pts)** | A `7` is 7 pts, a `10` is 10 pts, etc.                |
+| **Standard Specials**       | _Skip, Gift, Exchange, Second Chance, Colour Swap, Thief, Troublemaker, Recharge_         |         **7 pts**         | Includes 1-colour and 2-colour variants               |
+| **Wish / Unique Specials**  | _Fantastic, Fantastic Four, Equality, Inequality, Nice Try, Lucky Bastard, Counterattack_ |         **7 pts**         | All standard special effects                          |
+| **Mimicry**                 | _Mimicry_                                                                                 |         **7 pts**         | Copies any special card                               |
+| **Curse**                   | _Curse_                                                                                   |        **13 pts**         | **Unplayable**: Cannot be discarded normally!         |
+| **The End**                 | _The End_                                                                                 |        **17 pts**         | Can only be played as your **very last card**         |
+| **Fuck You**                | _Fuck You_                                                                                |        **42 pts**         | Can only be played when holding **exactly 10 cards**! |
+| **Supercharge Power Cards** | _Adrenaline, Teleport, Deflector, etc._                                                   |         **0 pts**         | Power cards never grant penalty points                |
 
 #### Special Event Scoring Modifiers
 
@@ -156,12 +156,12 @@ When a round concludes, players calculate penalty points for the cards remaining
 
 The official rules specify target score thresholds according to the number of participants:
 
-| Group Size | Short Game | Medium Game (Standard) | Long Game |
-|:---|:---:|:---:|:---:|
-| **2 – 4 Players** | `137 pts` | `154 pts` | `179 pts` |
-| **5 – 8 Players** | `113 pts` | `137 pts` | `154 pts` |
+| Group Size        | Short Game | Medium Game (Standard) | Long Game |
+| :---------------- | :--------: | :--------------------: | :-------: |
+| **2 – 4 Players** | `137 pts`  |       `154 pts`        | `179 pts` |
+| **5 – 8 Players** | `113 pts`  |       `137 pts`        | `154 pts` |
 
-*Tip: The companion app automatically detects player count and suggests the official presets.*
+_Tip: The companion app automatically detects player count and suggests the official presets._
 
 ### Pandora's Box Expansion Rules
 
@@ -169,12 +169,12 @@ The **Pandora's Box** expansion adds two key mechanics:
 
 1. **Rule Cards (15 Cards)**:
    - At the beginning of each round, draw 1 Rule Card.
-   - That rule modifies the gameplay for **everyone** throughout the entire round (e.g., *Blind Date*, *Double Trouble*, *Color Blind*, *Blackout*, *Anarchy*).
+   - That rule modifies the gameplay for **everyone** throughout the entire round (e.g., _Blind Date_, _Double Trouble_, _Color Blind_, _Blackout_, _Anarchy_).
 2. **Supercharge Power Cards**:
    - Power cards are placed face down in front of each player (not in their hand).
    - They can be triggered during a player's turn when playing a hand card:
-     - **1ST Timing**: Activates **before** the hand card resolves (e.g., *Adrenaline*, *Teleport*).
-     - **2ND Timing**: Activates **after** the hand card resolves (e.g., *Deflector*, *Troublecharger*).
+     - **1ST Timing**: Activates **before** the hand card resolves (e.g., _Adrenaline_, _Teleport_).
+     - **2ND Timing**: Activates **after** the hand card resolves (e.g., _Deflector_, _Troublecharger_).
    - Power cards score **0 penalty points** at the end of the round.
 
 ---
@@ -182,12 +182,14 @@ The **Pandora's Box** expansion adds two key mechanics:
 ## 📱 App Functionality Walkthrough
 
 ### 1. Real-time Leaderboard & Danger Zone
+
 - **Live Sorting**: Players are ordered dynamically with the lowest penalty score at Rank 1.
 - **Visual Progress Bar**: Shows the percentage toward the elimination target limit.
 - **Danger Zone Warning**: Automatically turns yellow/red when a player reaches 80% or more of the score limit.
 - **Key Metrics**: Displays leader name, points remaining before elimination, and rounds won.
 
 ### 2. Interactive Hand Point Calculator
+
 - Tap **Score Round** from anywhere to open the modal.
 - Switch seamlessly between player tabs.
 - **One-Tap Winner**: Zeroes out hand scores and marks the player as the round winner.
@@ -197,6 +199,7 @@ The **Pandora's Box** expansion adds two key mechanics:
 - **Instant Total Calculation**: Score is updated live as you adjust counters.
 
 ### 3. Round History, Editing & Undo
+
 - View every recorded round in reverse chronological order.
 - Inspect the breakdown of points scored by each player per round.
 - Highlights round winners, Doomsday rounds, and Time Bomb victims.
@@ -204,6 +207,7 @@ The **Pandora's Box** expansion adds two key mechanics:
 - **Undo / Delete**: Instantly revert the last round or delete specific rounds with confirmation protection.
 
 ### 4. Pandora's Box Rule Card Drawer
+
 - Tap the **Rule Cards** navigation tab.
 - Click **Draw Random Rule Card** to initiate a rolling dice shuffle sound effect and animation.
 - Select **Activate for Round** to pin the drawn card as the active rule.
@@ -211,6 +215,7 @@ The **Pandora's Box** expansion adds two key mechanics:
 - Browse the full gallery of all 15 Rule Cards at any time.
 
 ### 5. Multilingual Rules & Card Encyclopedia
+
 - Access the **Rules & Directory** tab for a searchable, filterable card glossary.
 - Categorized into:
   - **All**: Search across every item in the game.
@@ -221,12 +226,14 @@ The **Pandora's Box** expansion adds two key mechanics:
 - Serves local official rulebook PDFs and overview cards in EN, DE, FR, and IT directly in new tabs with built-in viewer and direct download capabilities.
 
 ### 6. Match Configuration & Player Management
+
 - Support for **2 to 8 players**.
 - Choice of **10 vibrant pawn colors** (Red, Blue, Green, Yellow, Purple, Orange, White, Black, Cyan, Pink) with distinct glow rings and avatars.
 - Quick preset selection for Short, Medium, and Long matches, plus custom point values (from 10 to 999 pts).
 - Mid-game player editing (add/remove players or change names without losing round history).
 
 ### 7. Game Over Celebration & Statistics
+
 - Automatic trigger when any player's cumulative score equals or exceeds the target threshold.
 - Interactive multi-burst confetti celebration powered by `canvas-confetti`.
 - Victory fanfare chime via Web Audio.
@@ -234,12 +241,14 @@ The **Pandora's Box** expansion adds two key mechanics:
 - **Play Again** button to start a fresh match with the same players.
 
 ### 8. Audio Effects, Haptics & Dark Mode
+
 - **Procedural Synthesizer**: Uses Web Audio API oscillators to generate click, roll, and fanfare effects without relying on audio MP3/WAV files.
 - **Haptic Vibration**: Supports device vibration feedback on mobile browsers.
 - **Mute Controls**: Sound and haptics can be toggled independently in the Settings modal or Navbar.
 - **Theme Modes**: Supports Light mode, Dark mode, and automatic System preference.
 
 ### 9. Data Persistence, Backup & Restore
+
 - **Auto-save**: Every action is saved automatically to `localStorage` (`frantic_game_state_v2`).
 - **Export Match**: Downloads a formatted JSON file with complete player, config, and round history data.
 - **Import Match**: Upload a previously saved JSON file to restore any past game or transfer state between mobile and desktop devices.
@@ -346,18 +355,21 @@ frantic-pandoras-box-companion/
 ### Prerequisites
 
 Ensure you have the following installed on your development machine:
+
 - **Node.js**: `v18.0.0` or higher (Node 20+ recommended)
 - **npm**: `v9.0.0` or higher (or `pnpm` / `yarn`)
 
 ### Installation & Local Development
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/simonemaccario/frantic-pandoras-box-companion.git
    cd frantic-pandoras-box-companion
    ```
 
 2. **Install dependencies**:
+
    ```bash
    npm install
    ```
@@ -370,27 +382,47 @@ Ensure you have the following installed on your development machine:
 
 ### Available Scripts
 
-| Command | Description |
-|:---|:---|
-| `npm run dev` | Starts the Vite development server with Hot Module Replacement (HMR). |
-| `npm run build` | Runs TypeScript compilation (`tsc -b`) and bundles production assets into `dist/`. |
-| `npm run preview` | Serves the production build locally for verification. |
+| Command                | Description                                                                        |
+| :--------------------- | :--------------------------------------------------------------------------------- |
+| `npm run dev`          | Starts the Vite development server with Hot Module Replacement (HMR).              |
+| `npm run build`        | Runs TypeScript compilation (`tsc -b`) and bundles production assets into `dist/`. |
+| `npm run preview`      | Serves the production build locally for verification.                              |
+| `npm run lint`         | Runs ESLint to check for code quality and React Hooks rules.                       |
+| `npm run type-check`   | Runs TypeScript type checking (`tsc --noEmit`) without emitting build files.       |
+| `npm run format`       | Formats all codebase files using Prettier and sorts Tailwind CSS classes.          |
+| `npm run format:check` | Checks if files adhere to Prettier formatting without modifying them.              |
+| `npm run prepare`      | Initializes Husky git hooks (`.husky/pre-commit`).                                 |
+
+### Automated Pre-commit Pipeline
+
+This project enforces automated quality checks before any commit is finalized:
+
+- **Husky & lint-staged**: Automatically executes on `git commit`.
+- **`*.{ts,tsx}`**: Runs `eslint --fix` and `prettier --write` on staged files.
+- **`*.{json,css,html,md}`**: Runs `prettier --write` on staged files (including automatic Tailwind class sorting).
+- **Type Checking**: Executes `npm run type-check` (`tsc --noEmit`) to prevent committing broken types.
 
 ---
 
 ### Architecture & Core Concepts
 
 #### 1. State Management (`useGameState.ts`)
+
 The entire application state is governed by the `useGameState` custom hook located in [`src/hooks/useGameState.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/hooks/useGameState.ts).
+
 - **Single Source of Truth**: Stores players, game config (target score), rounds history, active rule card, and game-over state in a single `GameState` object.
 - **Computed Stats**: Uses `useMemo` to compute `playerStats` (cumulative scores, rankings, leader flag, danger zone status, points remaining, and round win tallies).
 - **Local Persistence**: Automatically synchronizes state changes to `localStorage` under `frantic_game_state_v2`.
 - **Immutability & History**: All actions (`addRound`, `editRound`, `deleteRound`, `undoLastRound`) produce new state references, allowing safe re-renders and full undo capabilities.
 
 #### 2. Hand Calculation Engine
+
 Hand points are computed deterministically using the pure function `calculateHandPoints()` in [`src/hooks/useGameState.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/hooks/useGameState.ts):
+
 ```typescript
-export function calculateHandPoints(hand: Omit<HandScore, 'totalPoints'> | HandScore): number {
+export function calculateHandPoints(
+  hand: Omit<HandScore, 'totalPoints'> | HandScore
+): number {
   if (hand.isDoomsday) return 50;
   if (hand.isWinner) {
     let pts = hand.timeBombModifier === 'winner_bonus' ? -10 : 0;
@@ -416,18 +448,21 @@ export function calculateHandPoints(hand: Omit<HandScore, 'totalPoints'> | HandS
   else if (hand.timeBombModifier === 'loser_penalty') total += 10;
   else if (hand.timeBombModifier === 'winner_bonus') total -= 10;
 
-  total += (hand.customModifier || 0);
+  total += hand.customModifier || 0;
   return Math.max(0, total);
 }
 ```
 
 #### 3. Procedural Sound System (`sound.ts`)
+
 To keep the bundle lightweight and eliminate external network requests or audio asset licensing issues, [`src/utils/sound.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/utils/sound.ts) generates sound effects using standard Web Audio API oscillators:
+
 - **`playDiceRoll()`**: Plays rapid decaying frequency bursts simulating tumbling dice, paired with vibration haptics.
 - **`playClick()`**: High-frequency click impulse for button taps.
 - **`playWinner()` / `playDiceFinish()`**: Arpeggiated chord fanfare for game over celebrations.
 
 #### 4. Theming & Colors (`colors.ts` & `useTheme.ts`)
+
 Player colors are managed through [`src/utils/colors.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/utils/colors.ts). Each color provides hex values, badges, avatars, and ring-glow styles that automatically adapt to both light and dark backgrounds.
 
 ---
@@ -437,12 +472,14 @@ Player colors are managed through [`src/utils/colors.ts`](file:///Users/simonema
 #### Adding or Updating Cards, Events, or Rule Cards
 
 All card definitions are organized inside `src/data/`:
+
 - **Special Cards**: [`src/data/cardsData.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/data/cardsData.ts)
 - **Events**: [`src/data/eventsData.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/data/eventsData.ts)
 - **Power Cards**: [`src/data/powerCardsData.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/data/powerCardsData.ts)
 - **Rule Cards**: [`src/data/ruleCardsData.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/data/ruleCardsData.ts)
 
 To add a new card, add an entry matching the corresponding interface from [`src/types/rules.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/types/rules.ts):
+
 ```typescript
 {
   id: 'card-identifier',
@@ -472,6 +509,7 @@ To add a new card, add an entry matching the corresponding interface from [`src/
 #### Adding or Modifying Translations
 
 Translations are typed and maintained in [`src/data/translations.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/data/translations.ts):
+
 1. Locate the `TRANSLATIONS` record object.
 2. Edit or add keys under the corresponding language (`en`, `de`, `it`, `fr`).
 3. If introducing a new UI key, update the `TranslationStrings` interface so that TypeScript enforces key consistency across all 4 languages.
@@ -479,6 +517,7 @@ Translations are typed and maintained in [`src/data/translations.ts`](file:///Us
 #### Modifying Scoring Logic
 
 If a new house rule or expansion changes point calculations:
+
 1. Update `calculateHandPoints()` in [`src/hooks/useGameState.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/hooks/useGameState.ts).
 2. Update the corresponding input counters in [`src/components/scoring/SpecialCounters.tsx`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/components/scoring/SpecialCounters.tsx) and [`src/components/scoring/HandCalculatorModal.tsx`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/components/scoring/HandCalculatorModal.tsx).
 3. Update the `HandScore` type in [`src/types/game.ts`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/src/types/game.ts).
@@ -490,7 +529,9 @@ If a new house rule or expansion changes point calculations:
 The application is bundled into static HTML/CSS/JS and can be hosted on any static hosting provider.
 
 ### Netlify (Configured)
+
 The repository includes a [`netlify.toml`](file:///Users/simonemaccario/Desktop/frantic-pandoras-box-companion/netlify.toml) file:
+
 ```toml
 [build]
   publish = "dist"
@@ -501,9 +542,11 @@ The repository includes a [`netlify.toml`](file:///Users/simonemaccario/Desktop/
   to = "/index.html"
   status = 200
 ```
+
 Simply connect your GitHub repository to Netlify and deployments will trigger automatically on pushes to `main`.
 
 ### Vercel / GitHub Pages
+
 - **Build Command**: `npm run build`
 - **Output Directory**: `dist`
 

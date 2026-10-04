@@ -1,5 +1,13 @@
 import React from 'react';
-import { Plus, Minus, Skull, Hourglass, Zap, CopyCheck, Sparkles } from 'lucide-react';
+import {
+  Plus,
+  Minus,
+  Skull,
+  Hourglass,
+  Zap,
+  CopyCheck,
+  Sparkles,
+} from 'lucide-react';
 import { Language } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
 import { soundEffects } from '../../utils/sound';
@@ -33,7 +41,16 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
 }) => {
   const t = TRANSLATIONS[language];
 
-  const updateCounter = (key: 'specialCardsCount' | 'curseCount' | 'theEndCount' | 'fuckYouCount' | 'mimicryCount', delta: number, current: number) => {
+  const updateCounter = (
+    key:
+      | 'specialCardsCount'
+      | 'curseCount'
+      | 'theEndCount'
+      | 'fuckYouCount'
+      | 'mimicryCount',
+    delta: number,
+    current: number
+  ) => {
     if (disabled) return;
     const nextVal = Math.max(0, current + delta);
     soundEffects.playClick();
@@ -41,12 +58,14 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
   };
 
   return (
-    <div className={`space-y-3 ${disabled ? 'opacity-40 pointer-events-none' : ''}`}>
+    <div
+      className={`space-y-3 ${disabled ? 'pointer-events-none opacity-40' : ''}`}
+    >
       {/* Standard Specials (7 pts each) */}
-      <div className="p-3 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/40 flex items-center justify-between">
+      <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50 p-3 dark:border-neutral-800 dark:bg-neutral-800/40">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
-            <Sparkles className="w-5 h-5" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-purple-500/30 bg-purple-500/15 text-purple-600 dark:text-purple-400">
+            <Sparkles className="h-5 w-5" />
           </div>
           <div>
             <div className="text-xs font-bold text-neutral-900 dark:text-white">
@@ -61,22 +80,26 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => updateCounter('specialCardsCount', -1, specialCardsCount)}
+            onClick={() =>
+              updateCounter('specialCardsCount', -1, specialCardsCount)
+            }
             disabled={specialCardsCount === 0 || disabled}
-            className="w-8 h-8 rounded-xl bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 disabled:opacity-30 text-neutral-800 dark:text-neutral-200 flex items-center justify-center transition-colors"
+            className="flex h-8 w-8 items-center justify-center rounded-xl bg-neutral-200 text-neutral-800 transition-colors hover:bg-neutral-300 disabled:opacity-30 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-600"
           >
-            <Minus className="w-4 h-4" />
+            <Minus className="h-4 w-4" />
           </button>
-          <span className="w-6 text-center font-black text-sm text-neutral-900 dark:text-white">
+          <span className="w-6 text-center text-sm font-black text-neutral-900 dark:text-white">
             {specialCardsCount}
           </span>
           <button
             type="button"
-            onClick={() => updateCounter('specialCardsCount', 1, specialCardsCount)}
+            onClick={() =>
+              updateCounter('specialCardsCount', 1, specialCardsCount)
+            }
             disabled={disabled}
-            className="w-8 h-8 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold flex items-center justify-center transition-colors shadow-sm"
+            className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-600 font-bold text-white shadow-sm transition-colors hover:bg-purple-500"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="h-4 w-4" />
           </button>
         </div>
       </div>
@@ -84,143 +107,151 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
       {/* Unique Specials */}
       <div className="grid grid-cols-2 gap-2">
         {/* Curse (13 pts) */}
-        <div className="p-2.5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/40 flex items-center justify-between">
-          <div className="flex items-center gap-2 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-500 shrink-0">
-              <Skull className="w-4 h-4" />
+        <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50 p-2.5 dark:border-neutral-800 dark:bg-neutral-800/40">
+          <div className="flex min-w-0 items-center gap-2">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-indigo-500/30 bg-indigo-500/15 text-indigo-500">
+              <Skull className="h-4 w-4" />
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-neutral-900 dark:text-white truncate">
+              <div className="truncate text-xs font-bold text-neutral-900 dark:text-white">
                 Curse
               </div>
               <div className="text-[10px] text-neutral-400">+13 pts</div>
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex shrink-0 items-center gap-1.5">
             <button
               type="button"
               onClick={() => updateCounter('curseCount', -1, curseCount)}
               disabled={curseCount === 0 || disabled}
-              className="w-6 h-6 rounded-lg bg-neutral-200 dark:bg-neutral-700 disabled:opacity-30 flex items-center justify-center"
+              className="flex h-6 w-6 items-center justify-center rounded-lg bg-neutral-200 disabled:opacity-30 dark:bg-neutral-700"
             >
-              <Minus className="w-3 h-3" />
+              <Minus className="h-3 w-3" />
             </button>
-            <span className="w-4 text-center font-bold text-xs">{curseCount}</span>
+            <span className="w-4 text-center text-xs font-bold">
+              {curseCount}
+            </span>
             <button
               type="button"
               onClick={() => updateCounter('curseCount', 1, curseCount)}
               disabled={disabled}
-              className="w-6 h-6 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center"
+              className="flex h-6 w-6 items-center justify-center rounded-lg bg-indigo-600 text-white hover:bg-indigo-500"
             >
-              <Plus className="w-3 h-3" />
+              <Plus className="h-3 w-3" />
             </button>
           </div>
         </div>
 
         {/* The End (17 pts) */}
-        <div className="p-2.5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/40 flex items-center justify-between">
-          <div className="flex items-center gap-2 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-red-500/15 border border-red-500/30 flex items-center justify-center text-red-500 shrink-0">
-              <Hourglass className="w-4 h-4" />
+        <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50 p-2.5 dark:border-neutral-800 dark:bg-neutral-800/40">
+          <div className="flex min-w-0 items-center gap-2">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-red-500/30 bg-red-500/15 text-red-500">
+              <Hourglass className="h-4 w-4" />
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-neutral-900 dark:text-white truncate">
+              <div className="truncate text-xs font-bold text-neutral-900 dark:text-white">
                 The End
               </div>
               <div className="text-[10px] text-neutral-400">+17 pts</div>
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex shrink-0 items-center gap-1.5">
             <button
               type="button"
               onClick={() => updateCounter('theEndCount', -1, theEndCount)}
               disabled={theEndCount === 0 || disabled}
-              className="w-6 h-6 rounded-lg bg-neutral-200 dark:bg-neutral-700 disabled:opacity-30 flex items-center justify-center"
+              className="flex h-6 w-6 items-center justify-center rounded-lg bg-neutral-200 disabled:opacity-30 dark:bg-neutral-700"
             >
-              <Minus className="w-3 h-3" />
+              <Minus className="h-3 w-3" />
             </button>
-            <span className="w-4 text-center font-bold text-xs">{theEndCount}</span>
+            <span className="w-4 text-center text-xs font-bold">
+              {theEndCount}
+            </span>
             <button
               type="button"
               onClick={() => updateCounter('theEndCount', 1, theEndCount)}
               disabled={disabled}
-              className="w-6 h-6 rounded-lg bg-red-600 hover:bg-red-500 text-white flex items-center justify-center"
+              className="flex h-6 w-6 items-center justify-center rounded-lg bg-red-600 text-white hover:bg-red-500"
             >
-              <Plus className="w-3 h-3" />
+              <Plus className="h-3 w-3" />
             </button>
           </div>
         </div>
 
         {/* Fuck You (42 pts) */}
-        <div className="p-2.5 rounded-2xl border border-red-500/40 bg-red-500/10 flex items-center justify-between shadow-sm">
-          <div className="flex items-center gap-2 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center text-white shrink-0 shadow-sm">
-              <Zap className="w-4 h-4 fill-white" />
+        <div className="flex items-center justify-between rounded-2xl border border-red-500/40 bg-red-500/10 p-2.5 shadow-sm">
+          <div className="flex min-w-0 items-center gap-2">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-600 text-white shadow-sm">
+              <Zap className="h-4 w-4 fill-white" />
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-extrabold text-red-600 dark:text-red-400 truncate">
+              <div className="truncate text-xs font-extrabold text-red-600 dark:text-red-400">
                 Fuck You
               </div>
-              <div className="text-[10px] text-red-500/80 font-bold">+42 pts!</div>
+              <div className="text-[10px] font-bold text-red-500/80">
+                +42 pts!
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex shrink-0 items-center gap-1.5">
             <button
               type="button"
               onClick={() => updateCounter('fuckYouCount', -1, fuckYouCount)}
               disabled={fuckYouCount === 0 || disabled}
-              className="w-6 h-6 rounded-lg bg-red-200 dark:bg-red-900/60 disabled:opacity-30 flex items-center justify-center text-red-800 dark:text-red-200"
+              className="flex h-6 w-6 items-center justify-center rounded-lg bg-red-200 text-red-800 disabled:opacity-30 dark:bg-red-900/60 dark:text-red-200"
             >
-              <Minus className="w-3 h-3" />
+              <Minus className="h-3 w-3" />
             </button>
-            <span className="w-4 text-center font-black text-xs text-red-600 dark:text-red-400">
+            <span className="w-4 text-center text-xs font-black text-red-600 dark:text-red-400">
               {fuckYouCount}
             </span>
             <button
               type="button"
               onClick={() => updateCounter('fuckYouCount', 1, fuckYouCount)}
               disabled={disabled}
-              className="w-6 h-6 rounded-lg bg-red-600 hover:bg-red-500 text-white flex items-center justify-center shadow-sm"
+              className="flex h-6 w-6 items-center justify-center rounded-lg bg-red-600 text-white shadow-sm hover:bg-red-500"
             >
-              <Plus className="w-3 h-3 stroke-[2.5]" />
+              <Plus className="h-3 w-3 stroke-[2.5]" />
             </button>
           </div>
         </div>
 
         {/* Mimicry (7 pts) */}
-        <div className="p-2.5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/40 flex items-center justify-between">
-          <div className="flex items-center gap-2 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-teal-500/15 border border-teal-500/30 flex items-center justify-center text-teal-500 shrink-0">
-              <CopyCheck className="w-4 h-4" />
+        <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50 p-2.5 dark:border-neutral-800 dark:bg-neutral-800/40">
+          <div className="flex min-w-0 items-center gap-2">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-teal-500/30 bg-teal-500/15 text-teal-500">
+              <CopyCheck className="h-4 w-4" />
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-neutral-900 dark:text-white truncate">
+              <div className="truncate text-xs font-bold text-neutral-900 dark:text-white">
                 Mimicry
               </div>
               <div className="text-[10px] text-neutral-400">+7 pts</div>
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex shrink-0 items-center gap-1.5">
             <button
               type="button"
               onClick={() => updateCounter('mimicryCount', -1, mimicryCount)}
               disabled={mimicryCount === 0 || disabled}
-              className="w-6 h-6 rounded-lg bg-neutral-200 dark:bg-neutral-700 disabled:opacity-30 flex items-center justify-center"
+              className="flex h-6 w-6 items-center justify-center rounded-lg bg-neutral-200 disabled:opacity-30 dark:bg-neutral-700"
             >
-              <Minus className="w-3 h-3" />
+              <Minus className="h-3 w-3" />
             </button>
-            <span className="w-4 text-center font-bold text-xs">{mimicryCount}</span>
+            <span className="w-4 text-center text-xs font-bold">
+              {mimicryCount}
+            </span>
             <button
               type="button"
               onClick={() => updateCounter('mimicryCount', 1, mimicryCount)}
               disabled={disabled}
-              className="w-6 h-6 rounded-lg bg-teal-600 hover:bg-teal-500 text-white flex items-center justify-center"
+              className="flex h-6 w-6 items-center justify-center rounded-lg bg-teal-600 text-white hover:bg-teal-500"
             >
-              <Plus className="w-3 h-3" />
+              <Plus className="h-3 w-3" />
             </button>
           </div>
         </div>

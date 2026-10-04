@@ -21,7 +21,10 @@ export const HelpTooltip: React.FC<HelpTooltipProps> = ({
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent | TouchEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -51,41 +54,41 @@ export const HelpTooltip: React.FC<HelpTooltipProps> = ({
     >
       <button
         type="button"
-        onClick={e => {
+        onClick={(e) => {
           e.stopPropagation();
           setIsOpen(!isOpen);
         }}
         aria-label={`Info: ${title}`}
-        className={`rounded-full p-1 text-neutral-400 hover:text-amber-500 dark:hover:text-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors ${
-          size === 'sm' ? 'w-5 h-5' : 'w-6 h-6'
+        className={`rounded-full p-1 text-neutral-400 transition-colors hover:text-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:hover:text-amber-400 ${
+          size === 'sm' ? 'h-5 w-5' : 'h-6 w-6'
         } ${isOpen ? 'text-amber-500 dark:text-amber-400' : ''}`}
       >
-        <Info className="w-full h-full stroke-[2.2]" />
+        <Info className="h-full w-full stroke-[2.2]" />
       </button>
 
       {isOpen && (
         <div
           role="tooltip"
-          className={`absolute bottom-full mb-2 z-50 w-72 sm:w-80 p-3.5 rounded-2xl bg-neutral-900 dark:bg-neutral-800 text-white shadow-2xl border border-neutral-700/80 animate-fade-in text-left pointer-events-auto ${alignmentClasses}`}
+          className={`animate-fade-in pointer-events-auto absolute bottom-full z-50 mb-2 w-72 rounded-2xl border border-neutral-700/80 bg-neutral-900 p-3.5 text-left text-white shadow-2xl dark:bg-neutral-800 sm:w-80 ${alignmentClasses}`}
         >
-          <div className="flex items-center justify-between pb-1.5 border-b border-neutral-700/60 mb-2">
-            <span className="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
-              <HelpCircle className="w-3.5 h-3.5" />
+          <div className="mb-2 flex items-center justify-between border-b border-neutral-700/60 pb-1.5">
+            <span className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-amber-400">
+              <HelpCircle className="h-3.5 w-3.5" />
               <span>{title}</span>
             </span>
             <button
               type="button"
-              onClick={e => {
+              onClick={(e) => {
                 e.stopPropagation();
                 setIsOpen(false);
               }}
-              className="text-neutral-400 hover:text-white p-0.5 rounded transition-colors"
+              className="rounded p-0.5 text-neutral-400 transition-colors hover:text-white"
               aria-label="Close info"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="h-3.5 w-3.5" />
             </button>
           </div>
-          <p className="text-xs text-neutral-200 dark:text-neutral-300 leading-relaxed font-normal">
+          <p className="text-xs font-normal leading-relaxed text-neutral-200 dark:text-neutral-300">
             {content}
           </p>
         </div>

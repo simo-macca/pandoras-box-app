@@ -8,7 +8,11 @@ interface NumberGridProps {
   disabled?: boolean;
 }
 
-export const NumberGrid: React.FC<NumberGridProps> = ({ counts, onChange, disabled = false }) => {
+export const NumberGrid: React.FC<NumberGridProps> = ({
+  counts,
+  onChange,
+  disabled = false,
+}) => {
   const handleIncrement = (num: number) => {
     if (disabled) return;
     soundEffects.playClick();
@@ -31,39 +35,41 @@ export const NumberGrid: React.FC<NumberGridProps> = ({ counts, onChange, disabl
 
   return (
     <div className="grid grid-cols-5 gap-2">
-      {Array.from({ length: 10 }, (_, i) => i + 1).map(num => {
+      {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => {
         const count = counts[num] || 0;
         return (
           <div
             key={num}
-            className={`flex flex-col items-center justify-between p-2 rounded-2xl border transition-all ${
+            className={`flex flex-col items-center justify-between rounded-2xl border p-2 transition-all ${
               count > 0
                 ? 'border-amber-500 bg-amber-500/15 shadow-sm'
-                : 'border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/40'
-            } ${disabled ? 'opacity-40 pointer-events-none' : ''}`}
+                : 'border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-800/40'
+            } ${disabled ? 'pointer-events-none opacity-40' : ''}`}
           >
             {/* Number Badge */}
-            <div className="flex items-center justify-between w-full mb-1">
-              <span className="w-5 h-5 rounded-md bg-neutral-900 text-white text-[11px] font-black flex items-center justify-center">
+            <div className="mb-1 flex w-full items-center justify-between">
+              <span className="flex h-5 w-5 items-center justify-center rounded-md bg-neutral-900 text-[11px] font-black text-white">
                 {num}
               </span>
-              <span className="text-[10px] text-neutral-400 font-bold">
+              <span className="text-[10px] font-bold text-neutral-400">
                 {num * count} pts
               </span>
             </div>
 
             {/* Stepper Buttons */}
-            <div className="flex items-center justify-between w-full mt-1">
+            <div className="mt-1 flex w-full items-center justify-between">
               <button
                 type="button"
                 onClick={() => handleDecrement(num)}
                 disabled={count === 0 || disabled}
-                className="w-6 h-6 rounded-lg bg-neutral-200 dark:bg-neutral-700/80 hover:bg-neutral-300 dark:hover:bg-neutral-600 disabled:opacity-30 text-neutral-800 dark:text-neutral-200 flex items-center justify-center transition-colors"
+                className="flex h-6 w-6 items-center justify-center rounded-lg bg-neutral-200 text-neutral-800 transition-colors hover:bg-neutral-300 disabled:opacity-30 dark:bg-neutral-700/80 dark:text-neutral-200 dark:hover:bg-neutral-600"
               >
-                <Minus className="w-3 h-3" />
+                <Minus className="h-3 w-3" />
               </button>
 
-              <span className={`text-sm font-extrabold ${count > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-neutral-400'}`}>
+              <span
+                className={`text-sm font-extrabold ${count > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-neutral-400'}`}
+              >
                 {count}
               </span>
 
@@ -71,9 +77,9 @@ export const NumberGrid: React.FC<NumberGridProps> = ({ counts, onChange, disabl
                 type="button"
                 onClick={() => handleIncrement(num)}
                 disabled={disabled}
-                className="w-6 h-6 rounded-lg bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold flex items-center justify-center transition-colors shadow-sm"
+                className="flex h-6 w-6 items-center justify-center rounded-lg bg-amber-500 font-bold text-neutral-950 shadow-sm transition-colors hover:bg-amber-400"
               >
-                <Plus className="w-3 h-3 stroke-[2.5]" />
+                <Plus className="h-3 w-3 stroke-[2.5]" />
               </button>
             </div>
           </div>

@@ -34,11 +34,16 @@ export function App() {
 
   const [activeTab, setActiveTab] = useState<ActiveTab>('scoreboard');
   const [isScoreModalOpen, setIsScoreModalOpen] = useState(false);
-  const [editingRoundNumber, setEditingRoundNumber] = useState<number | null>(null);
+  const [editingRoundNumber, setEditingRoundNumber] = useState<number | null>(
+    null
+  );
   const [isSetupModalOpen, setIsSetupModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [settingsInitialTab, setSettingsInitialTab] = useState<'settings' | 'legal'>('settings');
-  const [isGameOverModalDismissed, setIsGameOverModalDismissed] = useState(false);
+  const [settingsInitialTab, setSettingsInitialTab] = useState<
+    'settings' | 'legal'
+  >('settings');
+  const [isGameOverModalDismissed, setIsGameOverModalDismissed] =
+    useState(false);
 
   const winner = playerStats[0] || null;
 
@@ -81,11 +86,11 @@ export function App() {
   };
 
   const editingRound = editingRoundNumber
-    ? gameState.rounds.find(r => r.roundNumber === editingRoundNumber)
+    ? gameState.rounds.find((r) => r.roundNumber === editingRoundNumber)
     : null;
 
   return (
-    <div className="min-h-screen bg-neutral-100 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 flex flex-col font-sans transition-colors selection:bg-amber-500 selection:text-black">
+    <div className="flex min-h-screen flex-col bg-neutral-100 font-sans text-neutral-900 transition-colors selection:bg-amber-500 selection:text-black dark:bg-neutral-950 dark:text-neutral-100">
       {/* Top Navigation */}
       <Navbar
         language={language}
@@ -108,7 +113,7 @@ export function App() {
       />
 
       {/* Main View Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6">
+      <main className="mx-auto w-full max-w-7xl flex-1 px-3 py-4 sm:px-6 sm:py-6">
         {activeTab === 'scoreboard' && (
           <Leaderboard
             playerStats={playerStats}
@@ -129,7 +134,7 @@ export function App() {
         {activeTab === 'rulecards' && (
           <RuleCardDrawer
             activeRuleCardIds={gameState.activeRuleCardIds || []}
-            onSelectActiveRuleCard={cardId => {
+            onSelectActiveRuleCard={(cardId) => {
               setActiveRuleCardIds(cardId ? [cardId] : []);
             }}
             language={language}

@@ -211,7 +211,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
     },
     setup: {
       title: 'Game Setup',
-      description: 'Configure 2 to 8 players and select the official point limit.',
+      description:
+        'Configure 2 to 8 players and select the official point limit.',
       playerCount: 'Players',
       addPlayer: 'Add Player',
       playerName: 'Player Name',
@@ -225,13 +226,15 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       points: 'pts',
       pts: 'pts',
       customPlaceholder: '150',
-      targetScoreDesc: 'Official limits: 2-4 players (137, 154, 179) / 5-8 players (113, 137, 154).',
+      targetScoreDesc:
+        'Official limits: 2-4 players (137, 154, 179) / 5-8 players (113, 137, 154).',
       startMatch: 'Start Match',
       resetMatch: 'Reset Match',
       newGame: 'New Game',
       newMatch: 'New Match',
       confirmResetTitle: 'Reset Match?',
-      confirmResetMessage: 'Are you sure you want to reset all scores? This cannot be undone.',
+      confirmResetMessage:
+        'Are you sure you want to reset all scores? This cannot be undone.',
       cancel: 'Cancel',
       confirm: 'Confirm',
     },
@@ -244,9 +247,11 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       targetLimit: 'Limit',
       eliminationLimit: 'Game Limit',
       limitHelpTitle: 'Game Limit',
-      limitHelpDesc: 'The cumulative score ceiling that ends the game. As soon as at least one player reaches or exceeds this limit at the end of a round, the game is over. The player with the lowest score wins!',
+      limitHelpDesc:
+        'The cumulative score ceiling that ends the game. As soon as at least one player reaches or exceeds this limit at the end of a round, the game is over. The player with the lowest score wins!',
       dangerHelpTitle: 'Danger Zone',
-      dangerHelpDesc: 'Players within 20 points of the Game Limit are in the Danger Zone. Holding heavy cards like Fuck You (+42) or Black cards (double points) at round end can easily push them over the limit!',
+      dangerHelpDesc:
+        'Players within 20 points of the Game Limit are in the Danger Zone. Holding heavy cards like Fuck You (+42) or Black cards (double points) at round end can easily push them over the limit!',
       historyTitle: 'Round History',
       undoLastRound: 'Undo Last',
       undoRound: 'Undo Last Round',
@@ -298,7 +303,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
     },
     rulecards: {
       title: "Pandora's Box Rule Cards",
-      subtitle: 'Draw and activate persistent global rules that alter gameplay.',
+      subtitle:
+        'Draw and activate persistent global rules that alter gameplay.',
       expansionTag: "Pandora's Box Expansion",
       drawRandom: 'Draw Random Rule Card',
       drawnCard: 'Selected Rule Card',
@@ -327,9 +333,11 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       guideTab: 'Game Guide & Rules',
       dictionaryTab: 'Card Dictionary',
       officialPdfTitle: 'Official Rulefactory Rulebook',
-      officialPdfDesc: 'View or download the complete 22-page official Pandora’s Box rulebook.',
+      officialPdfDesc:
+        'View or download the complete 22-page official Pandora’s Box rulebook.',
       overviewPdfTitle: 'Official Overview Cards',
-      overviewPdfDesc: 'Quick reference cards with summaries of all card effects, timing, and rules.',
+      overviewPdfDesc:
+        'Quick reference cards with summaries of all card effects, timing, and rules.',
       openPdf: 'Open in New Tab',
       downloadPdf: 'Download PDF',
       fullRulebook: 'Full Rulebook',
@@ -359,11 +367,14 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       importError: 'Failed to import backup file. Invalid JSON.',
       resetGame: 'Reset Current Match',
       version: "Frantic Pandora's Box Companion v2.0",
-      copyright: 'Unofficial Companion — Based on Frantic & Pandora\'s Box by Rulefactory',
+      copyright:
+        "Unofficial Companion — Based on Frantic & Pandora's Box by Rulefactory",
       aboutLegalTitle: 'About & Legal',
       disclaimerTitle: 'Disclaimer & Legal Notice',
-      fullDisclaimer: "Pandora's Box is a game created and published by Rulefactory. This website is an unofficial, non-commercial companion tool designed solely for scorekeeping and rule reference. It is not affiliated with, endorsed, or sponsored by Rulefactory. All trademarks, logos, and copyrighted materials belong to their respective owners.",
-      disclaimerShort: "Unofficial, non-commercial companion app for Pandora's Box & Frantic by Rulefactory.",
+      fullDisclaimer:
+        "Pandora's Box is a game created and published by Rulefactory. This website is an unofficial, non-commercial companion tool designed solely for scorekeeping and rule reference. It is not affiliated with, endorsed, or sponsored by Rulefactory. All trademarks, logos, and copyrighted materials belong to their respective owners.",
+      disclaimerShort:
+        "Unofficial, non-commercial companion app for Pandora's Box & Frantic by Rulefactory.",
       visitRulefactory: 'Official Rulefactory Website',
       unofficialNotice: 'Unofficial Companion Tool',
     },
@@ -396,7 +407,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
     },
     setup: {
       title: 'Spieleinrichtung',
-      description: 'Konfiguriere 2 bis 8 Personen und wähle das offizielle Punktelimit.',
+      description:
+        'Konfiguriere 2 bis 8 Personen und wähle das offizielle Punktelimit.',
       playerCount: 'Spieler',
       addPlayer: 'Person hinzufügen',
       playerName: 'Name',
@@ -410,13 +422,15 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       points: 'Pkt',
       pts: 'Pkt',
       customPlaceholder: '150',
-      targetScoreDesc: 'Offizielle Limits: 2-4 Spieler (137, 154, 179) / 5-8 Spieler (113, 137, 154).',
+      targetScoreDesc:
+        'Offizielle Limits: 2-4 Spieler (137, 154, 179) / 5-8 Spieler (113, 137, 154).',
       startMatch: 'Partie starten',
       resetMatch: 'Partie zurücksetzen',
       newGame: 'Neues Spiel',
       newMatch: 'Neue Partie',
       confirmResetTitle: 'Partie zurücksetzen?',
-      confirmResetMessage: 'Möchtest du wirklich alle Runden löschen? Dies kann nicht rückgängig gemacht werden.',
+      confirmResetMessage:
+        'Möchtest du wirklich alle Runden löschen? Dies kann nicht rückgängig gemacht werden.',
       cancel: 'Abbrechen',
       confirm: 'Bestätigen',
     },
@@ -429,9 +443,11 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       targetLimit: 'Limit',
       eliminationLimit: 'Punktelimit',
       limitHelpTitle: 'Punktegrenze',
-      limitHelpDesc: 'Die Gesamtpunktegrenze, die das Spiel beendet. Sobald am Ende einer Runde mindestens ein Spieler dieses Limit erreicht oder überschreitet, endet das Spiel. Wer die wenigsten Punkte hat, gewinnt!',
+      limitHelpDesc:
+        'Die Gesamtpunktegrenze, die das Spiel beendet. Sobald am Ende einer Runde mindestens ein Spieler dieses Limit erreicht oder überschreitet, endet das Spiel. Wer die wenigsten Punkte hat, gewinnt!',
       dangerHelpTitle: 'Gefahrenzone',
-      dangerHelpDesc: 'Spieler, die weniger als 20 Punkte von der Punktegrenze entfernt sind, befinden sich in der Gefahrenzone. Teure Karten wie Fuck You (+42) oder schwarze Karten (doppelte Punkte) können das Spiel sofort beenden!',
+      dangerHelpDesc:
+        'Spieler, die weniger als 20 Punkte von der Punktegrenze entfernt sind, befinden sich in der Gefahrenzone. Teure Karten wie Fuck You (+42) oder schwarze Karten (doppelte Punkte) können das Spiel sofort beenden!',
       historyTitle: 'Rundenverlauf',
       undoLastRound: 'Runde rückgängig',
       undoRound: 'Letzte Runde rückgängig',
@@ -465,7 +481,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       mimicryCard: 'Mimicry (7 Pkt)',
       eventsAndModifiers: 'Ereignismodifikatoren',
       doomsdayToggle: 'Doomsday / Weltuntergang (Alle 50 Pkt)',
-      doomsdayHint: 'Überschreibt alle Handkarten dieser Runde mit exakt 50 Punkten.',
+      doomsdayHint:
+        'Überschreibt alle Handkarten dieser Runde mit exakt 50 Punkten.',
       timeBombModifier: 'Zeitbomben-Modifikator',
       timeBombNone: 'Keiner / Inaktiv',
       timeBombWinner: 'Gewinner-Bonus (-10 Pkt)',
@@ -483,7 +500,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
     },
     rulecards: {
       title: "Pandora's Box Regelkarten",
-      subtitle: 'Zieht und aktiviert globale Sonderregeln für das laufende Spiel.',
+      subtitle:
+        'Zieht und aktiviert globale Sonderregeln für das laufende Spiel.',
       expansionTag: "Pandora's Box Erweiterung",
       drawRandom: 'Zufällige Regelkarte ziehen',
       drawnCard: 'Gezogene Regelkarte',
@@ -512,9 +530,11 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       guideTab: 'Spielregeln & Anleitung',
       dictionaryTab: 'Kartenlexikon',
       officialPdfTitle: 'Offizielles Rulefactory Regelwerk',
-      officialPdfDesc: 'Das vollständige offizielle 22-seitige Pandora’s Box Regelwerk ansehen oder herunterladen.',
+      officialPdfDesc:
+        'Das vollständige offizielle 22-seitige Pandora’s Box Regelwerk ansehen oder herunterladen.',
       overviewPdfTitle: 'Offizielle Übersichtskarten',
-      overviewPdfDesc: 'Kompakte Übersichtskarten mit Zusammenfassungen aller Karteneffekte und Timings.',
+      overviewPdfDesc:
+        'Kompakte Übersichtskarten mit Zusammenfassungen aller Karteneffekte und Timings.',
       openPdf: 'In neuem Tab öffnen',
       downloadPdf: 'PDF herunterladen',
       fullRulebook: 'Gesamtregelwerk',
@@ -544,11 +564,14 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       importError: 'Fehler beim Importieren der Datei. Ungültiges JSON.',
       resetGame: 'Laufende Partie zurücksetzen',
       version: "Frantic Pandora's Box Begleiter v2.0",
-      copyright: 'Inoffizielle Begleit-App — Basierend auf Frantic & Pandora\'s Box von Rulefactory',
+      copyright:
+        "Inoffizielle Begleit-App — Basierend auf Frantic & Pandora's Box von Rulefactory",
       aboutLegalTitle: 'Über & Rechtliches',
       disclaimerTitle: 'Rechtlicher Hinweis & Disclaimer',
-      fullDisclaimer: "Pandora's Box ist ein von Rulefactory entwickeltes und veröffentlichtes Spiel. Diese Website ist ein inoffizielles, nicht-kommerzielles Begleitwerkzeug, das ausschließlich zur Punktezählung und als Regelreferenz dient. Sie steht in keiner Verbindung zu Rulefactory und wird von diesen weder unterstützt noch gesponsert. Alle Marken, Logos und urheberrechtlich geschützten Materialien gehören ihren jeweiligen Eigentümern.",
-      disclaimerShort: "Inoffizielle, nicht-kommerzielle Begleit-App für Pandora's Box & Frantic von Rulefactory.",
+      fullDisclaimer:
+        "Pandora's Box ist ein von Rulefactory entwickeltes und veröffentlichtes Spiel. Diese Website ist ein inoffizielles, nicht-kommerzielles Begleitwerkzeug, das ausschließlich zur Punktezählung und als Regelreferenz dient. Sie steht in keiner Verbindung zu Rulefactory und wird von diesen weder unterstützt noch gesponsert. Alle Marken, Logos und urheberrechtlich geschützten Materialien gehören ihren jeweiligen Eigentümern.",
+      disclaimerShort:
+        "Inoffizielle, nicht-kommerzielle Begleit-App für Pandora's Box & Frantic von Rulefactory.",
       visitRulefactory: 'Offizielle Rulefactory-Website',
       unofficialNotice: 'Inoffizielles Begleitwerkzeug',
     },
@@ -581,7 +604,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
     },
     setup: {
       title: 'Configurazione Partita',
-      description: 'Configura da 2 a 8 giocatori e scegli il limite ufficiale di punti.',
+      description:
+        'Configura da 2 a 8 giocatori e scegli il limite ufficiale di punti.',
       playerCount: 'Giocatori',
       addPlayer: 'Aggiungi Giocatore',
       playerName: 'Nome',
@@ -595,13 +619,15 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       points: 'pt',
       pts: 'pt',
       customPlaceholder: '150',
-      targetScoreDesc: 'Limiti ufficiali: 2-4 giocatori (137, 154, 179) / 5-8 giocatori (113, 137, 154).',
+      targetScoreDesc:
+        'Limiti ufficiali: 2-4 giocatori (137, 154, 179) / 5-8 giocatori (113, 137, 154).',
       startMatch: 'Inizia Partita',
       resetMatch: 'Azzera Partita',
       newGame: 'Nuova Partita',
       newMatch: 'Nuovo Match',
       confirmResetTitle: 'Resettare la partita?',
-      confirmResetMessage: 'Sei sicuro di voler cancellare tutti i punteggi? Operazione irreversibile.',
+      confirmResetMessage:
+        'Sei sicuro di voler cancellare tutti i punteggi? Operazione irreversibile.',
       cancel: 'Annulla',
       confirm: 'Conferma',
     },
@@ -614,9 +640,11 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       targetLimit: 'Limite',
       eliminationLimit: 'Limite Partita',
       limitHelpTitle: 'Limite Punti',
-      limitHelpDesc: 'Il limite massimo di punti cumulativi che determina la fine della partita. Quando al termine di un round almeno un giocatore raggiunge o supera questa soglia, la partita termina. Vince chi ha meno punti!',
+      limitHelpDesc:
+        'Il limite massimo di punti cumulativi che determina la fine della partita. Quando al termine di un round almeno un giocatore raggiunge o supera questa soglia, la partita termina. Vince chi ha meno punti!',
       dangerHelpTitle: 'Zona Pericolo',
-      dangerHelpDesc: 'I giocatori a 20 punti o meno dalla soglia limite sono nella Zona Pericolo. Carte penalizzanti come Fuck You (+42) o carte nere (punti raddoppiati) a fine round possono far superare la soglia e chiudere la partita!',
+      dangerHelpDesc:
+        'I giocatori a 20 punti o meno dalla soglia limite sono nella Zona Pericolo. Carte penalizzanti come Fuck You (+42) o carte nere (punti raddoppiati) a fine round possono far superare la soglia e chiudere la partita!',
       historyTitle: 'Storico Round',
       undoLastRound: 'Annulla Ultimo',
       undoRound: 'Annulla Ultimo Round',
@@ -650,7 +678,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       mimicryCard: 'Mimicry (7 pt)',
       eventsAndModifiers: 'Modificatori Evento',
       doomsdayToggle: 'Giorno del Giudizio (Tutti 50 pt)',
-      doomsdayHint: 'Imposta i punti di tutti a esattamente 50 per questo round.',
+      doomsdayHint:
+        'Imposta i punti di tutti a esattamente 50 per questo round.',
       timeBombModifier: 'Bomba a Orologeria',
       timeBombNone: 'Nessuno / Inattivo',
       timeBombWinner: 'Bonus Vincitore (-10 pt)',
@@ -697,9 +726,11 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       guideTab: 'Guida & Regolamento',
       dictionaryTab: 'Dizionario delle Carte',
       officialPdfTitle: 'Regolamento Ufficiale Rulefactory',
-      officialPdfDesc: 'Visualizza o scarica il regolamento ufficiale completo di 22 pagine di Pandora’s Box.',
+      officialPdfDesc:
+        'Visualizza o scarica il regolamento ufficiale completo di 22 pagine di Pandora’s Box.',
       overviewPdfTitle: 'Carte Riassuntive Ufficiali',
-      overviewPdfDesc: 'Schede di consultazione rapida con tutti gli effetti delle carte e tempi di gioco.',
+      overviewPdfDesc:
+        'Schede di consultazione rapida con tutti gli effetti delle carte e tempi di gioco.',
       openPdf: 'Apri in una nuova scheda',
       downloadPdf: 'Scarica PDF',
       fullRulebook: 'Regolamento Completo',
@@ -729,18 +760,22 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       importError: 'Impossibile importare il file. JSON non valido.',
       resetGame: 'Azzera Partita Corrente',
       version: "Frantic Pandora's Box Companion v2.0",
-      copyright: 'Companion non ufficiale — Basato su Frantic & Pandora\'s Box di Rulefactory',
+      copyright:
+        "Companion non ufficiale — Basato su Frantic & Pandora's Box di Rulefactory",
       aboutLegalTitle: 'Informazioni & Note Legali',
       disclaimerTitle: 'Disclaimer Legale',
-      fullDisclaimer: "Pandora's Box è un gioco creato e pubblicato da Rulefactory. Questo sito web è uno strumento complementare non ufficiale e non commerciale, progettato esclusivamente per il conteggio dei punti e la consultazione delle regole. Non è affiliato, approvato o sponsorizzato da Rulefactory. Tutti i marchi, loghi e materiali protetti da copyright appartengono ai rispettivi proprietari.",
-      disclaimerShort: "App complementare non ufficiale e non commerciale per Pandora's Box & Frantic di Rulefactory.",
+      fullDisclaimer:
+        "Pandora's Box è un gioco creato e pubblicato da Rulefactory. Questo sito web è uno strumento complementare non ufficiale e non commerciale, progettato esclusivamente per il conteggio dei punti e la consultazione delle regole. Non è affiliato, approvato o sponsorizzato da Rulefactory. Tutti i marchi, loghi e materiali protetti da copyright appartengono ai rispettivi proprietari.",
+      disclaimerShort:
+        "App complementare non ufficiale e non commerciale per Pandora's Box & Frantic di Rulefactory.",
       visitRulefactory: 'Sito Ufficiale Rulefactory',
       unofficialNotice: 'Strumento Complementare Non Ufficiale',
     },
     gameOver: {
       title: 'Partita Terminata!',
       congratulations: 'Vittoria!',
-      winnerSubtitle: 'vince la partita con il minor numero di punti di penalità!',
+      winnerSubtitle:
+        'vince la partita con il minor numero di punti di penalità!',
       lowestPoints: 'Punteggio Vincitore',
       finalStandings: 'Classifica Finale',
       roundsPlayed: 'Round Giocati',
@@ -766,7 +801,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
     },
     setup: {
       title: 'Configuration de la Partie',
-      description: 'Configurez de 2 à 8 joueurs et choisissez la limite officielle.',
+      description:
+        'Configurez de 2 à 8 joueurs et choisissez la limite officielle.',
       playerCount: 'Joueurs',
       addPlayer: 'Ajouter un Joueur',
       playerName: 'Nom',
@@ -780,13 +816,15 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       points: 'pts',
       pts: 'pts',
       customPlaceholder: '150',
-      targetScoreDesc: 'Limites officielles : 2-4 joueurs (137, 154, 179) / 5-8 joueurs (113, 137, 154).',
+      targetScoreDesc:
+        'Limites officielles : 2-4 joueurs (137, 154, 179) / 5-8 joueurs (113, 137, 154).',
       startMatch: 'Démarrer la Partie',
       resetMatch: 'Réinitialiser la Partie',
       newGame: 'Nouvelle Partie',
       newMatch: 'Nouveau Match',
       confirmResetTitle: 'Réinitialiser ?',
-      confirmResetMessage: 'Voulez-vous vraiment effacer tous les scores ? Irréversible.',
+      confirmResetMessage:
+        'Voulez-vous vraiment effacer tous les scores ? Irréversible.',
       cancel: 'Annuler',
       confirm: 'Confirmer',
     },
@@ -799,9 +837,11 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       targetLimit: 'Limite',
       eliminationLimit: 'Limite de Fin',
       limitHelpTitle: 'Limite de Points',
-      limitHelpDesc: 'Le plafond de points cumulés qui met fin à la partie. Dès qu’au moins un joueur atteint ou dépasse cette limite à la fin d’une manche, la partie s’arrête. Le joueur ayant le moins de points l’emporte !',
+      limitHelpDesc:
+        'Le plafond de points cumulés qui met fin à la partie. Dès qu’au moins un joueur atteint ou dépasse cette limite à la fin d’une manche, la partie s’arrête. Le joueur ayant le moins de points l’emporte !',
       dangerHelpTitle: 'Zone de Danger',
-      dangerHelpDesc: 'Les joueurs à 20 points ou moins de la limite sont en zone de danger. Conserver des cartes pénalisantes comme Fuck You (+42) ou des cartes noires (points doublés) peut rapidement dépasser la limite !',
+      dangerHelpDesc:
+        'Les joueurs à 20 points ou moins de la limite sont en zone de danger. Conserver des cartes pénalisantes comme Fuck You (+42) ou des cartes noires (points doublés) peut rapidement dépasser la limite !',
       historyTitle: 'Historique des Manches',
       undoLastRound: 'Annuler Dernière',
       undoRound: 'Annuler Dernière Manche',
@@ -835,14 +875,16 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       mimicryCard: 'Mimicry (7 pts)',
       eventsAndModifiers: 'Modificateurs d’Événements',
       doomsdayToggle: 'Fin du Monde / Doomsday (Tous 50 pts)',
-      doomsdayHint: 'Attribue exactement 50 points à tous les joueurs pour cette manche.',
+      doomsdayHint:
+        'Attribue exactement 50 points à tous les joueurs pour cette manche.',
       timeBombModifier: 'Bombe à Retardement',
       timeBombNone: 'Aucun / Inactif',
       timeBombWinner: 'Bonus Vainqueur (-10 pts)',
       timeBombLoser: 'Pénalité Perdant (+10 pts)',
       timeBombExpired: 'Temps Écoulé (Points x2)',
       customModifier: 'Modificateur Personnalisé (+/- pts)',
-      customModifierHint: 'Modificateur optionnel pour événements personnalisés',
+      customModifierHint:
+        'Modificateur optionnel pour événements personnalisés',
       cancel: 'Annuler',
       saveChanges: 'Enregistrer les modifications',
       quickZero: 'Réinitialiser',
@@ -882,9 +924,11 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       guideTab: 'Guide des Règles',
       dictionaryTab: 'Dictionnaire des Cartes',
       officialPdfTitle: 'Règles Officielles Rulefactory',
-      officialPdfDesc: 'Consultez ou téléchargez le livret complet de 22 pages des règles officielles de Pandora’s Box.',
+      officialPdfDesc:
+        'Consultez ou téléchargez le livret complet de 22 pages des règles officielles de Pandora’s Box.',
       overviewPdfTitle: 'Cartes de Référence Officielles',
-      overviewPdfDesc: 'Cartes mémo avec un résumé des effets de toutes les cartes et leurs timings.',
+      overviewPdfDesc:
+        'Cartes mémo avec un résumé des effets de toutes les cartes et leurs timings.',
       openPdf: 'Ouvrir dans un nouvel onglet',
       downloadPdf: 'Télécharger le PDF',
       fullRulebook: 'Règles Complètes',
@@ -914,18 +958,22 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       importError: 'Échec de l’importation. JSON invalide.',
       resetGame: 'Réinitialiser la Partie',
       version: "Compagnon Frantic Pandora's Box v2.0",
-      copyright: 'Compagnon non-officiel — Basé sur Frantic & Pandora\'s Box par Rulefactory',
+      copyright:
+        "Compagnon non-officiel — Basé sur Frantic & Pandora's Box par Rulefactory",
       aboutLegalTitle: 'À propos & Mentions Légales',
       disclaimerTitle: 'Avertissement Légal',
-      fullDisclaimer: "Pandora's Box est un jeu créé et publié par Rulefactory. Ce site est un outil compagnon non officiel et non commercial, conçu uniquement pour le décompte des points et la consultation des règles. Il n'est ni affilié, ni approuvé, ni sponsorisé par Rulefactory. Toutes les marques, logos et contenus protégés par le droit d'auteur appartiennent à leurs propriétaires respectifs.",
-      disclaimerShort: "Application compagnon non officielle et non commerciale pour Pandora's Box & Frantic par Rulefactory.",
+      fullDisclaimer:
+        "Pandora's Box est un jeu créé et publié par Rulefactory. Ce site est un outil compagnon non officiel et non commercial, conçu uniquement pour le décompte des points et la consultation des règles. Il n'est ni affilié, ni approuvé, ni sponsorisé par Rulefactory. Toutes les marques, logos et contenus protégés par le droit d'auteur appartiennent à leurs propriétaires respectifs.",
+      disclaimerShort:
+        "Application compagnon non officielle et non commerciale pour Pandora's Box & Frantic par Rulefactory.",
       visitRulefactory: 'Site Officiel de Rulefactory',
       unofficialNotice: 'Outil Compagnon Non Officiel',
     },
     gameOver: {
       title: 'Partie Terminée !',
       congratulations: 'Victoire !',
-      winnerSubtitle: 'remporte la partie avec le moins de points de pénalité !',
+      winnerSubtitle:
+        'remporte la partie avec le moins de points de pénalité !',
       lowestPoints: 'Score Vainqueur',
       finalStandings: 'Classement Final',
       roundsPlayed: 'Manches Jouées',
