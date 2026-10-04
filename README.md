@@ -511,7 +511,10 @@ Simply connect your GitHub repository to Netlify and deployments will trigger au
 
 ## ⚖️ Disclaimer & Credits
 
-- **Frantic** and **Pandora's Box** are board and card games created and copyrighted by **[Rulefactory](https://rulefactory.ch/)**.
+> **Legal Disclaimer:**
+> Pandora's Box is a game created and published by Rulefactory. This website is an unofficial, non-commercial companion tool designed solely for scorekeeping and rule reference. It is not affiliated with, endorsed, or sponsored by Rulefactory. All trademarks, logos, and copyrighted materials belong to their respective owners.
+
+- **Frantic** and **Pandora's Box** are card games created and copyrighted by **[Rulefactory](https://rulefactory.ch/)** (Rulefactory GmbH).
 - All official game names, card designs, rules, and trademarks belong to their respective creators and Rulefactory.
-- This project is an unofficial open-source companion tool created by fans for fans to enhance gameplay experiences.
+- This project is an unofficial, non-commercial open-source companion tool created by fans for fans to enhance gameplay experiences.
 - Official rulebook PDFs included in the `rules/` directory are provided for offline reference during gameplay and remain the intellectual property of Rulefactory.

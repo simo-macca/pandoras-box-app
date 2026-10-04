@@ -3,6 +3,7 @@ import { useGameState } from './hooks/useGameState';
 import { useTheme } from './hooks/useTheme';
 import { Navbar } from './components/layout/Navbar';
 import { TabNavigation, ActiveTab } from './components/layout/TabNavigation';
+import { Footer } from './components/layout/Footer';
 import { Leaderboard } from './components/scoreboard/Leaderboard';
 import { GameOverModal } from './components/scoreboard/GameOverModal';
 import { HandCalculatorModal } from './components/scoring/HandCalculatorModal';
@@ -36,6 +37,7 @@ export function App() {
   const [editingRoundNumber, setEditingRoundNumber] = useState<number | null>(null);
   const [isSetupModalOpen, setIsSetupModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [settingsInitialTab, setSettingsInitialTab] = useState<'settings' | 'legal'>('settings');
   const [isGameOverModalDismissed, setIsGameOverModalDismissed] = useState(false);
 
   const winner = playerStats[0] || null;
@@ -48,6 +50,11 @@ export function App() {
   const handleOpenEditRound = (roundNumber: number) => {
     setEditingRoundNumber(roundNumber);
     setIsScoreModalOpen(true);
+  };
+
+  const handleOpenSettings = (tab: 'settings' | 'legal' = 'settings') => {
+    setSettingsInitialTab(tab);
+    setIsSettingsModalOpen(true);
   };
 
   const handleSubmitScores = (scores: Record<string, HandScore>) => {
@@ -89,7 +96,7 @@ export function App() {
         targetScore={gameState.config.targetScore}
         onOpenSetup={() => setIsSetupModalOpen(true)}
         onStartNewGame={() => setIsSetupModalOpen(true)}
-        onOpenSettings={() => setIsSettingsModalOpen(true)}
+        onOpenSettings={() => handleOpenSettings('settings')}
       />
 
       {/* Main Tab Bar */}
@@ -132,6 +139,12 @@ export function App() {
         {activeTab === 'rules' && <CardDictionary language={language} />}
       </main>
 
+      {/* Subtle Bottom Footer */}
+      <Footer
+        language={language}
+        onOpenDisclaimer={() => handleOpenSettings('legal')}
+      />
+
       {/* End-of-Round Card Hand Scoring Modal */}
       <HandCalculatorModal
         isOpen={isScoreModalOpen}
@@ -157,7 +170,7 @@ export function App() {
         language={language}
       />
 
-      {/* Settings Modal */}
+      {/* Settings & Legal Disclaimer Modal */}
       <SettingsModal
         isOpen={isSettingsModalOpen}
         onClose={() => setIsSettingsModalOpen(false)}
@@ -168,6 +181,7 @@ export function App() {
         onExport={exportGameState}
         onImport={importGameState}
         onResetMatch={resetCurrentGame}
+        initialTab={settingsInitialTab}
       />
 
       {/* Game Over Celebration Modal */}
