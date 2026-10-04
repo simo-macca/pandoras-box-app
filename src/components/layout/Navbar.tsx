@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { Volume2, VolumeX, Settings, Sparkles } from 'lucide-react';
+import React from 'react';
+import { Settings, Sparkles } from 'lucide-react';
 import { Language, ThemeMode } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
 import { ThemeToggle } from './ThemeToggle';
-import { soundEffects } from '../../utils/sound';
 
 interface NavbarProps {
   language: Language;
@@ -25,15 +24,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   onThemeChange,
 }) => {
   const t = TRANSLATIONS[language];
-  const [soundEnabled, setSoundEnabled] = useState(soundEffects.enabled);
-
-  const toggleSound = () => {
-    soundEffects.enabled = !soundEnabled;
-    setSoundEnabled(!soundEnabled);
-    if (!soundEnabled) {
-      soundEffects.playClick();
-    }
-  };
 
   return (
     <header className="sticky top-0 z-30 w-full border-b border-neutral-200 bg-white/90 shadow-sm backdrop-blur-md transition-colors dark:border-neutral-800 dark:bg-neutral-900/90">
@@ -66,22 +56,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
           {theme && onThemeChange && (
-            <ThemeToggle theme={theme} onThemeChange={onThemeChange} />
+            <div className="hidden md:inline-flex">
+              <ThemeToggle theme={theme} onThemeChange={onThemeChange} />
+            </div>
           )}
-
-          <button
-            type="button"
-            onClick={toggleSound}
-            aria-label={soundEnabled ? 'Mute audio' : 'Enable audio'}
-            className="rounded-xl border border-neutral-200 bg-neutral-100 p-2 text-neutral-600 transition-colors hover:bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
-            title={soundEnabled ? 'Mute sound' : 'Enable sound'}
-          >
-            {soundEnabled ? (
-              <Volume2 className="h-4 w-4 shrink-0 text-amber-500" />
-            ) : (
-              <VolumeX className="h-4 w-4 shrink-0 text-neutral-400" />
-            )}
-          </button>
 
           <button
             type="button"

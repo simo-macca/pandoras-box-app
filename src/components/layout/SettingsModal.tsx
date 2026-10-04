@@ -20,6 +20,7 @@ import { Language, ThemeMode } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
 import { soundEffects } from '../../utils/sound';
 import { LanguageSelector } from './LanguageSelector';
+import toast from 'react-hot-toast';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -30,7 +31,8 @@ interface SettingsModalProps {
   onThemeChange: (theme: ThemeMode) => void;
   onExport: () => string;
   onImport: (json: string) => boolean;
-  onResetMatch: () => void;
+  onResetMatch?: () => void;
+  onResetData?: () => void;
   initialTab?: 'settings' | 'legal';
 }
 
@@ -44,6 +46,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onExport,
   onImport,
   onResetMatch,
+  onResetData,
   initialTab = 'settings',
 }) => {
   const [activeTab, setActiveTab] = useState<'settings' | 'legal'>(initialTab);
@@ -80,6 +83,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     soundEffects.playClick();
+    toast.success(t.settings.exportSuccess);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,12 +97,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         const success = onImport(content);
         if (success) {
           setImportStatus('success');
+          toast.success(t.settings.importSuccess);
           setTimeout(() => {
             setImportStatus('idle');
             onClose();
           }, 1500);
         } else {
           setImportStatus('error');
+          toast.error(t.settings.importError);
           setTimeout(() => setImportStatus('idle'), 3000);
         }
       }
@@ -347,7 +353,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 ) : (
                   <div className="space-y-3 rounded-2xl border border-red-500/40 bg-red-500/10 p-4">
                     <p className="text-center text-xs font-semibold text-red-600 dark:text-red-400">
-                      {t.setup.confirmResetMessage}
+                      {t.settings.confirmResetDataMessage ||
+                        t.setup.confirmResetMessage}
                     </p>
                     <div className="flex gap-2">
                       <button
@@ -360,7 +367,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       <button
                         type="button"
                         onClick={() => {
-                          onResetMatch();
+                          if (onResetData) {
+                            onResetData();
+                          } else if (onResetMatch) {
+                            onResetMatch();
+                          }
                           setShowResetConfirm(false);
                           onClose();
                         }}

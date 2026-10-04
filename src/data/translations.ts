@@ -33,6 +33,7 @@ export interface TranslationStrings {
     points: string;
     pts: string;
     customPlaceholder: string;
+    minScoreError: string;
     targetScoreDesc: string;
     startMatch: string;
     resetMatch: string;
@@ -108,6 +109,9 @@ export interface TranslationStrings {
     handPoints: string;
     submitRound: string;
     totalHandPoints: string;
+    roundAddedSuccess: string;
+    roundModifiedSuccess: string;
+    roundDeletedSuccess: string;
   };
   rulecards: {
     title: string;
@@ -167,10 +171,13 @@ export interface TranslationStrings {
     hapticsEnabled: string;
     dataManagement: string;
     exportBackup: string;
+    exportSuccess: string;
     importBackup: string;
     importSuccess: string;
     importError: string;
     resetGame: string;
+    confirmResetDataMessage: string;
+    resetDataSuccess: string;
     version: string;
     copyright: string;
     aboutLegalTitle: string;
@@ -225,6 +232,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       points: 'pts',
       pts: 'pts',
       customPlaceholder: '150',
+      minScoreError:
+        'The target score must be an integer of at least 50 points.',
       targetScoreDesc:
         'Official limits: 2-4 players (137, 154, 179) / 5-8 players (113, 137, 154).',
       startMatch: 'Start Match',
@@ -299,6 +308,9 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       handPoints: 'Hand Points',
       submitRound: 'Save Round Scores',
       totalHandPoints: 'Round Score',
+      roundAddedSuccess: 'Round scored successfully!',
+      roundModifiedSuccess: 'Round updated successfully!',
+      roundDeletedSuccess: 'Round deleted successfully!',
     },
     rulecards: {
       title: "Pandora's Box Rule Cards",
@@ -361,10 +373,14 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       hapticsEnabled: 'Haptic Feedback',
       dataManagement: 'Backup & Restore',
       exportBackup: 'Export Backup (JSON)',
+      exportSuccess: 'Game data exported successfully!',
       importBackup: 'Import Backup (JSON)',
       importSuccess: 'Game state restored successfully!',
       importError: 'Failed to import backup file. Invalid JSON.',
-      resetGame: 'Reset Current Match',
+      resetGame: 'Reset Data',
+      confirmResetDataMessage:
+        'Are you sure you want to reset all data (scores, players, cards)? This cannot be undone.',
+      resetDataSuccess: 'All game data has been reset to defaults.',
       version: "Frantic Pandora's Box Companion v2.0",
       copyright:
         "Unofficial Companion — Based on Frantic & Pandora's Box by Rulefactory",
@@ -419,6 +435,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       points: 'Pkt',
       pts: 'Pkt',
       customPlaceholder: '150',
+      minScoreError:
+        'Das Punktelimit muss eine ganze Zahl von mindestens 50 Punkten sein.',
       targetScoreDesc:
         'Offizielle Limits: 2-4 Spieler (137, 154, 179) / 5-8 Spieler (113, 137, 154).',
       startMatch: 'Partie starten',
@@ -494,6 +512,9 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       handPoints: 'Handpunkte',
       submitRound: 'Rundenergebnis speichern',
       totalHandPoints: 'Rundenpunkte',
+      roundAddedSuccess: 'Runde erfolgreich gewertet!',
+      roundModifiedSuccess: 'Runde erfolgreich aktualisiert!',
+      roundDeletedSuccess: 'Runde erfolgreich gelöscht!',
     },
     rulecards: {
       title: "Pandora's Box Regelkarten",
@@ -556,10 +577,15 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       hapticsEnabled: 'Vibration',
       dataManagement: 'Sicherung & Wiederherstellung',
       exportBackup: 'Backup exportieren (JSON)',
+      exportSuccess: 'Spieldaten erfolgreich exportiert!',
       importBackup: 'Backup importieren (JSON)',
       importSuccess: 'Spielstand erfolgreich importiert!',
       importError: 'Fehler beim Importieren der Datei. Ungültiges JSON.',
-      resetGame: 'Laufende Partie zurücksetzen',
+      resetGame: 'Daten zurücksetzen',
+      confirmResetDataMessage:
+        'Möchtest du wirklich alle Daten (Punkte, Spielernamen, Karten) zurücksetzen? Dies kann nicht rückgängig gemacht werden.',
+      resetDataSuccess:
+        'Alle Spieldaten wurden auf die Standardwerte zurückgesetzt.',
       version: "Frantic Pandora's Box Begleiter v2.0",
       copyright:
         "Inoffizielle Begleit-App — Basierend auf Frantic & Pandora's Box von Rulefactory",
@@ -614,6 +640,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       points: 'pt',
       pts: 'pt',
       customPlaceholder: '150',
+      minScoreError:
+        'Il punteggio deve essere un numero intero maggiore o uguale a 50.',
       targetScoreDesc:
         'Limiti ufficiali: 2-4 giocatori (137, 154, 179) / 5-8 giocatori (113, 137, 154).',
       startMatch: 'Inizia Partita',
@@ -689,6 +717,9 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       handPoints: 'Punti Mano',
       submitRound: 'Salva Risultati Round',
       totalHandPoints: 'Punti Round',
+      roundAddedSuccess: 'Round registrato con successo!',
+      roundModifiedSuccess: 'Round modificato con successo!',
+      roundDeletedSuccess: 'Round eliminato con successo!',
     },
     rulecards: {
       title: "Carte Regola Pandora's Box",
@@ -750,10 +781,15 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       hapticsEnabled: 'Feedback Aptico',
       dataManagement: 'Backup & Ripristino',
       exportBackup: 'Esporta Backup (JSON)',
+      exportSuccess: 'Dati di gioco esportati con successo!',
       importBackup: 'Importa Backup (JSON)',
       importSuccess: 'Dati di gioco ripristinati con successo!',
       importError: 'Impossibile importare il file. JSON non valido.',
-      resetGame: 'Azzera Partita Corrente',
+      resetGame: 'Ripristina Dati',
+      confirmResetDataMessage:
+        'Sei sicuro di voler ripristinare tutti i dati (punti, nomi giocatori, carte)? Questa operazione non può essere annullata.',
+      resetDataSuccess:
+        'Tutti i dati di gioco sono stati ripristinati allo stato iniziale.',
       version: "Frantic Pandora's Box Companion v2.0",
       copyright:
         "Companion non ufficiale — Basato su Frantic & Pandora's Box di Rulefactory",
@@ -809,6 +845,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       points: 'pts',
       pts: 'pts',
       customPlaceholder: '150',
+      minScoreError:
+        'La limite de points doit être un nombre entier supérieur ou égal à 50.',
       targetScoreDesc:
         'Limites officielles : 2-4 joueurs (137, 154, 179) / 5-8 joueurs (113, 137, 154).',
       startMatch: 'Démarrer la Partie',
@@ -885,6 +923,9 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       handPoints: 'Points de Main',
       submitRound: 'Enregistrer la Manche',
       totalHandPoints: 'Points de Manche',
+      roundAddedSuccess: 'Manche enregistrée avec succès !',
+      roundModifiedSuccess: 'Manche mise à jour avec succès !',
+      roundDeletedSuccess: 'Manche supprimée avec succès !',
     },
     rulecards: {
       title: "Cartes Règle Pandora's Box",
@@ -946,10 +987,15 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       hapticsEnabled: 'Vibration Haptique',
       dataManagement: 'Sauvegarde & Restauration',
       exportBackup: 'Exporter Sauvegarde (JSON)',
+      exportSuccess: 'Données de jeu exportées avec succès !',
       importBackup: 'Importer Sauvegarde (JSON)',
       importSuccess: 'Partie restaurée avec succès !',
       importError: 'Échec de l’importation. JSON invalide.',
-      resetGame: 'Réinitialiser la Partie',
+      resetGame: 'Réinitialiser les Données',
+      confirmResetDataMessage:
+        'Voulez-vous vraiment réinitialiser toutes les données (points, noms des joueurs, cartes) ? Cette action est irréversible.',
+      resetDataSuccess:
+        'Toutes les données de jeu ont été réinitialisées par défaut.',
       version: "Compagnon Frantic Pandora's Box v2.0",
       copyright:
         "Compagnon non-officiel — Basé sur Frantic & Pandora's Box par Rulefactory",

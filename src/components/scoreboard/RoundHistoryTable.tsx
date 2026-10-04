@@ -10,7 +10,6 @@ import {
   Bomb,
 } from 'lucide-react';
 import { Player, RoundEntry, Language } from '../../types/game';
-import { getPlayerColorTheme } from '../../utils/colors';
 import { TRANSLATIONS } from '../../data/translations';
 import { RULE_CARDS_DATA } from '../../data/ruleCardsData';
 import { soundEffects } from '../../utils/sound';
@@ -163,7 +162,6 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
               <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 sm:gap-2">
                 {players.map((player) => {
                   const score = round.scores[player.id];
-                  const theme = getPlayerColorTheme(player.color);
                   if (!score) return null;
 
                   return (
@@ -177,10 +175,6 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                     >
                       <div className="mb-1 flex items-center justify-between">
                         <div className="flex min-w-0 items-center gap-1.5">
-                          <div
-                            className="h-2.5 w-2.5 shrink-0 rounded-full"
-                            style={{ backgroundColor: theme.hex }}
-                          />
                           <span className="truncate text-xs font-bold text-neutral-800 dark:text-neutral-200">
                             {player.name}
                           </span>

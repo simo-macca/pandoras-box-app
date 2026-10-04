@@ -42,7 +42,7 @@ export const ScoreLimitPresets: React.FC<ScoreLimitPresetsProps> = ({
   const handleCustomChange = (val: string) => {
     setCustomValue(val);
     const parsed = parseInt(val, 10);
-    if (!isNaN(parsed) && parsed > 0) {
+    if (!isNaN(parsed) && parsed >= 50) {
       onSelectLimit(parsed, 'custom');
     }
   };
@@ -100,8 +100,13 @@ export const ScoreLimitPresets: React.FC<ScoreLimitPresetsProps> = ({
           <button
             type="button"
             onClick={() => {
-              const parsed = parseInt(customValue, 10) || 150;
-              onSelectLimit(parsed, 'custom');
+              const parsed = parseInt(customValue, 10);
+              if (isNaN(parsed) || parsed < 50) {
+                setCustomValue('50');
+                onSelectLimit(50, 'custom');
+              } else {
+                onSelectLimit(parsed, 'custom');
+              }
             }}
             className={`rounded-xl border px-3 py-2 text-xs font-bold transition-all ${
               presetName === 'custom'
@@ -113,14 +118,17 @@ export const ScoreLimitPresets: React.FC<ScoreLimitPresetsProps> = ({
           </button>
           <div className="relative flex-1">
             <input
-              type="number"
-              min="10"
-              max="999"
+              type="text"
+              inputMode="numeric"
               value={customValue}
               onChange={(e) => handleCustomChange(e.target.value)}
               onFocus={() => {
-                const parsed = parseInt(customValue, 10) || 150;
-                onSelectLimit(parsed, 'custom');
+                const parsed = parseInt(customValue, 10);
+                if (!isNaN(parsed) && parsed >= 50) {
+                  onSelectLimit(parsed, 'custom');
+                } else {
+                  onSelectLimit(50, 'custom');
+                }
               }}
               placeholder={t.setup.customPlaceholder}
               className="w-full rounded-xl border border-neutral-300 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-900 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"

@@ -84,25 +84,34 @@ export interface PlayerStats extends Player {
   roundsWonCount: number;
 }
 
-const INITIAL_PLAYERS: Player[] = [
+export const INITIAL_PLAYERS: Player[] = [
   { id: 'p1', name: 'Player 1', color: 'red' },
   { id: 'p2', name: 'Player 2', color: 'blue' },
   { id: 'p3', name: 'Player 3', color: 'green' },
   { id: 'p4', name: 'Player 4', color: 'yellow' },
 ];
 
-const INITIAL_STATE: GameState = {
-  players: INITIAL_PLAYERS,
-  config: {
-    targetScore: 154,
-    presetName: 'medium',
-  },
-  rounds: [],
-  activeRuleCardIds: [],
-  isGameStarted: true,
-  isGameOver: false,
-  winnerId: null,
-};
+export function getInitialGameState(): GameState {
+  return {
+    players: [
+      { id: 'p1', name: 'Player 1', color: 'red' },
+      { id: 'p2', name: 'Player 2', color: 'blue' },
+      { id: 'p3', name: 'Player 3', color: 'green' },
+      { id: 'p4', name: 'Player 4', color: 'yellow' },
+    ],
+    config: {
+      targetScore: 154,
+      presetName: 'medium',
+    },
+    rounds: [],
+    activeRuleCardIds: [],
+    isGameStarted: true,
+    isGameOver: false,
+    winnerId: null,
+  };
+}
+
+export const INITIAL_STATE: GameState = getInitialGameState();
 
 export function useGameState() {
   const [gameState, setGameState] = useState<GameState>(() => {
@@ -110,7 +119,11 @@ export function useGameState() {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        return JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+        if (parsed?.config?.targetScore && parsed.config.targetScore < 50) {
+          parsed.config.targetScore = 50;
+        }
+        return parsed;
       }
     } catch (err) {
       console.warn('Failed to parse saved game state from localStorage:', err);
@@ -325,7 +338,11 @@ export function useGameState() {
       soundEffects.playClick();
       setGameState((prev) => {
         const finalPlayers = players || prev.players;
-        const finalConfig = config || prev.config;
+        const baseConfig = config || prev.config;
+        const finalConfig = {
+          ...baseConfig,
+          targetScore: Math.max(50, baseConfig.targetScore),
+        };
         return {
           players: finalPlayers,
           config: finalConfig,
@@ -349,6 +366,17 @@ export function useGameState() {
       isGameOver: false,
       winnerId: null,
     }));
+  }, []);
+
+  const resetAllData = useCallback(() => {
+    soundEffects.playClick();
+    const freshState = getInitialGameState();
+    setGameState(freshState);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(freshState));
+    } catch (err) {
+      console.error('Failed to reset game state in localStorage:', err);
+    }
   }, []);
 
   const exportGameState = useCallback((): string => {
@@ -406,6 +434,7 @@ export function useGameState() {
     setActiveRuleCardIds,
     startNewGame,
     resetCurrentGame,
+    resetAllData,
     exportGameState,
     importGameState,
   };

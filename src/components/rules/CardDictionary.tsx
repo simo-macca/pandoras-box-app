@@ -158,13 +158,13 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
       ) : (
         <div className="space-y-6">
           {/* Search Header */}
-          <div className="space-y-4 rounded-3xl border border-neutral-800 bg-neutral-900/90 p-6 text-white shadow-xl">
+          <div className="space-y-4 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900/90 sm:p-6">
             <div>
-              <h2 className="flex items-center gap-2 text-xl font-black sm:text-2xl">
-                <Sparkles className="h-6 w-6 text-amber-400" />
+              <h2 className="flex items-center gap-2 text-xl font-black text-neutral-900 dark:text-white sm:text-2xl">
+                <Sparkles className="h-6 w-6 text-amber-500 dark:text-amber-400" />
                 <span>{t.rules.title}</span>
               </h2>
-              <p className="mt-1 text-xs text-neutral-400 sm:text-sm">
+              <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400 sm:text-sm">
                 Search cards, point values, events, and Pandora's Box rules.
               </p>
             </div>
@@ -179,13 +179,13 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t.rules.searchPlaceholder}
-                className="w-full rounded-xl border border-neutral-700 bg-neutral-800 py-2.5 pl-10 pr-9 text-sm font-medium text-white transition-all placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-2.5 pl-10 pr-9 text-sm font-medium text-neutral-900 transition-all placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 rounded-md p-1 text-neutral-400 transition-colors hover:text-white"
+                  className="absolute right-3 rounded-md p-1 text-neutral-400 transition-colors hover:text-neutral-700 dark:hover:text-white"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -196,7 +196,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
             <div className="flex items-center gap-2 pt-1">
               <label
                 htmlFor="category-select"
-                className="shrink-0 text-xs font-bold uppercase tracking-wider text-neutral-400"
+                className="shrink-0 text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400"
               >
                 Category:
               </label>
@@ -208,7 +208,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                     soundEffects.playClick();
                     setActiveCategory(e.target.value as CategoryType);
                   }}
-                  className="w-full appearance-none rounded-xl border border-neutral-700 bg-neutral-800 py-2 pl-3.5 pr-8 text-xs font-bold text-white shadow-sm transition-all focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 sm:text-sm"
+                  className="w-full appearance-none rounded-xl border border-neutral-200 bg-neutral-50 py-2 pl-3.5 pr-8 text-xs font-bold text-neutral-900 shadow-sm transition-all focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white sm:text-sm"
                 >
                   <option value="all">🌟 {t.rules.allCategories}</option>
                   <option value="specials">✨ {t.rules.specials}</option>
@@ -224,9 +224,9 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
           </div>
 
           {totalResults === 0 ? (
-            <div className="space-y-2 rounded-3xl border border-neutral-800 bg-neutral-900 p-8 text-center text-neutral-500">
-              <HelpCircle className="mx-auto h-8 w-8 text-neutral-600" />
-              <p className="text-sm font-bold text-neutral-300">
+            <div className="space-y-2 rounded-3xl border border-neutral-200 bg-white p-8 text-center text-neutral-500 dark:border-neutral-800 dark:bg-neutral-900">
+              <HelpCircle className="mx-auto h-8 w-8 text-neutral-400 dark:text-neutral-600" />
+              <p className="text-sm font-bold text-neutral-800 dark:text-neutral-300">
                 {t.rules.noResults}
               </p>
             </div>
@@ -235,10 +235,10 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
               {/* Special Cards Section */}
               {filteredCards.length > 0 && (
                 <div className="space-y-3">
-                  <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-neutral-400">
-                    <Sparkles className="h-4 w-4 text-amber-400" />
+                  <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                    <Sparkles className="h-4 w-4 text-amber-500 dark:text-amber-400" />
                     <span>{t.rules.specials}</span>
-                    <span className="font-mono text-xs text-neutral-600">
+                    <span className="font-mono text-xs text-neutral-400 dark:text-neutral-600">
                       ({filteredCards.length})
                     </span>
                   </h3>
@@ -246,21 +246,21 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                     {filteredCards.map((card) => (
                       <div
                         key={card.id}
-                        className="space-y-2 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-4 transition-all hover:border-neutral-700"
+                        className="space-y-2 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-neutral-700"
                       >
                         <div className="flex items-center justify-between">
-                          <h4 className="text-base font-bold text-white">
+                          <h4 className="text-base font-bold text-neutral-900 dark:text-white">
                             {card.name[language] || card.name.en}
                           </h4>
-                          <span className="rounded-full border border-amber-500/30 bg-amber-500/15 px-2.5 py-0.5 text-xs font-black text-amber-400">
+                          <span className="rounded-full border border-amber-500/30 bg-amber-500/15 px-2.5 py-0.5 text-xs font-black text-amber-600 dark:text-amber-400">
                             {card.points} {t.rules.pts}
                           </span>
                         </div>
-                        <p className="text-xs leading-relaxed text-neutral-300">
+                        <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
                           {card.description[language] || card.description.en}
                         </p>
                         {card.tip && (
-                          <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-2 text-[11px] text-amber-400/90">
+                          <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-2 text-[11px] text-amber-600 dark:text-amber-400/90">
                             💡 {card.tip[language] || card.tip.en}
                           </div>
                         )}
@@ -273,10 +273,10 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
               {/* Events Section */}
               {filteredEvents.length > 0 && (
                 <div className="space-y-3">
-                  <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-neutral-400">
-                    <Flame className="h-4 w-4 text-rose-400" />
+                  <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                    <Flame className="h-4 w-4 text-rose-500 dark:text-rose-400" />
                     <span>{t.rules.events}</span>
-                    <span className="font-mono text-xs text-neutral-600">
+                    <span className="font-mono text-xs text-neutral-400 dark:text-neutral-600">
                       ({filteredEvents.length})
                     </span>
                   </h3>
@@ -284,17 +284,17 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                     {filteredEvents.map((ev) => (
                       <div
                         key={ev.id}
-                        className="space-y-2 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-4 transition-all hover:border-neutral-700"
+                        className="space-y-2 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-neutral-700"
                       >
                         <div className="flex items-center justify-between">
-                          <h4 className="text-base font-bold text-white">
+                          <h4 className="text-base font-bold text-neutral-900 dark:text-white">
                             {ev.name[language] || ev.name.en}
                           </h4>
-                          <span className="rounded-full border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-rose-400">
+                          <span className="rounded-full border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-rose-600 dark:text-rose-400">
                             {ev.severity}
                           </span>
                         </div>
-                        <p className="text-xs leading-relaxed text-neutral-300">
+                        <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
                           {ev.description[language] || ev.description.en}
                         </p>
                       </div>
@@ -306,10 +306,10 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
               {/* Power Cards Section */}
               {filteredPowerCards.length > 0 && (
                 <div className="space-y-3">
-                  <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-neutral-400">
-                    <Zap className="h-4 w-4 text-cyan-400" />
+                  <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                    <Zap className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
                     <span>{t.rules.powerCards}</span>
-                    <span className="font-mono text-xs text-neutral-600">
+                    <span className="font-mono text-xs text-neutral-400 dark:text-neutral-600">
                       ({filteredPowerCards.length})
                     </span>
                   </h3>
@@ -317,17 +317,17 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                     {filteredPowerCards.map((pc) => (
                       <div
                         key={pc.id}
-                        className="space-y-2 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-4 transition-all hover:border-neutral-700"
+                        className="space-y-2 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-neutral-700"
                       >
                         <div className="flex items-center justify-between">
-                          <h4 className="text-base font-bold text-white">
+                          <h4 className="text-base font-bold text-neutral-900 dark:text-white">
                             {pc.name[language] || pc.name.en}
                           </h4>
-                          <span className="rounded-full border border-cyan-500/30 bg-cyan-500/15 px-2 py-0.5 text-xs font-bold text-cyan-400">
+                          <span className="rounded-full border border-cyan-500/30 bg-cyan-500/15 px-2 py-0.5 text-xs font-bold text-cyan-600 dark:text-cyan-400">
                             0 {t.rules.pts}
                           </span>
                         </div>
-                        <p className="text-xs leading-relaxed text-neutral-300">
+                        <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
                           {pc.description[language] || pc.description.en}
                         </p>
                       </div>
@@ -339,10 +339,10 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
               {/* Rule Cards Section */}
               {filteredRuleCards.length > 0 && (
                 <div className="space-y-3">
-                  <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-neutral-400">
-                    <Layers className="h-4 w-4 text-purple-400" />
+                  <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                    <Layers className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                     <span>{t.rules.ruleCards}</span>
-                    <span className="font-mono text-xs text-neutral-600">
+                    <span className="font-mono text-xs text-neutral-400 dark:text-neutral-600">
                       ({filteredRuleCards.length})
                     </span>
                   </h3>
@@ -350,16 +350,16 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                     {filteredRuleCards.map((rc) => (
                       <div
                         key={rc.id}
-                        className="space-y-2 rounded-2xl border border-neutral-800 bg-neutral-900/60 p-4 transition-all hover:border-purple-500/30"
+                        className="space-y-2 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-purple-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-purple-500/30"
                       >
-                        <h4 className="text-base font-bold text-white">
+                        <h4 className="text-base font-bold text-neutral-900 dark:text-white">
                           {rc.name[language] || rc.name.en}
                         </h4>
-                        <p className="text-xs leading-relaxed text-neutral-300">
+                        <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
                           {rc.description[language] || rc.description.en}
                         </p>
                         {rc.flavor && (
-                          <p className="border-l-2 border-purple-500/40 pl-2 text-[11px] italic text-purple-300/80">
+                          <p className="border-l-2 border-purple-500/40 pl-2 text-[11px] italic text-purple-600/80 dark:text-purple-300/80">
                             "{rc.flavor[language] || rc.flavor.en}"
                           </p>
                         )}

@@ -79,17 +79,17 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
   return (
     <div className="animate-fadeIn fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-2 backdrop-blur-md sm:p-4">
       <div
-        className="flex max-h-[90dvh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border-2 border-amber-500/60 bg-game-surface shadow-[0_0_50px_rgba(245,158,11,0.3)]"
+        className="flex max-h-[90dvh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border-2 border-amber-500/60 bg-white shadow-2xl dark:border-amber-500/60 dark:bg-neutral-900 dark:shadow-[0_0_50px_rgba(245,158,11,0.3)]"
         role="dialog"
         aria-modal="true"
         aria-labelledby="game-over-title"
       >
-        <div className="relative shrink-0 border-b border-slate-800 bg-gradient-to-b from-amber-500/20 via-slate-900/40 to-transparent p-4 text-center sm:p-6">
+        <div className="relative shrink-0 border-b border-neutral-200 bg-gradient-to-b from-amber-500/15 via-amber-500/5 to-transparent p-4 text-center dark:border-neutral-800 dark:from-amber-500/20 dark:via-neutral-900/40 sm:p-6">
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="absolute right-3 top-3 rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-800 hover:text-white sm:right-4 sm:top-4"
+            className="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white sm:right-4 sm:top-4"
           >
             <X className="h-5 w-5 shrink-0" />
           </button>
@@ -100,7 +100,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
 
           <h2
             id="game-over-title"
-            className="text-xl font-black tracking-wide text-white sm:text-2xl md:text-3xl"
+            className="text-xl font-black tracking-wide text-neutral-900 dark:text-white sm:text-2xl md:text-3xl"
           >
             {t.gameOver.title}
           </h2>
@@ -116,34 +116,34 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
             <Crown className="h-4 w-4 shrink-0 animate-bounce fill-amber-400 text-amber-400 sm:h-5 sm:w-5" />
           </div>
 
-          <p className="mx-auto mt-1 max-w-sm truncate text-xs text-slate-300">
+          <p className="mx-auto mt-1 max-w-sm truncate text-xs text-neutral-600 dark:text-slate-300">
             {t.gameOver.winnerSubtitle}
           </p>
 
-          <div className="mt-3 inline-flex items-center gap-3 rounded-xl border border-amber-500/30 bg-slate-900/80 px-3 py-1.5 sm:mt-4 sm:gap-4 sm:px-4 sm:py-2">
+          <div className="mt-3 inline-flex items-center gap-3 rounded-xl border border-amber-500/30 bg-neutral-100 px-3 py-1.5 dark:bg-neutral-950/80 sm:mt-4 sm:gap-4 sm:px-4 sm:py-2">
             <div>
-              <span className="block text-[10px] font-bold uppercase text-slate-400">
+              <span className="block text-[10px] font-bold uppercase text-neutral-500 dark:text-slate-400">
                 {t.gameOver.lowestPoints}
               </span>
-              <span className="whitespace-nowrap font-mono text-base font-black tabular-nums text-amber-400 sm:text-xl">
+              <span className="whitespace-nowrap font-mono text-base font-black tabular-nums text-amber-500 dark:text-amber-400 sm:text-xl">
                 {winner.totalScore} pts
               </span>
             </div>
-            <div className="h-7 w-px bg-slate-700 sm:h-8" />
+            <div className="h-7 w-px bg-neutral-200 dark:bg-slate-700 sm:h-8" />
             <div>
-              <span className="block text-[10px] font-bold uppercase text-slate-400">
+              <span className="block text-[10px] font-bold uppercase text-neutral-500 dark:text-slate-400">
                 {t.gameOver.roundsPlayed}
               </span>
-              <span className="whitespace-nowrap font-mono text-base font-black tabular-nums text-slate-200 sm:text-xl">
+              <span className="whitespace-nowrap font-mono text-base font-black tabular-nums text-neutral-800 dark:text-slate-200 sm:text-xl">
                 {roundsCount}
               </span>
             </div>
-            <div className="h-7 w-px bg-slate-700 sm:h-8" />
+            <div className="h-7 w-px bg-neutral-200 dark:bg-slate-700 sm:h-8" />
             <div>
-              <span className="block text-[10px] font-bold uppercase text-slate-400">
+              <span className="block text-[10px] font-bold uppercase text-neutral-500 dark:text-slate-400">
                 Threshold
               </span>
-              <span className="whitespace-nowrap font-mono text-base font-black tabular-nums text-rose-400 sm:text-xl">
+              <span className="whitespace-nowrap font-mono text-base font-black tabular-nums text-rose-500 dark:text-rose-400 sm:text-xl">
                 {targetScore}
               </span>
             </div>
@@ -151,12 +151,11 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
         </div>
 
         <div className="min-h-0 flex-1 space-y-2 overflow-y-auto px-4 py-3 sm:p-5">
-          <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-slate-400">
+          <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-slate-400">
             {t.gameOver.finalStandings}
           </h3>
 
           {standings.map((player) => {
-            const theme = PAWN_COLORS[player.color];
             const isWinner = player.id === winner.id;
 
             return (
@@ -165,24 +164,20 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
                 className={`flex items-center justify-between gap-2 rounded-xl border p-2.5 transition-all sm:p-3 ${
                   isWinner
                     ? 'border-amber-500/60 bg-amber-500/15 shadow-md ring-1 ring-amber-500/40'
-                    : 'border-slate-800 bg-slate-900/60'
+                    : 'border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-800/40'
                 }`}
               >
                 <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-800 text-xs font-bold tabular-nums text-slate-200">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs font-bold tabular-nums text-neutral-700 dark:bg-slate-800 dark:text-slate-200">
                     {isWinner ? (
-                      <Award className="h-4 w-4 shrink-0 text-amber-400" />
+                      <Award className="h-4 w-4 shrink-0 text-amber-500 dark:text-amber-400" />
                     ) : (
                       <span>#{player.rank}</span>
                     )}
                   </div>
 
                   <div className="flex min-w-0 items-center gap-2">
-                    <div
-                      className="h-3 w-3 shrink-0 rounded-full"
-                      style={{ backgroundColor: theme.hex }}
-                    />
-                    <span className="truncate text-sm font-bold text-white">
+                    <span className="truncate text-sm font-bold text-neutral-900 dark:text-white">
                       {player.name}
                     </span>
                   </div>
@@ -191,7 +186,9 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
                 <div className="shrink-0 text-right">
                   <span
                     className={`whitespace-nowrap font-mono text-base font-black tabular-nums ${
-                      isWinner ? 'text-amber-400' : 'text-slate-300'
+                      isWinner
+                        ? 'text-amber-500 dark:text-amber-400'
+                        : 'text-neutral-700 dark:text-slate-300'
                     }`}
                   >
                     {player.totalScore} pts
@@ -202,11 +199,11 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
           })}
         </div>
 
-        <div className="flex shrink-0 items-center justify-between gap-2 border-t border-slate-800 bg-slate-900/90 px-4 py-3 sm:gap-3 sm:p-4">
+        <div className="flex shrink-0 items-center justify-between gap-2 border-t border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-900/90 sm:gap-3 sm:p-4">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl px-3 py-2 text-xs font-semibold text-slate-400 transition-colors hover:bg-slate-800 hover:text-white sm:px-4 sm:py-2.5"
+            className="rounded-xl px-3 py-2 text-xs font-semibold text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white sm:px-4 sm:py-2.5"
           >
             Review Board
           </button>

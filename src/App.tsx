@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { useGameState } from './hooks/useGameState';
 import { useTheme } from './hooks/useTheme';
+import { TRANSLATIONS } from './data/translations';
 import { Navbar } from './components/layout/Navbar';
 import { TabNavigation, ActiveTab } from './components/layout/TabNavigation';
 import { Footer } from './components/layout/Footer';
@@ -26,6 +28,7 @@ export function App() {
     setActiveRuleCardIds,
     startNewGame,
     resetCurrentGame,
+    resetAllData,
     exportGameState,
     importGameState,
   } = useGameState();
@@ -65,11 +68,25 @@ export function App() {
   const handleSubmitScores = (scores: Record<string, HandScore>) => {
     if (editingRoundNumber !== null) {
       editRound(editingRoundNumber, scores);
+      toast.success(TRANSLATIONS[language].scoring.roundModifiedSuccess);
     } else {
       addRound(scores);
+      toast.success(TRANSLATIONS[language].scoring.roundAddedSuccess);
     }
     setEditingRoundNumber(null);
     setIsScoreModalOpen(false);
+  };
+
+  const handleDeleteRound = (roundNumber: number) => {
+    deleteRound(roundNumber);
+    toast.success(TRANSLATIONS[language].scoring.roundDeletedSuccess);
+  };
+
+  const handleUndoLastRound = () => {
+    if (gameState.rounds.length > 0) {
+      undoLastRound();
+      toast.success(TRANSLATIONS[language].scoring.roundDeletedSuccess);
+    }
   };
 
   const handleSaveSetup = (
@@ -83,6 +100,14 @@ export function App() {
     } else {
       startNewGame(newPlayers, newConfig);
     }
+  };
+
+  const handleResetData = () => {
+    resetAllData();
+    setIsScoreModalOpen(false);
+    setEditingRoundNumber(null);
+    setIsGameOverModalDismissed(false);
+    toast.success(TRANSLATIONS[language].settings.resetDataSuccess);
   };
 
   const editingRound = editingRoundNumber
@@ -119,9 +144,9 @@ export function App() {
             players={gameState.players}
             activeRuleCardIds={gameState.activeRuleCardIds}
             onOpenScoreModal={handleOpenScoreModal}
-            onUndoLastRound={undoLastRound}
+            onUndoLastRound={handleUndoLastRound}
             onEditRound={handleOpenEditRound}
-            onDeleteRound={deleteRound}
+            onDeleteRound={handleDeleteRound}
             onClearActiveRuleCard={() => setActiveRuleCardIds([])}
             onOpenRuleCardDrawer={() => setActiveTab('rulecards')}
             onStartNewGame={() => setIsSetupModalOpen(true)}
@@ -183,7 +208,7 @@ export function App() {
         onThemeChange={setTheme}
         onExport={exportGameState}
         onImport={importGameState}
-        onResetMatch={resetCurrentGame}
+        onResetData={handleResetData}
         initialTab={settingsInitialTab}
       />
 
@@ -200,6 +225,38 @@ export function App() {
           setIsGameOverModalDismissed(false);
         }}
         language={language}
+      />
+
+      {/* Global Toast Notifications */}
+      <Toaster
+        position="top-right"
+        containerStyle={{
+          top: 16,
+          right: 16,
+          zIndex: 99999,
+        }}
+        toastOptions={{
+          duration: 4000,
+          style: {
+            borderRadius: '14px',
+            background: '#1f2937',
+            color: '#fff',
+            fontSize: '13px',
+            fontWeight: '600',
+            boxShadow:
+              '0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3)',
+          },
+          error: {
+            style: {
+              background: '#ef4444',
+              color: '#ffffff',
+            },
+            iconTheme: {
+              primary: '#ffffff',
+              secondary: '#ef4444',
+            },
+          },
+        }}
       />
     </div>
   );

@@ -57,7 +57,7 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
   return (
     <div className="space-y-6">
       {/* Drawer Action Banner */}
-      <div className="relative overflow-hidden rounded-3xl border-2 border-purple-500/40 bg-gradient-to-br from-purple-900/40 via-indigo-900/30 to-purple-900/20 p-6 text-center shadow-xl">
+      <div className="relative overflow-hidden rounded-3xl border-2 border-purple-500/30 bg-gradient-to-br from-purple-100/80 via-indigo-50/60 to-purple-50 p-6 text-center shadow-sm dark:border-purple-500/40 dark:from-purple-900/40 dark:via-indigo-900/30 dark:to-purple-900/20 dark:shadow-xl">
         <div className="relative z-10 mx-auto max-w-xl space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/40 bg-purple-500/20 px-3 py-1 text-xs font-black uppercase tracking-wider text-purple-600 dark:text-purple-300">
             <Sparkles className="h-3.5 w-3.5" />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Play, RotateCcw, Target, AlertTriangle } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { Player, GameConfig, Language, PlayerColor } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
 import { PlayerConfig } from './PlayerConfig';
@@ -131,26 +132,86 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
     });
   };
 
+  const isValidTargetScore = (val: string | number): boolean => {
+    if (typeof val === 'number') {
+      return Number.isInteger(val) && val >= 50;
+    }
+    if (typeof val === 'string') {
+      const trimmed = val.trim();
+      if (!/^\d+$/.test(trimmed)) {
+        return false;
+      }
+      const num = Number(trimmed);
+      return Number.isSafeInteger(num) && num >= 50;
+    }
+    return false;
+  };
+
   const handleCustomChange = (val: string) => {
     setCustomValue(val);
-    const parsed = parseInt(val, 10);
-    if (!isNaN(parsed) && parsed > 0) {
-      setDraftConfig({
-        targetScore: parsed,
-        presetName: 'custom',
-      });
+    setDraftConfig((prev) => ({
+      ...prev,
+      presetName: 'custom',
+    }));
+  };
+
+  const handleSelectCustom = () => {
+    soundEffects.playClick();
+    setDraftConfig((prev) => ({
+      ...prev,
+      presetName: 'custom',
+    }));
+  };
+
+  const validateAndGetTargetScore = (): number | null => {
+    if (draftConfig.presetName === 'custom') {
+      if (!isValidTargetScore(customValue)) {
+        toast.error(t.setup.minScoreError);
+        soundEffects.playWarning();
+        return null;
+      }
+      return parseInt(customValue.trim(), 10);
+    } else {
+      if (!isValidTargetScore(draftConfig.targetScore)) {
+        toast.error(t.setup.minScoreError);
+        soundEffects.playWarning();
+        return null;
+      }
+      return draftConfig.targetScore;
     }
   };
 
   const handleSaveOnly = () => {
+    const validTargetScore = validateAndGetTargetScore();
+    if (validTargetScore === null) {
+      return;
+    }
     soundEffects.playClick();
-    onSaveAndStart(draftPlayers, draftConfig, false);
+    onSaveAndStart(
+      draftPlayers,
+      {
+        ...draftConfig,
+        targetScore: validTargetScore,
+      },
+      false
+    );
     onClose();
   };
 
   const handleResetAndStart = () => {
+    const validTargetScore = validateAndGetTargetScore();
+    if (validTargetScore === null) {
+      return;
+    }
     soundEffects.playClick();
-    onSaveAndStart(draftPlayers, draftConfig, true);
+    onSaveAndStart(
+      draftPlayers,
+      {
+        ...draftConfig,
+        targetScore: validTargetScore,
+      },
+      true
+    );
     onClose();
   };
 
@@ -235,10 +296,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
             <div className="flex items-center gap-2 pt-1">
               <button
                 type="button"
-                onClick={() => {
-                  const parsed = parseInt(customValue, 10) || 150;
-                  setDraftConfig({ targetScore: parsed, presetName: 'custom' });
-                }}
+                onClick={handleSelectCustom}
                 className={`rounded-xl border px-3 py-2 text-xs font-bold transition-all ${
                   draftConfig.presetName === 'custom'
                     ? 'border-amber-500 bg-amber-500/15 font-bold text-amber-600 dark:text-amber-400'
@@ -250,17 +308,21 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
 
               <div className="relative flex-1">
                 <input
-                  type="number"
-                  min="10"
-                  max="999"
+                  type="text"
+                  inputMode="numeric"
                   value={customValue}
                   onChange={(e) => handleCustomChange(e.target.value)}
                   onFocus={() => {
-                    const parsed = parseInt(customValue, 10) || 150;
-                    setDraftConfig({
-                      targetScore: parsed,
+                    setDraftConfig((prev) => ({
+                      ...prev,
                       presetName: 'custom',
-                    });
+                    }));
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleSaveOnly();
+                    }
                   }}
                   placeholder="150"
                   className="w-full rounded-xl border border-neutral-300 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-900 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"

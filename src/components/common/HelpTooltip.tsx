@@ -69,10 +69,10 @@ export const HelpTooltip: React.FC<HelpTooltipProps> = ({
       {isOpen && (
         <div
           role="tooltip"
-          className={`animate-fade-in pointer-events-auto absolute bottom-full z-50 mb-2 w-72 rounded-2xl border border-neutral-700/80 bg-neutral-900 p-3.5 text-left text-white shadow-2xl dark:bg-neutral-800 sm:w-80 ${alignmentClasses}`}
+          className={`animate-fade-in pointer-events-auto absolute bottom-full z-50 mb-2 w-72 rounded-2xl border border-neutral-200 bg-white p-3.5 text-left text-neutral-900 shadow-2xl dark:border-neutral-700/80 dark:bg-neutral-800 dark:text-white sm:w-80 ${alignmentClasses}`}
         >
-          <div className="mb-2 flex items-center justify-between border-b border-neutral-700/60 pb-1.5">
-            <span className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-amber-400">
+          <div className="mb-2 flex items-center justify-between border-b border-neutral-200 pb-1.5 dark:border-neutral-700/60">
+            <span className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-amber-500 dark:text-amber-400">
               <HelpCircle className="h-3.5 w-3.5" />
               <span>{title}</span>
             </span>
@@ -82,13 +82,13 @@ export const HelpTooltip: React.FC<HelpTooltipProps> = ({
                 e.stopPropagation();
                 setIsOpen(false);
               }}
-              className="rounded p-0.5 text-neutral-400 transition-colors hover:text-white"
+              className="rounded p-0.5 text-neutral-400 transition-colors hover:text-neutral-700 dark:hover:text-white"
               aria-label="Close info"
             >
               <X className="h-3.5 w-3.5" />
             </button>
           </div>
-          <p className="text-xs font-normal leading-relaxed text-neutral-200 dark:text-neutral-300">
+          <p className="text-xs font-normal leading-relaxed text-neutral-600 dark:text-neutral-300">
             {content}
           </p>
         </div>

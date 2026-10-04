@@ -51,7 +51,7 @@ export const PlayerConfig: React.FC<PlayerConfigProps> = ({
           return (
             <div
               key={player.id}
-              className="flex flex-col items-stretch gap-2.5 rounded-2xl border border-neutral-200/80 bg-neutral-100/80 p-2.5 shadow-sm dark:border-neutral-700/80 dark:bg-neutral-800/70 sm:flex-row sm:items-center"
+              className="flex flex-col items-stretch gap-2.5 rounded-2xl border border-neutral-200/80 bg-neutral-100/80 p-2.5 shadow-sm dark:border-neutral-700/80 dark:bg-neutral-800/70 sm:flex-row sm:items-center sm:justify-between"
             >
               <div className="flex min-w-0 flex-1 items-center gap-2">
                 <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-white text-xs font-black text-neutral-600 shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
@@ -66,12 +66,12 @@ export const PlayerConfig: React.FC<PlayerConfigProps> = ({
                     onUpdatePlayer(player.id, { name: e.target.value })
                   }
                   placeholder={`Player ${idx + 1}`}
-                  className="flex-1 rounded-xl border border-neutral-200 bg-white px-3 py-1.5 text-sm font-semibold text-neutral-900 transition-all placeholder:text-neutral-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+                  className="min-w-0 flex-1 rounded-xl border border-neutral-200 bg-white px-3 py-1.5 text-sm font-semibold text-neutral-900 transition-all placeholder:text-neutral-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
                 />
               </div>
 
-              <div className="flex items-center justify-between gap-2 border-t border-neutral-200 pt-1 dark:border-neutral-700/60 sm:justify-end sm:border-t-0 sm:pt-0">
-                <div className="flex flex-wrap items-center gap-1 sm:flex-nowrap">
+              <div className="flex shrink-0 items-center justify-between gap-1.5 border-t border-neutral-200/80 pt-1.5 dark:border-neutral-700/60 sm:justify-end sm:border-t-0 sm:pt-0">
+                <div className="flex flex-wrap items-center gap-1 sm:flex-nowrap sm:gap-1.5">
                   {ALL_PAWN_COLORS.map((colorOption) => {
                     const theme = PAWN_COLORS[colorOption];
                     const isSelected = player.color === colorOption;
@@ -90,21 +90,21 @@ export const PlayerConfig: React.FC<PlayerConfigProps> = ({
                           soundEffects.playClick();
                           onUpdatePlayer(player.id, { color: colorOption });
                         }}
-                        className={`flex h-7 w-7 items-center justify-center rounded-full transition-all ${
+                        className={`sm:h-5.5 sm:w-5.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full transition-all ${
                           isSelected
-                            ? `scale-110 shadow-md ring-2 ring-offset-2 ring-offset-white dark:ring-offset-neutral-900 ${theme.ringColor}`
+                            ? `shadow-sm ring-2 ring-offset-1 ring-offset-neutral-100 dark:ring-offset-neutral-800 ${theme.ringColor}`
                             : isTakenByOther
-                              ? 'cursor-not-allowed opacity-25 hover:scale-100'
-                              : 'opacity-85 hover:scale-105 hover:opacity-100'
+                              ? 'cursor-not-allowed opacity-20'
+                              : 'opacity-75 hover:scale-105 hover:opacity-100'
                         }`}
                         style={{ backgroundColor: theme.hex }}
                         title={`${theme.label[language] || theme.label.en}${isTakenByOther ? ' (Already picked)' : ''}`}
                       >
                         {isSelected && (
-                          <div className="h-2 w-2 rounded-full bg-white" />
+                          <div className="shadow-xs h-1.5 w-1.5 rounded-full bg-white" />
                         )}
                         {isTakenByOther && (
-                          <span className="text-[10px] font-black text-white drop-shadow-sm">
+                          <span className="drop-shadow-xs text-[9px] font-black text-white">
                             ✕
                           </span>
                         )}
@@ -128,7 +128,7 @@ export const PlayerConfig: React.FC<PlayerConfigProps> = ({
                       : 'Remove player'
                   }
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 className="h-4 w-4 shrink-0" />
                 </button>
               </div>
             </div>

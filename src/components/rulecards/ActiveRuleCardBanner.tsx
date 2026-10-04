@@ -56,7 +56,7 @@ export const ActiveRuleCardBanner: React.FC<ActiveRuleCardBannerProps> = ({
   if (!activeCard) return null;
 
   return (
-    <div className="rounded-3xl border-2 border-purple-500/50 bg-gradient-to-r from-purple-900/30 via-indigo-900/20 to-purple-900/30 p-4 shadow-[0_0_25px_rgba(168,85,247,0.2)]">
+    <div className="rounded-3xl border-2 border-purple-500/40 bg-gradient-to-r from-purple-100/70 via-indigo-50/70 to-purple-100/70 p-4 shadow-sm dark:border-purple-500/50 dark:from-purple-900/30 dark:via-indigo-900/20 dark:to-purple-900/30 dark:shadow-[0_0_25px_rgba(168,85,247,0.2)]">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-purple-600 text-white shadow-md">

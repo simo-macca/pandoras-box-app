@@ -168,9 +168,9 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                 soundEffects.playClick();
                 onOpenScoreModal();
               }}
-              className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1.5 text-xs font-black text-neutral-950 shadow-md shadow-amber-500/20 transition-all hover:from-amber-400 active:scale-95 sm:gap-2 sm:px-3.5"
+              className="group flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1.5 text-xs font-black text-neutral-950 shadow-md shadow-amber-500/25 ring-1 ring-amber-400/40 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:from-amber-400 hover:to-amber-500 hover:shadow-lg hover:shadow-amber-500/40 hover:ring-amber-300 active:translate-y-0 active:scale-95 sm:gap-2 sm:px-3.5"
             >
-              <PlusCircle className="h-4 w-4 shrink-0 stroke-[2.5]" />
+              <PlusCircle className="h-4 w-4 shrink-0 stroke-[2.5] transition-transform duration-300 ease-out group-hover:rotate-90 group-hover:scale-110" />
               <span className="whitespace-nowrap">{t.tabs.logRound}</span>
             </button>
           </div>

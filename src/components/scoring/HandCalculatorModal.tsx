@@ -246,10 +246,6 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
               {t.setup.playerName}:
             </label>
             <div className="relative flex-1">
-              <div
-                className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 shrink-0 -translate-y-1/2 rounded-full shadow-sm"
-                style={{ backgroundColor: activeColorTheme.hex }}
-              />
               <select
                 id="scoring-player-select"
                 value={selectedPlayerId}
@@ -257,7 +253,7 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
                   soundEffects.playClick();
                   setSelectedPlayerId(e.target.value);
                 }}
-                className="w-full appearance-none rounded-xl border border-neutral-300 bg-white py-2 pl-9 pr-8 text-xs font-bold text-neutral-800 shadow-sm transition-all focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 sm:text-sm"
+                className="w-full appearance-none rounded-xl border border-neutral-300 bg-white py-2 pl-3.5 pr-8 text-xs font-bold text-neutral-800 shadow-sm transition-all focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 sm:text-sm"
               >
                 {players.map((p) => {
                   const pScore = scores[p.id];
