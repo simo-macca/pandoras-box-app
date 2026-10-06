@@ -108,6 +108,7 @@ export function getInitialGameState(): GameState {
     isGameStarted: true,
     isGameOver: false,
     winnerId: null,
+    isContinued: false,
   };
 }
 
@@ -219,10 +220,11 @@ export function useGameState() {
 
   useEffect(() => {
     if (gameState.rounds.length === 0) {
-      if (gameState.isGameOver) {
+      if (gameState.isGameOver || gameState.isContinued) {
         setGameState((prev) => ({
           ...prev,
           isGameOver: false,
+          isContinued: false,
           winnerId: null,
         }));
       }
@@ -235,19 +237,27 @@ export function useGameState() {
     const lowestScorePlayer = playerStats[0];
 
     if (someoneExceeded) {
-      if (!gameState.isGameOver) {
+      if (!gameState.isGameOver && !gameState.isContinued) {
         soundEffects.playWinner();
         setGameState((prev) => ({
           ...prev,
           isGameOver: true,
           winnerId: lowestScorePlayer?.id || null,
         }));
+      } else if (gameState.isGameOver) {
+        if (gameState.winnerId !== (lowestScorePlayer?.id || null)) {
+          setGameState((prev) => ({
+            ...prev,
+            winnerId: lowestScorePlayer?.id || null,
+          }));
+        }
       }
     } else {
-      if (gameState.isGameOver) {
+      if (gameState.isGameOver || gameState.isContinued) {
         setGameState((prev) => ({
           ...prev,
           isGameOver: false,
+          isContinued: false,
           winnerId: null,
         }));
       }
@@ -257,6 +267,8 @@ export function useGameState() {
     gameState.rounds.length,
     gameState.config.targetScore,
     gameState.isGameOver,
+    gameState.isContinued,
+    gameState.winnerId,
   ]);
 
   const addRound = useCallback(
@@ -351,6 +363,7 @@ export function useGameState() {
           isGameStarted: true,
           isGameOver: false,
           winnerId: null,
+          isContinued: false,
         };
       });
     },
@@ -365,8 +378,31 @@ export function useGameState() {
       activeRuleCardIds: [],
       isGameOver: false,
       winnerId: null,
+      isContinued: false,
     }));
   }, []);
+
+  const continueGame = useCallback(() => {
+    soundEffects.playClick();
+    setGameState((prev) => ({
+      ...prev,
+      isGameOver: false,
+      isContinued: true,
+    }));
+  }, []);
+
+  const concludeGame = useCallback(() => {
+    soundEffects.playWinner();
+    setGameState((prev) => {
+      const lowestScorePlayer = playerStats[0];
+      return {
+        ...prev,
+        isGameOver: true,
+        isContinued: false,
+        winnerId: lowestScorePlayer?.id || null,
+      };
+    });
+  }, [playerStats]);
 
   const resetAllData = useCallback(() => {
     soundEffects.playClick();
@@ -412,6 +448,7 @@ export function useGameState() {
         isGameStarted: true,
         isGameOver: !!stateToLoad.isGameOver,
         winnerId: stateToLoad.winnerId || null,
+        isContinued: !!stateToLoad.isContinued,
       });
 
       soundEffects.playClick();
@@ -434,6 +471,8 @@ export function useGameState() {
     setActiveRuleCardIds,
     startNewGame,
     resetCurrentGame,
+    continueGame,
+    concludeGame,
     resetAllData,
     exportGameState,
     importGameState,

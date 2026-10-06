@@ -28,6 +28,8 @@ export function App() {
     setActiveRuleCardIds,
     startNewGame,
     resetCurrentGame,
+    continueGame,
+    concludeGame,
     resetAllData,
     exportGameState,
     importGameState,
@@ -51,8 +53,22 @@ export function App() {
   const winner = playerStats[0] || null;
 
   const handleOpenScoreModal = () => {
+    if (gameState.isGameOver && !gameState.isContinued) {
+      setIsGameOverModalDismissed(false);
+      return;
+    }
     setEditingRoundNumber(null);
     setIsScoreModalOpen(true);
+  };
+
+  const handleContinueGame = () => {
+    continueGame();
+    setIsGameOverModalDismissed(true);
+  };
+
+  const handleConcludeGame = () => {
+    concludeGame();
+    setIsGameOverModalDismissed(false);
   };
 
   const handleOpenEditRound = (roundNumber: number) => {
@@ -143,6 +159,8 @@ export function App() {
             rounds={gameState.rounds}
             players={gameState.players}
             activeRuleCardIds={gameState.activeRuleCardIds}
+            isGameOver={gameState.isGameOver}
+            isContinued={gameState.isContinued}
             onOpenScoreModal={handleOpenScoreModal}
             onUndoLastRound={handleUndoLastRound}
             onEditRound={handleOpenEditRound}
@@ -150,6 +168,7 @@ export function App() {
             onClearActiveRuleCard={() => setActiveRuleCardIds([])}
             onOpenRuleCardDrawer={() => setActiveTab('rulecards')}
             onStartNewGame={() => setIsSetupModalOpen(true)}
+            onConcludeGame={handleConcludeGame}
             language={language}
           />
         )}
@@ -224,6 +243,7 @@ export function App() {
           resetCurrentGame();
           setIsGameOverModalDismissed(false);
         }}
+        onContinue={handleContinueGame}
         language={language}
       />
 

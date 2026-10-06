@@ -194,6 +194,11 @@ export interface TranslationStrings {
     finalStandings: string;
     roundsPlayed: string;
     playAgain: string;
+    newMatch: string;
+    continueGame: string;
+    concludeMatch: string;
+    reviewBoard: string;
+    viewScoreboard: string;
   };
 }
 
@@ -398,7 +403,12 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       lowestPoints: 'Winning Score',
       finalStandings: 'Final Standings',
       roundsPlayed: 'Rounds Played',
-      playAgain: 'Play Again / New Match',
+      playAgain: 'Play Again',
+      newMatch: 'New Match',
+      continueGame: 'Continue Game',
+      concludeMatch: 'Conclude Match',
+      reviewBoard: 'Review Board',
+      viewScoreboard: 'View Scoreboard',
     },
   },
   de: {
@@ -604,6 +614,11 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       finalStandings: 'Endstand',
       roundsPlayed: 'Gespielte Runden',
       playAgain: 'Neue Partie starten',
+      newMatch: 'Neues Spiel',
+      continueGame: 'Weiterspielen',
+      concludeMatch: 'Spiel beenden',
+      reviewBoard: 'Rangliste ansehen',
+      viewScoreboard: 'Punkteübersicht',
     },
   },
   it: {
@@ -809,6 +824,11 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       finalStandings: 'Classifica Finale',
       roundsPlayed: 'Round Giocati',
       playAgain: 'Nuova Partita',
+      newMatch: 'Nuova Partita',
+      continueGame: 'Continua Partita',
+      concludeMatch: 'Concludi Partita',
+      reviewBoard: 'Rivedi Tabellone',
+      viewScoreboard: 'Vedi Tabellone',
     },
   },
   fr: {
@@ -1015,6 +1035,11 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       finalStandings: 'Classement Final',
       roundsPlayed: 'Manches Jouées',
       playAgain: 'Nouvelle Partie',
+      newMatch: 'Nouvelle Partie',
+      continueGame: 'Continuer la partie',
+      concludeMatch: 'Terminer la Partie',
+      reviewBoard: 'Revoir le Tableau',
+      viewScoreboard: 'Voir le tableau',
     },
   },
 };

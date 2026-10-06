@@ -21,6 +21,8 @@ interface LeaderboardProps {
   rounds: RoundEntry[];
   players: Player[];
   activeRuleCardIds?: string[];
+  isGameOver?: boolean;
+  isContinued?: boolean;
   onOpenScoreModal: () => void;
   onUndoLastRound: () => void;
   onEditRound?: (roundNumber: number) => void;
@@ -28,6 +30,7 @@ interface LeaderboardProps {
   onClearActiveRuleCard?: () => void;
   onOpenRuleCardDrawer?: () => void;
   onStartNewGame?: () => void;
+  onConcludeGame?: () => void;
   language: Language;
 }
 
@@ -37,6 +40,8 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
   rounds,
   players,
   activeRuleCardIds = [],
+  isGameOver = false,
+  isContinued = false,
   onOpenScoreModal,
   onUndoLastRound,
   onEditRound,
@@ -44,6 +49,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
   onClearActiveRuleCard,
   onOpenRuleCardDrawer,
   onStartNewGame,
+  onConcludeGame,
   language,
 }) => {
   const t = TRANSLATIONS[language];
@@ -66,14 +72,14 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
 
       {/* Top Stats Overview */}
       <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3">
-        <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 sm:p-4">
+        <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm sm:p-4 dark:border-neutral-800 dark:bg-neutral-900">
           <div className="min-w-0 space-y-0.5">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">
+            <span className="text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
               {t.scoreboard.currentLeader}
             </span>
-            <div className="flex items-center gap-1.5 truncate text-base font-black text-neutral-900 dark:text-white sm:text-lg">
+            <div className="flex items-center gap-1.5 truncate text-base font-black text-neutral-900 sm:text-lg dark:text-white">
               <span className="truncate">{leader?.name || '—'}</span>
-              <span className="whitespace-nowrap font-mono text-xs font-bold tabular-nums text-amber-500">
+              <span className="font-mono text-xs font-bold whitespace-nowrap text-amber-500 tabular-nums">
                 ({leader?.totalScore} pts)
               </span>
             </div>
@@ -83,10 +89,10 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 sm:p-4">
+        <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm sm:p-4 dark:border-neutral-800 dark:bg-neutral-900">
           <div className="min-w-0 space-y-0.5">
             <div className="flex items-center gap-1.5">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">
+              <span className="text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
                 {t.scoreboard.eliminationLimit}
               </span>
               <HelpTooltip
@@ -95,7 +101,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                 align="left"
               />
             </div>
-            <div className="whitespace-nowrap font-mono text-base font-black tabular-nums text-rose-500 sm:text-lg">
+            <div className="font-mono text-base font-black whitespace-nowrap text-rose-500 tabular-nums sm:text-lg">
               {targetScore} {t.scoreboard.pts}
             </div>
           </div>
@@ -104,10 +110,10 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 sm:p-4">
+        <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm sm:p-4 dark:border-neutral-800 dark:bg-neutral-900">
           <div className="min-w-0 space-y-0.5">
             <div className="flex items-center gap-1.5">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">
+              <span className="text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
                 {t.scoreboard.dangerZone}
               </span>
               <HelpTooltip
@@ -116,9 +122,9 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                 align="right"
               />
             </div>
-            <div className="text-base font-black text-neutral-800 dark:text-neutral-200 sm:text-lg">
+            <div className="text-base font-black text-neutral-800 sm:text-lg dark:text-neutral-200">
               {playersInDanger.length > 0 ? (
-                <span className="whitespace-nowrap font-bold tabular-nums text-rose-500">
+                <span className="font-bold whitespace-nowrap text-rose-500 tabular-nums">
                   {playersInDanger.length} in Danger Zone
                 </span>
               ) : (
@@ -126,7 +132,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
               )}
             </div>
           </div>
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-100 text-neutral-400 dark:border-neutral-700 dark:bg-neutral-800 sm:h-10 sm:w-10">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-100 text-neutral-400 sm:h-10 sm:w-10 dark:border-neutral-700 dark:bg-neutral-800">
             {playersInDanger.length > 0 ? (
               <AlertTriangle className="h-5 w-5 shrink-0 text-rose-500" />
             ) : (
@@ -139,7 +145,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
       {/* Main Leaderboard Cards */}
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-2">
-          <h2 className="flex min-w-0 items-center gap-1.5 text-base font-black text-neutral-900 dark:text-white sm:gap-2 sm:text-lg md:text-xl">
+          <h2 className="flex min-w-0 items-center gap-1.5 text-base font-black text-neutral-900 sm:gap-2 sm:text-lg md:text-xl dark:text-white">
             <span className="truncate">{t.scoreboard.title}</span>
             <span className="hidden text-xs font-medium text-neutral-500 sm:inline">
               (Lowest score is leading)
@@ -154,11 +160,28 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   soundEffects.playClick();
                   onStartNewGame();
                 }}
-                className="flex items-center gap-1.5 rounded-xl border border-neutral-300 bg-white px-2.5 py-1.5 text-xs font-bold text-neutral-700 shadow-sm transition-all hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 sm:gap-2 sm:px-3"
+                className="flex items-center gap-1.5 rounded-xl border border-neutral-300 bg-white px-2.5 py-1.5 text-xs font-bold text-neutral-700 shadow-sm transition-all hover:bg-neutral-100 hover:text-neutral-900 sm:gap-2 sm:px-3 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
                 title={t.nav.newGame}
               >
                 <RotateCcw className="h-3.5 w-3.5 shrink-0 stroke-[2.2]" />
                 <span className="whitespace-nowrap">{t.nav.newGame}</span>
+              </button>
+            )}
+
+            {isContinued && onConcludeGame && (
+              <button
+                type="button"
+                onClick={() => {
+                  soundEffects.playClick();
+                  onConcludeGame();
+                }}
+                className="flex items-center gap-1.5 rounded-xl border border-amber-500/50 bg-amber-500/10 px-2.5 py-1.5 text-xs font-bold text-amber-600 shadow-sm transition-all hover:bg-amber-500/20 hover:text-amber-700 sm:gap-2 sm:px-3 dark:text-amber-400 dark:hover:text-amber-300"
+                title={t.gameOver.concludeMatch}
+              >
+                <Trophy className="h-3.5 w-3.5 shrink-0 stroke-[2.2]" />
+                <span className="whitespace-nowrap">
+                  {t.gameOver.concludeMatch}
+                </span>
               </button>
             )}
 
@@ -168,10 +191,22 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                 soundEffects.playClick();
                 onOpenScoreModal();
               }}
-              className="group flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1.5 text-xs font-black text-neutral-950 shadow-md shadow-amber-500/25 ring-1 ring-amber-400/40 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:from-amber-400 hover:to-amber-500 hover:shadow-lg hover:shadow-amber-500/40 hover:ring-amber-300 active:translate-y-0 active:scale-95 sm:gap-2 sm:px-3.5"
+              className="group flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1.5 text-xs font-black text-neutral-950 shadow-md ring-1 shadow-amber-500/25 ring-amber-400/40 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:from-amber-400 hover:to-amber-500 hover:shadow-lg hover:shadow-amber-500/40 hover:ring-amber-300 active:translate-y-0 active:scale-95 sm:gap-2 sm:px-3.5"
+              title={
+                isGameOver && !isContinued ? t.gameOver.title : t.tabs.logRound
+              }
             >
-              <PlusCircle className="h-4 w-4 shrink-0 stroke-[2.5] transition-transform duration-300 ease-out group-hover:rotate-90 group-hover:scale-110" />
-              <span className="whitespace-nowrap">{t.tabs.logRound}</span>
+              {isGameOver && !isContinued ? (
+                <>
+                  <Trophy className="h-4 w-4 shrink-0 stroke-[2.2]" />
+                  <span className="whitespace-nowrap">{t.gameOver.title}</span>
+                </>
+              ) : (
+                <>
+                  <PlusCircle className="h-4 w-4 shrink-0 stroke-[2.5] transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-90" />
+                  <span className="whitespace-nowrap">{t.tabs.logRound}</span>
+                </>
+              )}
             </button>
           </div>
         </div>

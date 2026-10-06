@@ -69,6 +69,7 @@ export interface GameState {
   isGameStarted: boolean;
   isGameOver: boolean;
   winnerId: string | null;
+  isContinued?: boolean;
 }
 
 export interface PawnColorTheme {
