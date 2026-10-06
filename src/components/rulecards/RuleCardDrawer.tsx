@@ -59,15 +59,15 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
       {/* Drawer Action Banner */}
       <div className="relative overflow-hidden rounded-3xl border-2 border-purple-500/30 bg-gradient-to-br from-purple-100/80 via-indigo-50/60 to-purple-50 p-6 text-center shadow-sm dark:border-purple-500/40 dark:from-purple-900/40 dark:via-indigo-900/30 dark:to-purple-900/20 dark:shadow-xl">
         <div className="relative z-10 mx-auto max-w-xl space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/40 bg-purple-500/20 px-3 py-1 text-xs font-black uppercase tracking-wider text-purple-600 dark:text-purple-300">
+          <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/40 bg-purple-500/20 px-3 py-1 text-xs font-black tracking-wider text-purple-600 uppercase dark:text-purple-300">
             <Sparkles className="h-3.5 w-3.5" />
             <span>{t.rulecards.expansionTag}</span>
           </div>
 
-          <h2 className="text-2xl font-black text-neutral-900 dark:text-white sm:text-3xl">
+          <h2 className="text-2xl font-black text-neutral-900 sm:text-3xl dark:text-white">
             {t.rulecards.title}
           </h2>
-          <p className="text-xs text-neutral-600 dark:text-neutral-300 sm:text-sm">
+          <p className="text-xs text-neutral-600 sm:text-sm dark:text-neutral-300">
             {t.rulecards.subtitle}
           </p>
 
@@ -133,12 +133,12 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
             </button>
           </div>
 
-          <p className="mt-3 text-sm font-medium leading-relaxed text-neutral-700 dark:text-neutral-300">
+          <p className="mt-3 text-sm leading-relaxed font-medium text-neutral-700 dark:text-neutral-300">
             {activeCard.description[language]}
           </p>
 
           {activeCard.flavor && activeCard.flavor[language] && (
-            <div className="mt-3 border-l-2 border-purple-500/40 pl-3 text-xs italic text-neutral-500 dark:text-neutral-400">
+            <div className="mt-3 border-l-2 border-purple-500/40 pl-3 text-xs text-neutral-500 italic dark:text-neutral-400">
               "{activeCard.flavor[language]}"
             </div>
           )}
@@ -147,7 +147,7 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
 
       {/* Grid of all 15 Rule Cards */}
       <div>
-        <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+        <h3 className="mb-3 text-sm font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
           {t.rulecards.allRuleCards} (15)
         </h3>
 
@@ -177,8 +177,8 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
                       {card.name[language]}
                     </h4>
                     {isActive && (
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-[10px] text-white">
-                        ✓
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-white">
+                        <Check className="h-3 w-3 stroke-[3]" />
                       </span>
                     )}
                   </div>

@@ -10,6 +10,7 @@ import {
   BookOpen,
   ExternalLink,
   ChevronDown,
+  Lightbulb,
 } from 'lucide-react';
 import { CARDS_DATA } from '../../data/cardsData';
 import { EVENTS_DATA } from '../../data/eventsData';
@@ -105,7 +106,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
   return (
     <div className="mx-auto max-w-5xl space-y-6 pb-20 md:pb-8">
       {/* Sub-tab Navigation (Guide vs Dictionary) */}
-      <div className="flex flex-col items-stretch justify-between gap-3 rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 sm:flex-row sm:items-center">
+      <div className="flex flex-col items-stretch justify-between gap-3 rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-sm sm:flex-row sm:items-center dark:border-neutral-800 dark:bg-neutral-900">
         <div className="flex items-center gap-1.5 rounded-2xl bg-neutral-100 p-1 dark:bg-neutral-800/80">
           <button
             type="button"
@@ -144,7 +145,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
           href={OFFICIAL_PDF_LINKS[language] || OFFICIAL_PDF_LINKS.en}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-500/15 to-indigo-500/15 px-4 py-2 text-xs font-bold text-purple-700 shadow-sm transition-all hover:border-purple-500/50 hover:from-purple-500/25 hover:to-indigo-500/25 hover:shadow-md dark:border-purple-500/30 dark:text-purple-300 sm:text-sm"
+          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-500/15 to-indigo-500/15 px-4 py-2 text-xs font-bold text-purple-700 shadow-sm transition-all hover:border-purple-500/50 hover:from-purple-500/25 hover:to-indigo-500/25 hover:shadow-md sm:text-sm dark:border-purple-500/30 dark:text-purple-300"
           title={`View Official Rules (${language.toUpperCase()})`}
         >
           <BookOpen className="h-4 w-4 shrink-0 text-purple-600 dark:text-purple-400" />
@@ -158,13 +159,13 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
       ) : (
         <div className="space-y-6">
           {/* Search Header */}
-          <div className="space-y-4 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900/90 sm:p-6">
+          <div className="space-y-4 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-6 dark:border-neutral-800 dark:bg-neutral-900/90">
             <div>
-              <h2 className="flex items-center gap-2 text-xl font-black text-neutral-900 dark:text-white sm:text-2xl">
+              <h2 className="flex items-center gap-2 text-xl font-black text-neutral-900 sm:text-2xl dark:text-white">
                 <Sparkles className="h-6 w-6 text-amber-500 dark:text-amber-400" />
                 <span>{t.rules.title}</span>
               </h2>
-              <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400 sm:text-sm">
+              <p className="mt-1 text-xs text-neutral-500 sm:text-sm dark:text-neutral-400">
                 Search cards, point values, events, and Pandora's Box rules.
               </p>
             </div>
@@ -179,7 +180,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t.rules.searchPlaceholder}
-                className="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-2.5 pl-10 pr-9 text-sm font-medium text-neutral-900 transition-all placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500"
+                className="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-2.5 pr-9 pl-10 text-sm font-medium text-neutral-900 transition-all placeholder:text-neutral-400 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500"
               />
               {searchQuery && (
                 <button
@@ -196,7 +197,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
             <div className="flex items-center gap-2 pt-1">
               <label
                 htmlFor="category-select"
-                className="shrink-0 text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400"
+                className="shrink-0 text-xs font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400"
               >
                 Category:
               </label>
@@ -208,15 +209,15 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                     soundEffects.playClick();
                     setActiveCategory(e.target.value as CategoryType);
                   }}
-                  className="w-full appearance-none rounded-xl border border-neutral-200 bg-neutral-50 py-2 pl-3.5 pr-8 text-xs font-bold text-neutral-900 shadow-sm transition-all focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white sm:text-sm"
+                  className="w-full appearance-none rounded-xl border border-neutral-200 bg-neutral-50 py-2 pr-8 pl-3.5 text-xs font-bold text-neutral-900 shadow-sm transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none sm:text-sm dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
                 >
-                  <option value="all">🌟 {t.rules.allCategories}</option>
-                  <option value="specials">✨ {t.rules.specials}</option>
-                  <option value="events">🔥 {t.rules.events}</option>
-                  <option value="power">⚡ {t.rules.powerCards}</option>
-                  <option value="rules">📜 {t.rules.ruleCards}</option>
+                  <option value="all">{t.rules.allCategories}</option>
+                  <option value="specials">{t.rules.specials}</option>
+                  <option value="events">{t.rules.events}</option>
+                  <option value="power">{t.rules.powerCards}</option>
+                  <option value="rules">{t.rules.ruleCards}</option>
                 </select>
-                <div className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-400">
+                <div className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2 text-neutral-400">
                   <ChevronDown className="h-4 w-4 shrink-0" />
                 </div>
               </div>
@@ -235,7 +236,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
               {/* Special Cards Section */}
               {filteredCards.length > 0 && (
                 <div className="space-y-3">
-                  <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                  <h3 className="flex items-center gap-2 text-sm font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
                     <Sparkles className="h-4 w-4 text-amber-500 dark:text-amber-400" />
                     <span>{t.rules.specials}</span>
                     <span className="font-mono text-xs text-neutral-400 dark:text-neutral-600">
@@ -260,8 +261,9 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                           {card.description[language] || card.description.en}
                         </p>
                         {card.tip && (
-                          <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-2 text-[11px] text-amber-600 dark:text-amber-400/90">
-                            💡 {card.tip[language] || card.tip.en}
+                          <div className="flex items-start gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 p-2 text-[11px] text-amber-600 dark:text-amber-400/90">
+                            <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                            <span>{card.tip[language] || card.tip.en}</span>
                           </div>
                         )}
                       </div>
@@ -273,7 +275,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
               {/* Events Section */}
               {filteredEvents.length > 0 && (
                 <div className="space-y-3">
-                  <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                  <h3 className="flex items-center gap-2 text-sm font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
                     <Flame className="h-4 w-4 text-rose-500 dark:text-rose-400" />
                     <span>{t.rules.events}</span>
                     <span className="font-mono text-xs text-neutral-400 dark:text-neutral-600">
@@ -290,7 +292,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                           <h4 className="text-base font-bold text-neutral-900 dark:text-white">
                             {ev.name[language] || ev.name.en}
                           </h4>
-                          <span className="rounded-full border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-rose-600 dark:text-rose-400">
+                          <span className="rounded-full border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 text-[10px] font-black tracking-wider text-rose-600 uppercase dark:text-rose-400">
                             {ev.severity}
                           </span>
                         </div>
@@ -306,7 +308,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
               {/* Power Cards Section */}
               {filteredPowerCards.length > 0 && (
                 <div className="space-y-3">
-                  <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                  <h3 className="flex items-center gap-2 text-sm font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
                     <Zap className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
                     <span>{t.rules.powerCards}</span>
                     <span className="font-mono text-xs text-neutral-400 dark:text-neutral-600">
@@ -339,7 +341,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
               {/* Rule Cards Section */}
               {filteredRuleCards.length > 0 && (
                 <div className="space-y-3">
-                  <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                  <h3 className="flex items-center gap-2 text-sm font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
                     <Layers className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                     <span>{t.rules.ruleCards}</span>
                     <span className="font-mono text-xs text-neutral-400 dark:text-neutral-600">
@@ -359,7 +361,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                           {rc.description[language] || rc.description.en}
                         </p>
                         {rc.flavor && (
-                          <p className="border-l-2 border-purple-500/40 pl-2 text-[11px] italic text-purple-600/80 dark:text-purple-300/80">
+                          <p className="border-l-2 border-purple-500/40 pl-2 text-[11px] text-purple-600/80 italic dark:text-purple-300/80">
                             "{rc.flavor[language] || rc.flavor.en}"
                           </p>
                         )}

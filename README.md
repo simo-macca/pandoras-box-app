@@ -1,4 +1,4 @@
-# 🃏 Frantic: Pandora's Box – Digital Companion App
+# Frantic: Pandora's Box – Digital Companion App
 
 [![React](https://img.shields.io/badge/React-18.3.1-61dafb.svg?style=flat&logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7.3-3178c6.svg?style=flat&logo=typescript)](https://www.typescriptlang.org/)
@@ -12,11 +12,11 @@ Say goodbye to messy pen-and-paper scoring, manual card counting errors, forgott
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [✨ Key Features](#-key-features)
-- [🎮 Quick Start Guide (For Players)](#-quick-start-guide-for-players)
-- [📜 Game Rules Reference](#-game-rules-reference)
+- [Key Features](#key-features)
+- [Quick Start Guide (For Players)](#quick-start-guide-for-players)
+- [Game Rules Reference](#game-rules-reference)
   - [Goal & Winning Conditions](#goal--winning-conditions)
   - [Game Setup & Direction of Play](#game-setup--direction-of-play)
   - [Turn Flow & Ending a Round](#turn-flow--ending-a-round)
@@ -24,7 +24,7 @@ Say goodbye to messy pen-and-paper scoring, manual card counting errors, forgott
   - [Round-End Scoring Breakdown](#round-end-scoring-breakdown)
   - [Official Score Limit Presets](#official-score-limit-presets)
   - [Pandora's Box Expansion Rules](#pandoras-box-expansion-rules)
-- [📱 App Functionality Walkthrough](#-app-functionality-walkthrough)
+- [App Functionality Walkthrough](#app-functionality-walkthrough)
   - [1. Real-time Leaderboard & Danger Zone](#1-real-time-leaderboard--danger-zone)
   - [2. Interactive Hand Point Calculator](#2-interactive-hand-point-calculator)
   - [3. Round History, Editing & Undo](#3-round-history-editing--undo)
@@ -34,8 +34,8 @@ Say goodbye to messy pen-and-paper scoring, manual card counting errors, forgott
   - [7. Game Over Celebration & Statistics](#7-game-over-celebration--statistics)
   - [8. Audio Effects, Haptics & Dark Mode](#8-audio-effects-haptics--dark-mode)
   - [9. Data Persistence, Backup & Restore](#9-data-persistence-backup--restore)
-- [📂 Project Folder Structure](#-project-folder-structure)
-- [💻 Developer Guide](#-developer-guide)
+- [Project Folder Structure](#project-folder-structure)
+- [Developer Guide](#developer-guide)
   - [Prerequisites](#prerequisites)
   - [Installation & Local Development](#installation--local-development)
   - [Available Scripts](#available-scripts)
@@ -44,12 +44,12 @@ Say goodbye to messy pen-and-paper scoring, manual card counting errors, forgott
     - [Adding or Updating Cards, Events, or Rule Cards](#adding-or-updating-cards-events-or-rule-cards)
     - [Adding or Modifying Translations](#adding-or-modifying-translations)
     - [Modifying Scoring Logic](#modifying-scoring-logic)
-- [🌐 Deployment](#-deployment)
-- [⚖️ Disclaimer & Credits](#️-disclaimer--credits)
+- [Deployment](#deployment)
+- [Disclaimer & Credits](#disclaimer--credits)
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 - **Automated Hand Calculator**: Quick selectors for numbered cards (1–10), standard specials (7 pts), Curse (13 pts), The End (17 pts), Fuck You (42 pts), Mimicry (7 pts), and special event modifiers (Doomsday 50 pts, Time Bomb penalties/bonuses).
 - **Live Leaderboard & Elimination Alerts**: Tracks each player's cumulative score, ranking (lowest score leads!), rounds won, and alerts players when entering the **Danger Zone** (≥ 80% of limit) or becoming eliminated.
@@ -63,7 +63,7 @@ Say goodbye to messy pen-and-paper scoring, manual card counting errors, forgott
 
 ---
 
-## 🎮 Quick Start Guide (For Players)
+## Quick Start Guide (For Players)
 
 Using the companion during your game night is simple:
 
@@ -90,7 +90,7 @@ Using the companion during your game night is simple:
 
 ---
 
-## 📜 Game Rules Reference
+## Game Rules Reference
 
 Below is a summary of the official rules of **Frantic** and the **Pandora's Box** expansion to help players resolve disputes instantly at the table.
 
@@ -179,7 +179,7 @@ The **Pandora's Box** expansion adds two key mechanics:
 
 ---
 
-## 📱 App Functionality Walkthrough
+## App Functionality Walkthrough
 
 ### 1. Real-time Leaderboard & Danger Zone
 
@@ -255,7 +255,7 @@ The **Pandora's Box** expansion adds two key mechanics:
 
 ---
 
-## 📂 Project Folder Structure
+## Project Folder Structure
 
 ```text
 pandoras-box-app/
@@ -350,7 +350,7 @@ pandoras-box-app/
 
 ---
 
-## 💻 Developer Guide
+## Developer Guide
 
 ### Prerequisites
 
@@ -524,7 +524,7 @@ If a new house rule or expansion changes point calculations:
 
 ---
 
-## 🌐 Deployment
+## Deployment
 
 The application is bundled into static HTML/CSS/JS and can be hosted on any static hosting provider.
 
@@ -552,7 +552,7 @@ Simply connect your GitHub repository to Netlify and deployments will trigger au
 
 ---
 
-## ⚖️ Disclaimer & Credits
+## Disclaimer & Credits
 
 > **Legal Disclaimer:**
 > Pandora's Box is a game created and published by Rulefactory. This website is an unofficial, non-commercial companion tool designed solely for scorekeeping and rule reference. It is not affiliated with, endorsed, or sponsored by Rulefactory. All trademarks, logos, and copyrighted materials belong to their respective owners.

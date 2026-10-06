@@ -1,5 +1,5 @@
 import React from 'react';
-import { Settings } from 'lucide-react';
+import { Settings, Users } from 'lucide-react';
 import { Language, ThemeMode } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
 import { ThemeToggle } from './ThemeToggle';
@@ -34,19 +34,19 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <div className="min-w-0">
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <span className="truncate text-sm font-black uppercase tracking-wider text-neutral-900 dark:text-white sm:text-lg">
+              <span className="truncate text-sm font-black tracking-wider text-neutral-900 uppercase sm:text-lg dark:text-white">
                 Frantic
               </span>
-              <span className="hidden rounded-full border border-purple-500/30 bg-purple-500/15 px-1.5 py-0.5 text-[10px] font-black uppercase text-purple-600 dark:text-purple-400 sm:inline-block">
+              <span className="hidden rounded-full border border-purple-500/30 bg-purple-500/15 px-1.5 py-0.5 text-[10px] font-black text-purple-600 uppercase sm:inline-block dark:text-purple-400">
                 Pandora's Box
               </span>
             </div>
-            <div className="flex items-center gap-1.5 truncate text-xs font-medium text-neutral-500 dark:text-neutral-400 sm:gap-2">
+            <div className="flex items-center gap-1.5 truncate text-xs font-medium text-neutral-500 sm:gap-2 dark:text-neutral-400">
               <span className="whitespace-nowrap tabular-nums">
                 {t.scoreboard.round} {roundsCount}
               </span>
               <span className="shrink-0">•</span>
-              <span className="truncate whitespace-nowrap font-bold tabular-nums text-amber-500">
+              <span className="truncate font-bold whitespace-nowrap text-amber-500 tabular-nums">
                 {t.scoreboard.targetLimit}: {targetScore} {t.setup.points}
               </span>
             </div>
@@ -63,10 +63,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             type="button"
             onClick={onOpenSetup}
-            className="flex items-center gap-1.5 rounded-xl border border-neutral-200 bg-neutral-100 px-2.5 py-1.5 text-xs font-bold text-neutral-800 shadow-sm transition-all hover:bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 sm:px-3 sm:text-sm"
+            className="flex items-center gap-1.5 rounded-xl border border-neutral-200 bg-neutral-100 px-2.5 py-1.5 text-xs font-bold text-neutral-800 shadow-sm transition-all hover:bg-neutral-200 sm:px-3 sm:text-sm dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
             title={t.setup.title}
           >
-            <span className="shrink-0 text-sm">👥</span>
+            <Users className="h-4 w-4 shrink-0 text-neutral-500 dark:text-neutral-400" />
             <span className="hidden sm:inline">{t.setup.playerCount}</span>
           </button>
 

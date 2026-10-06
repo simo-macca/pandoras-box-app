@@ -66,7 +66,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
       }`}
     >
       <div
-        className="absolute left-0 right-0 top-0 h-1.5 opacity-90"
+        className="absolute top-0 right-0 left-0 h-1.5 opacity-90"
         style={{ backgroundColor: theme.hex }}
       />
 
@@ -84,7 +84,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
 
           <div className="min-w-0">
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <span className="truncate text-sm font-bold text-neutral-900 dark:text-white sm:text-base md:text-lg">
+              <span className="truncate text-sm font-bold text-neutral-900 sm:text-base md:text-lg dark:text-white">
                 {player.name}
               </span>
             </div>
@@ -92,7 +92,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
             <div className="mt-0.5 flex flex-wrap items-center gap-1.5 sm:gap-2">
               {player.isLeader && (
                 <span className="flex items-center gap-1 text-[11px] font-semibold text-amber-500 dark:text-amber-400">
-                  <span className="shrink-0">👑</span>
+                  <Crown className="h-3 w-3 shrink-0" />
                   <span className="truncate">{t.scoreboard.leading}</span>
                 </span>
               )}
@@ -119,9 +119,9 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
         <div className="shrink-0 text-right">
           <div className="flex items-baseline justify-end gap-1">
             <span
-              className={`whitespace-nowrap font-mono text-xl font-black tabular-nums tracking-tight sm:text-2xl md:text-3xl ${
+              className={`font-mono text-xl font-black tracking-tight whitespace-nowrap tabular-nums sm:text-2xl md:text-3xl ${
                 player.isLeader
-                  ? 'drop-shadow-xs text-amber-500 dark:text-amber-400 dark:drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]'
+                  ? 'text-amber-500 drop-shadow-xs dark:text-amber-400 dark:drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]'
                   : player.isEliminated
                     ? 'text-rose-500 dark:text-rose-400'
                     : 'text-neutral-900 dark:text-slate-100'
@@ -129,12 +129,12 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
             >
               {player.totalScore}
             </span>
-            <span className="whitespace-nowrap text-xs font-semibold tabular-nums text-neutral-500 dark:text-slate-400">
+            <span className="text-xs font-semibold whitespace-nowrap text-neutral-500 tabular-nums dark:text-slate-400">
               / {targetScore} {t.scoreboard.pts}
             </span>
           </div>
 
-          <div className="whitespace-nowrap text-[11px] tabular-nums text-neutral-500 dark:text-slate-400">
+          <div className="text-[11px] whitespace-nowrap text-neutral-500 tabular-nums dark:text-slate-400">
             {player.pointsRemaining > 0 ? (
               <span>{player.pointsRemaining} pts safety buffer</span>
             ) : (
@@ -149,7 +149,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
       <div className="mt-3 space-y-1.5 sm:mt-4">
         <div className="flex items-center justify-between text-[11px] font-medium text-neutral-500 dark:text-slate-400">
           <span>Proximity to Loss:</span>
-          <span className="whitespace-nowrap font-mono font-bold tabular-nums text-neutral-700 dark:text-slate-300">
+          <span className="font-mono font-bold whitespace-nowrap text-neutral-700 tabular-nums dark:text-slate-300">
             {player.progressPct.toFixed(0)}%
           </span>
         </div>
@@ -161,7 +161,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
           />
 
           <div
-            className="absolute bottom-0 top-0 w-0.5 bg-rose-500/50"
+            className="absolute top-0 bottom-0 w-0.5 bg-rose-500/50"
             style={{
               left: `${Math.max(0, ((targetScore - 20) / targetScore) * 100)}%`,
             }}

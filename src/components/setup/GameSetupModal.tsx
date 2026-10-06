@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Play, RotateCcw, Target, AlertTriangle } from 'lucide-react';
+import { X, Play, RotateCcw, Target, AlertTriangle, Users } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Player, GameConfig, Language, PlayerColor } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
@@ -219,10 +219,10 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
     <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-2 backdrop-blur-sm sm:p-4">
       <div className="relative flex max-h-[90dvh] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-800 dark:bg-neutral-900">
         {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-b border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-900/60 sm:px-6 sm:py-4">
+        <div className="flex shrink-0 items-center justify-between border-b border-neutral-200 bg-neutral-50 px-4 py-3 sm:px-6 sm:py-4 dark:border-neutral-800 dark:bg-neutral-900/60">
           <div className="min-w-0">
-            <h2 className="flex items-center gap-2 text-lg font-bold text-neutral-900 dark:text-white sm:text-xl">
-              <span className="shrink-0">👥</span>
+            <h2 className="flex items-center gap-2 text-lg font-bold text-neutral-900 sm:text-xl dark:text-white">
+              <Users className="h-5 w-5 shrink-0 text-amber-500 dark:text-amber-400" />
               <span className="truncate">{t.setup.title}</span>
             </h2>
             <p className="mt-0.5 truncate text-xs text-neutral-500 dark:text-neutral-400">
@@ -233,7 +233,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="shrink-0 rounded-xl p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white sm:p-2"
+            className="shrink-0 rounded-xl p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 sm:p-2 dark:hover:bg-neutral-800 dark:hover:text-white"
           >
             <X className="h-5 w-5 shrink-0" />
           </button>
@@ -325,9 +325,9 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
                     }
                   }}
                   placeholder="150"
-                  className="w-full rounded-xl border border-neutral-300 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-900 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
+                  className="w-full rounded-xl border border-neutral-300 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
                 />
-                <span className="pointer-events-none absolute right-3 top-2 text-xs font-semibold text-neutral-400">
+                <span className="pointer-events-none absolute top-2 right-3 text-xs font-semibold text-neutral-400">
                   {t.setup.points}
                 </span>
               </div>
@@ -340,13 +340,13 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
         </div>
 
         {/* Footer Actions */}
-        <div className="shrink-0 border-t border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-900/60 sm:px-6 sm:py-4">
+        <div className="shrink-0 border-t border-neutral-200 bg-neutral-50 px-4 py-3 sm:px-6 sm:py-4 dark:border-neutral-800 dark:bg-neutral-900/60">
           {!showConfirmReset ? (
             <div className="flex items-center justify-between gap-2 sm:gap-3">
               <button
                 type="button"
                 onClick={() => setShowConfirmReset(true)}
-                className="flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-bold text-red-600 transition-all hover:border-red-500 dark:text-red-400 sm:px-4 sm:py-2.5 sm:text-sm"
+                className="flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-bold text-red-600 transition-all hover:border-red-500 sm:px-4 sm:py-2.5 sm:text-sm dark:text-red-400"
               >
                 <RotateCcw className="h-4 w-4 shrink-0" />
                 <span className="whitespace-nowrap">{t.setup.newGame}</span>

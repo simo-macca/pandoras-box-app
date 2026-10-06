@@ -8,6 +8,7 @@ import {
   Sparkles,
   Skull,
   Bomb,
+  X,
 } from 'lucide-react';
 import { Player, RoundEntry, Language } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
@@ -61,7 +62,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
       <div className="flex items-center justify-between gap-2">
         <h3 className="flex items-center gap-2 text-base font-bold text-neutral-900 dark:text-white">
           <span>{t.scoreboard.historyTitle}</span>
-          <span className="rounded-full bg-neutral-200 px-2.5 py-0.5 font-mono text-xs font-bold tabular-nums text-amber-500 dark:bg-neutral-800">
+          <span className="rounded-full bg-neutral-200 px-2.5 py-0.5 font-mono text-xs font-bold text-amber-500 tabular-nums dark:bg-neutral-800">
             {rounds.length}
           </span>
         </h3>
@@ -87,17 +88,17 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
           return (
             <div
               key={round.roundNumber}
-              className="rounded-3xl border border-neutral-200 bg-white p-3 shadow-sm transition-all dark:border-neutral-800 dark:bg-neutral-900 sm:p-4"
+              className="rounded-3xl border border-neutral-200 bg-white p-3 shadow-sm transition-all sm:p-4 dark:border-neutral-800 dark:bg-neutral-900"
             >
               {/* Round Header */}
               <div className="mb-3 flex items-center justify-between gap-2 border-b border-neutral-100 pb-3 dark:border-neutral-800">
                 <div className="flex min-w-0 items-center gap-2">
-                  <span className="shrink-0 whitespace-nowrap rounded-xl border border-amber-500/30 bg-amber-500/15 px-2.5 py-1 text-xs font-black tabular-nums text-amber-600 dark:text-amber-400">
+                  <span className="shrink-0 rounded-xl border border-amber-500/30 bg-amber-500/15 px-2.5 py-1 text-xs font-black whitespace-nowrap text-amber-600 tabular-nums dark:text-amber-400">
                     {t.scoreboard.round} {round.roundNumber}
                   </span>
 
                   {activeRuleCard && (
-                    <span className="flex max-w-[160px] items-center gap-1 truncate rounded-xl border border-purple-500/30 bg-purple-500/15 px-2 py-1 text-xs font-bold text-purple-600 dark:text-purple-400 sm:max-w-[200px] sm:px-2.5">
+                    <span className="flex max-w-[160px] items-center gap-1 truncate rounded-xl border border-purple-500/30 bg-purple-500/15 px-2 py-1 text-xs font-bold text-purple-600 sm:max-w-[200px] sm:px-2.5 dark:text-purple-400">
                       <Sparkles className="h-3 w-3 shrink-0" />
                       <span className="truncate">
                         {activeRuleCard.name[language]}
@@ -136,9 +137,10 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                           <button
                             type="button"
                             onClick={() => setDeleteConfirmRound(null)}
-                            className="rounded-lg px-1.5 py-0.5 text-neutral-400 hover:text-neutral-200"
+                            className="rounded-lg p-1 text-neutral-400 hover:text-neutral-200"
+                            aria-label={t.setup.cancel}
                           >
-                            ✕
+                            <X className="h-3.5 w-3.5 shrink-0" />
                           </button>
                         </div>
                       ) : (
@@ -186,7 +188,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                       </div>
 
                       <div className="mt-1 flex items-baseline justify-between">
-                        <span className="whitespace-nowrap text-base font-black tabular-nums text-neutral-900 dark:text-white">
+                        <span className="text-base font-black whitespace-nowrap text-neutral-900 tabular-nums dark:text-white">
                           {score.totalPoints}{' '}
                           <span className="text-[10px] font-semibold text-neutral-400">
                             pts
@@ -194,7 +196,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                         </span>
 
                         {score.isDoomsday && (
-                          <span className="flex items-center gap-0.5 text-[10px] font-bold tabular-nums text-purple-500">
+                          <span className="flex items-center gap-0.5 text-[10px] font-bold text-purple-500 tabular-nums">
                             <Skull className="h-3 w-3 shrink-0" />
                             50
                           </span>

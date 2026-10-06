@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Trash2, Users } from 'lucide-react';
+import { Plus, Trash2, Users, X } from 'lucide-react';
 import { Player, Language } from '../../types/game';
 import { ALL_PAWN_COLORS, PAWN_COLORS } from '../../utils/colors';
 import { UI_TRANSLATIONS } from '../../data/translations';
@@ -51,7 +51,7 @@ export const PlayerConfig: React.FC<PlayerConfigProps> = ({
           return (
             <div
               key={player.id}
-              className="flex flex-col items-stretch gap-2.5 rounded-2xl border border-neutral-200/80 bg-neutral-100/80 p-2.5 shadow-sm dark:border-neutral-700/80 dark:bg-neutral-800/70 sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col items-stretch gap-2.5 rounded-2xl border border-neutral-200/80 bg-neutral-100/80 p-2.5 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:border-neutral-700/80 dark:bg-neutral-800/70"
             >
               <div className="flex min-w-0 flex-1 items-center gap-2">
                 <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-white text-xs font-black text-neutral-600 shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
@@ -66,11 +66,11 @@ export const PlayerConfig: React.FC<PlayerConfigProps> = ({
                     onUpdatePlayer(player.id, { name: e.target.value })
                   }
                   placeholder={`Player ${idx + 1}`}
-                  className="min-w-0 flex-1 rounded-xl border border-neutral-200 bg-white px-3 py-1.5 text-sm font-semibold text-neutral-900 transition-all placeholder:text-neutral-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+                  className="min-w-0 flex-1 rounded-xl border border-neutral-200 bg-white px-3 py-1.5 text-sm font-semibold text-neutral-900 transition-all placeholder:text-neutral-400 focus:border-amber-500 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
                 />
               </div>
 
-              <div className="flex shrink-0 items-center justify-between gap-1.5 border-t border-neutral-200/80 pt-1.5 dark:border-neutral-700/60 sm:justify-end sm:border-t-0 sm:pt-0">
+              <div className="flex shrink-0 items-center justify-between gap-1.5 border-t border-neutral-200/80 pt-1.5 sm:justify-end sm:border-t-0 sm:pt-0 dark:border-neutral-700/60">
                 <div className="flex flex-wrap items-center gap-1 sm:flex-nowrap sm:gap-1.5">
                   {ALL_PAWN_COLORS.map((colorOption) => {
                     const theme = PAWN_COLORS[colorOption];
@@ -90,7 +90,7 @@ export const PlayerConfig: React.FC<PlayerConfigProps> = ({
                           soundEffects.playClick();
                           onUpdatePlayer(player.id, { color: colorOption });
                         }}
-                        className={`sm:h-5.5 sm:w-5.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full transition-all ${
+                        className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full transition-all sm:h-5.5 sm:w-5.5 ${
                           isSelected
                             ? `shadow-sm ring-2 ring-offset-1 ring-offset-neutral-100 dark:ring-offset-neutral-800 ${theme.ringColor}`
                             : isTakenByOther
@@ -101,12 +101,10 @@ export const PlayerConfig: React.FC<PlayerConfigProps> = ({
                         title={`${theme.label[language] || theme.label.en}${isTakenByOther ? ' (Already picked)' : ''}`}
                       >
                         {isSelected && (
-                          <div className="shadow-xs h-1.5 w-1.5 rounded-full bg-white" />
+                          <div className="h-1.5 w-1.5 rounded-full bg-white shadow-xs" />
                         )}
                         {isTakenByOther && (
-                          <span className="drop-shadow-xs text-[9px] font-black text-white">
-                            ✕
-                          </span>
+                          <X className="h-2.5 w-2.5 stroke-[3] text-white drop-shadow-xs" />
                         )}
                       </button>
                     );
