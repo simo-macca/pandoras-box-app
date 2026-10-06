@@ -1,5 +1,6 @@
 import { defineConfig, Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -60,5 +61,5 @@ function serveRulesPlugin(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), serveRulesPlugin()],
+  plugins: [tailwindcss(), react(), serveRulesPlugin()],
 });
