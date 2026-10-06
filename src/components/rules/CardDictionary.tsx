@@ -103,6 +103,58 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
     filteredPowerCards.length +
     filteredRuleCards.length;
 
+  const getCategoryIcon = (category: CategoryType) => {
+    switch (category) {
+      case 'events':
+        return (
+          <Flame className="h-4 w-4 shrink-0 text-rose-500 dark:text-rose-400" />
+        );
+      case 'power':
+        return (
+          <Zap className="h-4 w-4 shrink-0 text-cyan-600 dark:text-cyan-400" />
+        );
+      case 'rules':
+        return (
+          <Layers className="h-4 w-4 shrink-0 text-purple-600 dark:text-purple-400" />
+        );
+      case 'specials':
+        return (
+          <Sparkles className="h-4 w-4 shrink-0 text-amber-500 dark:text-amber-400" />
+        );
+      case 'all':
+      default:
+        return null;
+    }
+  };
+
+  const categoryFilters = [
+    { id: 'all' as CategoryType, label: t.rules.allCategories },
+    {
+      id: 'specials' as CategoryType,
+      label: t.rules.specials,
+      icon: Sparkles,
+      colorClass: 'text-amber-500 dark:text-amber-400',
+    },
+    {
+      id: 'events' as CategoryType,
+      label: t.rules.events,
+      icon: Flame,
+      colorClass: 'text-rose-500 dark:text-rose-400',
+    },
+    {
+      id: 'power' as CategoryType,
+      label: t.rules.powerCards,
+      icon: Zap,
+      colorClass: 'text-cyan-600 dark:text-cyan-400',
+    },
+    {
+      id: 'rules' as CategoryType,
+      label: t.rules.ruleCards,
+      icon: Layers,
+      colorClass: 'text-purple-600 dark:text-purple-400',
+    },
+  ];
+
   return (
     <div className="mx-auto max-w-5xl space-y-6 pb-20 md:pb-8">
       {/* Sub-tab Navigation (Guide vs Dictionary) */}
@@ -193,15 +245,20 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
               )}
             </div>
 
-            {/* Category Filter Dropdown */}
-            <div className="flex items-center gap-2 pt-1">
+            {/* Mobile Mode: Dropdown Menu */}
+            <div className="flex items-center gap-2 pt-1 sm:hidden">
               <label
                 htmlFor="category-select"
                 className="shrink-0 text-xs font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400"
               >
                 Category:
               </label>
-              <div className="relative w-full sm:max-w-xs">
+              <div className="relative w-full">
+                {activeCategory !== 'all' && (
+                  <div className="pointer-events-none absolute top-1/2 left-3.5 flex -translate-y-1/2 items-center justify-center">
+                    {getCategoryIcon(activeCategory)}
+                  </div>
+                )}
                 <select
                   id="category-select"
                   value={activeCategory}
@@ -209,7 +266,9 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                     soundEffects.playClick();
                     setActiveCategory(e.target.value as CategoryType);
                   }}
-                  className="w-full appearance-none rounded-xl border border-neutral-200 bg-neutral-50 py-2 pr-8 pl-3.5 text-xs font-bold text-neutral-900 shadow-sm transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none sm:text-sm dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
+                  className={`w-full appearance-none rounded-xl border border-neutral-200 bg-neutral-50 py-2 pr-8 text-xs font-bold text-neutral-900 shadow-sm transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white ${
+                    activeCategory !== 'all' ? 'pl-10' : 'pl-3.5'
+                  }`}
                 >
                   <option value="all">{t.rules.allCategories}</option>
                   <option value="specials">{t.rules.specials}</option>
@@ -221,6 +280,40 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                   <ChevronDown className="h-4 w-4 shrink-0" />
                 </div>
               </div>
+            </div>
+
+            {/* PC / Desktop Mode: Inline Labels Menu */}
+            <div className="hidden flex-wrap items-center gap-2 pt-1 sm:flex">
+              <span className="mr-1 shrink-0 text-xs font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
+                Category:
+              </span>
+              {categoryFilters.map((cat) => {
+                const isSelected = activeCategory === cat.id;
+                const Icon = cat.icon;
+
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    onClick={() => {
+                      soundEffects.playClick();
+                      setActiveCategory(cat.id);
+                    }}
+                    className={`flex items-center gap-1.5 rounded-xl border px-3.5 py-1.5 text-xs font-bold transition-all ${
+                      isSelected
+                        ? 'border-amber-500 bg-amber-500/15 text-neutral-900 shadow-sm dark:border-amber-500/60 dark:bg-amber-500/20 dark:text-white'
+                        : 'border-neutral-200 bg-neutral-50 text-neutral-600 hover:border-neutral-300 hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-700/60 dark:bg-neutral-800/60 dark:text-neutral-400 dark:hover:border-neutral-600 dark:hover:bg-neutral-800 dark:hover:text-white'
+                    }`}
+                  >
+                    {Icon && (
+                      <Icon
+                        className={`h-3.5 w-3.5 shrink-0 ${cat.colorClass || ''}`}
+                      />
+                    )}
+                    <span>{cat.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -247,23 +340,25 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                     {filteredCards.map((card) => (
                       <div
                         key={card.id}
-                        className="space-y-2 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-neutral-700"
+                        className="flex flex-col rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-neutral-700"
                       >
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between gap-2">
                           <h4 className="text-base font-bold text-neutral-900 dark:text-white">
                             {card.name[language] || card.name.en}
                           </h4>
-                          <span className="rounded-full border border-amber-500/30 bg-amber-500/15 px-2.5 py-0.5 text-xs font-black text-amber-600 dark:text-amber-400">
+                          <span className="shrink-0 rounded-full border border-amber-500/30 bg-amber-500/15 px-2.5 py-0.5 text-xs font-black text-amber-600 dark:text-amber-400">
                             {card.points} {t.rules.pts}
                           </span>
                         </div>
-                        <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
+                        <p className="mt-2 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
                           {card.description[language] || card.description.en}
                         </p>
                         {card.tip && (
-                          <div className="flex items-start gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 p-2 text-[11px] text-amber-600 dark:text-amber-400/90">
-                            <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                            <span>{card.tip[language] || card.tip.en}</span>
+                          <div className="mt-auto pt-3">
+                            <div className="flex items-start gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 p-2 text-[11px] text-amber-600 dark:text-amber-400/90">
+                              <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                              <span>{card.tip[language] || card.tip.en}</span>
+                            </div>
                           </div>
                         )}
                       </div>
@@ -286,17 +381,17 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                     {filteredEvents.map((ev) => (
                       <div
                         key={ev.id}
-                        className="space-y-2 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-neutral-700"
+                        className="flex flex-col rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-neutral-700"
                       >
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between gap-2">
                           <h4 className="text-base font-bold text-neutral-900 dark:text-white">
                             {ev.name[language] || ev.name.en}
                           </h4>
-                          <span className="rounded-full border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 text-[10px] font-black tracking-wider text-rose-600 uppercase dark:text-rose-400">
+                          <span className="shrink-0 rounded-full border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 text-[10px] font-black tracking-wider text-rose-600 uppercase dark:text-rose-400">
                             {ev.severity}
                           </span>
                         </div>
-                        <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
+                        <p className="mt-2 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
                           {ev.description[language] || ev.description.en}
                         </p>
                       </div>
@@ -319,17 +414,17 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                     {filteredPowerCards.map((pc) => (
                       <div
                         key={pc.id}
-                        className="space-y-2 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-neutral-700"
+                        className="flex flex-col rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-neutral-700"
                       >
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between gap-2">
                           <h4 className="text-base font-bold text-neutral-900 dark:text-white">
                             {pc.name[language] || pc.name.en}
                           </h4>
-                          <span className="rounded-full border border-cyan-500/30 bg-cyan-500/15 px-2 py-0.5 text-xs font-bold text-cyan-600 dark:text-cyan-400">
+                          <span className="shrink-0 rounded-full border border-cyan-500/30 bg-cyan-500/15 px-2 py-0.5 text-xs font-bold text-cyan-600 dark:text-cyan-400">
                             0 {t.rules.pts}
                           </span>
                         </div>
-                        <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
+                        <p className="mt-2 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
                           {pc.description[language] || pc.description.en}
                         </p>
                       </div>
@@ -352,18 +447,20 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                     {filteredRuleCards.map((rc) => (
                       <div
                         key={rc.id}
-                        className="space-y-2 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-purple-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-purple-500/30"
+                        className="flex flex-col rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-purple-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-purple-500/30"
                       >
                         <h4 className="text-base font-bold text-neutral-900 dark:text-white">
                           {rc.name[language] || rc.name.en}
                         </h4>
-                        <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
+                        <p className="mt-2 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
                           {rc.description[language] || rc.description.en}
                         </p>
                         {rc.flavor && (
-                          <p className="border-l-2 border-purple-500/40 pl-2 text-[11px] text-purple-600/80 italic dark:text-purple-300/80">
-                            "{rc.flavor[language] || rc.flavor.en}"
-                          </p>
+                          <div className="mt-auto pt-3">
+                            <p className="border-l-2 border-purple-500/40 pl-2 text-[11px] text-purple-600/80 italic dark:text-purple-300/80">
+                              "{rc.flavor[language] || rc.flavor.en}"
+                            </p>
+                          </div>
                         )}
                       </div>
                     ))}

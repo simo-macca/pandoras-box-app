@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Sparkles, Shuffle, Check, CheckCircle2, X } from 'lucide-react';
+import {
+  Sparkles,
+  Shuffle,
+  Check,
+  CheckCircle2,
+  X,
+  Loader2,
+} from 'lucide-react';
 import { Language } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
 import { RULE_CARDS_DATA } from '../../data/ruleCardsData';
@@ -77,12 +84,14 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
               onClick={handleDrawRandom}
               disabled={isRolling}
               className={`inline-flex transform items-center gap-2 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-3 text-sm font-extrabold text-white shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all hover:from-purple-500 hover:to-indigo-500 active:scale-95 ${
-                isRolling ? 'animate-pulse opacity-80' : ''
+                isRolling ? 'cursor-not-allowed opacity-90' : ''
               }`}
             >
-              <Shuffle
-                className={`h-4 w-4 ${isRolling ? 'animate-spin' : ''}`}
-              />
+              {isRolling ? (
+                <Loader2 className="h-4 w-4 shrink-0 animate-spin" />
+              ) : (
+                <Shuffle className="h-4 w-4 shrink-0" />
+              )}
               <span>{t.rulecards.drawRandom}</span>
             </button>
           </div>

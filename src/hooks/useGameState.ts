@@ -370,6 +370,34 @@ export function useGameState() {
     []
   );
 
+  const updateGameSetup = useCallback(
+    (players: Player[], config: GameConfig) => {
+      soundEffects.playClick();
+      setGameState((prev) => {
+        const finalConfig = {
+          ...config,
+          targetScore: Math.max(50, config.targetScore),
+        };
+        return {
+          ...prev,
+          players,
+          config: finalConfig,
+        };
+      });
+    },
+    []
+  );
+
+  const restoreGameState = useCallback((stateToRestore: GameState) => {
+    soundEffects.playClick();
+    setGameState(stateToRestore);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToRestore));
+    } catch (err) {
+      console.error('Failed to restore game state to localStorage:', err);
+    }
+  }, []);
+
   const resetCurrentGame = useCallback(() => {
     soundEffects.playClick();
     setGameState((prev) => ({
@@ -470,6 +498,8 @@ export function useGameState() {
     undoLastRound,
     setActiveRuleCardIds,
     startNewGame,
+    updateGameSetup,
+    restoreGameState,
     resetCurrentGame,
     continueGame,
     concludeGame,

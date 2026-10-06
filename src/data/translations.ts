@@ -39,6 +39,7 @@ export interface TranslationStrings {
     resetMatch: string;
     newGame: string;
     newMatch?: string;
+    setupUpdatedSuccess: string;
     confirmResetTitle: string;
     confirmResetMessage: string;
     cancel: string;
@@ -112,6 +113,8 @@ export interface TranslationStrings {
     roundAddedSuccess: string;
     roundModifiedSuccess: string;
     roundDeletedSuccess: string;
+    undo: string;
+    undoSuccess: string;
   };
   rulecards: {
     title: string;
@@ -245,6 +248,7 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       resetMatch: 'Reset Match',
       newGame: 'New Game',
       newMatch: 'New Match',
+      setupUpdatedSuccess: 'Player setup updated!',
       confirmResetTitle: 'Reset Match?',
       confirmResetMessage:
         'Are you sure you want to reset all scores? This cannot be undone.',
@@ -316,6 +320,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       roundAddedSuccess: 'Round scored successfully!',
       roundModifiedSuccess: 'Round updated successfully!',
       roundDeletedSuccess: 'Round deleted successfully!',
+      undo: 'Undo',
+      undoSuccess: 'Action undone!',
     },
     rulecards: {
       title: "Pandora's Box Rule Cards",
@@ -453,6 +459,7 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       resetMatch: 'Partie zurücksetzen',
       newGame: 'Neues Spiel',
       newMatch: 'Neue Partie',
+      setupUpdatedSuccess: 'Spieler-Setup aktualisiert!',
       confirmResetTitle: 'Partie zurücksetzen?',
       confirmResetMessage:
         'Möchtest du wirklich alle Runden löschen? Dies kann nicht rückgängig gemacht werden.',
@@ -525,6 +532,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       roundAddedSuccess: 'Runde erfolgreich gewertet!',
       roundModifiedSuccess: 'Runde erfolgreich aktualisiert!',
       roundDeletedSuccess: 'Runde erfolgreich gelöscht!',
+      undo: 'Rückgängig',
+      undoSuccess: 'Aktion rückgängig gemacht!',
     },
     rulecards: {
       title: "Pandora's Box Regelkarten",
@@ -663,6 +672,7 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       resetMatch: 'Azzera Partita',
       newGame: 'Nuova Partita',
       newMatch: 'Nuovo Match',
+      setupUpdatedSuccess: 'Configurazione giocatori aggiornata!',
       confirmResetTitle: 'Resettare la partita?',
       confirmResetMessage:
         'Sei sicuro di voler cancellare tutti i punteggi? Operazione irreversibile.',
@@ -735,6 +745,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       roundAddedSuccess: 'Round registrato con successo!',
       roundModifiedSuccess: 'Round modificato con successo!',
       roundDeletedSuccess: 'Round eliminato con successo!',
+      undo: 'Annulla',
+      undoSuccess: 'Azione annullata!',
     },
     rulecards: {
       title: "Carte Regola Pandora's Box",
@@ -873,6 +885,7 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       resetMatch: 'Réinitialiser la Partie',
       newGame: 'Nouvelle Partie',
       newMatch: 'Nouveau Match',
+      setupUpdatedSuccess: 'Configuration des joueurs mise à jour !',
       confirmResetTitle: 'Réinitialiser ?',
       confirmResetMessage:
         'Voulez-vous vraiment effacer tous les scores ? Irréversible.',
@@ -946,6 +959,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       roundAddedSuccess: 'Manche enregistrée avec succès !',
       roundModifiedSuccess: 'Manche mise à jour avec succès !',
       roundDeletedSuccess: 'Manche supprimée avec succès !',
+      undo: 'Annuler',
+      undoSuccess: 'Action annulée !',
     },
     rulecards: {
       title: "Cartes Règle Pandora's Box",

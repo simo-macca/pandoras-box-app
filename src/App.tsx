@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import { RotateCcw } from 'lucide-react';
 import { useGameState } from './hooks/useGameState';
 import { useTheme } from './hooks/useTheme';
 import { TRANSLATIONS } from './data/translations';
@@ -13,7 +14,7 @@ import { RuleCardDrawer } from './components/rulecards/RuleCardDrawer';
 import { CardDictionary } from './components/rules/CardDictionary';
 import { GameSetupModal } from './components/setup/GameSetupModal';
 import { SettingsModal } from './components/layout/SettingsModal';
-import { HandScore } from './types/game';
+import { HandScore, GameState } from './types/game';
 
 export function App() {
   const {
@@ -27,6 +28,8 @@ export function App() {
     undoLastRound,
     setActiveRuleCardIds,
     startNewGame,
+    updateGameSetup,
+    restoreGameState,
     resetCurrentGame,
     continueGame,
     concludeGame,
@@ -81,27 +84,109 @@ export function App() {
     setIsSettingsModalOpen(true);
   };
 
+  const previousStateRef = useRef<GameState | null>(null);
+  const undoTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (undoTimeoutRef.current) {
+        clearTimeout(undoTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const showUndoToast = useCallback(
+    (message: string, snapshot: GameState) => {
+      if (undoTimeoutRef.current) {
+        clearTimeout(undoTimeoutRef.current);
+      }
+      previousStateRef.current = snapshot;
+
+      undoTimeoutRef.current = setTimeout(() => {
+        previousStateRef.current = null;
+        undoTimeoutRef.current = null;
+      }, 5000);
+
+      toast(
+        (tInstance) => (
+          <div className="flex w-full items-center justify-between gap-3 text-xs sm:text-sm">
+            <span className="font-semibold text-white">{message}</span>
+            <button
+              type="button"
+              onClick={() => {
+                if (previousStateRef.current) {
+                  const restoredState = previousStateRef.current;
+                  restoreGameState(restoredState);
+                  if (restoredState.isGameOver && !restoredState.isContinued) {
+                    setIsGameOverModalDismissed(false);
+                  }
+                  previousStateRef.current = null;
+                }
+                if (undoTimeoutRef.current) {
+                  clearTimeout(undoTimeoutRef.current);
+                  undoTimeoutRef.current = null;
+                }
+                toast.dismiss(tInstance.id);
+                toast.success(TRANSLATIONS[language].scoring.undoSuccess, {
+                  duration: 2500,
+                });
+              }}
+              className="flex shrink-0 items-center gap-1.5 rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-black text-neutral-950 shadow-sm transition hover:bg-amber-400 active:scale-95"
+            >
+              <RotateCcw className="h-3.5 w-3.5 stroke-[2.5]" />
+              <span>{TRANSLATIONS[language].scoring.undo}</span>
+            </button>
+          </div>
+        ),
+        {
+          id: 'undo-toast',
+          duration: 5000,
+          style: {
+            minWidth: '270px',
+            maxWidth: '420px',
+          },
+        }
+      );
+    },
+    [language, restoreGameState]
+  );
+
   const handleSubmitScores = (scores: Record<string, HandScore>) => {
+    const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
     if (editingRoundNumber !== null) {
       editRound(editingRoundNumber, scores);
-      toast.success(TRANSLATIONS[language].scoring.roundModifiedSuccess);
+      showUndoToast(
+        TRANSLATIONS[language].scoring.roundModifiedSuccess,
+        previousSnapshot
+      );
     } else {
       addRound(scores);
-      toast.success(TRANSLATIONS[language].scoring.roundAddedSuccess);
+      showUndoToast(
+        TRANSLATIONS[language].scoring.roundAddedSuccess,
+        previousSnapshot
+      );
     }
     setEditingRoundNumber(null);
     setIsScoreModalOpen(false);
   };
 
   const handleDeleteRound = (roundNumber: number) => {
+    const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
     deleteRound(roundNumber);
-    toast.success(TRANSLATIONS[language].scoring.roundDeletedSuccess);
+    showUndoToast(
+      TRANSLATIONS[language].scoring.roundDeletedSuccess,
+      previousSnapshot
+    );
   };
 
   const handleUndoLastRound = () => {
     if (gameState.rounds.length > 0) {
+      const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
       undoLastRound();
-      toast.success(TRANSLATIONS[language].scoring.roundDeletedSuccess);
+      showUndoToast(
+        TRANSLATIONS[language].scoring.roundDeletedSuccess,
+        previousSnapshot
+      );
     }
   };
 
@@ -110,20 +195,33 @@ export function App() {
     newConfig: typeof gameState.config,
     isResetRounds: boolean
   ) => {
+    const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
     if (isResetRounds) {
       startNewGame(newPlayers, newConfig);
       setIsGameOverModalDismissed(false);
+      showUndoToast(
+        TRANSLATIONS[language].setup.confirmResetTitle || 'Match Reset',
+        previousSnapshot
+      );
     } else {
-      startNewGame(newPlayers, newConfig);
+      updateGameSetup(newPlayers, newConfig);
+      showUndoToast(
+        TRANSLATIONS[language].setup.setupUpdatedSuccess,
+        previousSnapshot
+      );
     }
   };
 
   const handleResetData = () => {
+    const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
     resetAllData();
     setIsScoreModalOpen(false);
     setEditingRoundNumber(null);
     setIsGameOverModalDismissed(false);
-    toast.success(TRANSLATIONS[language].settings.resetDataSuccess);
+    showUndoToast(
+      TRANSLATIONS[language].settings.resetDataSuccess,
+      previousSnapshot
+    );
   };
 
   const editingRound = editingRoundNumber
@@ -200,6 +298,7 @@ export function App() {
           setEditingRoundNumber(null);
         }}
         players={gameState.players}
+        playerStats={playerStats}
         onSubmitRound={handleSubmitScores}
         language={language}
         roundNumber={editingRoundNumber ?? gameState.rounds.length + 1}
