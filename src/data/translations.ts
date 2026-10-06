@@ -259,7 +259,7 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
         'The cumulative score ceiling that ends the game. As soon as at least one player reaches or exceeds this limit at the end of a round, the game is over. The player with the lowest score wins!',
       dangerHelpTitle: 'Danger Zone',
       dangerHelpDesc:
-        'Players within 20 points of the Game Limit are in the Danger Zone. Holding heavy cards like Fuck You (+42) or Black cards (double points) at round end can easily push them over the limit!',
+        'Players within 20 points of the Game Limit are in the Danger Zone. Holding heavy cards like Fuck You (42 pts), The End (17 pts), or Curse (13 pts) at round end can easily push them over the limit!',
       historyTitle: 'Round History',
       undoLastRound: 'Undo Last',
       undoRound: 'Undo Last Round',
@@ -462,7 +462,7 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
         'Die Gesamtpunktegrenze, die das Spiel beendet. Sobald am Ende einer Runde mindestens ein Spieler dieses Limit erreicht oder überschreitet, endet das Spiel. Wer die wenigsten Punkte hat, gewinnt!',
       dangerHelpTitle: 'Gefahrenzone',
       dangerHelpDesc:
-        'Spieler, die weniger als 20 Punkte von der Punktegrenze entfernt sind, befinden sich in der Gefahrenzone. Teure Karten wie Fuck You (+42) oder schwarze Karten (doppelte Punkte) können das Spiel sofort beenden!',
+        'Spieler, die weniger als 20 Punkte von der Punktegrenze entfernt sind, befinden sich in der Gefahrenzone. Teure Karten wie Fuck You (42 Pkt), The End (17 Pkt) oder Fluch (13 Pkt) können das Spiel sofort beenden!',
       historyTitle: 'Rundenverlauf',
       undoLastRound: 'Runde rückgängig',
       undoRound: 'Letzte Runde rückgängig',
@@ -667,7 +667,7 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
         'Il limite massimo di punti cumulativi che determina la fine della partita. Quando al termine di un round almeno un giocatore raggiunge o supera questa soglia, la partita termina. Vince chi ha meno punti!',
       dangerHelpTitle: 'Zona Pericolo',
       dangerHelpDesc:
-        'I giocatori a 20 punti o meno dalla soglia limite sono nella Zona Pericolo. Carte penalizzanti come Fuck You (+42) o carte nere (punti raddoppiati) a fine round possono far superare la soglia e chiudere la partita!',
+        'I giocatori a 20 punti o meno dalla soglia limite sono nella Zona Pericolo. Carte pesanti come Fuck You (42 pt), The End (17 pt) o Maledizione (13 pt) a fine round possono far superare la soglia e chiudere la partita!',
       historyTitle: 'Storico Round',
       undoLastRound: 'Annulla Ultimo',
       undoRound: 'Annulla Ultimo Round',
@@ -872,7 +872,7 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
         'Le plafond de points cumulés qui met fin à la partie. Dès qu’au moins un joueur atteint ou dépasse cette limite à la fin d’une manche, la partie s’arrête. Le joueur ayant le moins de points l’emporte !',
       dangerHelpTitle: 'Zone de Danger',
       dangerHelpDesc:
-        'Les joueurs à 20 points ou moins de la limite sont en zone de danger. Conserver des cartes pénalisantes comme Fuck You (+42) ou des cartes noires (points doublés) peut rapidement dépasser la limite !',
+        'Les joueurs à 20 points ou moins de la limite sont en zone de danger. Conserver des cartes pénalisantes comme Fuck You (42 pts), The End (17 pts) ou Malédiction (13 pts) peut rapidement dépasser la limite !',
       historyTitle: 'Historique des Manches',
       undoLastRound: 'Annuler Dernière',
       undoRound: 'Annuler Dernière Manche',

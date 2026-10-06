@@ -247,7 +247,13 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
         <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
           <div className="space-y-2 rounded-2xl border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-700/80 dark:bg-neutral-800/50">
             <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-900 dark:text-white">
-              2–4 Players (Piccolo Gruppo)
+              {language === 'it'
+                ? '2–4 Giocatori (Piccolo Gruppo)'
+                : language === 'de'
+                  ? '2–4 Spieler (Kleine Gruppe)'
+                  : language === 'fr'
+                    ? '2–4 Joueurs (Petit Groupe)'
+                    : '2–4 Players (Small Group)'}
             </span>
             <div className="grid grid-cols-3 gap-2 pt-1 text-center">
               <div className="rounded-xl border border-neutral-200 bg-white p-2 dark:border-neutral-700 dark:bg-neutral-900">
@@ -255,7 +261,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
                   137 pts
                 </div>
                 <div className="text-[10px] font-semibold text-neutral-400">
-                  Short
+                  {t.setup.shortGame}
                 </div>
               </div>
               <div className="rounded-xl border border-neutral-200 bg-white p-2 dark:border-neutral-700 dark:bg-neutral-900">
@@ -263,7 +269,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
                   154 pts
                 </div>
                 <div className="text-[10px] font-semibold text-neutral-400">
-                  Medium
+                  {t.setup.mediumGame}
                 </div>
               </div>
               <div className="rounded-xl border border-neutral-200 bg-white p-2 dark:border-neutral-700 dark:bg-neutral-900">
@@ -271,7 +277,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
                   179 pts
                 </div>
                 <div className="text-[10px] font-semibold text-neutral-400">
-                  Long
+                  {t.setup.longGame}
                 </div>
               </div>
             </div>
@@ -279,7 +285,13 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
 
           <div className="space-y-2 rounded-2xl border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-700/80 dark:bg-neutral-800/50">
             <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-900 dark:text-white">
-              5–8 Players (Grande Gruppo)
+              {language === 'it'
+                ? '5–8 Giocatori (Grande Gruppo)'
+                : language === 'de'
+                  ? '5–8 Spieler (Grosse Gruppe)'
+                  : language === 'fr'
+                    ? '5–8 Joueurs (Grand Groupe)'
+                    : '5–8 Players (Large Group)'}
             </span>
             <div className="grid grid-cols-3 gap-2 pt-1 text-center">
               <div className="rounded-xl border border-neutral-200 bg-white p-2 dark:border-neutral-700 dark:bg-neutral-900">
@@ -287,7 +299,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
                   113 pts
                 </div>
                 <div className="text-[10px] font-semibold text-neutral-400">
-                  Short
+                  {t.setup.shortGame}
                 </div>
               </div>
               <div className="rounded-xl border border-neutral-200 bg-white p-2 dark:border-neutral-700 dark:bg-neutral-900">
@@ -295,7 +307,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
                   137 pts
                 </div>
                 <div className="text-[10px] font-semibold text-neutral-400">
-                  Medium
+                  {t.setup.mediumGame}
                 </div>
               </div>
               <div className="rounded-xl border border-neutral-200 bg-white p-2 dark:border-neutral-700 dark:bg-neutral-900">
@@ -303,7 +315,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
                   154 pts
                 </div>
                 <div className="text-[10px] font-semibold text-neutral-400">
-                  Long
+                  {t.setup.longGame}
                 </div>
               </div>
             </div>
@@ -313,33 +325,75 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
         <ul className="list-inside list-disc space-y-2 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
           <li>
             <strong>
-              {language === 'it' ? 'Carte iniziali:' : 'Hand cards:'}
+              {language === 'it'
+                ? 'Carte iniziali:'
+                : language === 'de'
+                  ? 'Handkarten:'
+                  : language === 'fr'
+                    ? 'Cartes en main :'
+                    : 'Hand cards:'}
             </strong>{' '}
             {language === 'it'
               ? 'Distribuisci 7 carte a ciascun giocatore (mai meno di 4).'
-              : 'Deal 7 cards to each player (never less than 4).'}
-          </li>
-          <li>
-            <strong>{language === 'it' ? 'Mazziere:' : 'Dealer:'}</strong>{' '}
-            {language === 'it'
-              ? 'Al round 1 il proprietario del gioco. Nei round successivi, chi ha perso l’ultimo round (più punti).'
-              : 'Owner in round 1; in subsequent rounds, the loser of the last round (highest score).'}
+              : language === 'de'
+                ? 'Teile 7 Handkarten an alle aus (nie weniger als 4).'
+                : language === 'fr'
+                  ? 'Distribuez 7 cartes à chaque joueur (jamais moins de 4).'
+                  : 'Deal 7 cards to each player (never less than 4).'}
           </li>
           <li>
             <strong>
-              {language === 'it' ? 'Inizio Scarti:' : 'Discard Pile:'}
+              {language === 'it'
+                ? 'Mazziere:'
+                : language === 'de'
+                  ? 'Geber:'
+                  : language === 'fr'
+                    ? 'Donneur :'
+                    : 'Dealer:'}
+            </strong>{' '}
+            {language === 'it'
+              ? 'Al round 1 il proprietario del gioco. Nei round successivi, chi ha perso l’ultimo round (più punti).'
+              : language === 'de'
+                ? 'In Runde 1 der Besitzer des Spiels. In Folgerunden die Person, welche die letzte Runde verloren hat (meiste Punkte).'
+                : language === 'fr'
+                  ? 'Manche 1 : le propriétaire du jeu. Manches suivantes : le perdant de la manche précédente (le plus de points).'
+                  : 'Round 1: game owner. In subsequent rounds, the person who lost the last round (highest score).'}
+          </li>
+          <li>
+            <strong>
+              {language === 'it'
+                ? 'Inizio Scarti:'
+                : language === 'de'
+                  ? 'Ablagestapel:'
+                  : language === 'fr'
+                    ? 'Défausse :'
+                    : 'Discard Pile:'}
             </strong>{' '}
             {language === 'it'
               ? 'Gira la prima carta del mazzo: considerala come giocata dal mazziere con tutti i suoi effetti!'
-              : 'Turn over the top card of the draw pile and resolve its effect immediately as if played by the dealer!'}
+              : language === 'de'
+                ? 'Decke die oberste Karte des Nachziehstapels auf: behandle sie, als hätte der Geber sie gespielt!'
+                : language === 'fr'
+                  ? 'Retournez la première carte de la pioche : traitez-la comme si le donneur l’avait jouée avec tous ses effets !'
+                  : 'Turn over the top card of the draw pile and treat it as if the dealer had played it with all effects!'}
           </li>
           <li>
             <strong>
-              {language === 'it' ? 'Senso di Gioco:' : 'Direction:'}
+              {language === 'it'
+                ? 'Senso di Gioco:'
+                : language === 'de'
+                  ? 'Spielrichtung:'
+                  : language === 'fr'
+                    ? 'Sens du jeu :'
+                    : 'Direction:'}
             </strong>{' '}
             {language === 'it'
               ? 'Si gioca sempre in senso ANTIORARIO.'
-              : 'Played strictly ANTICLOCKWISE (counter-clockwise).'}
+              : language === 'de'
+                ? 'Das Spiel verläuft im GEGENUHRZEIGERSINN.'
+                : language === 'fr'
+                  ? 'Le jeu se déroule dans le SENS ANTIHORAIRE.'
+                  : 'Played strictly ANTICLOCKWISE.'}
           </li>
         </ul>
       </section>
@@ -363,24 +417,40 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
           <p>
             {language === 'it'
               ? 'Durante il tuo turno puoi calare 1 carta che corrisponda per colore, numero o simbolo alla carta in cima agli scarti. Se non puoi o non vuoi giocare, pesca 1 carta dal mazzo. Dopo aver pescato, puoi comunque giocare subito una carta valida!'
-              : 'During your turn, you can play one card that matches the top discard card by colour, number, or symbol. If you can’t or don’t want to play, draw a card from the draw pile. Even after drawing, you may still play a card!'}
+              : language === 'de'
+                ? 'Während deinem Zug darfst du eine Handkarte spielen, die nach Farbe, Zahl oder Symbol zur obersten Karte des Ablagestapels passt. Sofern du keine Karte ausspielen kannst oder willst, ziehst du eine Karte. Du darfst nach dem Ziehen trotzdem eine Karte spielen!'
+                : language === 'fr'
+                  ? 'Pendant votre tour, vous pouvez jouer une carte correspondant à la couleur, au chiffre ou au symbole de la défausse. Si vous ne pouvez ou ne voulez pas jouer, piochez une carte. Même après avoir pioché, vous pouvez jouer une carte !'
+                  : 'During your turn, you can play one card that matches the top discard card by colour, number, or symbol. If you can’t or don’t want to play, draw a card from the draw pile. Even after drawing, you may still play a card!'}
           </p>
           <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 p-3.5 text-xs font-medium text-amber-700 dark:text-amber-300">
             <strong>
               {language === 'it'
                 ? 'La manche termina quando:'
-                : 'The round ends when:'}
+                : language === 'de'
+                  ? 'Die Runde endet wenn:'
+                  : language === 'fr'
+                    ? 'La manche prend fin lorsque :'
+                    : 'The round ends when:'}
             </strong>
             <ul className="mt-1 list-inside list-disc space-y-1">
               <li>
                 {language === 'it'
                   ? 'Un giocatore ha esaurito tutte le sue carte in mano.'
-                  : 'One player has completely emptied their hand of cards.'}
+                  : language === 'de'
+                    ? 'Eine Person keine Handkarten mehr hat.'
+                    : language === 'fr'
+                      ? 'Un joueur n’a plus de cartes en main.'
+                      : 'One player has completely emptied their hand of cards.'}
               </li>
               <li>
                 {language === 'it'
                   ? 'Un giocatore deve pescare, ma il mazzo di pesca è esaurito.'
-                  : 'A player must draw a card, but the draw pile is completely exhausted.'}
+                  : language === 'de'
+                    ? 'Eine Person eine Karte ziehen muss, aber der Nachziehstapel aufgebraucht ist.'
+                    : language === 'fr'
+                      ? 'Un joueur doit piocher, mais la pioche est épuisée.'
+                      : 'A player must draw a card, but the draw pile is completely exhausted.'}
               </li>
             </ul>
           </div>
@@ -410,7 +480,11 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
             <p className="mt-0.5 text-[11px] text-neutral-500 dark:text-neutral-400">
               {language === 'it'
                 ? 'Carte numero (colorate & nere)'
-                : 'Number cards (coloured & black)'}
+                : language === 'de'
+                  ? 'Zahlenkarten (farbig & schwarz)'
+                  : language === 'fr'
+                    ? 'Cartes numéro (couleur & noires)'
+                    : 'Number cards (coloured & black)'}
             </p>
           </div>
 
@@ -421,7 +495,11 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
             <p className="mt-0.5 text-[11px] text-neutral-500 dark:text-neutral-400">
               {language === 'it'
                 ? 'Carte speciali standard & richiesta'
-                : 'Standard special & open-wish cards'}
+                : language === 'de'
+                  ? 'Spezial- & Wunschkarten'
+                  : language === 'fr'
+                    ? 'Cartes spéciales & de souhait'
+                    : 'Standard special & open-wish cards'}
             </p>
           </div>
 
@@ -431,7 +509,14 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
             </span>
             <p className="mt-0.5 text-[11px] text-neutral-500 dark:text-neutral-400">
               <strong>Curse</strong> (
-              {language === 'it' ? 'Non giocabile' : 'Unplayable'})
+              {language === 'it'
+                ? 'Non giocabile'
+                : language === 'de'
+                  ? 'Nicht spielbar'
+                  : language === 'fr'
+                    ? 'Injouable'
+                    : 'Unplayable'}
+              )
             </p>
           </div>
 
@@ -441,7 +526,14 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
             </span>
             <p className="mt-0.5 text-[11px] text-neutral-500 dark:text-neutral-400">
               <strong>The End</strong> (
-              {language === 'it' ? 'Solo come ultima carta' : 'Last card only'})
+              {language === 'it'
+                ? 'Solo come ultima carta'
+                : language === 'de'
+                  ? 'Nur als letzte Karte'
+                  : language === 'fr'
+                    ? 'Dernière carte uniquement'
+                    : 'Last card only'}
+              )
             </p>
           </div>
 
@@ -451,7 +543,13 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
             </span>
             <p className="mt-0.5 text-[11px] text-neutral-500 dark:text-neutral-400">
               <strong>Mimicry</strong> (
-              {language === 'it' ? 'Imita altre speciali' : 'Imitates specials'}
+              {language === 'it'
+                ? 'Imita altre speciali'
+                : language === 'de'
+                  ? 'Imitiert Spezialkarten'
+                  : language === 'fr'
+                    ? 'Imite les spéciales'
+                    : 'Imitates specials'}
               )
             </p>
           </div>
@@ -464,7 +562,11 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
               <strong>Fuck You</strong> (
               {language === 'it'
                 ? 'Solo con 10 carte'
-                : 'Requires exactly 10 cards'}
+                : language === 'de'
+                  ? 'Nur bei exakt 10 Karten'
+                  : language === 'fr'
+                    ? 'Exactement 10 cartes'
+                    : 'Requires exactly 10 cards'}
               )
             </p>
           </div>
@@ -474,7 +576,11 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
           *{' '}
           {language === 'it'
             ? 'Le carte Power (Supercharge) non fruttano alcun punto a fine manche (0 punti).'
-            : 'Power cards (Supercharge) count as 0 points at round end.'}
+            : language === 'de'
+              ? 'Powerkarten (Supercharge) zählen am Rundenende keine Punkte (0 Punkte).'
+              : language === 'fr'
+                ? 'Les cartes pouvoir (Supercharge) ne valent aucun point en fin de manche (0 pt).'
+                : 'Power cards (Supercharge) count as 0 points at round end.'}
         </div>
       </section>
 
@@ -483,7 +589,13 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
         <div className="flex items-center gap-2.5 text-amber-500 dark:text-amber-400">
           <Flame className="h-5 w-5 stroke-[2.2]" />
           <h3 className="text-base font-black uppercase tracking-wider text-neutral-900 dark:text-white sm:text-lg">
-            {language === 'it' ? 'Carte Nere & Eventi' : 'Black Cards & Events'}
+            {language === 'it'
+              ? 'Carte Nere & Eventi'
+              : language === 'de'
+                ? 'Schwarze Karten & Ereignisse'
+                : language === 'fr'
+                  ? 'Cartes Noires & Événements'
+                  : 'Black Cards & Events'}
           </h3>
         </div>
 
@@ -495,6 +607,19 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
                 <strong>carta numerata nera</strong>, si attiva immediatamente
                 una <strong>carta Evento</strong>! Si scopre la prima carta dal
                 mazzo eventi e se ne esegue l'effetto.
+              </>
+            ) : language === 'de' ? (
+              <>
+                Jedes Mal, wenn eine <strong>schwarze Zahlenkarte</strong>{' '}
+                gespielt wird, wird sofort eine{' '}
+                <strong>Ereigniskarte aktiviert</strong>! Decke die oberste
+                Ereigniskarte auf und führe ihren Effekt aus.
+              </>
+            ) : language === 'fr' ? (
+              <>
+                Chaque fois qu’une <strong>carte chiffre noire</strong> est
+                posée, un <strong>événement est immédiatement activé</strong> !
+                Retournez la première carte événement et appliquez son effet.
               </>
             ) : (
               <>
@@ -510,7 +635,11 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
               <span>
                 {language === 'it'
                   ? 'Regola d’oro sulle carte nere:'
-                  : 'Golden rule on black cards:'}
+                  : language === 'de'
+                    ? 'Goldene Regel für schwarze Karten:'
+                    : language === 'fr'
+                      ? 'Règle d’or des cartes noires :'
+                      : 'Golden rule on black cards:'}
               </span>
             </div>
             <p className="text-xs text-neutral-600 dark:text-neutral-300">
@@ -521,6 +650,22 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
                   un'altra carta nera. Una carta nera può essere coperta solo da
                   una carta con lo <strong>stesso numero</strong> oppure da una{' '}
                   <strong>carta speciale di richiesta</strong> (es. Fantastic)!
+                </>
+              ) : language === 'de' ? (
+                <>
+                  <strong>Schwarz ist keine Farbe</strong>! Es kann weder
+                  gewünscht noch von einer anderen schwarzen Karte bedient
+                  werden. Eine schwarze Karte kann nur durch{' '}
+                  <strong>dieselbe Zahl</strong> oder eine{' '}
+                  <strong>Wunschkarte</strong> (z. B. Fantastic) bedient werden!
+                </>
+              ) : language === 'fr' ? (
+                <>
+                  Le <strong>noir n’est pas une couleur</strong> ! Il ne peut
+                  être ni souhaité ni recouvert par une autre carte noire. Une
+                  carte noire ne peut être recouverte que par le{' '}
+                  <strong>même chiffre</strong> ou par une{' '}
+                  <strong>carte spéciale de souhait</strong> (ex. Fantastic) !
                 </>
               ) : (
                 <>
@@ -542,7 +687,11 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
           <h3 className="text-base font-black uppercase tracking-wider text-neutral-900 dark:text-white sm:text-lg">
             {language === 'it'
               ? 'Carte Power (Supercharge)'
-              : 'Power Cards (Supercharge)'}
+              : language === 'de'
+                ? 'Powerkarten (Supercharge)'
+                : language === 'fr'
+                  ? 'Cartes Pouvoir (Supercharge)'
+                  : 'Power Cards (Supercharge)'}
           </h3>
         </div>
 
@@ -553,6 +702,19 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
               coperte sul tavolo davanti a te e si{' '}
               <strong>attivano scoprendole</strong> nel proprio turno mentre si
               gioca una carta. L'angolo in alto indica la sequenza:
+            </>
+          ) : language === 'de' ? (
+            <>
+              Powerkarten werden nicht auf der Hand gehalten: Sie liegen
+              verdeckt auf dem Tisch und werden im eigenen Zug beim Ausspielen
+              einer Handkarte <strong>aufgedeckt und aktiviert</strong>:
+            </>
+          ) : language === 'fr' ? (
+            <>
+              Les cartes pouvoir ne sont pas gardées en main : elles restent
+              face cachée sur la table et sont{' '}
+              <strong>activées en les retournant</strong> lors de votre tour en
+              jouant une carte :
             </>
           ) : (
             <>
@@ -570,13 +732,23 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
                 1ST
               </span>
               <span>
-                {language === 'it' ? 'Prima della carta' : 'Before hand card'}
+                {language === 'it'
+                  ? 'Prima della carta'
+                  : language === 'de'
+                    ? 'Vor der Handkarte'
+                    : language === 'fr'
+                      ? 'Avant la carte'
+                      : 'Before hand card'}
               </span>
             </span>
             <p className="text-[11px] text-neutral-600 dark:text-neutral-300">
               {language === 'it'
                 ? 'L’effetto Power viene eseguito PRIMA dell’effetto della carta tenuta in mano (es. All Draw One, Special Charge, Special Seal).'
-                : 'The power effect executes BEFORE the card played from hand (e.g. All Draw One, Special Charge, Special Seal).'}
+                : language === 'de'
+                  ? 'Der Power-Effekt wird VOR dem Effekt der Handkarte ausgeführt (z. B. Alle Ziehen Eine, Spezialladung, Spezialsiegel).'
+                  : language === 'fr'
+                    ? 'L’effet pouvoir est appliqué AVANT la carte en main (ex. Tous Piochent Une, Charge Spéciale, Sceau Spécial).'
+                    : 'The power effect executes BEFORE the card played from hand (e.g. All Draw One, Special Charge, Special Seal).'}
             </p>
           </div>
 
@@ -586,13 +758,23 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
                 2ND
               </span>
               <span>
-                {language === 'it' ? 'Dopo la carta' : 'After hand card'}
+                {language === 'it'
+                  ? 'Dopo la carta'
+                  : language === 'de'
+                    ? 'Nach der Handkarte'
+                    : language === 'fr'
+                      ? 'Après la carte'
+                      : 'After hand card'}
               </span>
             </span>
             <p className="text-[11px] text-neutral-600 dark:text-neutral-300">
               {language === 'it'
                 ? 'L’effetto Power viene eseguito DOPO l’effetto della carta tenuta in mano (es. Black Wish, Colour Blockade, Troublecharger).'
-                : 'The power effect executes AFTER the card played from hand (e.g. Black Wish, Colour Blockade, Troublecharger).'}
+                : language === 'de'
+                  ? 'Der Power-Effekt wird NACH dem Effekt der Handkarte ausgeführt (z. B. Schwarzer Wunsch, Farblockade, Troublecharger).'
+                  : language === 'fr'
+                    ? 'L’effet pouvoir est appliqué APRÈS la carte en main (ex. Souhait Noir, Blocus de Couleur, Troublecharger).'
+                    : 'The power effect executes AFTER the card played from hand (e.g. Black Wish, Colour Blockade, Troublecharger).'}
             </p>
           </div>
         </div>
