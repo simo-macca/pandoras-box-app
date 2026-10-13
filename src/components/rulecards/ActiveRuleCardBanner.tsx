@@ -64,7 +64,7 @@ export const ActiveRuleCardBanner: React.FC<ActiveRuleCardBannerProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="rounded-full border border-purple-500/30 bg-purple-500/20 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-purple-600 dark:text-purple-300">
+              <span className="rounded-full border border-purple-500/30 bg-purple-500/20 px-2 py-0.5 text-[10px] font-extrabold tracking-wider text-purple-600 uppercase dark:text-purple-300">
                 {t.rulecards.activeForRound}
               </span>
             </div>
@@ -99,12 +99,12 @@ export const ActiveRuleCardBanner: React.FC<ActiveRuleCardBannerProps> = ({
         </div>
       </div>
 
-      <p className="mt-2 text-xs font-medium leading-relaxed text-neutral-700 dark:text-neutral-300 sm:text-sm">
+      <p className="mt-2 text-xs leading-relaxed font-medium text-neutral-700 sm:text-sm dark:text-neutral-300">
         {activeCard.description[language]}
       </p>
 
       {activeCard.flavor && activeCard.flavor[language] && (
-        <div className="mt-2 border-l-2 border-purple-500/40 pl-2 text-[11px] italic text-purple-600/80 dark:text-purple-300/80">
+        <div className="mt-2 border-l-2 border-purple-500/40 pl-2 text-[11px] text-purple-600/80 italic dark:text-purple-300/80">
           "{activeCard.flavor[language]}"
         </div>
       )}

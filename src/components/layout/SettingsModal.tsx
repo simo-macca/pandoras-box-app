@@ -135,7 +135,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         {/* Header with Title and Close Button */}
         <div className="flex shrink-0 items-center justify-between gap-2 border-b border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-900/60">
           {/* Tabs Selector */}
-          <div className="flex items-center gap-1 rounded-2xl bg-neutral-200/60 p-1 dark:bg-neutral-800/80 sm:gap-1.5">
+          <div className="flex items-center gap-1 rounded-2xl bg-neutral-200/60 p-1 sm:gap-1.5 dark:bg-neutral-800/80">
             <button
               type="button"
               onClick={() => {
@@ -173,7 +173,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="shrink-0 rounded-xl p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white sm:p-2"
+            className="shrink-0 rounded-xl p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 sm:p-2 dark:hover:bg-neutral-800 dark:hover:text-white"
           >
             <X className="h-5 w-5 shrink-0" />
           </button>
@@ -185,7 +185,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <>
               {/* Appearance */}
               <div>
-                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 sm:text-sm">
+                <h3 className="mb-2 text-xs font-semibold tracking-wider text-neutral-500 uppercase sm:text-sm dark:text-neutral-400">
                   {t.settings.appearance}
                 </h3>
                 <div className="grid grid-cols-3 gap-2">
@@ -232,7 +232,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
               {/* Language */}
               <div>
-                <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 sm:text-sm">
+                <h3 className="mb-3 text-xs font-semibold tracking-wider text-neutral-500 uppercase sm:text-sm dark:text-neutral-400">
                   {t.settings.language}
                 </h3>
                 <LanguageSelector
@@ -243,7 +243,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
               {/* Audio & Haptic Feedback */}
               <div>
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                <h3 className="mb-3 text-sm font-semibold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
                   {t.settings.soundAndHaptics}
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
@@ -295,7 +295,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
               {/* Backup & Restore */}
               <div>
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                <h3 className="mb-3 text-sm font-semibold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
                   {t.settings.dataManagement}
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
@@ -399,11 +399,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <div className="space-y-2 rounded-2xl border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-800/40">
                 <div className="flex items-center gap-2">
                   <Scale className="h-4 w-4 shrink-0 text-purple-500" />
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-900 dark:text-white">
+                  <h4 className="text-xs font-bold tracking-wider text-neutral-900 uppercase dark:text-white">
                     {t.settings.disclaimerTitle}
                   </h4>
                 </div>
-                <p className="text-xs font-normal leading-relaxed text-neutral-700 dark:text-neutral-300">
+                <p className="text-xs leading-relaxed font-normal text-neutral-700 dark:text-neutral-300">
                   {t.settings.fullDisclaimer}
                 </p>
               </div>

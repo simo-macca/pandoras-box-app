@@ -122,7 +122,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => soundEffects.playClick()}
-              className="flex transform items-center gap-2 rounded-2xl border border-neutral-200 bg-white px-3.5 py-2.5 text-xs font-bold text-neutral-700 shadow-sm transition-all hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-900 active:scale-95 dark:border-neutral-700 dark:bg-neutral-800/90 dark:text-neutral-200 dark:hover:border-neutral-600 dark:hover:bg-neutral-700/90 dark:hover:text-white sm:text-sm"
+              className="flex transform items-center gap-2 rounded-2xl border border-neutral-200 bg-white px-3.5 py-2.5 text-xs font-bold text-neutral-700 shadow-sm transition-all hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-900 active:scale-95 sm:text-sm dark:border-neutral-700 dark:bg-neutral-800/90 dark:text-neutral-200 dark:hover:border-neutral-600 dark:hover:bg-neutral-700/90 dark:hover:text-white"
               title={t.rules.downloadPdf}
             >
               <Download className="h-4 w-4 text-purple-600 dark:text-purple-400" />
@@ -133,7 +133,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
 
         {/* Language selector for PDF */}
         <div className="flex flex-wrap items-center gap-2 border-t border-neutral-200/80 pt-2 dark:border-neutral-800/80">
-          <span className="mr-1 text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+          <span className="mr-1 text-[11px] font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
             {t.settings.language}:
           </span>
           {languagesList.map((item) => {
@@ -164,7 +164,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
       <section className="space-y-3 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
         <div className="flex items-center gap-2.5 text-amber-500">
           <Trophy className="h-5 w-5 stroke-[2.2]" />
-          <h3 className="text-base font-black uppercase tracking-wider text-neutral-900 dark:text-white sm:text-lg">
+          <h3 className="text-base font-black tracking-wider text-neutral-900 uppercase sm:text-lg dark:text-white">
             {language === 'it'
               ? 'Scopo del Gioco'
               : language === 'de'
@@ -233,7 +233,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
       <section className="space-y-4 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
         <div className="flex items-center gap-2.5 text-rose-500">
           <AlertTriangle className="h-5 w-5 stroke-[2.2]" />
-          <h3 className="text-base font-black uppercase tracking-wider text-neutral-900 dark:text-white sm:text-lg">
+          <h3 className="text-base font-black tracking-wider text-neutral-900 uppercase sm:text-lg dark:text-white">
             {language === 'it'
               ? 'Preparazione & Limiti Ufficiali'
               : language === 'de'
@@ -246,7 +246,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
 
         <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
           <div className="space-y-2 rounded-2xl border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-700/80 dark:bg-neutral-800/50">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-900 dark:text-white">
+            <span className="text-[11px] font-bold tracking-wider text-neutral-900 uppercase dark:text-white">
               {language === 'it'
                 ? '2–4 Giocatori (Piccolo Gruppo)'
                 : language === 'de'
@@ -284,7 +284,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
           </div>
 
           <div className="space-y-2 rounded-2xl border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-700/80 dark:bg-neutral-800/50">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-900 dark:text-white">
+            <span className="text-[11px] font-bold tracking-wider text-neutral-900 uppercase dark:text-white">
               {language === 'it'
                 ? '5–8 Giocatori (Grande Gruppo)'
                 : language === 'de'
@@ -402,7 +402,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
       <section className="space-y-3 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
         <div className="flex items-center gap-2.5 text-blue-500">
           <RotateCcw className="h-5 w-5 stroke-[2.2]" />
-          <h3 className="text-base font-black uppercase tracking-wider text-neutral-900 dark:text-white sm:text-lg">
+          <h3 className="text-base font-black tracking-wider text-neutral-900 uppercase sm:text-lg dark:text-white">
             {language === 'it'
               ? 'Svolgimento del Turno & Fine Round'
               : language === 'de'
@@ -413,7 +413,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
           </h3>
         </div>
 
-        <div className="space-y-2 text-xs leading-relaxed text-neutral-700 dark:text-neutral-300 sm:text-sm">
+        <div className="space-y-2 text-xs leading-relaxed text-neutral-700 sm:text-sm dark:text-neutral-300">
           <p>
             {language === 'it'
               ? 'Durante il tuo turno puoi calare 1 carta che corrisponda per colore, numero o simbolo alla carta in cima agli scarti. Se non puoi o non vuoi giocare, pesca 1 carta dal mazzo. Dopo aver pescato, puoi comunque giocare subito una carta valida!'
@@ -461,7 +461,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
       <section className="space-y-4 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
         <div className="flex items-center gap-2.5 text-purple-500">
           <Sparkles className="h-5 w-5 stroke-[2.2]" />
-          <h3 className="text-base font-black uppercase tracking-wider text-neutral-900 dark:text-white sm:text-lg">
+          <h3 className="text-base font-black tracking-wider text-neutral-900 uppercase sm:text-lg dark:text-white">
             {language === 'it'
               ? 'Valori Punti di Fine Round'
               : language === 'de'
@@ -572,7 +572,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
           </div>
         </div>
 
-        <div className="text-[11px] italic text-neutral-500 dark:text-neutral-400">
+        <div className="text-[11px] text-neutral-500 italic dark:text-neutral-400">
           *{' '}
           {language === 'it'
             ? 'Le carte Power (Supercharge) non fruttano alcun punto a fine manche (0 punti).'
@@ -588,7 +588,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
       <section className="space-y-3 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
         <div className="flex items-center gap-2.5 text-amber-500 dark:text-amber-400">
           <Flame className="h-5 w-5 stroke-[2.2]" />
-          <h3 className="text-base font-black uppercase tracking-wider text-neutral-900 dark:text-white sm:text-lg">
+          <h3 className="text-base font-black tracking-wider text-neutral-900 uppercase sm:text-lg dark:text-white">
             {language === 'it'
               ? 'Carte Nere & Eventi'
               : language === 'de'
@@ -684,7 +684,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
       <section className="space-y-3 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
         <div className="flex items-center gap-2.5 text-cyan-500">
           <Zap className="h-5 w-5 stroke-[2.2]" />
-          <h3 className="text-base font-black uppercase tracking-wider text-neutral-900 dark:text-white sm:text-lg">
+          <h3 className="text-base font-black tracking-wider text-neutral-900 uppercase sm:text-lg dark:text-white">
             {language === 'it'
               ? 'Carte Power (Supercharge)'
               : language === 'de'
@@ -695,7 +695,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
           </h3>
         </div>
 
-        <p className="text-xs leading-relaxed text-neutral-700 dark:text-neutral-300 sm:text-sm">
+        <p className="text-xs leading-relaxed text-neutral-700 sm:text-sm dark:text-neutral-300">
           {language === 'it' ? (
             <>
               Le carte Power non si tengono in mano e non si scartano: rimangono

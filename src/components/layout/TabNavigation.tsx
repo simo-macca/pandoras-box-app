@@ -47,7 +47,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
       {/* Desktop Navigation */}
       <nav
         aria-label="Desktop tabs"
-        className="hidden w-full border-b border-neutral-200 bg-neutral-100/80 px-4 py-2.5 transition-colors dark:border-neutral-800 dark:bg-neutral-900/60 md:block"
+        className="hidden w-full border-b border-neutral-200 bg-neutral-100/80 px-4 py-2.5 transition-colors md:block dark:border-neutral-800 dark:bg-neutral-900/60"
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
           <div className="flex items-center gap-2">
@@ -82,7 +82,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
       </nav>
 
       {/* Mobile Bottom Bar */}
-      <div className="pb-safe fixed bottom-0 left-0 right-0 z-40 border-t border-neutral-200 bg-white/95 px-2 pb-2 pt-1 shadow-[0_-4px_25px_rgba(0,0,0,0.15)] backdrop-blur-lg dark:border-neutral-800 dark:bg-neutral-900/95 dark:shadow-[0_-4px_25px_rgba(0,0,0,0.5)] sm:pb-0 md:hidden">
+      <div className="pb-safe fixed right-0 bottom-0 left-0 z-40 border-t border-neutral-200 bg-white/95 px-2 pt-1 pb-2 shadow-[0_-4px_25px_rgba(0,0,0,0.15)] backdrop-blur-lg sm:pb-0 md:hidden dark:border-neutral-800 dark:bg-neutral-900/95 dark:shadow-[0_-4px_25px_rgba(0,0,0,0.5)]">
         <div className="mx-auto grid h-16 max-w-lg grid-cols-3 items-center gap-1">
           {navItems.map((item) => {
             const Icon = item.icon;

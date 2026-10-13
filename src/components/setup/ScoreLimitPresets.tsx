@@ -131,9 +131,9 @@ export const ScoreLimitPresets: React.FC<ScoreLimitPresetsProps> = ({
                 }
               }}
               placeholder={t.setup.customPlaceholder}
-              className="w-full rounded-xl border border-neutral-300 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-900 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
+              className="w-full rounded-xl border border-neutral-300 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
             />
-            <span className="pointer-events-none absolute right-3 top-2 text-xs font-semibold text-neutral-400">
+            <span className="pointer-events-none absolute top-2 right-3 text-xs font-semibold text-neutral-400">
               {t.setup.pts}
             </span>
           </div>

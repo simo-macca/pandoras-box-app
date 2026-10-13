@@ -51,7 +51,7 @@ export const NumberGrid: React.FC<NumberGridProps> = ({
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-neutral-900 text-xs font-black text-white dark:bg-neutral-100 dark:text-neutral-900">
                 {num}
               </span>
-              <span className="whitespace-nowrap text-[10px] font-bold tabular-nums text-neutral-400">
+              <span className="text-[10px] font-bold whitespace-nowrap text-neutral-400 tabular-nums">
                 {num * count} pts
               </span>
             </div>
@@ -63,13 +63,13 @@ export const NumberGrid: React.FC<NumberGridProps> = ({
                 onClick={() => handleDecrement(num)}
                 disabled={count === 0 || disabled}
                 aria-label={`Decrease number ${num}`}
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs text-neutral-800 transition-colors hover:bg-neutral-300 disabled:opacity-30 dark:bg-neutral-700/80 dark:text-neutral-200 dark:hover:bg-neutral-600 sm:h-8 sm:w-8 sm:text-sm"
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs text-neutral-800 transition-colors hover:bg-neutral-300 disabled:opacity-30 sm:h-8 sm:w-8 sm:text-sm dark:bg-neutral-700/80 dark:text-neutral-200 dark:hover:bg-neutral-600"
               >
                 <Minus className="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5" />
               </button>
 
               <span
-                className={`min-w-[1rem] whitespace-nowrap text-center text-xs font-extrabold tabular-nums sm:min-w-[1.25rem] sm:text-sm ${
+                className={`min-w-[1rem] text-center text-xs font-extrabold whitespace-nowrap tabular-nums sm:min-w-[1.25rem] sm:text-sm ${
                   count > 0
                     ? 'text-amber-600 dark:text-amber-400'
                     : 'text-neutral-400'

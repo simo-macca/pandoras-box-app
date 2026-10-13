@@ -62,7 +62,7 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
       className={`space-y-3 ${disabled ? 'pointer-events-none opacity-40' : ''}`}
     >
       {/* Standard Specials (7 pts each) */}
-      <div className="flex items-center justify-between gap-2 rounded-2xl border border-neutral-200 bg-neutral-50 p-2.5 dark:border-neutral-800 dark:bg-neutral-800/40 sm:p-3">
+      <div className="flex items-center justify-between gap-2 rounded-2xl border border-neutral-200 bg-neutral-50 p-2.5 sm:p-3 dark:border-neutral-800 dark:bg-neutral-800/40">
         <div className="flex min-w-0 items-center gap-2.5">
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-purple-500/30 bg-purple-500/15 text-purple-600 dark:text-purple-400">
             <Sparkles className="h-5 w-5 shrink-0" />
@@ -71,7 +71,7 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
             <div className="truncate text-xs font-bold text-neutral-900 dark:text-white">
               {t.scoring.standardSpecials}
             </div>
-            <div className="truncate whitespace-nowrap text-[11px] tabular-nums text-neutral-500 dark:text-neutral-400">
+            <div className="truncate text-[11px] whitespace-nowrap text-neutral-500 tabular-nums dark:text-neutral-400">
               Skip, Gift, Thief, Exchange, etc. ({specialCardsCount * 7} pts)
             </div>
           </div>
@@ -85,11 +85,11 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
             }
             disabled={specialCardsCount === 0 || disabled}
             aria-label="Decrease standard specials"
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs text-neutral-800 transition-colors hover:bg-neutral-300 disabled:opacity-30 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-600 sm:h-9 sm:w-9 sm:rounded-xl sm:text-sm"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs text-neutral-800 transition-colors hover:bg-neutral-300 disabled:opacity-30 sm:h-9 sm:w-9 sm:rounded-xl sm:text-sm dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-600"
           >
             <Minus className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" />
           </button>
-          <span className="min-w-[1.25rem] whitespace-nowrap text-center text-xs font-black tabular-nums text-neutral-900 dark:text-white sm:min-w-[1.5rem] sm:text-sm">
+          <span className="min-w-[1.25rem] text-center text-xs font-black whitespace-nowrap text-neutral-900 tabular-nums sm:min-w-[1.5rem] sm:text-sm dark:text-white">
             {specialCardsCount}
           </span>
           <button
@@ -118,7 +118,7 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
               <div className="truncate text-xs font-bold text-neutral-900 dark:text-white">
                 Mimicry
               </div>
-              <div className="whitespace-nowrap text-[10px] tabular-nums text-neutral-400">
+              <div className="text-[10px] whitespace-nowrap text-neutral-400 tabular-nums">
                 +7 pts
               </div>
             </div>
@@ -130,11 +130,11 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
               onClick={() => updateCounter('mimicryCount', -1, mimicryCount)}
               disabled={mimicryCount === 0 || disabled}
               aria-label="Decrease Mimicry"
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs text-neutral-800 disabled:opacity-30 dark:bg-neutral-700 dark:text-neutral-200 sm:h-8 sm:w-8"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs text-neutral-800 disabled:opacity-30 sm:h-8 sm:w-8 dark:bg-neutral-700 dark:text-neutral-200"
             >
               <Minus className="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5" />
             </button>
-            <span className="min-w-[1rem] whitespace-nowrap text-center text-xs font-bold tabular-nums sm:min-w-[1.25rem]">
+            <span className="min-w-[1rem] text-center text-xs font-bold whitespace-nowrap tabular-nums sm:min-w-[1.25rem]">
               {mimicryCount}
             </span>
             <button
@@ -159,7 +159,7 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
               <div className="truncate text-xs font-bold text-neutral-900 dark:text-white">
                 Curse
               </div>
-              <div className="whitespace-nowrap text-[10px] tabular-nums text-neutral-400">
+              <div className="text-[10px] whitespace-nowrap text-neutral-400 tabular-nums">
                 +13 pts
               </div>
             </div>
@@ -171,11 +171,11 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
               onClick={() => updateCounter('curseCount', -1, curseCount)}
               disabled={curseCount === 0 || disabled}
               aria-label="Decrease Curse"
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs text-neutral-800 disabled:opacity-30 dark:bg-neutral-700 dark:text-neutral-200 sm:h-8 sm:w-8"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs text-neutral-800 disabled:opacity-30 sm:h-8 sm:w-8 dark:bg-neutral-700 dark:text-neutral-200"
             >
               <Minus className="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5" />
             </button>
-            <span className="min-w-[1rem] whitespace-nowrap text-center text-xs font-bold tabular-nums sm:min-w-[1.25rem]">
+            <span className="min-w-[1rem] text-center text-xs font-bold whitespace-nowrap tabular-nums sm:min-w-[1.25rem]">
               {curseCount}
             </span>
             <button
@@ -200,7 +200,7 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
               <div className="truncate text-xs font-bold text-neutral-900 dark:text-white">
                 The End
               </div>
-              <div className="whitespace-nowrap text-[10px] tabular-nums text-neutral-400">
+              <div className="text-[10px] whitespace-nowrap text-neutral-400 tabular-nums">
                 +17 pts
               </div>
             </div>
@@ -212,11 +212,11 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
               onClick={() => updateCounter('theEndCount', -1, theEndCount)}
               disabled={theEndCount === 0 || disabled}
               aria-label="Decrease The End"
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs text-neutral-800 disabled:opacity-30 dark:bg-neutral-700 dark:text-neutral-200 sm:h-8 sm:w-8"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs text-neutral-800 disabled:opacity-30 sm:h-8 sm:w-8 dark:bg-neutral-700 dark:text-neutral-200"
             >
               <Minus className="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5" />
             </button>
-            <span className="min-w-[1rem] whitespace-nowrap text-center text-xs font-bold tabular-nums sm:min-w-[1.25rem]">
+            <span className="min-w-[1rem] text-center text-xs font-bold whitespace-nowrap tabular-nums sm:min-w-[1.25rem]">
               {theEndCount}
             </span>
             <button
@@ -241,7 +241,7 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
               <div className="truncate text-xs font-extrabold text-red-600 dark:text-red-400">
                 Fuck You
               </div>
-              <div className="whitespace-nowrap text-[10px] font-bold tabular-nums text-red-500/80">
+              <div className="text-[10px] font-bold whitespace-nowrap text-red-500/80 tabular-nums">
                 +42 pts!
               </div>
             </div>
@@ -253,11 +253,11 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
               onClick={() => updateCounter('fuckYouCount', -1, fuckYouCount)}
               disabled={fuckYouCount === 0 || disabled}
               aria-label="Decrease Fuck You"
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-red-200 text-xs text-red-800 disabled:opacity-30 dark:bg-red-900/60 dark:text-red-200 sm:h-8 sm:w-8"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-red-200 text-xs text-red-800 disabled:opacity-30 sm:h-8 sm:w-8 dark:bg-red-900/60 dark:text-red-200"
             >
               <Minus className="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5" />
             </button>
-            <span className="min-w-[1rem] whitespace-nowrap text-center text-xs font-black tabular-nums text-red-600 dark:text-red-400 sm:min-w-[1.25rem]">
+            <span className="min-w-[1rem] text-center text-xs font-black whitespace-nowrap text-red-600 tabular-nums sm:min-w-[1.25rem] dark:text-red-400">
               {fuckYouCount}
             </span>
             <button
