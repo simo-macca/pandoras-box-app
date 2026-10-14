@@ -24,7 +24,9 @@ export const SettingsBackupSection: React.FC<SettingsBackupSectionProps> = ({
 }) => {
   const t = TRANSLATIONS[language];
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [importStatus, setImportStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [importStatus, setImportStatus] = useState<
+    'idle' | 'success' | 'error'
+  >('idle');
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   const handleExport = () => {
@@ -133,7 +135,8 @@ export const SettingsBackupSection: React.FC<SettingsBackupSectionProps> = ({
         ) : (
           <div className="space-y-3 rounded-2xl border border-red-500/40 bg-red-500/10 p-4">
             <p className="text-center text-xs font-semibold text-red-600 dark:text-red-400">
-              {t.settings.confirmResetDataMessage || t.setup.confirmResetMessage}
+              {t.settings.confirmResetDataMessage ||
+                t.setup.confirmResetMessage}
             </p>
             <div className="flex gap-2">
               <button

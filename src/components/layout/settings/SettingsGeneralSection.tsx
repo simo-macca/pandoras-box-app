@@ -108,9 +108,7 @@ export const SettingsGeneralSection: React.FC<SettingsGeneralSectionProps> = ({
               <VolumeX className="h-5 w-5 shrink-0" />
             )}
             <div className="text-left">
-              <div className="text-xs font-bold">
-                {t.settings.soundEnabled}
-              </div>
+              <div className="text-xs font-bold">{t.settings.soundEnabled}</div>
               <div className="text-[10px] opacity-75">
                 {soundEnabled ? 'ON' : 'OFF'}
               </div>

@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Trophy,
-  PlusCircle,
-  RotateCcw,
-} from 'lucide-react';
+import { Trophy, PlusCircle, RotateCcw } from 'lucide-react';
 import { PlayerStats } from '../../utils/stats';
 import { RoundEntry, Player, Language } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';

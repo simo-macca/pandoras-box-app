@@ -22,7 +22,8 @@ export const ScoringPlayerPicker: React.FC<ScoringPlayerPickerProps> = ({
   language,
 }) => {
   const t = TRANSLATIONS[language];
-  const activePlayer = players.find((p) => p.id === selectedPlayerId) || players[0];
+  const activePlayer =
+    players.find((p) => p.id === selectedPlayerId) || players[0];
   const activeColorTheme = getPlayerColorTheme(activePlayer.color);
 
   return (

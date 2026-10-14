@@ -2,20 +2,28 @@ import { useState, useCallback } from 'react';
 
 export function useAppModals() {
   const [isScoreModalOpen, setIsScoreModalOpen] = useState(false);
-  const [editingRoundNumber, setEditingRoundNumber] = useState<number | null>(null);
+  const [editingRoundNumber, setEditingRoundNumber] = useState<number | null>(
+    null
+  );
   const [isSetupModalOpen, setIsSetupModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [settingsInitialTab, setSettingsInitialTab] = useState<'settings' | 'legal'>('settings');
-  const [isGameOverModalDismissed, setIsGameOverModalDismissed] = useState(false);
+  const [settingsInitialTab, setSettingsInitialTab] = useState<
+    'settings' | 'legal'
+  >('settings');
+  const [isGameOverModalDismissed, setIsGameOverModalDismissed] =
+    useState(false);
 
-  const openScoreModal = useCallback((isGameOver: boolean, isContinued: boolean) => {
-    if (isGameOver && !isContinued) {
-      setIsGameOverModalDismissed(false);
-      return;
-    }
-    setEditingRoundNumber(null);
-    setIsScoreModalOpen(true);
-  }, []);
+  const openScoreModal = useCallback(
+    (isGameOver: boolean, isContinued: boolean) => {
+      if (isGameOver && !isContinued) {
+        setIsGameOverModalDismissed(false);
+        return;
+      }
+      setEditingRoundNumber(null);
+      setIsScoreModalOpen(true);
+    },
+    []
+  );
 
   const openEditRound = useCallback((roundNumber: number) => {
     setEditingRoundNumber(roundNumber);

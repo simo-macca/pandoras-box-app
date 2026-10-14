@@ -41,8 +41,8 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
         <p className="text-sm leading-relaxed text-neutral-700 dark:text-neutral-300">
           {language === 'it' ? (
             <>
-              In Frantic – il subdolo gioco di carte – l&apos;obiettivo di ogni round
-              è{' '}
+              In Frantic – il subdolo gioco di carte – l&apos;obiettivo di ogni
+              round è{' '}
               <strong>
                 sbarazzarsi il più rapidamente possibile di tutte le carte in
                 mano
@@ -70,11 +70,12 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
               <strong>
                 vous débarrasser le plus vite possible de vos cartes en main
               </strong>
-              . Dès qu&apos;un joueur n&apos;a plus de cartes, la manche prend fin et les
-              cartes restantes valent des points (ce qui est mauvais !). Manche
-              après manche, les points s&apos;accumulent jusqu&apos;à ce qu&apos;un joueur{' '}
-              <strong>dépasse la limite de points</strong>. La partie prend fin
-              et le joueur avec <strong>le plus petit score gagne</strong> !
+              . Dès qu&apos;un joueur n&apos;a plus de cartes, la manche prend
+              fin et les cartes restantes valent des points (ce qui est mauvais
+              !). Manche après manche, les points s&apos;accumulent jusqu&apos;à
+              ce qu&apos;un joueur <strong>dépasse la limite de points</strong>.
+              La partie prend fin et le joueur avec{' '}
+              <strong>le plus petit score gagne</strong> !
             </>
           ) : (
             <>
@@ -511,9 +512,10 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
                 <>
                   Il <strong>nero non è un colore</strong>! Non può essere
                   richiesto con un desiderio e non può essere coperto da
-                  un&apos;altra carta nera. Una carta nera può essere coperta solo da
-                  una carta con lo <strong>stesso numero</strong> oppure da una{' '}
-                  <strong>carta speciale di richiesta</strong> (es. Fantastic)!
+                  un&apos;altra carta nera. Una carta nera può essere coperta
+                  solo da una carta con lo <strong>stesso numero</strong> oppure
+                  da una <strong>carta speciale di richiesta</strong> (es.
+                  Fantastic)!
                 </>
               ) : language === 'de' ? (
                 <>

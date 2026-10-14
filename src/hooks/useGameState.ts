@@ -13,10 +13,7 @@ import {
   SCORE_PRESETS,
   getRecommendedPresets,
 } from '../utils/scoring';
-import {
-  calculatePlayerStats,
-  PlayerStats,
-} from '../utils/stats';
+import { calculatePlayerStats, PlayerStats } from '../utils/stats';
 import {
   INITIAL_PLAYERS,
   INITIAL_STATE,
@@ -40,8 +37,12 @@ export {
 export type { PlayerStats };
 
 export function useGameState() {
-  const [gameState, setGameState] = useState<GameState>(() => loadSavedGameState());
-  const [language, setLanguageState] = useState<Language>(() => loadSavedLanguage());
+  const [gameState, setGameState] = useState<GameState>(() =>
+    loadSavedGameState()
+  );
+  const [language, setLanguageState] = useState<Language>(() =>
+    loadSavedLanguage()
+  );
 
   // Synchronize state with persistent storage
   useEffect(() => {

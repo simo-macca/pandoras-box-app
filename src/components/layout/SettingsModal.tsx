@@ -36,7 +36,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'settings' | 'legal'>(initialTab);
   const [soundEnabled, setSoundEnabled] = useState(soundEffects.enabled);
-  const [hapticsEnabled, setHapticsEnabled] = useState(soundEffects.hapticEnabled);
+  const [hapticsEnabled, setHapticsEnabled] = useState(
+    soundEffects.hapticEnabled
+  );
 
   useEffect(() => {
     if (isOpen) {

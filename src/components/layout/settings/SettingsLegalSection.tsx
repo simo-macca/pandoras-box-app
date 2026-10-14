@@ -63,9 +63,9 @@ export const SettingsLegalSection: React.FC<SettingsLegalSectionProps> = ({
           </h5>
         </div>
         <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
-          Open-source community project licensed under the MIT License.
-          Created for players to enhance physical board game sessions
-          with automated scoring and rule references.
+          Open-source community project licensed under the MIT License. Created
+          for players to enhance physical board game sessions with automated
+          scoring and rule references.
         </p>
       </div>
     </div>

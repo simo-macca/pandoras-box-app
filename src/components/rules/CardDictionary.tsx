@@ -40,7 +40,8 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
 
   const filteredCards = useMemo(() => {
     return CARDS_DATA.filter((card) => {
-      if (activeCategory !== 'all' && activeCategory !== 'specials') return false;
+      if (activeCategory !== 'all' && activeCategory !== 'specials')
+        return false;
       return matchesSearchQuery(
         [
           card.name[language],
@@ -223,7 +224,8 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                 <span>{t.rules.title}</span>
               </h2>
               <p className="mt-1 text-xs text-neutral-500 sm:text-sm dark:text-neutral-400">
-                Search cards, point values, events, and Pandora&apos;s Box rules.
+                Search cards, point values, events, and Pandora&apos;s Box
+                rules.
               </p>
             </div>
 
@@ -333,8 +335,14 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
             <div className="space-y-8">
               <SpecialCardsSection cards={filteredCards} language={language} />
               <EventCardsSection events={filteredEvents} language={language} />
-              <PowerCardsSection powerCards={filteredPowerCards} language={language} />
-              <RuleCardsSection ruleCards={filteredRuleCards} language={language} />
+              <PowerCardsSection
+                powerCards={filteredPowerCards}
+                language={language}
+              />
+              <RuleCardsSection
+                ruleCards={filteredRuleCards}
+                language={language}
+              />
             </div>
           )}
         </div>

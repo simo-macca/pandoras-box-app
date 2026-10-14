@@ -42,12 +42,8 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
         }`}
       >
         <div className="text-left">
-          <div className="text-xs font-bold">
-            {t.scoring.doomsdayToggle}
-          </div>
-          <div className="text-[10px] opacity-75">
-            {t.scoring.doomsdayHint}
-          </div>
+          <div className="text-xs font-bold">{t.scoring.doomsdayToggle}</div>
+          <div className="text-[10px] opacity-75">{t.scoring.doomsdayHint}</div>
         </div>
         <div
           className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${
@@ -56,9 +52,7 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
               : 'border-neutral-400 dark:border-neutral-600'
           }`}
         >
-          {isDoomsday && (
-            <Check className="h-3.5 w-3.5 shrink-0 stroke-[3]" />
-          )}
+          {isDoomsday && <Check className="h-3.5 w-3.5 shrink-0 stroke-[3]" />}
         </div>
       </button>
 
@@ -70,9 +64,7 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
         </label>
         <select
           value={timeBombModifier}
-          onChange={(e) =>
-            onChangeTimeBomb(e.target.value as TimeBombModifier)
-          }
+          onChange={(e) => onChangeTimeBomb(e.target.value as TimeBombModifier)}
           disabled={isDoomsday}
           className="w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
         >

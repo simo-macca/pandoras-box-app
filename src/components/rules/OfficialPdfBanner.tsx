@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-  FileText,
-  Layers,
-  ExternalLink,
-  Download,
-} from 'lucide-react';
+import { FileText, Layers, ExternalLink, Download } from 'lucide-react';
 import { Language } from '../../types/game';
 import {
   OFFICIAL_PDF_LINKS,

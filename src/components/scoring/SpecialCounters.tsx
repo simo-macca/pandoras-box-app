@@ -55,7 +55,9 @@ const CounterRow: React.FC<CounterRowProps> = ({
 }) => (
   <div className="flex items-center justify-between gap-2 rounded-2xl border border-neutral-200 bg-neutral-50 p-2.5 sm:p-3 dark:border-neutral-800 dark:bg-neutral-800/40">
     <div className="flex min-w-0 items-center gap-2.5">
-      <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border ${iconBorderClass}`}>
+      <div
+        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border ${iconBorderClass}`}
+      >
         {icon}
       </div>
       <div className="min-w-0">
@@ -123,7 +125,9 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
   };
 
   return (
-    <div className={`space-y-3 ${disabled ? 'pointer-events-none opacity-40' : ''}`}>
+    <div
+      className={`space-y-3 ${disabled ? 'pointer-events-none opacity-40' : ''}`}
+    >
       {/* Standard Specials (7 pts each) */}
       <CounterRow
         icon={<Sparkles className="h-5 w-5 shrink-0" />}
@@ -131,8 +135,12 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
         title={t.scoring.standardSpecials}
         subtitle={`Skip, Gift, Thief, Exchange, etc. (+${CARD_POINTS.SPECIAL} pts)`}
         count={specialCardsCount}
-        onDecrement={() => updateCounter('specialCardsCount', -1, specialCardsCount)}
-        onIncrement={() => updateCounter('specialCardsCount', 1, specialCardsCount)}
+        onDecrement={() =>
+          updateCounter('specialCardsCount', -1, specialCardsCount)
+        }
+        onIncrement={() =>
+          updateCounter('specialCardsCount', 1, specialCardsCount)
+        }
         disabled={disabled}
         ariaLabel="standard specials"
       />
