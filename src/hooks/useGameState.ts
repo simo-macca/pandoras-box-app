@@ -121,8 +121,10 @@ export function useGameState() {
     (scores: Record<string, HandScore>, notes?: string) => {
       soundEffects.playDiceFinish(false);
       setGameState((prev) => {
-        const nextRoundNumber = prev.rounds.length + 1;
+        const nextRoundNumber =
+          prev.rounds.filter((r) => !r.isEvent).length + 1;
         const newRound: RoundEntry = {
+          id: `round-${nextRoundNumber}-${Date.now()}`,
           roundNumber: nextRoundNumber,
           timestamp: Date.now(),
           activeRuleCardId: prev.activeRuleCardIds?.[0] || null,
@@ -148,7 +150,7 @@ export function useGameState() {
       setGameState((prev) => ({
         ...prev,
         rounds: prev.rounds.map((r) =>
-          r.roundNumber === roundNumber
+          r.roundNumber === roundNumber && !r.isEvent
             ? { ...r, scores, notes: notes !== undefined ? notes : r.notes }
             : r
         ),
@@ -157,20 +159,111 @@ export function useGameState() {
     []
   );
 
-  const deleteRound = useCallback((roundNumber: number) => {
+  const deleteRound = useCallback((roundNumber: number, entryId?: string) => {
     soundEffects.playClick();
     setGameState((prev) => {
-      const filtered = prev.rounds.filter((r) => r.roundNumber !== roundNumber);
-      const renumbered = filtered.map((r, idx) => ({
-        ...r,
-        roundNumber: idx + 1,
-      }));
+      const filtered = prev.rounds.filter((r) =>
+        entryId ? r.id !== entryId : r.roundNumber !== roundNumber || r.isEvent
+      );
+      let currentRoundNum = 0;
+      const renumbered = filtered.map((r) => {
+        if (r.isEvent) {
+          return r;
+        }
+        currentRoundNum += 1;
+        return {
+          ...r,
+          roundNumber: currentRoundNum,
+        };
+      });
       return {
         ...prev,
         rounds: renumbered,
       };
     });
   }, []);
+
+  const applyIdentityTheft = useCallback((): boolean => {
+    if (gameState.players.length < 2) return false;
+
+    const currentStats = calculatePlayerStats(
+      gameState.players,
+      gameState.rounds,
+      gameState.config.targetScore
+    );
+
+    const scores = currentStats.map((s) => s.totalScore);
+    const minScore = Math.min(...scores);
+    const maxScore = Math.max(...scores);
+
+    // Disable or do nothing if all scores are identical
+    if (minScore === maxScore) {
+      return false;
+    }
+
+    // Deterministically pick lowest: first in players array matching minScore
+    const lowestPlayer = gameState.players.find(
+      (p) => currentStats.find((s) => s.id === p.id)?.totalScore === minScore
+    );
+
+    // Deterministically pick highest: first in players array matching maxScore
+    const highestPlayer = gameState.players.find(
+      (p) => currentStats.find((s) => s.id === p.id)?.totalScore === maxScore
+    );
+
+    if (
+      !lowestPlayer ||
+      !highestPlayer ||
+      lowestPlayer.id === highestPlayer.id
+    ) {
+      return false;
+    }
+
+    const deltaLow = maxScore - minScore;
+    const deltaHigh = minScore - maxScore;
+
+    const roundScores: Record<string, HandScore> = {};
+    gameState.players.forEach((p) => {
+      let delta = 0;
+      if (p.id === lowestPlayer.id) {
+        delta = deltaLow;
+      } else if (p.id === highestPlayer.id) {
+        delta = deltaHigh;
+      }
+      roundScores[p.id] = {
+        isWinner: false,
+        totalPoints: delta,
+      };
+    });
+
+    const timestamp = Date.now();
+    const currentRoundCount = gameState.rounds.filter((r) => !r.isEvent).length;
+    const eventEntry: RoundEntry = {
+      id: `event-identity-theft-${timestamp}`,
+      roundNumber: currentRoundCount,
+      timestamp,
+      isEvent: true,
+      eventType: 'identity-theft',
+      scores: roundScores,
+      notes: `Identity Theft: ${lowestPlayer.name} (${minScore} pts) ⇄ ${highestPlayer.name} (${maxScore} pts)`,
+      eventMetadata: {
+        lowPlayerId: lowestPlayer.id,
+        highPlayerId: highestPlayer.id,
+        lowPlayerName: lowestPlayer.name,
+        highPlayerName: highestPlayer.name,
+        lowScoreBefore: minScore,
+        highScoreBefore: maxScore,
+      },
+    };
+
+    soundEffects.playClick();
+    setGameState((prev) => ({
+      ...prev,
+      rounds: [...prev.rounds, eventEntry],
+    }));
+
+    return true;
+  }, [gameState]);
 
   const undoLastRound = useCallback(() => {
     soundEffects.playClick();
@@ -325,6 +418,21 @@ export function useGameState() {
     }
   }, []);
 
+  const canApplyIdentityTheft = useMemo(() => {
+    if (gameState.players.length < 2) return false;
+    if (gameState.isGameOver && !gameState.isContinued) return false;
+    const scores = playerStats.map((s) => s.totalScore);
+    if (scores.length === 0) return false;
+    const minScore = Math.min(...scores);
+    const maxScore = Math.max(...scores);
+    return minScore !== maxScore;
+  }, [
+    gameState.players.length,
+    gameState.isGameOver,
+    gameState.isContinued,
+    playerStats,
+  ]);
+
   return {
     gameState,
     playerStats,
@@ -334,6 +442,8 @@ export function useGameState() {
     editRound,
     deleteRound,
     undoLastRound,
+    applyIdentityTheft,
+    canApplyIdentityTheft,
     setActiveRuleCardIds,
     startNewGame,
     updateGameSetup,

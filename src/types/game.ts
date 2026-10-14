@@ -37,13 +37,26 @@ export interface HandScore {
   totalPoints: number;
 }
 
+export interface IdentityTheftEventMetadata {
+  lowPlayerId: string;
+  highPlayerId: string;
+  lowPlayerName: string;
+  highPlayerName: string;
+  lowScoreBefore: number;
+  highScoreBefore: number;
+}
+
 export interface RoundEntry {
+  id?: string;
   roundNumber: number;
   timestamp: number;
   activeRuleCardId?: string | null;
   activeRuleCardIds?: string[];
   scores: Record<string, HandScore>;
   notes?: string;
+  isEvent?: boolean;
+  eventType?: 'identity-theft' | string;
+  eventMetadata?: IdentityTheftEventMetadata;
 }
 
 export type RoundLog = RoundEntry;

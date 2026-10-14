@@ -203,6 +203,14 @@ export interface TranslationStrings {
     reviewBoard: string;
     viewScoreboard: string;
   };
+  events: {
+    identityTheft: string;
+    identityTheftDesc: string;
+    identityTheftSuccess: string;
+    identicalScoresWarning: string;
+    eventAction: string;
+    swappedPoints: string;
+  };
 }
 
 export const TRANSLATIONS: Record<Language, TranslationStrings> = {
@@ -415,6 +423,17 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       concludeMatch: 'Conclude Match',
       reviewBoard: 'Review Board',
       viewScoreboard: 'View Scoreboard',
+    },
+    events: {
+      identityTheft: 'Identity Theft',
+      identityTheftDesc:
+        'Swap points between player with highest and lowest score',
+      identityTheftSuccess:
+        'Identity Theft: Swapped scores between {lowPlayer} and {highPlayer}!',
+      identicalScoresWarning:
+        'Cannot swap: all player scores are currently identical.',
+      eventAction: 'Event Action',
+      swappedPoints: 'Points Swapped',
     },
   },
   de: {
@@ -629,6 +648,17 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       reviewBoard: 'Rangliste ansehen',
       viewScoreboard: 'Punkteübersicht',
     },
+    events: {
+      identityTheft: 'Identitätsdiebstahl',
+      identityTheftDesc:
+        'Punkte zwischen Person mit höchster und niedrigster Punktzahl tauschen',
+      identityTheftSuccess:
+        'Identitätsdiebstahl: Punkte zwischen {lowPlayer} und {highPlayer} getauscht!',
+      identicalScoresWarning:
+        'Kein Tausch möglich: Alle Punktestände sind derzeit identisch.',
+      eventAction: 'Ereignis-Aktion',
+      swappedPoints: 'Punkte getauscht',
+    },
   },
   it: {
     appTitle: "Frantic: Pandora's Box",
@@ -841,6 +871,17 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       concludeMatch: 'Concludi Partita',
       reviewBoard: 'Rivedi Tabellone',
       viewScoreboard: 'Vedi Tabellone',
+    },
+    events: {
+      identityTheft: 'Furto d’Identità',
+      identityTheftDesc:
+        'Scambia i punti tra il giocatore con il punteggio più alto e quello più basso',
+      identityTheftSuccess:
+        'Furto d’Identità: Punti scambiati tra {lowPlayer} e {highPlayer}!',
+      identicalScoresWarning:
+        'Impossibile scambiare: tutti i punteggi sono attualmente identici.',
+      eventAction: 'Azione Evento',
+      swappedPoints: 'Punti Scambiati',
     },
   },
   fr: {
@@ -1055,6 +1096,17 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       concludeMatch: 'Terminer la Partie',
       reviewBoard: 'Revoir le Tableau',
       viewScoreboard: 'Voir le tableau',
+    },
+    events: {
+      identityTheft: 'Vol d’Identité',
+      identityTheftDesc:
+        'Échange les points entre le joueur avec le score le plus haut et le plus bas',
+      identityTheftSuccess:
+        'Vol d’Identité: Points échangés entre {lowPlayer} et {highPlayer} !',
+      identicalScoresWarning:
+        'Échange impossible: tous les scores sont actuellement identiques.',
+      eventAction: 'Action Événement',
+      swappedPoints: 'Points Échangés',
     },
   },
 };
