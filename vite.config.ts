@@ -62,4 +62,9 @@ function serveRulesPlugin(): Plugin {
 
 export default defineConfig({
   plugins: [tailwindcss(), react(), serveRulesPlugin()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
 });
