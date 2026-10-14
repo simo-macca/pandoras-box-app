@@ -31,7 +31,7 @@
 - **Code Formatter**: NEVER run any code formatter (e.g. Prettier, `npm run format`, `eslint --fix`) unless explicitly requested in prompt.
 - **Always Allowed**: `npm run build`, `git status`, `git add <specific-files>`, and `git commit`.
 - **`npm run test` Policy**: Allowed ONLY ONCE at the very end of a task to verify functionality. Never run repeatedly after intermediate edits.
-- **`git push` Policy**: Allowed IF AND ONLY IF current branch is NOT `main` (or `master`). Pushing to `main` is strictly forbidden.
+- **`git push` Policy**: Allowed IF AND ONLY IF current branch is NOT `main` (or `master`). Pushing to `main` is strictly forbidden, UNLESS the user explicitly requests to "rebase in main" (in which case pushing to `main` is authorized only for that specific instance).
 
 ## Large-Task & Multi-File Protocol
 
