@@ -1,6 +1,6 @@
 # Contributing & Developer How-To Guide
 
-Thank you for contributing to **Frantic: Pandora's Box – Digital Companion App**! This guide contains instructions for setting up your workflow, adhering to code style standards, and extending game datasets, scoring rules, and translations.
+Thank you for contributing to **Frantic: Pandora's Box – Digital Companion App**! This guide contains instructions for setting up your workflow, adhering to code style standards, writing tests, and extending game datasets, scoring rules, and translations.
 
 ---
 
@@ -13,6 +13,7 @@ Thank you for contributing to **Frantic: Pandora's Box – Digital Companion App
   - [2. Adding or Modifying Translations](#2-adding-or-modifying-translations)
   - [3. Modifying Scoring Rules & Hand Calculations](#3-modifying-scoring-rules--hand-calculations)
   - [4. Creating New UI Components](#4-creating-new-ui-components)
+  - [5. Writing and Running Automated Tests](#5-writing-and-running-automated-tests)
 - [Verification & Pre-commit Quality Pipeline](#verification--pre-commit-quality-pipeline)
 - [Submitting Pull Requests](#submitting-pull-requests)
 - [Related Documentation](#related-documentation)
@@ -33,7 +34,8 @@ Thank you for contributing to **Frantic: Pandora's Box – Digital Companion App
    ```
 3. **Develop & Verify**:
    - Write clean, type-safe TypeScript code.
-   - Run type checks and lint checks before committing.
+   - Add or update automated tests in `__tests__/` directories.
+   - Run tests, type checks, and lint checks before committing.
 4. **Push & Open PR**:
    - Push to your fork and submit a Pull Request targeting the `main` branch.
 
@@ -46,6 +48,9 @@ To ensure consistency across the project:
 - **TypeScript**:
   - Always provide explicit type annotations for function signatures, data structures, and hook returns.
   - Avoid `any`. Use strict interfaces defined in [`../src/types/`](../src/types/).
+- **Testing (Vitest & React Testing Library)**:
+  - Write unit tests for pure utility functions, hook integration tests for custom hooks, and interaction tests for UI components.
+  - Place tests adjacent to modules in `__tests__/` subdirectories (e.g. `src/utils/__tests__/`, `src/hooks/__tests__/`, `src/components/**/__tests__/`).
 - **ESLint**:
   - Adhere to the ESLint configuration in [`../eslint.config.js`](../eslint.config.js).
   - React Hooks rules (`rules-of-hooks`, `exhaustive-deps`) are strictly enforced.
@@ -151,12 +156,14 @@ UI translations are typed and stored in [`../src/data/translations.ts`](../src/d
 Scoring logic is decoupled into pure functions and typed models:
 
 1. **Update Calculation Logic**:
-   Modify `calculateHandPoints()` in [`../src/hooks/useGameState.ts`](../src/hooks/useGameState.ts). Ensure all calculation branches return non-negative integer point values.
+   Modify `calculateHandPoints()` in [`../src/utils/scoring.ts`](../src/utils/scoring.ts). Ensure all calculation branches return non-negative integer point values.
 2. **Update Type Definitions**:
    If introducing a new card type or modifier, update `HandScore` in [`../src/types/game.ts`](../src/types/game.ts).
 3. **Update UI Inputs**:
-   - Add stepper or toggle controls in [`../src/components/scoring/SpecialCounters.tsx`](../src/components/scoring/SpecialCounters.tsx).
+   - Add stepper or toggle controls in [`../src/components/scoring/SpecialCounters.tsx`](../src/components/scoring/SpecialCounters.tsx) or [`../src/components/scoring/ScoringModifiers.tsx`](../src/components/scoring/ScoringModifiers.tsx).
    - Verify modal score preview binds to updated fields in [`../src/components/scoring/HandCalculatorModal.tsx`](../src/components/scoring/HandCalculatorModal.tsx).
+4. **Update Automated Tests**:
+   - Add test cases to [`../src/utils/__tests__/scoring.test.ts`](../src/utils/__tests__/scoring.test.ts) covering new point combinations, modifiers, and edge cases.
 
 ---
 
@@ -168,26 +175,50 @@ Scoring logic is decoupled into pure functions and typed models:
 
 ---
 
+### 5. Writing and Running Automated Tests
+
+We use **Vitest** with **React Testing Library** and **@testing-library/jest-dom**:
+
+- **Running Tests**:
+  ```bash
+  npm run test        # Run once
+  npm run test:watch  # Interactive watch mode
+  ```
+- **Where to place tests**:
+  - Utilities: `src/utils/__tests__/<filename>.test.ts`
+  - Hooks: `src/hooks/__tests__/<filename>.test.ts`
+  - Components: `src/components/<category>/__tests__/<filename>.test.tsx`
+- **Setup & Environment**: `src/test/setup.ts` loads custom DOM matchers (`toBeInTheDocument()`, etc.) and automatically clears DOM and `localStorage` between tests.
+
+---
+
 ## Verification & Pre-commit Quality Pipeline
 
-Run these verification commands prior to staging your commit:
+Before committing, ensure all automated verification checks pass:
 
 ```bash
 # 1. Type verification (zero compiler errors allowed)
 npm run type-check
 
-# 2. Lint verification
+# 2. Automated test suite (all tests must pass)
+npm run test
+
+# 3. Lint verification
 npm run lint
 
-# 3. Prettier check
+# 4. Prettier check
 npm run format:check
 ```
 
-To auto-format files:
+### Automated Pre-commit Hook
 
-```bash
-npm run format
-```
+The repository uses [Husky](https://typicode.github.io/husky/) and [lint-staged](https://github.com/lint-staged/lint-staged) via `.husky/pre-commit`. On every `git commit`, it automatically runs:
+
+1. `npx lint-staged` (`eslint --fix` and `prettier --write` on staged files)
+2. `npm run type-check` (`tsc --noEmit`)
+3. `npm run test` (`vitest run`)
+
+Any failing test, unfixable lint error, or type failure will automatically abort the commit.
 
 ---
 

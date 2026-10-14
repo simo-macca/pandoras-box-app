@@ -4,6 +4,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7.3-3178c6.svg?style=flat&logo=typescript)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-6.1.0-646cff.svg?style=flat&logo=vite)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.3.3-38bdf8.svg?style=flat&logo=tailwindcss)](https://tailwindcss.com/)
+[![Vitest](https://img.shields.io/badge/Vitest-5.0.4-facc15.svg?style=flat&logo=vitest)](https://vitest.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#disclaimer--credits)
 
 An intuitive, responsive web companion app designed for the card game **[Frantic](https://rulefactory.ch/)** and its official expansion **Pandora's Box**, created by **Rulefactory**.
@@ -16,14 +17,14 @@ Say goodbye to messy pen-and-paper scoring, manual card-counting errors, forgott
 
 Explore the modular project documentation:
 
-| Document                                                   | Description                                                                                                           |
-| :--------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------- |
-| **[Setup & Local Development](docs/SETUP.md)**             | Prerequisites, installation, npm scripts, and automated Husky/lint-staged pre-commit pipeline.                        |
-| **[System Architecture](docs/ARCHITECTURE.md)**            | Codebase layout, state management engine (`useGameState`), calculation pure functions, procedural audio, and theming. |
-| **[Application Features](docs/FEATURES.md)**               | Comprehensive walkthrough of all 9 core features, scoring tools, offline capabilities, and UI workflows.              |
-| **[Game Rules Reference](docs/GAME_RULES.md)**             | Official Frantic and Pandora's Box rules reference, penalty scoring breakdown, and target presets.                    |
-| **[Developer & Contributing Guide](docs/CONTRIBUTING.md)** | How-to guides for adding cards, modifying translations, updating scoring logic, and code standards.                   |
-| **[Deployment Guide](docs/DEPLOYMENT.md)**                 | Production builds, previewing, and hosting instructions for Netlify, Vercel, and custom servers.                      |
+| Document                                                   | Description                                                                                                                    |
+| :--------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
+| **[Setup & Local Development](docs/SETUP.md)**             | Prerequisites, installation, npm scripts, automated testing, and Husky/lint-staged pre-commit pipeline.                        |
+| **[System Architecture](docs/ARCHITECTURE.md)**            | Modular architecture, state engine (`useGameState`), domain calculators (`scoring.ts`, `stats.ts`), audio, and test structure. |
+| **[Application Features](docs/FEATURES.md)**               | Comprehensive walkthrough of all 9 core features, scoring tools, offline capabilities, and UI workflows.                       |
+| **[Game Rules Reference](docs/GAME_RULES.md)**             | Official Frantic and Pandora's Box rules reference, penalty scoring breakdown, and target presets.                             |
+| **[Developer & Contributing Guide](docs/CONTRIBUTING.md)** | How-to guides for adding cards, modifying translations, updating scoring logic, running tests, and code standards.             |
+| **[Deployment Guide](docs/DEPLOYMENT.md)**                 | Production builds, previewing, and hosting instructions for Netlify, Vercel, and custom servers.                               |
 
 ---
 
@@ -37,6 +38,7 @@ Explore the modular project documentation:
 - **Zero-Asset Procedural Audio**: Realistic dice rolls, clicks, and victory fanfare synthesized via the Web Audio API without binary audio downloads.
 - **State Persistence & Backup**: Local auto-save via `localStorage`, plus complete JSON match export and import for device migration or tournament records.
 - **Mobile-First & Theming**: Fully responsive layout with Dark, Light, and System theme switching.
+- **Automated Test Suite**: 14 test suites and 89 tests covering utilities, hooks, and UI components via Vitest and React Testing Library.
 
 _For a detailed breakdown of all capabilities, see the [Application Features Guide](docs/FEATURES.md)._
 
@@ -66,6 +68,9 @@ npm install
 
 # 3. Start local development server
 npm run dev
+
+# 4. Run test suite
+npm run test
 ```
 
 Open `http://localhost:5173` in your browser.
@@ -76,16 +81,17 @@ _Read the complete [Setup Guide](docs/SETUP.md)._
 
 ## Technology Stack
 
-| Layer          | Technology                                                                      | Details                                                 |
-| :------------- | :------------------------------------------------------------------------------ | :------------------------------------------------------ |
-| **Framework**  | [React 18](https://react.dev/)                                                  | Component-based Single Page Application                 |
-| **Language**   | [TypeScript 5](https://www.typescriptlang.org/)                                 | Strict static typing and interface contracts            |
-| **Build Tool** | [Vite 6](https://vitejs.dev/)                                                   | Fast HMR dev server and optimized production bundler    |
-| **Styling**    | [Tailwind CSS 4](https://tailwindcss.com/)                                      | Responsive design tokens with dark mode support         |
-| **Audio**      | [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) | Procedural synthesizer in `src/utils/sound.ts`          |
-| **Icons**      | [Lucide React](https://lucide.dev/)                                             | Modern scalable vector UI iconography                   |
-| **Effects**    | [canvas-confetti](https://github.com/catdad/canvas-confetti)                    | Canvas particle celebrations for game-over victory      |
-| **Hosting**    | [Netlify](https://www.netlify.com/)                                             | Static SPA hosting via [`netlify.toml`](./netlify.toml) |
+| Layer          | Technology                                                                                                                                           | Details                                                 |
+| :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------ |
+| **Framework**  | [React 18](https://react.dev/)                                                                                                                       | Component-based Single Page Application                 |
+| **Language**   | [TypeScript 5](https://www.typescriptlang.org/)                                                                                                      | Strict static typing and interface contracts            |
+| **Build Tool** | [Vite 6](https://vitejs.dev/)                                                                                                                        | Fast HMR dev server and optimized production bundler    |
+| **Testing**    | [Vitest](https://vitest.dev/), [React Testing Library](https://testing-library.com/), [jest-dom](https://github.com/testing-library/jest-dom), jsdom | Automated unit, hook, and UI component testing          |
+| **Styling**    | [Tailwind CSS 4](https://tailwindcss.com/)                                                                                                           | Responsive design tokens with dark mode support         |
+| **Audio**      | [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)                                                                      | Procedural synthesizer in `src/utils/sound.ts`          |
+| **Icons**      | [Lucide React](https://lucide.dev/)                                                                                                                  | Modern scalable vector UI iconography                   |
+| **Effects**    | [canvas-confetti](https://github.com/catdad/canvas-confetti)                                                                                         | Canvas particle celebrations for game-over victory      |
+| **Hosting**    | [Netlify](https://www.netlify.com/)                                                                                                                  | Static SPA hosting via [`netlify.toml`](./netlify.toml) |
 
 _Read the complete [System Architecture](docs/ARCHITECTURE.md)._
 
@@ -126,14 +132,17 @@ Official rulebooks and player overview cards in [`rules/`](./rules/):
 
 ## Available Scripts
 
-| Command              | Action                                                          |
-| :------------------- | :-------------------------------------------------------------- |
-| `npm run dev`        | Starts the Vite development server with HMR.                    |
-| `npm run build`      | Compiles TypeScript and bundles production assets into `dist/`. |
-| `npm run preview`    | Locally serves the production build.                            |
-| `npm run lint`       | Runs ESLint for syntax and React Hook rules.                    |
-| `npm run type-check` | Type-checks the codebase without emitting files.                |
-| `npm run format`     | Auto-formats code and reorders Tailwind classes.                |
+| Command                | Action                                                                 |
+| :--------------------- | :--------------------------------------------------------------------- |
+| `npm run dev`          | Starts the Vite development server with HMR.                           |
+| `npm run build`        | Compiles TypeScript and bundles production assets into `dist/`.        |
+| `npm run preview`      | Locally serves the production build.                                   |
+| `npm run test`         | Executes the automated test suite once via Vitest.                     |
+| `npm run test:watch`   | Runs Vitest in interactive watch mode for TDD / active development.    |
+| `npm run lint`         | Runs ESLint for syntax, code quality, and React Hook rules.            |
+| `npm run type-check`   | Type-checks the codebase via `tsc --noEmit` without emitting files.    |
+| `npm run format`       | Auto-formats code and reorders Tailwind classes with Prettier.         |
+| `npm run format:check` | Verifies code adheres to formatting standards without modifying files. |
 
 ---
 

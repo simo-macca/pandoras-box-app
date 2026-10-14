@@ -1,6 +1,6 @@
 # Getting Started & Development Setup
 
-This guide walks you through setting up **Frantic: Pandora's Box – Digital Companion App** on your local development machine, running the development server, using available npm scripts, and understanding the automated code quality pipeline.
+This guide walks you through setting up **Frantic: Pandora's Box – Digital Companion App** on your local development machine, running the development server, using available npm scripts, executing the automated test suite, and understanding the pre-commit quality pipeline.
 
 ---
 
@@ -10,6 +10,7 @@ This guide walks you through setting up **Frantic: Pandora's Box – Digital Com
 - [Installation](#installation)
 - [Local Development](#local-development)
 - [Available Scripts](#available-scripts)
+- [Automated Testing](#automated-testing)
 - [Code Quality & Pre-commit Pipeline](#code-quality--pre-commit-pipeline)
 - [Troubleshooting](#troubleshooting)
 - [Next Steps](#next-steps)
@@ -45,7 +46,7 @@ Before setting up the project, make sure you have installed:
    ```
 
    > [!NOTE]
-   > The `prepare` script will automatically trigger on install, setting up [Husky](https://typicode.github.io/husky/) git hooks in `../.husky/`.
+   > The `prepare` script will automatically trigger on install, setting up [Husky](https://typicode.github.io/husky/) git hooks in `.husky/`.
 
 ---
 
@@ -59,7 +60,7 @@ npm run dev
 
 Once the server boots, Vite displays the local network URL (typically `http://localhost:5173/`). Open this URL in your web browser.
 
-- Changes made to files in `../src/` are hot-reloaded instantly without losing state where supported.
+- Changes made to files in `src/` are hot-reloaded instantly without losing state where supported.
 - Open your browser's Developer Tools (`F12` / `Cmd+Option+I`) to inspect console logs, Web Audio API activity, and `localStorage` state under Application > Local Storage (`frantic_game_state_v2`).
 
 ---
@@ -73,11 +74,37 @@ The following npm scripts are defined in [`package.json`](../package.json):
 | `npm run dev`          | Boots the Vite development server with Hot Module Replacement (HMR).                     |
 | `npm run build`        | Runs TypeScript compilation (`tsc -b`) and bundles production assets into `dist/`.       |
 | `npm run preview`      | Serves the production build locally to verify deployment readiness.                      |
+| `npm run test`         | Executes the automated unit, hook, and component test suite once using Vitest.           |
+| `npm run test:watch`   | Runs Vitest in interactive watch mode for test-driven development (TDD).                 |
 | `npm run lint`         | Runs ESLint across the codebase to check code quality and React Hooks rules.             |
 | `npm run type-check`   | Runs TypeScript type checking (`tsc --noEmit`) without generating output files.          |
 | `npm run format`       | Automatically formats the codebase using Prettier, including Tailwind CSS class sorting. |
 | `npm run format:check` | Checks whether all files adhere to Prettier formatting without modifying them.           |
 | `npm run prepare`      | Configures Husky git hooks for local development.                                        |
+
+---
+
+## Automated Testing
+
+The testing suite uses **Vitest**, **React Testing Library**, **@testing-library/jest-dom**, and **jsdom**:
+
+```bash
+# Run all tests once
+npm run test
+
+# Run tests in watch mode during development
+npm run test:watch
+
+# Run a specific test file or filter by name
+npx vitest run src/utils/__tests__/scoring.test.ts
+npx vitest run -t "calculateHandPoints"
+```
+
+### Test Suite Structure
+
+- `src/utils/__tests__/`: Unit tests for scoring rules (`scoring.ts`), leaderboard analytics (`stats.ts`), persistence (`storage.ts`), search & i18n (`i18n.ts`), and colors (`colors.ts`).
+- `src/hooks/__tests__/`: Integration tests for state management (`useGameState.ts`), themes (`useTheme.ts`), and modal dialogs (`useAppModals.ts`).
+- `src/components/**/__tests__/`: Interaction tests for user flows including game setup, hand calculator scoring, and scoreboard tables.
 
 ---
 
@@ -87,15 +114,17 @@ To maintain high code quality and prevent regressions, this repository employs a
 
 ### Automated Pre-commit Checks
 
-When you run `git commit`, the hook in `../.husky/pre-commit` triggers the following tasks automatically:
+When you run `git commit`, the hook in `.husky/pre-commit` triggers the following tasks in sequence:
 
-1. **TypeScript & React Files (`*.{ts,tsx}`)**:
-   - `eslint --fix`: Fixes auto-fixable lint issues and flags syntax or rule violations.
-   - `prettier --write`: Formats code and reorders Tailwind CSS utility classes.
-2. **Styles, Data & Markdown (`*.{json,css,html,md}`)**:
-   - `prettier --write`: Enforces uniform code style, indentation, and formatting.
-3. **Type Safety**:
-   - `tsc --noEmit`: Verifies that no type errors exist before allowing the commit to proceed.
+1. **`npx lint-staged`**:
+   - **TypeScript & React Files (`*.{ts,tsx}`)**: runs `eslint --fix` and `prettier --write`.
+   - **Styles, Data & Markdown (`*.{json,css,html,md}`)**: runs `prettier --write`.
+2. **`npm run type-check`**:
+   - Executes `tsc --noEmit` to verify type safety across the entire application and tests.
+3. **`npm run test`**:
+   - Executes `vitest run` to ensure all 89 unit, hook, and component tests pass.
+
+If any test fails, lint violation remains, or type error is detected, the commit is automatically blocked.
 
 ### Manual Verification
 
@@ -107,6 +136,9 @@ npm run type-check
 
 # Verify linting
 npm run lint
+
+# Run automated tests
+npm run test
 
 # Check formatting
 npm run format:check
