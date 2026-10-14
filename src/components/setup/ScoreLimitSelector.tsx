@@ -14,7 +14,7 @@ interface ScoreLimitSelectorProps {
   language: Language;
 }
 
-export const OFFICIAL_SCORE_PRESETS = [
+const OFFICIAL_SCORE_PRESETS = [
   { score: 113, label: '113 pts', note: '5–8 Short' },
   { score: 137, label: '137 pts', note: '2–4 Short / 5–8 Med' },
   { score: 154, label: '154 pts', note: '2–4 Med / 5–8 Long' },
