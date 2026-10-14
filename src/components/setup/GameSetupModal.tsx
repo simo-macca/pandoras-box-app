@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { X, Play, RotateCcw, Target, AlertTriangle, Users } from 'lucide-react';
+import { X, Play, RotateCcw, AlertTriangle, Users } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Player, GameConfig, Language, PlayerColor } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
 import { PlayerConfig } from './PlayerConfig';
+import { ScoreLimitSelector } from './ScoreLimitSelector';
 import { ALL_PLAYER_COLORS } from '../../utils/colors';
 import { soundEffects } from '../../utils/sound';
 
@@ -108,14 +109,6 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
       draftPlayers.map((p) => (p.id === id ? { ...p, ...updates } : p))
     );
   };
-
-  // Inlined official score limits: 113, 137, 154, 179 pts
-  const scorePresets = [
-    { score: 113, label: '113 pts', note: '5–8 Short' },
-    { score: 137, label: '137 pts', note: '2–4 Short / 5–8 Med' },
-    { score: 154, label: '154 pts', note: '2–4 Med / 5–8 Long' },
-    { score: 179, label: '179 pts', note: '2–4 Long' },
-  ];
 
   const handleSelectScorePreset = (score: number) => {
     soundEffects.playClick();
@@ -252,91 +245,17 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
 
           <hr className="border-neutral-200 dark:border-neutral-800" />
 
-          {/* Inlined score limit buttons (113, 137, 154, 179 pts + Custom) */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 text-sm font-bold text-neutral-800 dark:text-neutral-200">
-                <Target className="h-4 w-4 text-amber-500" />
-                <span>{t.setup.targetScore}</span>
-              </label>
-              <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-                Official Limits
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-              {scorePresets.map((preset) => {
-                const isSelected =
-                  draftConfig.presetName !== 'custom' &&
-                  draftConfig.targetScore === preset.score;
-
-                return (
-                  <button
-                    key={preset.score}
-                    type="button"
-                    onClick={() => handleSelectScorePreset(preset.score)}
-                    className={`flex flex-col items-center justify-center rounded-2xl border p-3 transition-all ${
-                      isSelected
-                        ? 'border-amber-500 bg-amber-500/15 font-bold text-amber-600 shadow-[0_0_15px_rgba(245,158,11,0.2)] dark:text-amber-400'
-                        : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300 dark:hover:border-neutral-700'
-                    }`}
-                  >
-                    <span className="text-lg font-black text-neutral-900 dark:text-white">
-                      {preset.score}
-                    </span>
-                    <span className="text-[10px] font-semibold text-neutral-400">
-                      {preset.note}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Custom Limit */}
-            <div className="flex items-center gap-2 pt-1">
-              <button
-                type="button"
-                onClick={handleSelectCustom}
-                className={`rounded-xl border px-3 py-2 text-xs font-bold transition-all ${
-                  draftConfig.presetName === 'custom'
-                    ? 'border-amber-500 bg-amber-500/15 font-bold text-amber-600 dark:text-amber-400'
-                    : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300 dark:hover:border-neutral-700'
-                }`}
-              >
-                {t.setup.customGame}
-              </button>
-
-              <div className="relative flex-1">
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  value={customValue}
-                  onChange={(e) => handleCustomChange(e.target.value)}
-                  onFocus={() => {
-                    setDraftConfig((prev) => ({
-                      ...prev,
-                      presetName: 'custom',
-                    }));
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      handleSaveOnly();
-                    }
-                  }}
-                  placeholder="150"
-                  className="w-full rounded-xl border border-neutral-300 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
-                />
-                <span className="pointer-events-none absolute top-2 right-3 text-xs font-semibold text-neutral-400">
-                  {t.setup.points}
-                </span>
-              </div>
-            </div>
-
-            <p className="text-xs leading-relaxed text-neutral-500 dark:text-neutral-400">
-              {t.setup.description}
-            </p>
-          </div>
+          {/* Score Limit Selector */}
+          <ScoreLimitSelector
+            targetScore={draftConfig.targetScore}
+            presetName={draftConfig.presetName}
+            customValue={customValue}
+            onSelectPreset={handleSelectScorePreset}
+            onSelectCustom={handleSelectCustom}
+            onCustomChange={handleCustomChange}
+            onSubmitCustom={handleSaveOnly}
+            language={language}
+          />
         </div>
 
         {/* Footer Actions */}
