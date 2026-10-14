@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, PlusCircle, RotateCcw } from 'lucide-react';
+import { Trophy, PlusCircle, RotateCcw, UserCheck } from 'lucide-react';
 import { PlayerStats } from '../../utils/stats';
 import { RoundEntry, Player, Language } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
@@ -20,11 +20,13 @@ interface LeaderboardProps {
   onOpenScoreModal: () => void;
   onUndoLastRound: () => void;
   onEditRound?: (roundNumber: number) => void;
-  onDeleteRound?: (roundNumber: number) => void;
+  onDeleteRound?: (roundNumber: number, entryId?: string) => void;
   onClearActiveRuleCard?: () => void;
   onOpenRuleCardDrawer?: () => void;
   onStartNewGame?: () => void;
   onConcludeGame?: () => void;
+  onApplyIdentityTheft?: () => void;
+  canApplyIdentityTheft?: boolean;
   language: Language;
 }
 
@@ -44,6 +46,8 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
   onOpenRuleCardDrawer,
   onStartNewGame,
   onConcludeGame,
+  onApplyIdentityTheft,
+  canApplyIdentityTheft = false,
   language,
 }) => {
   const t = TRANSLATIONS[language];
@@ -69,7 +73,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
 
       {/* Main Leaderboard Cards */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="flex min-w-0 items-center gap-1.5 text-base font-black text-neutral-900 sm:gap-2 sm:text-lg md:text-xl dark:text-white">
             <span className="truncate">{t.scoreboard.title}</span>
             <span className="hidden text-xs font-medium text-neutral-500 sm:inline">
@@ -77,7 +81,31 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
             </span>
           </h2>
 
-          <div className="flex shrink-0 items-center gap-2">
+          <div className="flex shrink-0 flex-wrap items-center gap-2">
+            {onApplyIdentityTheft && (
+              <button
+                type="button"
+                onClick={() => {
+                  soundEffects.playClick();
+                  onApplyIdentityTheft();
+                }}
+                disabled={!canApplyIdentityTheft}
+                className="flex items-center gap-1.5 rounded-xl border border-indigo-500/40 bg-indigo-500/10 px-2.5 py-1.5 text-xs font-bold text-indigo-700 shadow-sm transition-all hover:bg-indigo-500/20 active:scale-95 disabled:pointer-events-none disabled:opacity-40 sm:gap-2 sm:px-3 dark:border-indigo-500/30 dark:bg-indigo-950/40 dark:text-indigo-300 dark:hover:bg-indigo-900/50"
+                title={
+                  canApplyIdentityTheft
+                    ? t.events?.identityTheftDesc ||
+                      'Identity Theft: Swap points between highest and lowest score players'
+                    : t.events?.identicalScoresWarning ||
+                      'Cannot swap: all scores are currently identical'
+                }
+              >
+                <UserCheck className="h-3.5 w-3.5 shrink-0 stroke-[2.2]" />
+                <span className="whitespace-nowrap">
+                  {t.events?.identityTheft || 'Identity Theft'}
+                </span>
+              </button>
+            )}
+
             {onStartNewGame && (
               <button
                 type="button"

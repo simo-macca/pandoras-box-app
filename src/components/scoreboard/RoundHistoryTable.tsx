@@ -8,6 +8,7 @@ import {
   Sparkles,
   Skull,
   Bomb,
+  UserCheck,
   X,
 } from 'lucide-react';
 import { Player, RoundEntry, Language } from '../../types/game';
@@ -20,7 +21,7 @@ interface RoundHistoryTableProps {
   players: Player[];
   onUndoLastRound: () => void;
   onEditRound?: (roundNumber: number) => void;
-  onDeleteRound?: (roundNumber: number) => void;
+  onDeleteRound?: (roundNumber: number, entryId?: string) => void;
   language: Language;
 }
 
@@ -33,9 +34,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
   language,
 }) => {
   const t = TRANSLATIONS[language];
-  const [deleteConfirmRound, setDeleteConfirmRound] = useState<number | null>(
-    null
-  );
+  const [deleteConfirmKey, setDeleteConfirmKey] = useState<string | null>(null);
 
   if (rounds.length === 0) {
     return (
@@ -56,6 +55,8 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
     onUndoLastRound();
   };
 
+  const actualRoundsCount = rounds.filter((r) => !r.isEvent).length;
+
   return (
     <div className="space-y-4">
       {/* Header bar */}
@@ -63,7 +64,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
         <h3 className="flex items-center gap-2 text-base font-bold text-neutral-900 dark:text-white">
           <span>{t.scoreboard.historyTitle}</span>
           <span className="rounded-full bg-neutral-200 px-2.5 py-0.5 font-mono text-xs font-bold text-amber-500 tabular-nums dark:bg-neutral-800">
-            {rounds.length}
+            {actualRoundsCount}
           </span>
         </h3>
 
@@ -81,6 +82,9 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
       {/* Rounds list (newest first) */}
       <div className="space-y-3">
         {[...rounds].reverse().map((round) => {
+          const entryKey =
+            round.id ||
+            `${round.isEvent ? 'event' : 'round'}-${round.roundNumber}-${round.timestamp}`;
           const ruleCardId =
             round.activeRuleCardIds?.[0] || round.activeRuleCardId;
           const activeRuleCard = ruleCardId
@@ -89,29 +93,54 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
 
           return (
             <div
-              key={round.roundNumber}
-              className="rounded-3xl border border-neutral-200 bg-white p-3 shadow-sm transition-all sm:p-4 dark:border-neutral-800 dark:bg-neutral-900"
+              key={entryKey}
+              className={`rounded-3xl border p-3 shadow-sm transition-all sm:p-4 ${
+                round.isEvent
+                  ? 'border-indigo-500/30 bg-indigo-500/[0.03] dark:border-indigo-500/20 dark:bg-indigo-950/20'
+                  : 'border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900'
+              }`}
             >
-              {/* Round Header */}
+              {/* Round / Event Header */}
               <div className="mb-3 flex items-center justify-between gap-2 border-b border-neutral-100 pb-3 dark:border-neutral-800">
                 <div className="flex min-w-0 items-center gap-2">
-                  <span className="shrink-0 rounded-xl border border-amber-500/30 bg-amber-500/15 px-2.5 py-1 text-xs font-black whitespace-nowrap text-amber-600 tabular-nums dark:text-amber-400">
-                    {t.scoreboard.round} {round.roundNumber}
-                  </span>
-
-                  {activeRuleCard && (
-                    <span className="flex max-w-[160px] items-center gap-1 truncate rounded-xl border border-purple-500/30 bg-purple-500/15 px-2 py-1 text-xs font-bold text-purple-600 sm:max-w-[200px] sm:px-2.5 dark:text-purple-400">
-                      <Sparkles className="h-3 w-3 shrink-0" />
-                      <span className="truncate">
-                        {activeRuleCard.name[language]}
+                  {round.isEvent ? (
+                    <>
+                      <span className="flex shrink-0 items-center gap-1 rounded-xl border border-indigo-500/30 bg-indigo-500/15 px-2.5 py-1 text-xs font-black whitespace-nowrap text-indigo-600 tabular-nums dark:text-indigo-400">
+                        <UserCheck className="h-3.5 w-3.5 shrink-0" />
+                        <span>
+                          {t.events?.identityTheft || 'Identity Theft'}
+                        </span>
                       </span>
-                    </span>
+                      {round.eventMetadata && (
+                        <span className="hidden truncate text-xs font-semibold text-neutral-500 sm:inline dark:text-neutral-400">
+                          {round.eventMetadata.lowPlayerName} (
+                          {round.eventMetadata.lowScoreBefore} pts) ⇄{' '}
+                          {round.eventMetadata.highPlayerName} (
+                          {round.eventMetadata.highScoreBefore} pts)
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <span className="shrink-0 rounded-xl border border-amber-500/30 bg-amber-500/15 px-2.5 py-1 text-xs font-black whitespace-nowrap text-amber-600 tabular-nums dark:text-amber-400">
+                        {t.scoreboard.round} {round.roundNumber}
+                      </span>
+
+                      {activeRuleCard && (
+                        <span className="flex max-w-[160px] items-center gap-1 truncate rounded-xl border border-purple-500/30 bg-purple-500/15 px-2 py-1 text-xs font-bold text-purple-600 sm:max-w-[200px] sm:px-2.5 dark:text-purple-400">
+                          <Sparkles className="h-3 w-3 shrink-0" />
+                          <span className="truncate">
+                            {activeRuleCard.name[language]}
+                          </span>
+                        </span>
+                      )}
+                    </>
                   )}
                 </div>
 
                 {/* Actions: Edit / Delete */}
                 <div className="flex shrink-0 items-center gap-1">
-                  {onEditRound && (
+                  {!round.isEvent && onEditRound && (
                     <button
                       type="button"
                       onClick={() => onEditRound(round.roundNumber)}
@@ -124,13 +153,17 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
 
                   {onDeleteRound && (
                     <>
-                      {deleteConfirmRound === round.roundNumber ? (
+                      {deleteConfirmKey === entryKey ? (
                         <div className="flex items-center gap-1 text-[11px]">
                           <button
                             type="button"
                             onClick={() => {
-                              onDeleteRound(round.roundNumber);
-                              setDeleteConfirmRound(null);
+                              if (round.id) {
+                                onDeleteRound(round.roundNumber, round.id);
+                              } else {
+                                onDeleteRound(round.roundNumber);
+                              }
+                              setDeleteConfirmKey(null);
                             }}
                             className="rounded-lg bg-red-600 px-2 py-0.5 font-bold text-white"
                           >
@@ -138,7 +171,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                           </button>
                           <button
                             type="button"
-                            onClick={() => setDeleteConfirmRound(null)}
+                            onClick={() => setDeleteConfirmKey(null)}
                             className="rounded-lg p-1 text-neutral-400 hover:text-neutral-200"
                             aria-label={t.setup.cancel}
                           >
@@ -148,9 +181,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                       ) : (
                         <button
                           type="button"
-                          onClick={() =>
-                            setDeleteConfirmRound(round.roundNumber)
-                          }
+                          onClick={() => setDeleteConfirmKey(entryKey)}
                           className="rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-red-500/10 hover:text-red-500"
                           title={t.scoreboard.deleteRound}
                         >
@@ -167,6 +198,42 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                 {players.map((player) => {
                   const score = round.scores[player.id];
                   if (!score) return null;
+
+                  if (round.isEvent) {
+                    const hasDelta = score.totalPoints !== 0;
+                    return (
+                      <div
+                        key={player.id}
+                        className={`rounded-2xl border p-2 transition-all sm:p-2.5 ${
+                          hasDelta
+                            ? 'border-indigo-500/40 bg-indigo-500/10 dark:border-indigo-500/30 dark:bg-indigo-950/30'
+                            : 'border-neutral-100 bg-neutral-50 dark:border-neutral-800/80 dark:bg-neutral-800/30'
+                        }`}
+                      >
+                        <div className="mb-1 flex items-center justify-between">
+                          <span className="truncate text-xs font-bold text-neutral-800 dark:text-neutral-200">
+                            {player.name}
+                          </span>
+                          {hasDelta && (
+                            <span className="rounded-md bg-indigo-500/20 px-1.5 py-0.5 text-[9px] font-bold text-indigo-700 dark:text-indigo-300">
+                              {t.events?.swappedPoints || 'Swapped'}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="mt-1 flex items-baseline justify-between">
+                          <span className="text-base font-black whitespace-nowrap text-neutral-900 tabular-nums dark:text-white">
+                            {score.totalPoints > 0
+                              ? `+${score.totalPoints}`
+                              : score.totalPoints}{' '}
+                            <span className="text-[10px] font-semibold text-neutral-400">
+                              pts
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  }
 
                   return (
                     <div

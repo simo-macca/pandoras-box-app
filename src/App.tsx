@@ -16,6 +16,7 @@ import { CardDictionary } from './components/rules/CardDictionary';
 import { GameSetupModal } from './components/setup/GameSetupModal';
 import { SettingsModal } from './components/layout/SettingsModal';
 import { HandScore, GameState } from './types/game';
+import { calculatePlayerStats } from './utils/stats';
 
 export function App() {
   const {
@@ -27,6 +28,8 @@ export function App() {
     editRound,
     deleteRound,
     undoLastRound,
+    applyIdentityTheft,
+    canApplyIdentityTheft,
     setActiveRuleCardIds,
     startNewGame,
     updateGameSetup,
@@ -103,13 +106,42 @@ export function App() {
     closeScoreModal();
   };
 
-  const handleDeleteRound = (roundNumber: number) => {
+  const handleDeleteRound = (roundNumber: number, entryId?: string) => {
     const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
-    deleteRound(roundNumber);
+    deleteRound(roundNumber, entryId);
     showUndoToast(
       TRANSLATIONS[language].scoring.roundDeletedSuccess,
       previousSnapshot
     );
+  };
+
+  const handleApplyIdentityTheft = () => {
+    const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
+    const currentStats = calculatePlayerStats(
+      gameState.players,
+      gameState.rounds,
+      gameState.config.targetScore
+    );
+    const scores = currentStats.map((s) => s.totalScore);
+    const minScore = Math.min(...scores);
+    const maxScore = Math.max(...scores);
+    const lowP = gameState.players.find(
+      (p) => currentStats.find((s) => s.id === p.id)?.totalScore === minScore
+    );
+    const highP = gameState.players.find(
+      (p) => currentStats.find((s) => s.id === p.id)?.totalScore === maxScore
+    );
+
+    const success = applyIdentityTheft();
+    if (success) {
+      const msg =
+        lowP && highP
+          ? TRANSLATIONS[language].events.identityTheftSuccess
+              .replace('{lowPlayer}', lowP.name)
+              .replace('{highPlayer}', highP.name)
+          : TRANSLATIONS[language].events.identityTheft;
+      showUndoToast(msg, previousSnapshot);
+    }
   };
 
   const handleUndoLastRound = () => {
@@ -156,6 +188,8 @@ export function App() {
     );
   };
 
+  const actualRoundsCount = gameState.rounds.filter((r) => !r.isEvent).length;
+
   const editingRound = editingRoundNumber
     ? gameState.rounds.find((r) => r.roundNumber === editingRoundNumber)
     : null;
@@ -167,7 +201,7 @@ export function App() {
         language={language}
         theme={theme}
         onThemeChange={setTheme}
-        roundsCount={gameState.rounds.length}
+        roundsCount={actualRoundsCount}
         targetScore={gameState.config.targetScore}
         onOpenSetup={openSetup}
         onOpenSettings={() => openSettings('settings')}
@@ -199,6 +233,8 @@ export function App() {
             onOpenRuleCardDrawer={() => setActiveTab('rulecards')}
             onStartNewGame={openSetup}
             onConcludeGame={handleConcludeGame}
+            onApplyIdentityTheft={handleApplyIdentityTheft}
+            canApplyIdentityTheft={canApplyIdentityTheft}
             language={language}
           />
         )}
@@ -230,7 +266,7 @@ export function App() {
         playerStats={playerStats}
         onSubmitRound={handleSubmitScores}
         language={language}
-        roundNumber={editingRoundNumber ?? gameState.rounds.length + 1}
+        roundNumber={editingRoundNumber ?? actualRoundsCount + 1}
         initialScores={editingRound?.scores}
         isEditing={editingRoundNumber !== null}
       />
@@ -266,7 +302,7 @@ export function App() {
         winner={winner}
         standings={playerStats}
         targetScore={gameState.config.targetScore}
-        roundsCount={gameState.rounds.length}
+        roundsCount={actualRoundsCount}
         onPlayAgain={() => {
           resetCurrentGame();
           setIsGameOverModalDismissed(false);
