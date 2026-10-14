@@ -11,12 +11,13 @@ This document outlines the core capabilities, scoring tools, card databases, and
   - [1. Real-time Leaderboard & Danger Zone](#1-real-time-leaderboard--danger-zone)
   - [2. Interactive Hand Point Calculator](#2-interactive-hand-point-calculator)
   - [3. Round History, Editing & Undo](#3-round-history-editing--undo)
-  - [4. Pandora's Box Rule Card Drawer](#4-pandoras-box-rule-card-drawer)
-  - [5. Multilingual Rules & Card Encyclopedia](#5-multilingual-rules--card-encyclopedia)
-  - [6. Match Configuration & Player Management](#6-match-configuration--player-management)
-  - [7. Game Over Celebration & Statistics](#7-game-over-celebration--statistics)
-  - [8. Audio Effects, Haptics & Dark Mode](#8-audio-effects-haptics--dark-mode)
-  - [9. Data Persistence, Backup & Restore](#9-data-persistence-backup--restore)
+  - [4. "Identity Theft" Event Action & Match History](#4-identity-theft-event-action--match-history)
+  - [5. Pandora's Box Rule Card Drawer](#5-pandoras-box-rule-card-drawer)
+  - [6. Multilingual Rules & Card Encyclopedia](#6-multilingual-rules--card-encyclopedia)
+  - [7. Match Configuration & Player Management](#7-match-configuration--player-management)
+  - [8. Game Over Celebration & Statistics](#8-game-over-celebration--statistics)
+  - [9. Audio Effects, Haptics & Dark Mode](#9-audio-effects-haptics--dark-mode)
+  - [10. Data Persistence, Backup & Restore](#10-data-persistence-backup--restore)
 - [Integrated PDF Rulebook Viewer](#integrated-pdf-rulebook-viewer)
 - [Related Documentation](#related-documentation)
 
@@ -94,7 +95,21 @@ Mistakes at the table happen. The companion app offers full retrospective editin
 
 ---
 
-### 4. Pandora's Box Rule Card Drawer
+### 4. "Identity Theft" Event Action & Match History
+
+When the chaotic **Identity Theft** event card is triggered during gameplay:
+
+- **One-Tap Execution**: Tap the **Identity Theft** button located directly on the Scoreboard actions toolbar.
+- **Automated Score Swap**: Automatically identifies the player with the lowest score and the player with the highest score, and swaps their cumulative penalty points.
+- **Deterministic Tie-Breaking**: If multiple players are tied for the lowest score or the highest score, ties are deterministically resolved by choosing the first matching player in the roster order (`gameState.players`).
+- **Identical Scores Protection**: When all player scores are currently identical (e.g., at the start of a match or after a perfectly tied round), the Identity Theft button is automatically disabled and safely no-ops.
+- **Round Counter Preservation**: Triggering the Identity Theft event records a dedicated transaction without incrementing or advancing the match round counter (subsequent rounds retain their proper sequence numbers).
+- **Match History & Persistence**: The event is recorded in the match history/log with an `Identity Theft` event badge, swapped player names, and point deltas. The swap is preserved in exported JSON match files, restoring exact scores and state history upon re-import.
+- **Instant Undo & Delete**: Accidental clicks can be immediately reverted via the undo toast notification or by deleting the event entry from the history table.
+
+---
+
+### 5. Pandora's Box Rule Card Drawer
 
 Bring the expansion's dynamic rules to life digitally:
 
@@ -104,7 +119,7 @@ Bring the expansion's dynamic rules to life digitally:
 
 ---
 
-### 5. Multilingual Rules & Card Encyclopedia
+### 6. Multilingual Rules & Card Encyclopedia
 
 A comprehensive reference dictionary for card game nights:
 
@@ -118,7 +133,7 @@ A comprehensive reference dictionary for card game nights:
 
 ---
 
-### 6. Match Configuration & Player Management
+### 7. Match Configuration & Player Management
 
 Customizable match settings to fit any table:
 
@@ -130,7 +145,7 @@ Customizable match settings to fit any table:
 
 ---
 
-### 7. Game Over Celebration & Statistics
+### 8. Game Over Celebration & Statistics
 
 When the elimination threshold is reached:
 
@@ -142,7 +157,7 @@ When the elimination threshold is reached:
 
 ---
 
-### 8. Audio Effects, Haptics & Dark Mode
+### 9. Audio Effects, Haptics & Dark Mode
 
 Engineered for a responsive, tactile mobile experience:
 
@@ -153,7 +168,7 @@ Engineered for a responsive, tactile mobile experience:
 
 ---
 
-### 9. Data Persistence, Backup & Restore
+### 10. Data Persistence, Backup & Restore
 
 Keep your tournament logs safe:
 
