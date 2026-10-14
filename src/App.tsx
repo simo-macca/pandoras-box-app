@@ -1,8 +1,9 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-import { RotateCcw } from 'lucide-react';
+import { useState } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { useGameState } from './hooks/useGameState';
 import { useTheme } from './hooks/useTheme';
+import { useUndoToast } from './hooks/useUndoToast';
+import { useAppModals } from './hooks/useAppModals';
 import { TRANSLATIONS } from './data/translations';
 import { Navbar } from './components/layout/Navbar';
 import { TabNavigation, ActiveTab } from './components/layout/TabNavigation';
@@ -39,29 +40,39 @@ export function App() {
   } = useGameState();
 
   const { theme, setTheme } = useTheme();
-
   const [activeTab, setActiveTab] = useState<ActiveTab>('scoreboard');
-  const [isScoreModalOpen, setIsScoreModalOpen] = useState(false);
-  const [editingRoundNumber, setEditingRoundNumber] = useState<number | null>(
-    null
-  );
-  const [isSetupModalOpen, setIsSetupModalOpen] = useState(false);
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [settingsInitialTab, setSettingsInitialTab] = useState<
-    'settings' | 'legal'
-  >('settings');
-  const [isGameOverModalDismissed, setIsGameOverModalDismissed] =
-    useState(false);
+
+  const {
+    isScoreModalOpen,
+    editingRoundNumber,
+    isSetupModalOpen,
+    isSettingsModalOpen,
+    settingsInitialTab,
+    isGameOverModalDismissed,
+    setIsGameOverModalDismissed,
+    openScoreModal,
+    openEditRound,
+    closeScoreModal,
+    openSettings,
+    closeSettings,
+    openSetup,
+    closeSetup,
+  } = useAppModals();
+
+  const { showUndoToast } = useUndoToast({
+    language,
+    onRestoreState: restoreGameState,
+    onAfterUndo: (restoredState) => {
+      if (restoredState.isGameOver && !restoredState.isContinued) {
+        setIsGameOverModalDismissed(false);
+      }
+    },
+  });
 
   const winner = playerStats[0] || null;
 
   const handleOpenScoreModal = () => {
-    if (gameState.isGameOver && !gameState.isContinued) {
-      setIsGameOverModalDismissed(false);
-      return;
-    }
-    setEditingRoundNumber(null);
-    setIsScoreModalOpen(true);
+    openScoreModal(gameState.isGameOver, !!gameState.isContinued);
   };
 
   const handleContinueGame = () => {
@@ -73,83 +84,6 @@ export function App() {
     concludeGame();
     setIsGameOverModalDismissed(false);
   };
-
-  const handleOpenEditRound = (roundNumber: number) => {
-    setEditingRoundNumber(roundNumber);
-    setIsScoreModalOpen(true);
-  };
-
-  const handleOpenSettings = (tab: 'settings' | 'legal' = 'settings') => {
-    setSettingsInitialTab(tab);
-    setIsSettingsModalOpen(true);
-  };
-
-  const previousStateRef = useRef<GameState | null>(null);
-  const undoTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (undoTimeoutRef.current) {
-        clearTimeout(undoTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  const showUndoToast = useCallback(
-    (message: string, snapshot: GameState) => {
-      if (undoTimeoutRef.current) {
-        clearTimeout(undoTimeoutRef.current);
-      }
-      previousStateRef.current = snapshot;
-
-      undoTimeoutRef.current = setTimeout(() => {
-        previousStateRef.current = null;
-        undoTimeoutRef.current = null;
-      }, 5000);
-
-      toast(
-        (tInstance) => (
-          <div className="flex w-full items-center justify-between gap-3 text-xs sm:text-sm">
-            <span className="font-semibold text-white">{message}</span>
-            <button
-              type="button"
-              onClick={() => {
-                if (previousStateRef.current) {
-                  const restoredState = previousStateRef.current;
-                  restoreGameState(restoredState);
-                  if (restoredState.isGameOver && !restoredState.isContinued) {
-                    setIsGameOverModalDismissed(false);
-                  }
-                  previousStateRef.current = null;
-                }
-                if (undoTimeoutRef.current) {
-                  clearTimeout(undoTimeoutRef.current);
-                  undoTimeoutRef.current = null;
-                }
-                toast.dismiss(tInstance.id);
-                toast.success(TRANSLATIONS[language].scoring.undoSuccess, {
-                  duration: 2500,
-                });
-              }}
-              className="flex shrink-0 items-center gap-1.5 rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-black text-neutral-950 shadow-sm transition hover:bg-amber-400 active:scale-95"
-            >
-              <RotateCcw className="h-3.5 w-3.5 stroke-[2.5]" />
-              <span>{TRANSLATIONS[language].scoring.undo}</span>
-            </button>
-          </div>
-        ),
-        {
-          id: 'undo-toast',
-          duration: 5000,
-          style: {
-            minWidth: '270px',
-            maxWidth: '420px',
-          },
-        }
-      );
-    },
-    [language, restoreGameState]
-  );
 
   const handleSubmitScores = (scores: Record<string, HandScore>) => {
     const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
@@ -166,8 +100,7 @@ export function App() {
         previousSnapshot
       );
     }
-    setEditingRoundNumber(null);
-    setIsScoreModalOpen(false);
+    closeScoreModal();
   };
 
   const handleDeleteRound = (roundNumber: number) => {
@@ -215,8 +148,7 @@ export function App() {
   const handleResetData = () => {
     const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
     resetAllData();
-    setIsScoreModalOpen(false);
-    setEditingRoundNumber(null);
+    closeScoreModal();
     setIsGameOverModalDismissed(false);
     showUndoToast(
       TRANSLATIONS[language].settings.resetDataSuccess,
@@ -237,8 +169,8 @@ export function App() {
         onThemeChange={setTheme}
         roundsCount={gameState.rounds.length}
         targetScore={gameState.config.targetScore}
-        onOpenSetup={() => setIsSetupModalOpen(true)}
-        onOpenSettings={() => handleOpenSettings('settings')}
+        onOpenSetup={openSetup}
+        onOpenSettings={() => openSettings('settings')}
       />
 
       {/* Main Tab Bar */}
@@ -261,11 +193,11 @@ export function App() {
             isContinued={gameState.isContinued}
             onOpenScoreModal={handleOpenScoreModal}
             onUndoLastRound={handleUndoLastRound}
-            onEditRound={handleOpenEditRound}
+            onEditRound={openEditRound}
             onDeleteRound={handleDeleteRound}
             onClearActiveRuleCard={() => setActiveRuleCardIds([])}
             onOpenRuleCardDrawer={() => setActiveTab('rulecards')}
-            onStartNewGame={() => setIsSetupModalOpen(true)}
+            onStartNewGame={openSetup}
             onConcludeGame={handleConcludeGame}
             language={language}
           />
@@ -287,16 +219,13 @@ export function App() {
       {/* Subtle Bottom Footer */}
       <Footer
         language={language}
-        onOpenDisclaimer={() => handleOpenSettings('legal')}
+        onOpenDisclaimer={() => openSettings('legal')}
       />
 
       {/* End-of-Round Card Hand Scoring Modal */}
       <HandCalculatorModal
         isOpen={isScoreModalOpen}
-        onClose={() => {
-          setIsScoreModalOpen(false);
-          setEditingRoundNumber(null);
-        }}
+        onClose={closeScoreModal}
         players={gameState.players}
         playerStats={playerStats}
         onSubmitRound={handleSubmitScores}
@@ -309,7 +238,7 @@ export function App() {
       {/* Match Setup Modal */}
       <GameSetupModal
         isOpen={isSetupModalOpen}
-        onClose={() => setIsSetupModalOpen(false)}
+        onClose={closeSetup}
         currentPlayers={gameState.players}
         currentConfig={gameState.config}
         onSaveAndStart={handleSaveSetup}
@@ -319,7 +248,7 @@ export function App() {
       {/* Settings & Legal Disclaimer Modal */}
       <SettingsModal
         isOpen={isSettingsModalOpen}
-        onClose={() => setIsSettingsModalOpen(false)}
+        onClose={closeSettings}
         language={language}
         onLanguageChange={setLanguage}
         theme={theme}

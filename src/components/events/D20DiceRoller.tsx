@@ -1,6 +1,10 @@
 import React from 'react';
 
-export const D20DiceRoller: React.FC<any> = () => {
+/**
+ * Placeholder component for future D20 dice mechanics.
+ */
+export const D20DiceRoller: React.FC = () => {
   return null;
 };
+
 export default D20DiceRoller;
