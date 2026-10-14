@@ -104,4 +104,41 @@ describe('Leaderboard component', () => {
 
     expect(onConcludeGame).toHaveBeenCalled();
   });
+
+  it('renders Identity Theft button as disabled when canApplyIdentityTheft is false', () => {
+    render(
+      <Leaderboard
+        {...defaultProps}
+        onApplyIdentityTheft={vi.fn()}
+        canApplyIdentityTheft={false}
+      />
+    );
+
+    const identityTheftBtn = screen.getByRole('button', {
+      name: /identity theft/i,
+    });
+    expect(identityTheftBtn).toBeInTheDocument();
+    expect(identityTheftBtn).toBeDisabled();
+  });
+
+  it('triggers onApplyIdentityTheft when Identity Theft button is clicked', async () => {
+    const user = userEvent.setup();
+    const onApplyIdentityTheft = vi.fn();
+
+    render(
+      <Leaderboard
+        {...defaultProps}
+        onApplyIdentityTheft={onApplyIdentityTheft}
+        canApplyIdentityTheft={true}
+      />
+    );
+
+    const identityTheftBtn = screen.getByRole('button', {
+      name: /identity theft/i,
+    });
+    expect(identityTheftBtn).not.toBeDisabled();
+    await user.click(identityTheftBtn);
+
+    expect(onApplyIdentityTheft).toHaveBeenCalledTimes(1);
+  });
 });

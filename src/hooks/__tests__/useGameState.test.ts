@@ -317,4 +317,210 @@ describe('useGameState hook', () => {
     expect(failResult).toBe(false);
     errorSpy.mockRestore();
   });
+
+  describe('Identity Theft event action', () => {
+    it('swaps scores between the player with lowest score and player with highest score', () => {
+      const { result } = renderHook(() => useGameState());
+      const [p1, p2, p3, p4] = result.current.gameState.players;
+
+      act(() => {
+        result.current.addRound({
+          [p1.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+          [p2.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 25 } as HandScore,
+          [p3.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 40 } as HandScore,
+          [p4.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 80 } as HandScore,
+        });
+      });
+
+      expect(result.current.canApplyIdentityTheft).toBe(true);
+
+      let success = false;
+      act(() => {
+        success = result.current.applyIdentityTheft();
+      });
+
+      expect(success).toBe(true);
+      // P1 (lowest, 10) and P4 (highest, 80) swapped points
+      const statsP1 = result.current.playerStats.find((p) => p.id === p1.id)!;
+      const statsP2 = result.current.playerStats.find((p) => p.id === p2.id)!;
+      const statsP3 = result.current.playerStats.find((p) => p.id === p3.id)!;
+      const statsP4 = result.current.playerStats.find((p) => p.id === p4.id)!;
+
+      expect(statsP1.totalScore).toBe(80);
+      expect(statsP4.totalScore).toBe(10);
+      expect(statsP2.totalScore).toBe(25);
+      expect(statsP3.totalScore).toBe(40);
+
+      // Verify event was logged in rounds history
+      const lastEntry =
+        result.current.gameState.rounds[
+          result.current.gameState.rounds.length - 1
+        ];
+      expect(lastEntry.isEvent).toBe(true);
+      expect(lastEntry.eventType).toBe('identity-theft');
+      expect(lastEntry.eventMetadata?.lowPlayerId).toBe(p1.id);
+      expect(lastEntry.eventMetadata?.highPlayerId).toBe(p4.id);
+      expect(lastEntry.eventMetadata?.lowScoreBefore).toBe(10);
+      expect(lastEntry.eventMetadata?.highScoreBefore).toBe(80);
+    });
+
+    it('handles ties deterministically by selecting the first player in roster order', () => {
+      const { result } = renderHook(() => useGameState());
+      const [p1, p2, p3, p4] = result.current.gameState.players;
+
+      act(() => {
+        result.current.addRound({
+          [p1.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+          [p2.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+          [p3.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 60 } as HandScore,
+          [p4.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 60 } as HandScore,
+        });
+      });
+
+      act(() => {
+        result.current.applyIdentityTheft();
+      });
+
+      // P1 comes before P2 in roster -> P1 is selected as lowest
+      // P3 comes before P4 in roster -> P3 is selected as highest
+      const statsP1 = result.current.playerStats.find((p) => p.id === p1.id)!;
+      const statsP2 = result.current.playerStats.find((p) => p.id === p2.id)!;
+      const statsP3 = result.current.playerStats.find((p) => p.id === p3.id)!;
+      const statsP4 = result.current.playerStats.find((p) => p.id === p4.id)!;
+
+      expect(statsP1.totalScore).toBe(60);
+      expect(statsP3.totalScore).toBe(10);
+      // Unswapped tied players remain at their original scores
+      expect(statsP2.totalScore).toBe(10);
+      expect(statsP4.totalScore).toBe(60);
+    });
+
+    it('does nothing and returns false when all player scores are identical', () => {
+      const { result } = renderHook(() => useGameState());
+
+      // At initial state, all scores are 0
+      expect(result.current.canApplyIdentityTheft).toBe(false);
+
+      let success = true;
+      act(() => {
+        success = result.current.applyIdentityTheft();
+      });
+
+      expect(success).toBe(false);
+      expect(result.current.gameState.rounds).toHaveLength(0);
+    });
+
+    it('does not advance or increment the round counter', () => {
+      const { result } = renderHook(() => useGameState());
+      const [p1, p2, p3, p4] = result.current.gameState.players;
+
+      act(() => {
+        result.current.addRound({
+          [p1.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 5 } as HandScore,
+          [p2.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 15 } as HandScore,
+          [p3.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 25 } as HandScore,
+          [p4.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 35 } as HandScore,
+        });
+      });
+
+      expect(
+        result.current.gameState.rounds.filter((r) => !r.isEvent).length
+      ).toBe(1);
+
+      act(() => {
+        result.current.applyIdentityTheft();
+      });
+
+      // Round counter is still 1
+      expect(
+        result.current.gameState.rounds.filter((r) => !r.isEvent).length
+      ).toBe(1);
+
+      // Now add round 2
+      act(() => {
+        result.current.addRound({
+          [p1.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 2 } as HandScore,
+          [p2.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 3 } as HandScore,
+          [p3.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 4 } as HandScore,
+          [p4.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 5 } as HandScore,
+        });
+      });
+
+      const nonEventRounds = result.current.gameState.rounds.filter(
+        (r) => !r.isEvent
+      );
+      expect(nonEventRounds).toHaveLength(2);
+      expect(nonEventRounds[1].roundNumber).toBe(2);
+    });
+
+    it('preserves Identity Theft event and restores exact scores via export and import', () => {
+      const { result } = renderHook(() => useGameState());
+      const [p1, p2, p3, p4] = result.current.gameState.players;
+
+      act(() => {
+        result.current.addRound({
+          [p1.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 12 } as HandScore,
+          [p2.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 20 } as HandScore,
+          [p3.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 30 } as HandScore,
+          [p4.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 75 } as HandScore,
+        });
+      });
+
+      act(() => {
+        result.current.applyIdentityTheft();
+      });
+
+      const exported = result.current.exportGameState();
+      expect(exported).toContain('identity-theft');
+
+      const { result: newHook } = renderHook(() => useGameState());
+      act(() => {
+        newHook.current.importGameState(exported);
+      });
+
+      expect(newHook.current.gameState.rounds).toHaveLength(2);
+      const importedP1 = newHook.current.playerStats.find(
+        (p) => p.id === p1.id
+      )!;
+      const importedP4 = newHook.current.playerStats.find(
+        (p) => p.id === p4.id
+      )!;
+      expect(importedP1.totalScore).toBe(75);
+      expect(importedP4.totalScore).toBe(12);
+    });
+
+    it('reverts the score swap when undoLastRound is invoked', () => {
+      const { result } = renderHook(() => useGameState());
+      const [p1, p2, p3, p4] = result.current.gameState.players;
+
+      act(() => {
+        result.current.addRound({
+          [p1.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+          [p2.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 20 } as HandScore,
+          [p3.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 30 } as HandScore,
+          [p4.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 50 } as HandScore,
+        });
+      });
+
+      act(() => {
+        result.current.applyIdentityTheft();
+      });
+
+      expect(
+        result.current.playerStats.find((p) => p.id === p1.id)!.totalScore
+      ).toBe(50);
+
+      act(() => {
+        result.current.undoLastRound();
+      });
+
+      expect(
+        result.current.playerStats.find((p) => p.id === p1.id)!.totalScore
+      ).toBe(10);
+      expect(
+        result.current.playerStats.find((p) => p.id === p4.id)!.totalScore
+      ).toBe(50);
+      expect(result.current.gameState.rounds).toHaveLength(1);
+    });
+  });
 });

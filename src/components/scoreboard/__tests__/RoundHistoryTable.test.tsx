@@ -155,4 +155,52 @@ describe('RoundHistoryTable component', () => {
     await user.click(confirmBtn);
     expect(onDeleteRound).toHaveBeenCalledWith(1);
   });
+
+  it('renders Identity Theft event entries without edit button and with event badge', () => {
+    const rounds: RoundEntry[] = [
+      {
+        roundNumber: 1,
+        timestamp: 1000,
+        activeRuleCardId: null,
+        scores: {
+          p1: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+          p2: { ...DEFAULT_HAND_SCORE, totalPoints: 30 } as HandScore,
+        },
+      },
+      {
+        id: 'event-1',
+        roundNumber: 1,
+        timestamp: 2000,
+        isEvent: true,
+        eventType: 'identity-theft',
+        eventMetadata: {
+          lowPlayerId: 'p1',
+          highPlayerId: 'p2',
+          lowPlayerName: 'Alice',
+          highPlayerName: 'Bob',
+          lowScoreBefore: 10,
+          highScoreBefore: 30,
+        },
+        scores: {
+          p1: { ...DEFAULT_HAND_SCORE, totalPoints: 20 } as HandScore,
+          p2: { ...DEFAULT_HAND_SCORE, totalPoints: -20 } as HandScore,
+        },
+      },
+    ];
+
+    render(<RoundHistoryTable {...defaultProps} rounds={rounds} />);
+
+    // Header round count should only count actual rounds (1)
+    expect(screen.getByText('1')).toBeInTheDocument();
+
+    // Event badge should be displayed
+    expect(screen.getByText(/identity theft/i)).toBeInTheDocument();
+
+    // Swapped indicator
+    expect(screen.getAllByText(/swapped/i).length).toBeGreaterThanOrEqual(1);
+
+    // Only 1 edit button should exist (for round 1, not for event)
+    const editButtons = screen.getAllByTitle(/edit round/i);
+    expect(editButtons).toHaveLength(1);
+  });
 });
