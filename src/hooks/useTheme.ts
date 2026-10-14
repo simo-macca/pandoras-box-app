@@ -1,21 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ThemeMode } from '../types/game';
-
-const THEME_STORAGE_KEY = 'frantic_theme_mode';
+import { loadSavedTheme, saveThemeToStorage } from '../utils/storage';
 
 export function useTheme() {
-  const [theme, setThemeState] = useState<ThemeMode>(() => {
-    if (typeof window === 'undefined') return 'system';
-    const saved = localStorage.getItem(THEME_STORAGE_KEY) as ThemeMode | null;
-    if (
-      saved &&
-      (saved === 'system' || saved === 'light' || saved === 'dark')
-    ) {
-      return saved;
-    }
-    return 'system';
-  });
-
+  const [theme, setThemeState] = useState<ThemeMode>(() => loadSavedTheme());
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('dark');
 
   useEffect(() => {
@@ -46,14 +34,10 @@ export function useTheme() {
     }
   }, [theme]);
 
-  const setTheme = (newTheme: ThemeMode) => {
+  const setTheme = useCallback((newTheme: ThemeMode) => {
     setThemeState(newTheme);
-    try {
-      localStorage.setItem(THEME_STORAGE_KEY, newTheme);
-    } catch {
-      // ignore localStorage quota errors
-    }
-  };
+    saveThemeToStorage(newTheme);
+  }, []);
 
   return { theme, setTheme, resolvedTheme };
 }

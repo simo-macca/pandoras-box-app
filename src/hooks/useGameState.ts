@@ -8,216 +8,61 @@ import {
   HandScore,
 } from '../types/game';
 import { soundEffects } from '../utils/sound';
+import {
+  calculateHandPoints,
+  SCORE_PRESETS,
+  getRecommendedPresets,
+} from '../utils/scoring';
+import {
+  calculatePlayerStats,
+  PlayerStats,
+} from '../utils/stats';
+import {
+  INITIAL_PLAYERS,
+  INITIAL_STATE,
+  getInitialGameState,
+  loadSavedGameState,
+  saveGameStateToStorage,
+  loadSavedLanguage,
+  saveLanguageToStorage,
+} from '../utils/storage';
 
-const STORAGE_KEY = 'frantic_game_state_v2';
-const LANG_STORAGE_KEY = 'frantic_lang_v2';
-
-export const SCORE_PRESETS = {
-  few: {
-    short: 137,
-    medium: 154,
-    long: 179,
-  },
-  many: {
-    short: 113,
-    medium: 137,
-    long: 154,
-  },
+// Re-export domain models & pure functions for backward compatibility
+export {
+  calculateHandPoints,
+  SCORE_PRESETS,
+  getRecommendedPresets,
+  calculatePlayerStats,
+  INITIAL_PLAYERS,
+  INITIAL_STATE,
+  getInitialGameState,
 };
-
-export function getRecommendedPresets(playerCount: number) {
-  return playerCount <= 4 ? SCORE_PRESETS.few : SCORE_PRESETS.many;
-}
-
-export function calculateHandPoints(
-  hand: Omit<HandScore, 'totalPoints'> | HandScore
-): number {
-  if (hand.isDoomsday) {
-    return 50;
-  }
-
-  if (hand.isWinner) {
-    let pts = 0;
-    if (hand.timeBombModifier === 'winner_bonus') {
-      pts -= 10;
-    }
-    pts += hand.customModifier || 0;
-    return Math.max(0, pts);
-  }
-
-  let total = 0;
-  if (hand.numberCards) {
-    Object.entries(hand.numberCards).forEach(([numStr, count]) => {
-      const num = parseInt(numStr, 10);
-      if (!isNaN(num) && count) {
-        total += num * count;
-      }
-    });
-  }
-
-  total += (hand.specialCardsCount || 0) * 7;
-  total += (hand.curseCount || 0) * 13;
-  total += (hand.theEndCount || 0) * 17;
-  total += (hand.fuckYouCount || 0) * 42;
-  total += (hand.mimicryCount || 0) * 7;
-
-  if (hand.timeBombModifier === 'expired_double') {
-    total *= 2;
-  } else if (hand.timeBombModifier === 'loser_penalty') {
-    total += 10;
-  } else if (hand.timeBombModifier === 'winner_bonus') {
-    total -= 10;
-  }
-
-  total += hand.customModifier || 0;
-  return Math.max(0, total);
-}
-
-export interface PlayerStats extends Player {
-  totalScore: number;
-  rank: number;
-  isLeader: boolean;
-  isInDanger: boolean;
-  isEliminated: boolean;
-  progressPct: number;
-  pointsRemaining: number;
-  roundsWonCount: number;
-}
-
-export const INITIAL_PLAYERS: Player[] = [
-  { id: 'p1', name: 'Player 1', color: 'red' },
-  { id: 'p2', name: 'Player 2', color: 'blue' },
-  { id: 'p3', name: 'Player 3', color: 'green' },
-  { id: 'p4', name: 'Player 4', color: 'yellow' },
-];
-
-export function getInitialGameState(): GameState {
-  return {
-    players: [
-      { id: 'p1', name: 'Player 1', color: 'red' },
-      { id: 'p2', name: 'Player 2', color: 'blue' },
-      { id: 'p3', name: 'Player 3', color: 'green' },
-      { id: 'p4', name: 'Player 4', color: 'yellow' },
-    ],
-    config: {
-      targetScore: 154,
-      presetName: 'medium',
-    },
-    rounds: [],
-    activeRuleCardIds: [],
-    isGameStarted: true,
-    isGameOver: false,
-    winnerId: null,
-    isContinued: false,
-  };
-}
-
-export const INITIAL_STATE: GameState = getInitialGameState();
+export type { PlayerStats };
 
 export function useGameState() {
-  const [gameState, setGameState] = useState<GameState>(() => {
-    if (typeof window === 'undefined') return INITIAL_STATE;
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (parsed?.config?.targetScore && parsed.config.targetScore < 50) {
-          parsed.config.targetScore = 50;
-        }
-        return parsed;
-      }
-    } catch (err) {
-      console.warn('Failed to parse saved game state from localStorage:', err);
-    }
-    return INITIAL_STATE;
-  });
+  const [gameState, setGameState] = useState<GameState>(() => loadSavedGameState());
+  const [language, setLanguageState] = useState<Language>(() => loadSavedLanguage());
 
-  const [language, setLanguageState] = useState<Language>(() => {
-    if (typeof window === 'undefined') return 'en';
-    try {
-      const stored = localStorage.getItem(LANG_STORAGE_KEY) as Language;
-      if (stored && ['en', 'de', 'it', 'fr'].includes(stored)) {
-        return stored;
-      }
-    } catch {
-      // fallback
-    }
-    return 'en';
-  });
-
+  // Synchronize state with persistent storage
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
-    } catch (err) {
-      console.error('Failed to save game state to localStorage:', err);
-    }
+    saveGameStateToStorage(gameState);
   }, [gameState]);
 
   const setLanguage = useCallback((lang: Language) => {
     setLanguageState(lang);
-    try {
-      localStorage.setItem(LANG_STORAGE_KEY, lang);
-    } catch (err) {
-      console.error('Failed to save language preference:', err);
-    }
+    saveLanguageToStorage(lang);
   }, []);
 
+  // Compute derived leaderboard and player metrics
   const playerStats = useMemo<PlayerStats[]>(() => {
-    const { players, rounds, config } = gameState;
-    const targetScore = config.targetScore;
-
-    const totals: Record<string, { score: number; wins: number }> = {};
-    players.forEach((p) => {
-      totals[p.id] = { score: 0, wins: 0 };
-    });
-
-    rounds.forEach((round) => {
-      players.forEach((p) => {
-        const roundScore = round.scores[p.id];
-        if (roundScore) {
-          totals[p.id].score += roundScore.totalPoints;
-          if (roundScore.isWinner) {
-            totals[p.id].wins += 1;
-          }
-        }
-      });
-    });
-
-    // In Frantic, lower score is better!
-    const stats: PlayerStats[] = players.map((p) => {
-      const totalScore = totals[p.id]?.score || 0;
-      const wins = totals[p.id]?.wins || 0;
-      const progressPct = Math.min(
-        100,
-        Math.round((totalScore / targetScore) * 100)
-      );
-      const pointsRemaining = Math.max(0, targetScore - totalScore);
-      const isEliminated = totalScore >= targetScore;
-      const isInDanger = totalScore >= targetScore * 0.8 && !isEliminated;
-
-      return {
-        ...p,
-        totalScore,
-        rank: 1,
-        isLeader: false,
-        isInDanger,
-        isEliminated,
-        progressPct,
-        pointsRemaining,
-        roundsWonCount: wins,
-      };
-    });
-
-    stats.sort((a, b) => a.totalScore - b.totalScore);
-
-    stats.forEach((s, idx) => {
-      s.rank = idx + 1;
-      s.isLeader = idx === 0;
-    });
-
-    return stats;
+    return calculatePlayerStats(
+      gameState.players,
+      gameState.rounds,
+      gameState.config.targetScore
+    );
   }, [gameState]);
 
+  // Handle game-over lifecycle transitions automatically based on point threshold
   useEffect(() => {
     if (gameState.rounds.length === 0) {
       if (gameState.isGameOver || gameState.isContinued) {
@@ -391,11 +236,7 @@ export function useGameState() {
   const restoreGameState = useCallback((stateToRestore: GameState) => {
     soundEffects.playClick();
     setGameState(stateToRestore);
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToRestore));
-    } catch (err) {
-      console.error('Failed to restore game state to localStorage:', err);
-    }
+    saveGameStateToStorage(stateToRestore);
   }, []);
 
   const resetCurrentGame = useCallback(() => {
@@ -436,11 +277,7 @@ export function useGameState() {
     soundEffects.playClick();
     const freshState = getInitialGameState();
     setGameState(freshState);
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(freshState));
-    } catch (err) {
-      console.error('Failed to reset game state in localStorage:', err);
-    }
+    saveGameStateToStorage(freshState);
   }, []);
 
   const exportGameState = useCallback((): string => {
