@@ -10,7 +10,6 @@ import {
   BookOpen,
   ExternalLink,
   ChevronDown,
-  Lightbulb,
 } from 'lucide-react';
 import { CARDS_DATA } from '../../data/cardsData';
 import { EVENTS_DATA } from '../../data/eventsData';
@@ -20,7 +19,12 @@ import { Language } from '../../types/game';
 import { OFFICIAL_PDF_LINKS } from '../../types/rules';
 import { TRANSLATIONS } from '../../data/translations';
 import { soundEffects } from '../../utils/sound';
+import { matchesSearchQuery } from '../../utils/i18n';
 import { RulesGuide } from './RulesGuide';
+import { SpecialCardsSection } from './SpecialCardsSection';
+import { EventCardsSection } from './EventCardsSection';
+import { PowerCardsSection } from './PowerCardsSection';
+import { RuleCardsSection } from './RuleCardsSection';
 
 interface CardDictionaryProps {
   language: Language;
@@ -35,65 +39,66 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredCards = useMemo(() => {
-    const q = searchQuery.toLowerCase().trim();
-
     return CARDS_DATA.filter((card) => {
-      if (activeCategory !== 'all' && activeCategory !== 'specials')
-        return false;
-      if (!q) return true;
-      const name = (card.name[language] || card.name.en).toLowerCase();
-      const desc = (
-        card.description[language] || card.description.en
-      ).toLowerCase();
-      const tip = (card.tip?.[language] || card.tip?.en || '').toLowerCase();
-      return name.includes(q) || desc.includes(q) || tip.includes(q);
+      if (activeCategory !== 'all' && activeCategory !== 'specials') return false;
+      return matchesSearchQuery(
+        [
+          card.name[language],
+          card.name.en,
+          card.description[language],
+          card.description.en,
+          card.tip?.[language],
+          card.tip?.en,
+        ],
+        searchQuery
+      );
     });
   }, [activeCategory, searchQuery, language]);
 
   const filteredEvents = useMemo(() => {
-    const q = searchQuery.toLowerCase().trim();
-
     return EVENTS_DATA.filter((ev) => {
       if (activeCategory !== 'all' && activeCategory !== 'events') return false;
-      if (!q) return true;
-      const name = (ev.name[language] || ev.name.en).toLowerCase();
-      const desc = (
-        ev.description[language] || ev.description.en
-      ).toLowerCase();
-      return name.includes(q) || desc.includes(q);
+      return matchesSearchQuery(
+        [
+          ev.name[language],
+          ev.name.en,
+          ev.description[language],
+          ev.description.en,
+        ],
+        searchQuery
+      );
     });
   }, [activeCategory, searchQuery, language]);
 
   const filteredPowerCards = useMemo(() => {
-    const q = searchQuery.toLowerCase().trim();
-
     return POWER_CARDS_DATA.filter((pc) => {
       if (activeCategory !== 'all' && activeCategory !== 'power') return false;
-      if (!q) return true;
-      const name = (pc.name[language] || pc.name.en).toLowerCase();
-      const desc = (
-        pc.description[language] || pc.description.en
-      ).toLowerCase();
-      return name.includes(q) || desc.includes(q);
+      return matchesSearchQuery(
+        [
+          pc.name[language],
+          pc.name.en,
+          pc.description[language],
+          pc.description.en,
+        ],
+        searchQuery
+      );
     });
   }, [activeCategory, searchQuery, language]);
 
   const filteredRuleCards = useMemo(() => {
-    const q = searchQuery.toLowerCase().trim();
-
     return RULE_CARDS_DATA.filter((rc) => {
       if (activeCategory !== 'all' && activeCategory !== 'rules') return false;
-      if (!q) return true;
-      const name = (rc.name[language] || rc.name.en).toLowerCase();
-      const desc = (
-        rc.description[language] || rc.description.en
-      ).toLowerCase();
-      const flavor = (
-        rc.flavor?.[language] ||
-        rc.flavor?.en ||
-        ''
-      ).toLowerCase();
-      return name.includes(q) || desc.includes(q) || flavor.includes(q);
+      return matchesSearchQuery(
+        [
+          rc.name[language],
+          rc.name.en,
+          rc.description[language],
+          rc.description.en,
+          rc.flavor?.[language],
+          rc.flavor?.en,
+        ],
+        searchQuery
+      );
     });
   }, [activeCategory, searchQuery, language]);
 
@@ -218,7 +223,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                 <span>{t.rules.title}</span>
               </h2>
               <p className="mt-1 text-xs text-neutral-500 sm:text-sm dark:text-neutral-400">
-                Search cards, point values, events, and Pandora's Box rules.
+                Search cards, point values, events, and Pandora&apos;s Box rules.
               </p>
             </div>
 
@@ -326,147 +331,10 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
             </div>
           ) : (
             <div className="space-y-8">
-              {/* Special Cards Section */}
-              {filteredCards.length > 0 && (
-                <div className="space-y-3">
-                  <h3 className="flex items-center gap-2 text-sm font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
-                    <Sparkles className="h-4 w-4 text-amber-500 dark:text-amber-400" />
-                    <span>{t.rules.specials}</span>
-                    <span className="font-mono text-xs text-neutral-400 dark:text-neutral-600">
-                      ({filteredCards.length})
-                    </span>
-                  </h3>
-                  <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                    {filteredCards.map((card) => (
-                      <div
-                        key={card.id}
-                        className="flex flex-col rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-neutral-700"
-                      >
-                        <div className="flex items-center justify-between gap-2">
-                          <h4 className="text-base font-bold text-neutral-900 dark:text-white">
-                            {card.name[language] || card.name.en}
-                          </h4>
-                          <span className="shrink-0 rounded-full border border-amber-500/30 bg-amber-500/15 px-2.5 py-0.5 text-xs font-black text-amber-600 dark:text-amber-400">
-                            {card.points} {t.rules.pts}
-                          </span>
-                        </div>
-                        <p className="mt-2 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
-                          {card.description[language] || card.description.en}
-                        </p>
-                        {card.tip && (
-                          <div className="mt-auto pt-3">
-                            <div className="flex items-start gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 p-2 text-[11px] text-amber-600 dark:text-amber-400/90">
-                              <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                              <span>{card.tip[language] || card.tip.en}</span>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Events Section */}
-              {filteredEvents.length > 0 && (
-                <div className="space-y-3">
-                  <h3 className="flex items-center gap-2 text-sm font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
-                    <Flame className="h-4 w-4 text-rose-500 dark:text-rose-400" />
-                    <span>{t.rules.events}</span>
-                    <span className="font-mono text-xs text-neutral-400 dark:text-neutral-600">
-                      ({filteredEvents.length})
-                    </span>
-                  </h3>
-                  <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                    {filteredEvents.map((ev) => (
-                      <div
-                        key={ev.id}
-                        className="flex flex-col rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-neutral-700"
-                      >
-                        <div className="flex items-center justify-between gap-2">
-                          <h4 className="text-base font-bold text-neutral-900 dark:text-white">
-                            {ev.name[language] || ev.name.en}
-                          </h4>
-                          <span className="shrink-0 rounded-full border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 text-[10px] font-black tracking-wider text-rose-600 uppercase dark:text-rose-400">
-                            {ev.severity}
-                          </span>
-                        </div>
-                        <p className="mt-2 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
-                          {ev.description[language] || ev.description.en}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Power Cards Section */}
-              {filteredPowerCards.length > 0 && (
-                <div className="space-y-3">
-                  <h3 className="flex items-center gap-2 text-sm font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
-                    <Zap className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
-                    <span>{t.rules.powerCards}</span>
-                    <span className="font-mono text-xs text-neutral-400 dark:text-neutral-600">
-                      ({filteredPowerCards.length})
-                    </span>
-                  </h3>
-                  <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                    {filteredPowerCards.map((pc) => (
-                      <div
-                        key={pc.id}
-                        className="flex flex-col rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-neutral-700"
-                      >
-                        <div className="flex items-center justify-between gap-2">
-                          <h4 className="text-base font-bold text-neutral-900 dark:text-white">
-                            {pc.name[language] || pc.name.en}
-                          </h4>
-                          <span className="shrink-0 rounded-full border border-cyan-500/30 bg-cyan-500/15 px-2 py-0.5 text-xs font-bold text-cyan-600 dark:text-cyan-400">
-                            0 {t.rules.pts}
-                          </span>
-                        </div>
-                        <p className="mt-2 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
-                          {pc.description[language] || pc.description.en}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Rule Cards Section */}
-              {filteredRuleCards.length > 0 && (
-                <div className="space-y-3">
-                  <h3 className="flex items-center gap-2 text-sm font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
-                    <Layers className="h-4 w-4 text-purple-600 dark:text-purple-400" />
-                    <span>{t.rules.ruleCards}</span>
-                    <span className="font-mono text-xs text-neutral-400 dark:text-neutral-600">
-                      ({filteredRuleCards.length})
-                    </span>
-                  </h3>
-                  <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                    {filteredRuleCards.map((rc) => (
-                      <div
-                        key={rc.id}
-                        className="flex flex-col rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-all hover:border-purple-300 dark:border-neutral-800 dark:bg-neutral-900/60 dark:hover:border-purple-500/30"
-                      >
-                        <h4 className="text-base font-bold text-neutral-900 dark:text-white">
-                          {rc.name[language] || rc.name.en}
-                        </h4>
-                        <p className="mt-2 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
-                          {rc.description[language] || rc.description.en}
-                        </p>
-                        {rc.flavor && (
-                          <div className="mt-auto pt-3">
-                            <p className="border-l-2 border-purple-500/40 pl-2 text-[11px] text-purple-600/80 italic dark:text-purple-300/80">
-                              "{rc.flavor[language] || rc.flavor.en}"
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <SpecialCardsSection cards={filteredCards} language={language} />
+              <EventCardsSection events={filteredEvents} language={language} />
+              <PowerCardsSection powerCards={filteredPowerCards} language={language} />
+              <RuleCardsSection ruleCards={filteredRuleCards} language={language} />
             </div>
           )}
         </div>
