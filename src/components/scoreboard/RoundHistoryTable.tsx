@@ -81,8 +81,9 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
       {/* Rounds list (newest first) */}
       <div className="space-y-3">
         {[...rounds].reverse().map((round) => {
-          const activeRuleCard = round.activeRuleCardIds?.[0]
-            ? RULE_CARDS_DATA.find((c) => c.id === round.activeRuleCardIds![0])
+          const ruleCardId = round.activeRuleCardIds?.[0] || round.activeRuleCardId;
+          const activeRuleCard = ruleCardId
+            ? RULE_CARDS_DATA.find((c) => c.id === ruleCardId)
             : null;
 
           return (

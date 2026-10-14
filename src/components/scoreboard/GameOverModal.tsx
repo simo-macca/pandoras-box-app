@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { Trophy, Crown, RotateCcw, X, Award, Play, Eye } from 'lucide-react';
-import { PlayerStats } from '../../hooks/useGameState';
+import { PlayerStats } from '../../utils/stats';
 import { PAWN_COLORS } from '../../utils/colors';
 import { Language } from '../../types/game';
 import { UI_TRANSLATIONS } from '../../data/translations';
@@ -202,7 +202,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
         </div>
 
         <div className="flex shrink-0 flex-col gap-2.5 border-t border-neutral-200 bg-neutral-50 p-4 sm:p-5 dark:border-neutral-800 dark:bg-neutral-900/90">
-          {/* Tier 1: Primary Action (New Match) */}
+          {/* Primary Action (New Match) */}
           <button
             type="button"
             onClick={() => {
@@ -215,7 +215,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
             <span className="whitespace-nowrap">{t.gameOver.newMatch}</span>
           </button>
 
-          {/* Tier 2: Secondary / Tertiary Actions */}
+          {/* Secondary Actions */}
           <div
             className={`grid w-full gap-2 sm:gap-3 ${onContinue ? 'grid-cols-2' : 'grid-cols-1'}`}
           >
