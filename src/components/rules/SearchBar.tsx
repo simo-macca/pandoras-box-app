@@ -34,6 +34,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         <button
           type="button"
           onClick={() => onChangeQuery('')}
+          aria-label="Clear search"
           className="absolute right-3 rounded-md p-1 text-neutral-400 transition-colors hover:text-neutral-700 dark:hover:text-white"
         >
           <X className="h-4 w-4" />

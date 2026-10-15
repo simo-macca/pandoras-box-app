@@ -115,18 +115,131 @@ describe('HandCalculatorModal component', () => {
     expect(getPlayerTotalBanner()).toHaveTextContent('0 pts');
   });
 
-  it('toggles Doomsday across all players', async () => {
+  it('toggles Doomsday across all players, disables winner button, and clears existing winner', async () => {
     const user = userEvent.setup();
-    render(<HandCalculatorModal {...defaultProps} />);
+    const onSubmitRound = vi.fn();
+    render(
+      <HandCalculatorModal {...defaultProps} onSubmitRound={onSubmitRound} />
+    );
 
+    // Alice is winner first
+    const winnerBtn = screen.getByRole('button', { name: /round winner/i });
+    await user.click(winnerBtn);
+    expect(getPlayerTotalBanner()).toHaveTextContent('0 pts');
+
+    // Click Doomsday
     const doomsdayBtn = screen.getByRole('button', { name: /doomsday/i });
     await user.click(doomsdayBtn);
 
-    // Total should be 50 pts
+    // Alice now has 50 pts
     expect(getPlayerTotalBanner()).toHaveTextContent('50 pts');
+    expect(winnerBtn).toBeDisabled();
+
+    // Switch to Bob and verify Bob also has 50 pts
+    const playerSelect = screen.getByLabelText(/player name:/i);
+    await user.selectOptions(playerSelect, 'p2');
+    expect(getPlayerTotalBanner()).toHaveTextContent('50 pts');
+
+    // Submit round and verify all players received 50 pts and isWinner is false
+    const submitBtn = screen.getByRole('button', {
+      name: /save round scores/i,
+    });
+    await user.click(submitBtn);
+
+    expect(onSubmitRound).toHaveBeenCalledWith(
+      expect.objectContaining({
+        p1: expect.objectContaining({
+          isDoomsday: true,
+          isWinner: false,
+          totalPoints: 50,
+        }),
+        p2: expect.objectContaining({
+          isDoomsday: true,
+          isWinner: false,
+          totalPoints: 50,
+        }),
+      })
+    );
   });
 
-  it('resets current player scores with quick zero button', async () => {
+  it('handles table-level Time Bomb in exploded mode doubling points for all players', async () => {
+    const user = userEvent.setup();
+    const onSubmitRound = vi.fn();
+    render(
+      <HandCalculatorModal {...defaultProps} onSubmitRound={onSubmitRound} />
+    );
+
+    // Alice gets 10 pts
+    const inc10 = screen.getByLabelText('Increase number 10');
+    await user.click(inc10);
+    expect(getPlayerTotalBanner()).toHaveTextContent('10 pts');
+
+    // Bob gets 8 pts
+    const playerSelect = screen.getByLabelText(/player name:/i);
+    await user.selectOptions(playerSelect, 'p2');
+    const inc8 = screen.getByLabelText('Increase number 8');
+    await user.click(inc8);
+    expect(getPlayerTotalBanner()).toHaveTextContent('8 pts');
+
+    // Select Table Time Bomb Mode = exploded
+    const tableSelect = screen.getByLabelText(/table time bomb mode/i);
+    await user.selectOptions(tableSelect, 'exploded');
+
+    // Bob total is now doubled: 8 * 2 = 16 pts
+    expect(getPlayerTotalBanner()).toHaveTextContent('16 pts');
+
+    // Switch back to Alice: 10 * 2 = 20 pts
+    await user.selectOptions(playerSelect, 'p1');
+    expect(getPlayerTotalBanner()).toHaveTextContent('20 pts');
+  });
+
+  it('handles table-level Time Bomb in defused mode with winner bonus and loser penalty', async () => {
+    const user = userEvent.setup();
+    const onSubmitRound = vi.fn();
+    render(
+      <HandCalculatorModal {...defaultProps} onSubmitRound={onSubmitRound} />
+    );
+
+    // Alice is winner
+    const winnerBtn = screen.getByRole('button', { name: /round winner/i });
+    await user.click(winnerBtn);
+
+    // Bob has 10 points
+    const playerSelect = screen.getByLabelText(/player name:/i);
+    await user.selectOptions(playerSelect, 'p2');
+    const inc10 = screen.getByLabelText('Increase number 10');
+    await user.click(inc10);
+
+    // Set Table Time Bomb Mode = defused
+    const tableSelect = screen.getByLabelText(/table time bomb mode/i);
+    await user.selectOptions(tableSelect, 'defused');
+
+    // Bob (loser) gets 10 + 10 = 20 pts
+    expect(getPlayerTotalBanner()).toHaveTextContent('20 pts');
+
+    // Submit and verify modifiers
+    const submitBtn = screen.getByRole('button', {
+      name: /save round scores/i,
+    });
+    await user.click(submitBtn);
+
+    expect(onSubmitRound).toHaveBeenCalledWith(
+      expect.objectContaining({
+        p1: expect.objectContaining({
+          isWinner: true,
+          timeBombModifier: 'winner_bonus',
+          totalPoints: 0,
+        }),
+        p2: expect.objectContaining({
+          isWinner: false,
+          timeBombModifier: 'loser_penalty',
+          totalPoints: 20,
+        }),
+      })
+    );
+  });
+
+  it('resets current player scores with quick zero button while preserving Doomsday state', async () => {
     const user = userEvent.setup();
     render(<HandCalculatorModal {...defaultProps} />);
 
@@ -140,6 +253,14 @@ describe('HandCalculatorModal component', () => {
     await user.click(resetBtn);
 
     expect(getPlayerTotalBanner()).toHaveTextContent('0 pts');
+
+    // When Doomsday is active, quick zero preserves Doomsday table state (50 pts)
+    const doomsdayBtn = screen.getByRole('button', { name: /doomsday/i });
+    await user.click(doomsdayBtn);
+    expect(getPlayerTotalBanner()).toHaveTextContent('50 pts');
+
+    await user.click(resetBtn);
+    expect(getPlayerTotalBanner()).toHaveTextContent('50 pts');
   });
 
   it('submits round scores and calls onClose on submit', async () => {

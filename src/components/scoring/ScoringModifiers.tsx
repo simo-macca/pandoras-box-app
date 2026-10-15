@@ -69,11 +69,15 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
       {/* Table-wide Time Bomb Mode */}
       {onChangeTableTimeBomb && (
         <div className="space-y-1">
-          <label className="flex items-center gap-1 text-[11px] font-bold text-neutral-600 dark:text-neutral-400">
+          <label
+            htmlFor="table-time-bomb-select"
+            className="flex items-center gap-1 text-[11px] font-bold text-neutral-600 dark:text-neutral-400"
+          >
             <Bomb className="h-3.5 w-3.5 shrink-0 text-amber-500" />
             <span>{t.scoring.timeBombModifier} (Global)</span>
           </label>
           <select
+            id="table-time-bomb-select"
             value={tableTimeBombMode}
             onChange={(e) =>
               onChangeTableTimeBomb(
@@ -101,15 +105,19 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
 
       {/* Time Bomb Selector (Player Override) */}
       <div className="space-y-1 border-t border-neutral-200/60 pt-1 dark:border-neutral-700/60">
-        <label className="flex items-center gap-1 text-[11px] font-bold text-neutral-600 dark:text-neutral-400">
+        <label
+          htmlFor="player-time-bomb-select"
+          className="flex items-center gap-1 text-[11px] font-bold text-neutral-600 dark:text-neutral-400"
+        >
           <Bomb className="h-3.5 w-3.5 shrink-0 text-amber-500" />
           <span>{t.scoring.timeBombModifier} (Player Override)</span>
         </label>
         <select
+          id="player-time-bomb-select"
           value={timeBombModifier}
           onChange={(e) => onChangeTimeBomb(e.target.value as TimeBombModifier)}
           disabled={isDoomsday}
-          aria-label={t.scoring.timeBombModifier}
+          aria-label={`${t.scoring.timeBombModifier} (Player Override)`}
           className="w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
         >
           <option value="none">{t.scoring.timeBombNone}</option>
@@ -122,11 +130,16 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
       {/* Custom +/- modifier */}
       <div className="flex items-center gap-2 border-t border-neutral-200/60 pt-1 dark:border-neutral-700/60">
         <div className="flex-1">
-          <label className="text-[11px] font-bold text-neutral-600 dark:text-neutral-400">
+          <label
+            htmlFor="custom-modifier-input"
+            className="text-[11px] font-bold text-neutral-600 dark:text-neutral-400"
+          >
             {t.scoring.customModifier}
           </label>
           <input
+            id="custom-modifier-input"
             type="number"
+            aria-label={t.scoring.customModifier}
             value={customModifier || 0}
             onChange={(e) =>
               onChangeCustomModifier(parseInt(e.target.value, 10) || 0)
