@@ -91,4 +91,38 @@ describe('ScoringModifiers component', () => {
 
     expect(onChangeCustomModifier).toHaveBeenCalledWith(5);
   });
+
+  it('supports typing negative numbers directly into custom modifier', async () => {
+    const user = userEvent.setup();
+    const onChangeCustomModifier = vi.fn();
+    render(
+      <ScoringModifiers
+        {...defaultProps}
+        onChangeCustomModifier={onChangeCustomModifier}
+      />
+    );
+
+    const input = screen.getByLabelText(/custom/i);
+    await user.clear(input);
+    await user.type(input, '-15');
+
+    expect(onChangeCustomModifier).toHaveBeenLastCalledWith(-15);
+  });
+
+  it('supports typing positive signed numbers directly into custom modifier', async () => {
+    const user = userEvent.setup();
+    const onChangeCustomModifier = vi.fn();
+    render(
+      <ScoringModifiers
+        {...defaultProps}
+        onChangeCustomModifier={onChangeCustomModifier}
+      />
+    );
+
+    const input = screen.getByLabelText(/custom/i);
+    await user.clear(input);
+    await user.type(input, '+25');
+
+    expect(onChangeCustomModifier).toHaveBeenLastCalledWith(25);
+  });
 });

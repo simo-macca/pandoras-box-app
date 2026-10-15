@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Zap, Bomb, Check, Globe } from 'lucide-react';
 import { Language, TimeBombModifier } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
@@ -27,6 +27,50 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
   language,
 }) => {
   const t = TRANSLATIONS[language];
+
+  const [localCustomModifier, setLocalCustomModifier] = useState<string>(
+    customModifier ? String(customModifier) : ''
+  );
+
+  useEffect(() => {
+    const parsed = parseInt(localCustomModifier, 10);
+    const currentNumber = isNaN(parsed) ? 0 : parsed;
+    if (currentNumber !== customModifier) {
+      setLocalCustomModifier(
+        customModifier === 0 ? '' : String(customModifier)
+      );
+    }
+  }, [customModifier]);
+
+  const handleCustomModifierChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const val = e.target.value;
+    if (val === '' || val === '-' || val === '+') {
+      setLocalCustomModifier(val);
+      onChangeCustomModifier(0);
+      return;
+    }
+    if (/^[+-]?\d+$/.test(val)) {
+      setLocalCustomModifier(val);
+      const parsed = parseInt(val, 10);
+      if (!isNaN(parsed)) {
+        onChangeCustomModifier(parsed);
+      }
+    }
+  };
+
+  const handleCustomModifierBlur = () => {
+    if (
+      localCustomModifier === '' ||
+      localCustomModifier === '-' ||
+      localCustomModifier === '+'
+    ) {
+      setLocalCustomModifier(
+        customModifier === 0 ? '' : String(customModifier)
+      );
+    }
+  };
 
   return (
     <div className="space-y-3 rounded-2xl border border-neutral-200 bg-neutral-50 p-3 sm:p-4 dark:border-neutral-800 dark:bg-neutral-800/30">
@@ -138,12 +182,14 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
           </label>
           <input
             id="custom-modifier-input"
-            type="number"
+            type="text"
+            inputMode="numeric"
+            pattern="[+-]?[0-9]*"
+            placeholder="0"
             aria-label={t.scoring.customModifier}
-            value={customModifier || 0}
-            onChange={(e) =>
-              onChangeCustomModifier(parseInt(e.target.value, 10) || 0)
-            }
+            value={localCustomModifier}
+            onChange={handleCustomModifierChange}
+            onBlur={handleCustomModifierBlur}
             disabled={isDoomsday}
             className="w-full rounded-xl border border-neutral-300 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
           />

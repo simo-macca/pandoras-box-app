@@ -228,7 +228,7 @@ describe('HandCalculatorModal component', () => {
         p1: expect.objectContaining({
           isWinner: true,
           timeBombModifier: 'winner_bonus',
-          totalPoints: 0,
+          totalPoints: -10,
         }),
         p2: expect.objectContaining({
           isWinner: false,

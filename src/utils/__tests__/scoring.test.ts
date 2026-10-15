@@ -57,13 +57,13 @@ describe('scoring utils', () => {
       expect(score).toBe(0);
     });
 
-    it('calculates winner score with time bomb bonus (clamped at 0)', () => {
+    it('calculates winner score with time bomb bonus (-10 pts)', () => {
       const score = calculateHandPoints({
         ...DEFAULT_HAND_SCORE,
         isWinner: true,
         timeBombModifier: 'winner_bonus',
       });
-      expect(score).toBe(0);
+      expect(score).toBe(-10);
     });
 
     it('calculates winner score with positive custom modifier', () => {
@@ -131,7 +131,7 @@ describe('scoring utils', () => {
       ).toBe(10);
     });
 
-    it('applies customModifier and clamps total points at 0', () => {
+    it('applies customModifier and supports negative total points without clamping at 0', () => {
       const handWithBonus = {
         ...DEFAULT_HAND_SCORE,
         numberCards: { '5': 1 }, // 5
@@ -139,12 +139,19 @@ describe('scoring utils', () => {
       };
       expect(calculateHandPoints(handWithBonus)).toBe(15);
 
-      const handClamped = {
+      const handNegative = {
         ...DEFAULT_HAND_SCORE,
         numberCards: { '2': 1 }, // 2
         customModifier: -20,
       };
-      expect(calculateHandPoints(handClamped)).toBe(0);
+      expect(calculateHandPoints(handNegative)).toBe(-18);
+
+      const winnerBonusNegative = {
+        ...DEFAULT_HAND_SCORE,
+        isWinner: true,
+        timeBombModifier: 'winner_bonus' as const,
+      };
+      expect(calculateHandPoints(winnerBonusNegative)).toBe(-10);
     });
 
     it('handles empty hand and ignores non-numeric card keys', () => {

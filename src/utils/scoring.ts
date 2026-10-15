@@ -54,7 +54,7 @@ export function calculateHandPoints(
       pts -= CARD_POINTS.TIME_BOMB_BONUS;
     }
     pts += hand.customModifier || 0;
-    return Math.max(0, pts);
+    return pts;
   }
 
   let total = 0;
@@ -82,5 +82,5 @@ export function calculateHandPoints(
   }
 
   total += hand.customModifier || 0;
-  return Math.max(0, total);
+  return total;
 }

@@ -157,7 +157,9 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
         <div className="relative h-2 w-full overflow-hidden rounded-full border border-neutral-200 bg-neutral-100 dark:border-slate-700/60 dark:bg-slate-900">
           <div
             className={`h-full rounded-full transition-all duration-500 ${getProgressColor(player.progressPct)}`}
-            style={{ width: `${player.progressPct}%` }}
+            style={{
+              width: `${Math.max(0, Math.min(100, player.progressPct))}%`,
+            }}
           />
 
           <div
