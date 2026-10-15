@@ -203,4 +203,59 @@ describe('RoundHistoryTable component', () => {
     const editButtons = screen.getAllByTitle(/edit round/i);
     expect(editButtons).toHaveLength(1);
   });
+
+  it('renders Seppuku T event entries with outcome badges and calls onEditSeppuku when edit button is clicked', async () => {
+    const user = userEvent.setup();
+    const onEditSeppuku = vi.fn();
+    const rounds: RoundEntry[] = [
+      {
+        roundNumber: 1,
+        timestamp: 1000,
+        activeRuleCardId: null,
+        scores: {
+          p1: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+          p2: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+        },
+      },
+      {
+        id: 'seppuku-event-1',
+        roundNumber: 1,
+        timestamp: 2000,
+        isEvent: true,
+        eventType: 'seppuku',
+        eventMetadata: {
+          choices: {
+            p1: { playerName: 'Alice', outcome: 'risk_number', points: -21 },
+            p2: { playerName: 'Bob', outcome: 'risk_special', points: 42 },
+          },
+        },
+        scores: {
+          p1: { ...DEFAULT_HAND_SCORE, totalPoints: -21 } as HandScore,
+          p2: { ...DEFAULT_HAND_SCORE, totalPoints: 42 } as HandScore,
+        },
+      },
+    ];
+
+    render(
+      <RoundHistoryTable
+        {...defaultProps}
+        rounds={rounds}
+        onEditSeppuku={onEditSeppuku}
+      />
+    );
+
+    // Event title badge
+    expect(screen.getByText(/seppuku/i)).toBeInTheDocument();
+
+    // Player outcome badges
+    expect(screen.getByText(/number \(-21\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/special \(\+42\)/i)).toBeInTheDocument();
+
+    // Edit button for Seppuku T
+    const editSeppukuBtn = screen.getByTitle(/edit seppuku/i);
+    expect(editSeppukuBtn).toBeInTheDocument();
+
+    await user.click(editSeppukuBtn);
+    expect(onEditSeppuku).toHaveBeenCalledWith('seppuku-event-1');
+  });
 });

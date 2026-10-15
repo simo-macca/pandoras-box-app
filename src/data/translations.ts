@@ -231,6 +231,23 @@ export interface TranslationStrings {
     seppukuNoRisk: string;
     seppukuApply: string;
     seppukuSuccess: string;
+    seppukuEditTitle: string;
+    seppukuEditSubtitle: string;
+    seppukuEditBadge: string;
+    seppukuUpdatedSuccess: string;
+    seppukuRuleBannerTitle: string;
+    seppukuRuleRiskText: string;
+    seppukuRuleRefuseText: string;
+    seppukuActionRiskNumberTitle: string;
+    seppukuActionRiskNumberDesc: string;
+    seppukuActionRiskSpecialTitle: string;
+    seppukuActionRiskSpecialDesc: string;
+    seppukuActionNoRiskTitle: string;
+    seppukuActionNoRiskDesc: string;
+    seppukuBadgeNumber: string;
+    seppukuBadgeSpecial: string;
+    seppukuBadgeNoRisk: string;
+    editSeppukuTooltip: string;
     lateJoiner: string;
   };
 }
@@ -472,6 +489,26 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       seppukuNoRisk: 'No Risk (+21 pts)',
       seppukuApply: 'Apply Seppuku',
       seppukuSuccess: 'Seppuku T applied successfully!',
+      seppukuEditTitle: 'Edit Seppuku T – Adjust Choices',
+      seppukuEditSubtitle:
+        'Correct previously recorded player choices and update cumulative points',
+      seppukuEditBadge: 'Edit Mode',
+      seppukuUpdatedSuccess: 'Seppuku T choices updated successfully!',
+      seppukuRuleBannerTitle: "Card Rules: Seppuku T (D'Sinead Conception)",
+      seppukuRuleRiskText:
+        'Take Risk (draw top card): Number card (1–10) = -21 pts | Non-number / Special = +42 pts',
+      seppukuRuleRefuseText: 'No Risk / Refused: +21 pts',
+      seppukuActionRiskNumberTitle: 'Take Risk: Drew Number',
+      seppukuActionRiskNumberDesc:
+        'Flipped a numbered card (1–10) from the deck',
+      seppukuActionRiskSpecialTitle: 'Take Risk: Drew Special',
+      seppukuActionRiskSpecialDesc: 'Flipped an action or special card',
+      seppukuActionNoRiskTitle: 'Refuse Seppuku (No Risk)',
+      seppukuActionNoRiskDesc: 'Declined to draw a card from the deck',
+      seppukuBadgeNumber: 'Number (-21)',
+      seppukuBadgeSpecial: 'Special (+42)',
+      seppukuBadgeNoRisk: 'No Risk (+21)',
+      editSeppukuTooltip: 'Edit Seppuku T choices',
       lateJoiner: 'Late Joiner',
     },
   },
@@ -713,6 +750,28 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       seppukuNoRisk: 'Kein Risiko (+21 Pkt)',
       seppukuApply: 'Seppuku anwenden',
       seppukuSuccess: 'Seppuku T erfolgreich angewendet!',
+      seppukuEditTitle: 'Seppuku T bearbeiten – Auswahl anpassen',
+      seppukuEditSubtitle:
+        'Zuvor erfasste Spielerentscheidungen korrigieren und Punkte aktualisieren',
+      seppukuEditBadge: 'Bearbeitungsmodus',
+      seppukuUpdatedSuccess:
+        'Seppuku T-Entscheidungen erfolgreich aktualisiert!',
+      seppukuRuleBannerTitle:
+        "Offizielle Kartenregeln: Seppuku T (D'Sinead Conception)",
+      seppukuRuleRiskText:
+        'Risiko eingegangen (oberste Karte): Zahlenkarte (1–10) = -21 Pkt | Nicht-Zahlen-/Sonderkarte = +42 Pkt',
+      seppukuRuleRefuseText: 'Kein Risiko / Abgelehnt: +21 Pkt',
+      seppukuActionRiskNumberTitle: 'Risiko: Zahlenkarte gezogen',
+      seppukuActionRiskNumberDesc:
+        'Zahlenkarte (1–10) vom Nachziehstapel aufgedeckt',
+      seppukuActionRiskSpecialTitle: 'Risiko: Sonderkarte gezogen',
+      seppukuActionRiskSpecialDesc: 'Sonder- oder Aktionskarte aufgedeckt',
+      seppukuActionNoRiskTitle: 'Seppuku ablehnen (Kein Risiko)',
+      seppukuActionNoRiskDesc: 'Keine Karte gezogen; Risiko verweigert',
+      seppukuBadgeNumber: 'Zahl (-21)',
+      seppukuBadgeSpecial: 'Spezial (+42)',
+      seppukuBadgeNoRisk: 'Kein Risiko (+21)',
+      editSeppukuTooltip: 'Seppuku T-Auswahl bearbeiten',
       lateJoiner: 'Später Beitritt',
     },
   },
@@ -954,6 +1013,26 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       seppukuNoRisk: 'Nessun Rischio (+21 pt)',
       seppukuApply: 'Applica Seppuku',
       seppukuSuccess: 'Seppuku T applicato con successo!',
+      seppukuEditTitle: 'Modifica Seppuku T – Correggi Scelte',
+      seppukuEditSubtitle:
+        'Correggi le scelte registrate e aggiorna i punteggi cumulativi',
+      seppukuEditBadge: 'Modalità Modifica',
+      seppukuUpdatedSuccess: 'Scelte Seppuku T aggiornate con successo!',
+      seppukuRuleBannerTitle:
+        "Regole Ufficiali: Seppuku T (D'Sinead Conception)",
+      seppukuRuleRiskText:
+        'Rischio (prima carta del mazzo): Carta Numero (1–10) = -21 pt | Carta Speciale / Non-numero = +42 pt',
+      seppukuRuleRefuseText: 'Nessun Rischio / Rifiutato: +21 pt',
+      seppukuActionRiskNumberTitle: 'Rischio: Carta Numero',
+      seppukuActionRiskNumberDesc: 'Ha pescato una carta numerata (1–10)',
+      seppukuActionRiskSpecialTitle: 'Rischio: Carta Speciale',
+      seppukuActionRiskSpecialDesc: 'Ha pescato una carta azione o speciale',
+      seppukuActionNoRiskTitle: 'Rifiuta Seppuku (Nessun Rischio)',
+      seppukuActionNoRiskDesc: 'Non pesca alcuna carta dal mazzo',
+      seppukuBadgeNumber: 'Numero (-21)',
+      seppukuBadgeSpecial: 'Speciale (+42)',
+      seppukuBadgeNoRisk: 'Nessun Rischio (+21)',
+      editSeppukuTooltip: 'Modifica scelte Seppuku T',
       lateJoiner: 'Nuovo Giocatore',
     },
   },
@@ -1196,6 +1275,26 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       seppukuNoRisk: 'Sans Risque (+21 pts)',
       seppukuApply: 'Appliquer Seppuku',
       seppukuSuccess: 'Seppuku T appliqué avec succès !',
+      seppukuEditTitle: 'Modifier Seppuku T – Corriger les Choix',
+      seppukuEditSubtitle:
+        'Corriger les choix enregistrés et recalculer les points cumulés',
+      seppukuEditBadge: 'Mode Modification',
+      seppukuUpdatedSuccess: 'Choix Seppuku T mis à jour avec succès !',
+      seppukuRuleBannerTitle:
+        "Règles Officielles : Seppuku T (D'Sinead Conception)",
+      seppukuRuleRiskText:
+        'Risque pris (1ère carte) : Carte Chiffre (1–10) = -21 pts | Non-chiffre / Spéciale = +42 pts',
+      seppukuRuleRefuseText: 'Sans Risque / Refusé : +21 pts',
+      seppukuActionRiskNumberTitle: 'Prendre le Risque : Chiffre',
+      seppukuActionRiskNumberDesc: 'A pioché une carte chiffre (1–10)',
+      seppukuActionRiskSpecialTitle: 'Prendre le Risque : Spéciale',
+      seppukuActionRiskSpecialDesc: 'A pioché une carte spéciale ou action',
+      seppukuActionNoRiskTitle: 'Refuser Seppuku (Sans Risque)',
+      seppukuActionNoRiskDesc: 'A refusé de piocher une carte',
+      seppukuBadgeNumber: 'Chiffre (-21)',
+      seppukuBadgeSpecial: 'Spéciale (+42)',
+      seppukuBadgeNoRisk: 'Sans Risque (+21)',
+      editSeppukuTooltip: 'Modifier les choix Seppuku T',
       lateJoiner: 'Arrivée en Cours',
     },
   },

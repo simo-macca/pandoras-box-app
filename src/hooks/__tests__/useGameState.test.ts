@@ -618,6 +618,68 @@ describe('useGameState hook', () => {
       ).toBe(0);
       expect(result.current.gameState.rounds).toHaveLength(0);
     });
+
+    it('updates an existing Seppuku T event in place when existingRoundId is provided', () => {
+      const { result } = renderHook(() => useGameState());
+      const [p1, p2] = result.current.gameState.players;
+
+      // Add a regular round first
+      act(() => {
+        result.current.addRound({
+          [p1.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+          [p2.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+        });
+      });
+
+      // Apply initial Seppuku: p1 risked number (-21), p2 risked special (+42)
+      act(() => {
+        result.current.applySeppuku({
+          [p1.id]: 'risk_number',
+          [p2.id]: 'risk_special',
+        });
+      });
+
+      expect(result.current.gameState.rounds).toHaveLength(2);
+      const seppukuRoundId = result.current.gameState.rounds[1].id;
+      expect(
+        result.current.playerStats.find((p) => p.id === p1.id)!.totalScore
+      ).toBe(-11);
+      expect(
+        result.current.playerStats.find((p) => p.id === p2.id)!.totalScore
+      ).toBe(52);
+
+      // Now edit the Seppuku T entry in place: p1 refused (+21), p2 risked number (-21)
+      act(() => {
+        result.current.applySeppuku(
+          {
+            [p1.id]: 'no_risk',
+            [p2.id]: 'risk_number',
+          },
+          seppukuRoundId
+        );
+      });
+
+      // Still 2 rounds total, same round ID preserved
+      expect(result.current.gameState.rounds).toHaveLength(2);
+      expect(result.current.gameState.rounds[1].id).toBe(seppukuRoundId);
+
+      // Scores updated:
+      // p1: 10 + 21 = 31
+      // p2: 10 + (-21) = -11
+      expect(
+        result.current.playerStats.find((p) => p.id === p1.id)!.totalScore
+      ).toBe(31);
+      expect(
+        result.current.playerStats.find((p) => p.id === p2.id)!.totalScore
+      ).toBe(-11);
+
+      const updatedMeta = result.current.gameState.rounds[1]
+        .eventMetadata as SeppukuEventMetadata;
+      expect(updatedMeta?.choices?.[p1.id]?.outcome).toBe('no_risk');
+      expect(updatedMeta?.choices?.[p1.id]?.points).toBe(21);
+      expect(updatedMeta?.choices?.[p2.id]?.outcome).toBe('risk_number');
+      expect(updatedMeta?.choices?.[p2.id]?.points).toBe(-21);
+    });
   });
 
   describe('Mid-game settings, late joiners, and round limits', () => {

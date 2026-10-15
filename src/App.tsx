@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { useGameState } from './hooks/useGameState';
 import { useTheme } from './hooks/useTheme';
@@ -16,7 +16,12 @@ import { CardDictionary } from './components/rules/CardDictionary';
 import { GameSetupModal } from './components/setup/GameSetupModal';
 import { SettingsModal } from './components/layout/SettingsModal';
 import { SeppukuModal } from './components/events/SeppukuModal';
-import { HandScore, GameState, SeppukuOutcome } from './types/game';
+import {
+  HandScore,
+  GameState,
+  SeppukuOutcome,
+  SeppukuEventMetadata,
+} from './types/game';
 import { calculatePlayerStats } from './utils/stats';
 
 export function App() {
@@ -53,6 +58,7 @@ export function App() {
     isSetupModalOpen,
     isSettingsModalOpen,
     isSeppukuModalOpen,
+    editingSeppukuRoundId,
     settingsInitialTab,
     isGameOverModalDismissed,
     setIsGameOverModalDismissed,
@@ -149,13 +155,19 @@ export function App() {
     }
   };
 
-  const handleApplySeppuku = (choices: Record<string, SeppukuOutcome>) => {
+  const handleApplySeppuku = (
+    choices: Record<string, SeppukuOutcome>,
+    existingRoundId?: string
+  ) => {
     const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
-    const success = applySeppuku(choices);
+    const success = applySeppuku(choices, existingRoundId);
     if (success) {
       showUndoToast(
-        TRANSLATIONS[language].events?.seppukuSuccess ||
-          'Seppuku T applied successfully!',
+        existingRoundId
+          ? TRANSLATIONS[language].events?.seppukuUpdatedSuccess ||
+              'Seppuku T choices updated successfully!'
+          : TRANSLATIONS[language].events?.seppukuSuccess ||
+              'Seppuku T applied successfully!',
         previousSnapshot
       );
     }
@@ -211,6 +223,26 @@ export function App() {
     ? gameState.rounds.find((r) => r.roundNumber === editingRoundNumber)
     : null;
 
+  const editingSeppukuRound = editingSeppukuRoundId
+    ? gameState.rounds.find((r) => r.id === editingSeppukuRoundId)
+    : null;
+
+  const editingSeppukuChoices = useMemo(() => {
+    if (
+      !editingSeppukuRound ||
+      !editingSeppukuRound.eventMetadata ||
+      !('choices' in editingSeppukuRound.eventMetadata)
+    ) {
+      return undefined;
+    }
+    const metadata = editingSeppukuRound.eventMetadata as SeppukuEventMetadata;
+    const result: Record<string, SeppukuOutcome> = {};
+    Object.entries(metadata.choices || {}).forEach(([playerId, item]) => {
+      result[playerId] = item.outcome;
+    });
+    return result;
+  }, [editingSeppukuRound]);
+
   return (
     <div className="flex min-h-screen flex-col overflow-x-clip bg-neutral-100 font-sans text-neutral-900 transition-colors selection:bg-amber-500 selection:text-black dark:bg-neutral-950 dark:text-neutral-100">
       {/* Top Navigation */}
@@ -253,7 +285,8 @@ export function App() {
             onConcludeGame={handleConcludeGame}
             onApplyIdentityTheft={handleApplyIdentityTheft}
             canApplyIdentityTheft={canApplyIdentityTheft}
-            onOpenSeppuku={openSeppukuModal}
+            onOpenSeppuku={() => openSeppukuModal()}
+            onEditSeppuku={(roundId) => openSeppukuModal(roundId)}
             language={language}
           />
         )}
@@ -308,6 +341,8 @@ export function App() {
         players={gameState.players}
         onApplySeppuku={handleApplySeppuku}
         language={language}
+        editingRoundId={editingSeppukuRoundId}
+        initialChoices={editingSeppukuChoices}
       />
 
       {/* Settings & Legal Disclaimer Modal */}

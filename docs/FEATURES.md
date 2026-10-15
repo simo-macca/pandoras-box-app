@@ -111,18 +111,21 @@ When the chaotic **Identity Theft** event card is triggered during gameplay:
 
 ---
 
-### 5. "Seppuku T" Event Action
+### 5. "Seppuku T" Event Action & In-Place Editing
 
 When the **SEPPUKU T** event card (by D'Sinead Conception) is revealed:
 
 - **Turn-Order Modal**: Tap the **Seppuku T** button on the Scoreboard to launch the dedicated event modal. Players make their choices sequentially in turn order.
-- **Point Options**:
-  - **Risk Taken — Number card drawn**: `-21 pts` immediately applied to the player's cumulative score.
-  - **Risk Taken — Non-number / Special card drawn**: `+42 pts` immediately applied to the player's cumulative score.
-  - **No Risk / Refused**: `+21 pts` immediately applied to the player's cumulative score.
+- **Enhanced Rules UI & Action Cards**:
+  - **Rules Logic Callout**: A prominent banner reminds players of the card mechanics and stakes before committing.
+  - **Descriptive Action Cards**: Replaced cramped buttons with structured, high-contrast action cards displaying the action name, draw criteria ("Flipped 1–10", "Flipped action/special", "Declined to draw"), and high-contrast score delta pills:
+    - **Risk Taken — Number card drawn**: `-21 pts` immediately applied to the player's cumulative score.
+    - **Risk Taken — Non-number / Special card drawn**: `+42 pts` immediately applied to the player's cumulative score.
+    - **No Risk / Refused**: `+21 pts` immediately applied to the player's cumulative score.
 - **Immediate Scoreboard Updates**: Adjustments update rankings and leader standings instantly.
 - **Round Counter Preservation**: Like Identity Theft, Seppuku T executes as a standalone event entry (`eventType: 'seppuku'`) without advancing the completed round counter.
-- **Full History & Persistence**: Detailed player choices and outcomes are stored in event metadata, displayed in round history, and preserved across JSON exports and re-imports.
+- **In-Place Retroactive Editing**: Mistakes at the table can be corrected anytime! Tap the **Edit** pencil icon on any Seppuku T entry in the Match History table to reopen the modal in dedicated Edit Mode with previously selected choices prefilled. Updating saves changes in-place, recalculating scores immediately without creating duplicate entries.
+- **Full History & Persistence**: Detailed player choices and outcomes are stored in event metadata, displayed in round history with color-coded outcome badges (`Number (-21)`, `Special (+42)`, `No Risk (+21)`), and preserved across JSON exports and re-imports.
 
 ---
 

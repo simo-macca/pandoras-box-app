@@ -278,7 +278,10 @@ export function useGameState() {
   }, [gameState]);
 
   const applySeppuku = useCallback(
-    (choices: Record<string, SeppukuOutcome>): boolean => {
+    (
+      choices: Record<string, SeppukuOutcome>,
+      existingRoundId?: string
+    ): boolean => {
       if (gameState.players.length === 0) return false;
 
       const roundScores: Record<string, HandScore> = {};
@@ -308,32 +311,54 @@ export function useGameState() {
         };
       });
 
-      const timestamp = Date.now();
-      const currentRoundCount = gameState.rounds.filter(
-        (r) => !r.isEvent
-      ).length;
-      const eventEntry: RoundEntry = {
-        id: `event-seppuku-${timestamp}`,
-        roundNumber: currentRoundCount,
-        timestamp,
-        isEvent: true,
-        eventType: 'seppuku',
-        scores: roundScores,
-        notes: 'Seppuku T: Point adjustments applied',
-        eventMetadata: {
-          choices: choicesMetadata,
-        },
-      };
-
       soundEffects.playClick();
-      setGameState((prev) => ({
-        ...prev,
-        rounds: [...prev.rounds, eventEntry],
-      }));
+      setGameState((prev) => {
+        if (existingRoundId) {
+          const exists = prev.rounds.some((r) => r.id === existingRoundId);
+          if (exists) {
+            return {
+              ...prev,
+              rounds: prev.rounds.map((r) =>
+                r.id === existingRoundId
+                  ? {
+                      ...r,
+                      scores: roundScores,
+                      notes: 'Seppuku T: Point adjustments applied',
+                      eventMetadata: {
+                        ...r.eventMetadata,
+                        choices: choicesMetadata,
+                      },
+                    }
+                  : r
+              ),
+            };
+          }
+        }
+
+        const timestamp = Date.now();
+        const currentRoundCount = prev.rounds.filter((r) => !r.isEvent).length;
+        const eventEntry: RoundEntry = {
+          id: `event-seppuku-${timestamp}`,
+          roundNumber: currentRoundCount,
+          timestamp,
+          isEvent: true,
+          eventType: 'seppuku',
+          scores: roundScores,
+          notes: 'Seppuku T: Point adjustments applied',
+          eventMetadata: {
+            choices: choicesMetadata,
+          },
+        };
+
+        return {
+          ...prev,
+          rounds: [...prev.rounds, eventEntry],
+        };
+      });
 
       return true;
     },
-    [gameState.players, gameState.rounds]
+    [gameState.players]
   );
 
   const undoLastRound = useCallback(() => {

@@ -28,6 +28,7 @@ interface LeaderboardProps {
   onApplyIdentityTheft?: () => void;
   canApplyIdentityTheft?: boolean;
   onOpenSeppuku?: () => void;
+  onEditSeppuku?: (roundId: string) => void;
   language: Language;
 }
 
@@ -50,6 +51,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
   onApplyIdentityTheft,
   canApplyIdentityTheft = false,
   onOpenSeppuku,
+  onEditSeppuku,
   language,
 }) => {
   const t = TRANSLATIONS[language];
@@ -207,6 +209,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
           onUndoLastRound={onUndoLastRound}
           onEditRound={onEditRound}
           onDeleteRound={onDeleteRound}
+          onEditSeppuku={onEditSeppuku}
           language={language}
         />
       </div>

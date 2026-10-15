@@ -24,6 +24,7 @@ interface RoundHistoryTableProps {
   onUndoLastRound: () => void;
   onEditRound?: (roundNumber: number) => void;
   onDeleteRound?: (roundNumber: number, entryId?: string) => void;
+  onEditSeppuku?: (roundId: string) => void;
   language: Language;
 }
 
@@ -33,6 +34,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
   onUndoLastRound,
   onEditRound,
   onDeleteRound,
+  onEditSeppuku,
   language,
 }) => {
   const t = TRANSLATIONS[language];
@@ -184,6 +186,27 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                     </button>
                   )}
 
+                  {round.isEvent &&
+                    round.eventType === 'seppuku' &&
+                    onEditSeppuku &&
+                    round.id && (
+                      <button
+                        type="button"
+                        onClick={() => onEditSeppuku(round.id!)}
+                        className="rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-rose-500/10 hover:text-rose-500 dark:hover:bg-neutral-800"
+                        title={
+                          t.events?.editSeppukuTooltip ||
+                          'Edit Seppuku T choices'
+                        }
+                        aria-label={
+                          t.events?.editSeppukuTooltip ||
+                          'Edit Seppuku T choices'
+                        }
+                      >
+                        <Edit3 className="h-3.5 w-3.5 shrink-0" />
+                      </button>
+                    )}
+
                   {onDeleteRound && (
                     <>
                       {deleteConfirmKey === entryKey ? (
@@ -233,6 +256,92 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                   if (!score) return null;
 
                   if (round.isEvent) {
+                    if (round.eventType === 'seppuku') {
+                      const seppukuMetadata =
+                        round.eventMetadata && 'choices' in round.eventMetadata
+                          ? round.eventMetadata.choices?.[player.id]
+                          : undefined;
+                      const outcome = seppukuMetadata?.outcome;
+                      const isRiskNumber =
+                        outcome === 'risk_number' || score.totalPoints === -21;
+                      const isRiskSpecial =
+                        outcome === 'risk_special' || score.totalPoints === 42;
+
+                      const cardStyle = isRiskNumber
+                        ? 'border-emerald-500/40 bg-emerald-500/10 dark:border-emerald-500/30 dark:bg-emerald-950/30'
+                        : isRiskSpecial
+                          ? 'border-rose-500/40 bg-rose-500/10 dark:border-rose-500/30 dark:bg-rose-950/30'
+                          : 'border-amber-500/40 bg-amber-500/10 dark:border-amber-500/30 dark:bg-amber-950/30';
+
+                      const badgeStyle = isRiskNumber
+                        ? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300'
+                        : isRiskSpecial
+                          ? 'bg-rose-500/20 text-rose-700 dark:text-rose-300'
+                          : 'bg-amber-500/20 text-amber-700 dark:text-amber-300';
+
+                      const badgeText = isRiskNumber
+                        ? t.events?.seppukuBadgeNumber || 'Number (-21)'
+                        : isRiskSpecial
+                          ? t.events?.seppukuBadgeSpecial || 'Special (+42)'
+                          : t.events?.seppukuBadgeNoRisk || 'No Risk (+21)';
+
+                      return (
+                        <div
+                          key={player.id}
+                          className={`rounded-2xl border p-2 transition-all sm:p-2.5 ${cardStyle}`}
+                        >
+                          <div className="mb-1 flex items-center justify-between gap-1">
+                            <span className="truncate text-xs font-bold text-neutral-800 dark:text-neutral-200">
+                              {player.name}
+                            </span>
+                            <span
+                              className={`rounded-md px-1.5 py-0.5 text-[9px] font-bold ${badgeStyle}`}
+                            >
+                              {badgeText}
+                            </span>
+                          </div>
+
+                          <div className="mt-1 flex items-baseline justify-between">
+                            <span className="text-base font-black whitespace-nowrap text-neutral-900 tabular-nums dark:text-white">
+                              {score.totalPoints > 0
+                                ? `+${score.totalPoints}`
+                                : score.totalPoints}{' '}
+                              <span className="text-[10px] font-semibold text-neutral-400">
+                                pts
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    }
+
+                    if (round.eventType === 'late-joiner') {
+                      return (
+                        <div
+                          key={player.id}
+                          className="rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-2 transition-all sm:p-2.5 dark:border-emerald-500/30 dark:bg-emerald-950/30"
+                        >
+                          <div className="mb-1 flex items-center justify-between gap-1">
+                            <span className="truncate text-xs font-bold text-neutral-800 dark:text-neutral-200">
+                              {player.name}
+                            </span>
+                            <span className="rounded-md bg-emerald-500/20 px-1.5 py-0.5 text-[9px] font-bold text-emerald-700 dark:text-emerald-300">
+                              {t.events?.lateJoiner || 'Late Joiner'}
+                            </span>
+                          </div>
+
+                          <div className="mt-1 flex items-baseline justify-between">
+                            <span className="text-base font-black whitespace-nowrap text-neutral-900 tabular-nums dark:text-white">
+                              +{score.totalPoints}{' '}
+                              <span className="text-[10px] font-semibold text-neutral-400">
+                                pts
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    }
+
                     const hasDelta = score.totalPoints !== 0;
                     return (
                       <div

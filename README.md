@@ -33,7 +33,7 @@ Explore the modular project documentation:
 - **Automated Hand Point Calculator**: Quick selectors for numbered cards (1–10), standard specials (7 pts), Curse (13 pts), The End (17 pts), Fuck You (42 pts), Mimicry (7 pts), and event modifiers (Doomsday 50 pts, Time Bomb table & player modifiers).
 - **Direct Freeform Numeric Modifiers & Negative Scores**: Freeform direct numeric text input for custom point adjustments (e.g. `-15`, `+25`), with unrestricted state and UI support for negative round scores and negative cumulative player totals.
 - **"Identity Theft" Event Action**: Quick-action button on the scoreboard that automatically swaps cumulative scores between the player with the lowest score and the player with the highest score, featuring deterministic tie-breaking, round counter preservation, and full JSON export/import persistence.
-- **"Seppuku T" Event Action**: Quick-action button on the scoreboard implementing D'Sinead Conception's event rules—players choose in turn order between Risk Number (-21 pts), Risk Non-number/Special (+42 pts), or No Risk (+21 pts) without advancing or incrementing the match round counter.
+- **"Seppuku T" Event Action & In-Place Editing**: Quick-action button on the scoreboard implementing D'Sinead Conception's event rules with an intuitive, rules-descriptive card UI (showing action names, draw criteria, and score pills). Fully supports retroactive in-place editing directly from match history in case of input errors, with zero round-counter advancement.
 - **Mid-Game Match Settings & Dynamic Late Joiners**: Edit player names, pawn colors, and total round limits while a match is in progress. Mid-game late joiners dynamically receive an initial score of `(highest current player's score) + 1` via tracked event entries.
 - **Live Leaderboard & Elimination Alerts**: Dynamically ranks players (lowest penalty points lead!), tracks round wins, and flags players in the **Danger Zone** ($\ge 80\%$ of target score).
 - **Rule Card Drawer**: Digital randomizer with rolling sound effects and animations for all 15 Pandora's Box Rule Cards, with an active banner reminder pinned to the scoreboard.
@@ -43,7 +43,7 @@ Explore the modular project documentation:
 - **Zero-Asset Procedural Audio**: Realistic dice rolls, clicks, and victory fanfare synthesized via the Web Audio API without binary audio downloads.
 - **State Persistence & Backup**: Local auto-save via `localStorage`, plus complete JSON match export and import for device migration or tournament records.
 - **Mobile-First & Theming**: Fully responsive layout with Dark, Light, and System theme switching.
-- **Automated Test Suite**: 20 test suites and 149 unit tests covering utilities, hooks, static game data, and UI components via Vitest and React Testing Library.
+- **Automated Test Suite**: 20 test suites covering utilities, hooks, static game data, and UI components via Vitest and React Testing Library.
 
 _For a detailed breakdown of all capabilities, see the [Application Features Guide](docs/FEATURES.md)._
 
@@ -53,11 +53,13 @@ _For a detailed breakdown of all capabilities, see the [Application Features Gui
 
 The application's rules engine, event resolution logic, and card taxonomies are synchronized against official Rulefactory rulebooks:
 
-- **Seppuku T Event Resolution**:
+- **Seppuku T Event Resolution & Retroactive Editing**:
   - Implements D'Sinead Conception's event card where players choose in turn order to take the risk or refuse:
     - **Risk Taken — Number card drawn**: `-21 pts` applied immediately.
     - **Risk Taken — Non-number / Special card drawn**: `+42 pts` applied immediately.
     - **No Risk / Refused**: `+21 pts` applied immediately.
+  - Features an overhauled turn-by-turn modal presenting rules explanations, explicit action names, and outcome badges.
+  - Supports in-place retroactive editing directly from the Match History table to effortlessly correct mistakes without round progression.
   - Updates scoreboard standings immediately without advancing or incrementing the completed round counter.
 - **Mid-Game Late Joiners & Dynamic Roster**:
   - Allows adding new players mid-match with starting score formula `(highest current player's score) + 1`.

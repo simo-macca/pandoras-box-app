@@ -53,12 +53,18 @@ export function useAppModals() {
     setIsSetupModalOpen(false);
   }, []);
 
-  const openSeppukuModal = useCallback(() => {
+  const [editingSeppukuRoundId, setEditingSeppukuRoundId] = useState<
+    string | null
+  >(null);
+
+  const openSeppukuModal = useCallback((roundId?: string) => {
+    setEditingSeppukuRoundId(roundId || null);
     setIsSeppukuModalOpen(true);
   }, []);
 
   const closeSeppukuModal = useCallback(() => {
     setIsSeppukuModalOpen(false);
+    setEditingSeppukuRoundId(null);
   }, []);
 
   return {
@@ -67,6 +73,7 @@ export function useAppModals() {
     isSetupModalOpen,
     isSettingsModalOpen,
     isSeppukuModalOpen,
+    editingSeppukuRoundId,
     settingsInitialTab,
     isGameOverModalDismissed,
     setIsGameOverModalDismissed,
