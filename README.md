@@ -30,18 +30,37 @@ Explore the modular project documentation:
 
 ## Key Features at a Glance
 
-- **Automated Hand Point Calculator**: Quick selectors for numbered cards (1–10), standard specials (7 pts), Curse (13 pts), The End (17 pts), Fuck You (42 pts), Mimicry (7 pts), and event modifiers (Doomsday 50 pts, Time Bomb modifiers).
+- **Automated Hand Point Calculator**: Quick selectors for numbered cards (1–10), standard specials (7 pts), Curse (13 pts), The End (17 pts), Fuck You (42 pts), Mimicry (7 pts), and event modifiers (Doomsday 50 pts, Time Bomb table & player modifiers).
 - **"Identity Theft" Event Action**: Quick-action button on the scoreboard that automatically swaps cumulative scores between the player with the lowest score and the player with the highest score, featuring deterministic tie-breaking, round counter preservation, and full JSON export/import persistence.
 - **Live Leaderboard & Elimination Alerts**: Dynamically ranks players (lowest penalty points lead!), tracks round wins, and flags players in the **Danger Zone** ($\ge 80\%$ of target score).
 - **Rule Card Drawer**: Digital randomizer with rolling sound effects and animations for all 15 Pandora's Box Rule Cards, with an active banner reminder pinned to the scoreboard.
-- **Multilingual Card Encyclopedia**: Instant search and filtering across **23 Special Cards**, **15 Event Cards**, **12 Supercharge Power Cards**, and **15 Rule Cards** with tactical tips and timing guides.
+- **Multilingual Card Encyclopedia**: Instant search and filtering across **23 Special Cards**, **44 Event Cards**, **12 Supercharge Power Cards**, and **15 Rule Cards** with tactical tips and timing guides.
+- **Official Rules Alignment**: Strictly aligned card timing (e.g., Recycling 1st, Special Charge 2nd), global vs. targeted event scopes, and table-wide Doomsday and Time Bomb state invariants.
 - **Offline PDF Manuals**: Local serving and in-browser viewing of official Rulefactory manuals and overview cards in 4 languages (**EN**, **DE**, **FR**, **IT**).
 - **Zero-Asset Procedural Audio**: Realistic dice rolls, clicks, and victory fanfare synthesized via the Web Audio API without binary audio downloads.
 - **State Persistence & Backup**: Local auto-save via `localStorage`, plus complete JSON match export and import for device migration or tournament records.
 - **Mobile-First & Theming**: Fully responsive layout with Dark, Light, and System theme switching.
-- **Automated Test Suite**: 14 test suites and 98 tests covering utilities, hooks, and UI components via Vitest and React Testing Library.
+- **Automated Test Suite**: 19 test suites and 134 unit tests covering utilities, hooks, static game data, and UI components via Vitest and React Testing Library.
 
 _For a detailed breakdown of all capabilities, see the [Application Features Guide](docs/FEATURES.md)._
+
+---
+
+## Game Rules Alignment & Logic Integrity
+
+The application's rules engine, event resolution logic, and card taxonomies are synchronized against official Rulefactory rulebooks:
+
+- **Power Card Timing Integrity**:
+  - **Recycling**: Verified as `timing: '1st'` (triggered _before_ the hand card effect; draws 1 card from discard pile) per Rulefactory rulebook p. 19.
+  - **Special Charge**: Verified as `timing: '2nd'` (triggered _after_ the hand card effect; draws 2 cards) per Rulefactory rulebook p. 20.
+  - Descriptions and timing tips localized across English, German, Italian, and French.
+- **Event Scope Taxonomy**:
+  - Classified all 44 event cards into **Global** (table-wide effects affecting all players simultaneously) and **Targeted** (single-player or dueling actions), complete with UI badges and localized tags.
+- **Table-Level Global Event Synchronization**:
+  - **Doomsday (D20 = 20)**: Enforced table-wide invariant where all players receive exactly 50 points, round winner toggle is disabled, and table state is preserved upon individual player resets.
+  - **Time Bomb (D20 = 17)**: Integrated table-wide mode selector that automatically applies point doubling (`expired_double`) across all players or assigns winner bonus (-10 pts) and opponent penalties (+10 pts) on defusal.
+- **Round Snapshot Isolation**:
+  - Active rule cards and round modifiers are snapshotted immutably per round in `useGameState`, preventing temporary state leakage across rounds.
 
 ---
 
