@@ -33,13 +33,14 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
   );
 
   useEffect(() => {
-    const parsed = parseInt(localCustomModifier, 10);
-    const currentNumber = isNaN(parsed) ? 0 : parsed;
-    if (currentNumber !== customModifier) {
-      setLocalCustomModifier(
-        customModifier === 0 ? '' : String(customModifier)
-      );
-    }
+    setLocalCustomModifier((prev) => {
+      const parsed = parseInt(prev, 10);
+      const currentNumber = isNaN(parsed) ? 0 : parsed;
+      if (currentNumber !== customModifier) {
+        return customModifier === 0 ? '' : String(customModifier);
+      }
+      return prev;
+    });
   }, [customModifier]);
 
   const handleCustomModifierChange = (
