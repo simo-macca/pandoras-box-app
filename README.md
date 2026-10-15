@@ -31,7 +31,10 @@ Explore the modular project documentation:
 ## Key Features at a Glance
 
 - **Automated Hand Point Calculator**: Quick selectors for numbered cards (1–10), standard specials (7 pts), Curse (13 pts), The End (17 pts), Fuck You (42 pts), Mimicry (7 pts), and event modifiers (Doomsday 50 pts, Time Bomb table & player modifiers).
+- **Direct Freeform Numeric Modifiers & Negative Scores**: Freeform direct numeric text input for custom point adjustments (e.g. `-15`, `+25`), with unrestricted state and UI support for negative round scores and negative cumulative player totals.
 - **"Identity Theft" Event Action**: Quick-action button on the scoreboard that automatically swaps cumulative scores between the player with the lowest score and the player with the highest score, featuring deterministic tie-breaking, round counter preservation, and full JSON export/import persistence.
+- **"Seppuku T" Event Action**: Quick-action button on the scoreboard implementing D'Sinead Conception's event rules—players choose in turn order between Risk Number (-21 pts), Risk Non-number/Special (+42 pts), or No Risk (+21 pts) without advancing or incrementing the match round counter.
+- **Mid-Game Match Settings & Dynamic Late Joiners**: Edit player names, pawn colors, and total round limits while a match is in progress. Mid-game late joiners dynamically receive an initial score of `(highest current player's score) + 1` via tracked event entries.
 - **Live Leaderboard & Elimination Alerts**: Dynamically ranks players (lowest penalty points lead!), tracks round wins, and flags players in the **Danger Zone** ($\ge 80\%$ of target score).
 - **Rule Card Drawer**: Digital randomizer with rolling sound effects and animations for all 15 Pandora's Box Rule Cards, with an active banner reminder pinned to the scoreboard.
 - **Multilingual Card Encyclopedia**: Instant search and filtering across **23 Special Cards**, **44 Event Cards**, **12 Supercharge Power Cards**, and **15 Rule Cards** with tactical tips and timing guides.
@@ -40,7 +43,7 @@ Explore the modular project documentation:
 - **Zero-Asset Procedural Audio**: Realistic dice rolls, clicks, and victory fanfare synthesized via the Web Audio API without binary audio downloads.
 - **State Persistence & Backup**: Local auto-save via `localStorage`, plus complete JSON match export and import for device migration or tournament records.
 - **Mobile-First & Theming**: Fully responsive layout with Dark, Light, and System theme switching.
-- **Automated Test Suite**: 19 test suites and 134 unit tests covering utilities, hooks, static game data, and UI components via Vitest and React Testing Library.
+- **Automated Test Suite**: 20 test suites and 149 unit tests covering utilities, hooks, static game data, and UI components via Vitest and React Testing Library.
 
 _For a detailed breakdown of all capabilities, see the [Application Features Guide](docs/FEATURES.md)._
 
@@ -50,6 +53,17 @@ _For a detailed breakdown of all capabilities, see the [Application Features Gui
 
 The application's rules engine, event resolution logic, and card taxonomies are synchronized against official Rulefactory rulebooks:
 
+- **Seppuku T Event Resolution**:
+  - Implements D'Sinead Conception's event card where players choose in turn order to take the risk or refuse:
+    - **Risk Taken — Number card drawn**: `-21 pts` applied immediately.
+    - **Risk Taken — Non-number / Special card drawn**: `+42 pts` applied immediately.
+    - **No Risk / Refused**: `+21 pts` applied immediately.
+  - Updates scoreboard standings immediately without advancing or incrementing the completed round counter.
+- **Mid-Game Late Joiners & Dynamic Roster**:
+  - Allows adding new players mid-match with starting score formula `(highest current player's score) + 1`.
+  - Supports editing player names, pawn colors/themes, and total round limits on the fly.
+- **Unrestricted Negative Scoring**:
+  - Removed all artificial 0-score clamping (`Math.max(0, ...)`), allowing negative round totals (e.g., Time Bomb defusal -10 pts, Seppuku number card -21 pts, or custom modifiers) and negative cumulative scores.
 - **Power Card Timing Integrity**:
   - **Recycling**: Verified as `timing: '1st'` (triggered _before_ the hand card effect; draws 1 card from discard pile) per Rulefactory rulebook p. 19.
   - **Special Charge**: Verified as `timing: '2nd'` (triggered _after_ the hand card effect; draws 2 cards) per Rulefactory rulebook p. 20.
@@ -121,18 +135,20 @@ _Read the complete [System Architecture](docs/ARCHITECTURE.md)._
 
 In Frantic, points represent **penalty points**. The player with the **lowest score** when someone hits the target limit wins!
 
-| Card Type                  | Examples                                                          |            Penalty Points             |
-| :------------------------- | :---------------------------------------------------------------- | :-----------------------------------: |
-| **Number Cards**           | `1` to `10` (any colour or black)                                 |       **Face value (1–10 pts)**       |
-| **Standard Specials**      | _Skip, Gift, Exchange, Second Chance, Colour Swap, Thief, etc._   |               **7 pts**               |
-| **Wish / Unique Specials** | _Fantastic, Fantastic Four, Equality, Inequality, Nice Try, etc._ |               **7 pts**               |
-| **Mimicry**                | _Mimicry_                                                         |               **7 pts**               |
-| **Curse**                  | _Curse_ (unplayable)                                              |              **13 pts**               |
-| **The End**                | _The End_ (playable only as last card)                            |              **17 pts**               |
-| **Fuck You**               | _Fuck You_ (playable only with 10 cards in hand)                  |              **42 pts**               |
-| **Power Cards**            | _Adrenaline, Teleport, Deflector, etc._                           |               **0 pts**               |
-| **Doomsday Modifier**      | Round ends immediately                                            |      **50 pts for all players**       |
-| **Identity Theft Event**   | Scores swapped between lowest and highest players                 | **Net 0 pts (Round count unchanged)** |
+| Card Type                  | Examples                                                          |                Penalty Points                |
+| :------------------------- | :---------------------------------------------------------------- | :------------------------------------------: |
+| **Number Cards**           | `1` to `10` (any colour or black)                                 |          **Face value (1–10 pts)**           |
+| **Standard Specials**      | _Skip, Gift, Exchange, Second Chance, Colour Swap, Thief, etc._   |                  **7 pts**                   |
+| **Wish / Unique Specials** | _Fantastic, Fantastic Four, Equality, Inequality, Nice Try, etc._ |                  **7 pts**                   |
+| **Mimicry**                | _Mimicry_                                                         |                  **7 pts**                   |
+| **Curse**                  | _Curse_ (unplayable)                                              |                  **13 pts**                  |
+| **The End**                | _The End_ (playable only as last card)                            |                  **17 pts**                  |
+| **Fuck You**               | _Fuck You_ (playable only with 10 cards in hand)                  |                  **42 pts**                  |
+| **Power Cards**            | _Adrenaline, Teleport, Deflector, etc._                           |                  **0 pts**                   |
+| **Doomsday Modifier**      | Round ends immediately                                            |          **50 pts for all players**          |
+| **Identity Theft Event**   | Scores swapped between lowest and highest players                 |    **Net 0 pts (Round count unchanged)**     |
+| **Seppuku T Event**        | Risk: -21 pts (Number) / +42 pts (Special) vs Refuse: +21 pts     | **-21 / +42 / +21 pts (Round count static)** |
+| **Late Joiner Entry**      | Mid-game roster addition joins ongoing match                      |   **max(scores) + 1 (Round count static)**   |
 
 _Read the complete [Game Rules Reference](docs/GAME_RULES.md)._
 

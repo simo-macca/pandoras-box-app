@@ -12,12 +12,13 @@ This document outlines the core capabilities, scoring tools, card databases, and
   - [2. Interactive Hand Point Calculator](#2-interactive-hand-point-calculator)
   - [3. Round History, Editing & Undo](#3-round-history-editing--undo)
   - [4. "Identity Theft" Event Action & Match History](#4-identity-theft-event-action--match-history)
-  - [5. Pandora's Box Rule Card Drawer](#5-pandoras-box-rule-card-drawer)
-  - [6. Multilingual Rules & Card Encyclopedia](#6-multilingual-rules--card-encyclopedia)
-  - [7. Match Configuration & Player Management](#7-match-configuration--player-management)
-  - [8. Game Over Celebration & Statistics](#8-game-over-celebration--statistics)
-  - [9. Audio Effects, Haptics & Dark Mode](#9-audio-effects-haptics--dark-mode)
-  - [10. Data Persistence, Backup & Restore](#10-data-persistence-backup--restore)
+  - [5. "Seppuku T" Event Action](#5-seppuku-t-event-action)
+  - [6. Pandora's Box Rule Card Drawer](#6-pandoras-box-rule-card-drawer)
+  - [7. Multilingual Rules & Card Encyclopedia](#7-multilingual-rules--card-encyclopedia)
+  - [8. Match Configuration & Player Management](#8-match-configuration--player-management)
+  - [9. Game Over Celebration & Statistics](#9-game-over-celebration--statistics)
+  - [10. Audio Effects, Haptics & Dark Mode](#10-audio-effects-haptics--dark-mode)
+  - [11. Data Persistence, Backup & Restore](#11-data-persistence-backup--restore)
 - [Integrated PDF Rulebook Viewer](#integrated-pdf-rulebook-viewer)
 - [Related Documentation](#related-documentation)
 
@@ -79,7 +80,8 @@ Accessible via the floating `+` button or navigation bar, the hand calculator el
 - **Event Modifier Toggles**:
   - **Doomsday (50 pts)**: Overrides hand score to 50 pts for all participants.
   - **Time Bomb**: Choose from _Winner Bonus (-10 pts)_, _Loser Penalty (+10 pts)_, or _Expired Explosion (Double Points)_.
-- **Custom Modifiers**: Allows manual point adjustments for custom house rules.
+- **Direct Freeform Numeric Modifiers**: Unrestricted manual numeric input allows typing positive or negative modifiers directly (e.g., `-15`, `+25`), eliminating cumbersome click steppers.
+- **Unrestricted Negative Scores**: Round scores and total scores fully support negative numbers without artificial 0-clamping.
 - **Live Calculation**: The computed score updates in real time as you adjust card quantities.
 
 ---
@@ -109,7 +111,22 @@ When the chaotic **Identity Theft** event card is triggered during gameplay:
 
 ---
 
-### 5. Pandora's Box Rule Card Drawer
+### 5. "Seppuku T" Event Action
+
+When the **SEPPUKU T** event card (by D'Sinead Conception) is revealed:
+
+- **Turn-Order Modal**: Tap the **Seppuku T** button on the Scoreboard to launch the dedicated event modal. Players make their choices sequentially in turn order.
+- **Point Options**:
+  - **Risk Taken — Number card drawn**: `-21 pts` immediately applied to the player's cumulative score.
+  - **Risk Taken — Non-number / Special card drawn**: `+42 pts` immediately applied to the player's cumulative score.
+  - **No Risk / Refused**: `+21 pts` immediately applied to the player's cumulative score.
+- **Immediate Scoreboard Updates**: Adjustments update rankings and leader standings instantly.
+- **Round Counter Preservation**: Like Identity Theft, Seppuku T executes as a standalone event entry (`eventType: 'seppuku'`) without advancing the completed round counter.
+- **Full History & Persistence**: Detailed player choices and outcomes are stored in event metadata, displayed in round history, and preserved across JSON exports and re-imports.
+
+---
+
+### 6. Pandora's Box Rule Card Drawer
 
 Bring the expansion's dynamic rules to life digitally:
 
@@ -119,7 +136,7 @@ Bring the expansion's dynamic rules to life digitally:
 
 ---
 
-### 6. Multilingual Rules & Card Encyclopedia
+### 7. Multilingual Rules & Card Encyclopedia
 
 A comprehensive reference dictionary for card game nights:
 
@@ -133,19 +150,23 @@ A comprehensive reference dictionary for card game nights:
 
 ---
 
-### 7. Match Configuration & Player Management
+### 8. Match Configuration & Player Management
 
 Customizable match settings to fit any table:
 
 - **2 to 8 Players**: Accommodates standard groups and large party sessions.
 - **10 Vibrant Colors**: Choose from Red, Blue, Green, Yellow, Purple, Orange, White, Black, Cyan, and Pink with custom avatars.
 - **Official Score Limits**: Quick-select buttons for Short, Medium, and Long matches automatically adjusted for player count.
-- **Custom Target Limits**: Set any custom score limit from 10 to 999 points.
-- **Mid-Game Roster Adjustments**: Add players, remove players, or edit names without wiping existing round data.
+- **Custom Target Limits**: Set any custom score limit from 50 to 999 points.
+- **Total Round Limit**: Configure an optional fixed maximum round count (presets: 5, 10, 15, 20 rounds or custom limit). The match automatically concludes when the round limit is reached, declaring the lowest scorer the winner.
+- **Mid-Game Roster Adjustments**: Edit player names, avatar colors, and round limits mid-match without resetting rounds.
+- **Mid-Game Late Joiners**: Add new players to an active game at any point. The companion app automatically assigns their starting penalty points according to the rule:
+  $$\text{Starting Score} = \max(\text{Current Player Scores}) + 1$$
+  This ensures fair competition while seamlessly integrating new participants into the leaderboard.
 
 ---
 
-### 8. Game Over Celebration & Statistics
+### 9. Game Over Celebration & Statistics
 
 When the elimination threshold is reached:
 
@@ -157,7 +178,7 @@ When the elimination threshold is reached:
 
 ---
 
-### 9. Audio Effects, Haptics & Dark Mode
+### 10. Audio Effects, Haptics & Dark Mode
 
 Engineered for a responsive, tactile mobile experience:
 
@@ -168,7 +189,7 @@ Engineered for a responsive, tactile mobile experience:
 
 ---
 
-### 10. Data Persistence, Backup & Restore
+### 11. Data Persistence, Backup & Restore
 
 Keep your tournament logs safe:
 

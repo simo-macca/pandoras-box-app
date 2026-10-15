@@ -104,6 +104,21 @@ Certain events alter round scoring outcomes:
   - **Winner Bonus**: If the player holding the active Time Bomb finishes their hand first, they receive a **-10 point bonus**.
   - **Loser Penalty**: If another player finishes while you are holding the Time Bomb, you receive a **+10 point penalty**.
   - **Expired Explosion**: If the bomb timer expires before anyone sheds their hand, the holder's round penalty score is **doubled ($\times 2$)**.
+- **Identity Theft**:
+  - Swaps cumulative scores between the player with the lowest score and the player with the highest score.
+  - Deterministic tie-breaking selects the first matching player in the roster order.
+  - Does not advance the round counter.
+- **Seppuku T**:
+  - Created by D'Sinead Conception: each player chooses in turn order whether to commit Seppuku.
+  - **Risk Taken — Number card drawn**: `-21 pts`.
+  - **Risk Taken — Non-number / Special card drawn**: `+42 pts`.
+  - **No Risk / Refused**: `+21 pts`.
+  - Applied directly to cumulative scores without advancing the round counter.
+- **Mid-Game Late Joiners**:
+  - When a new player joins an active match, their initial score is set to:
+    $$\text{Starting Score} = \max(\text{Current Scores}) + 1$$
+- **Unrestricted Negative Scores**:
+  - Scores are never artificially clamped to zero. Negative round scores and negative cumulative totals are fully permitted.
 
 ---
 
