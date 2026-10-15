@@ -35,9 +35,24 @@ export const EventCardsSection: React.FC<EventCardsSectionProps> = ({
               <h4 className="text-base font-bold text-neutral-900 dark:text-white">
                 {ev.name[language] || ev.name.en}
               </h4>
-              <span className="shrink-0 rounded-full border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 text-[10px] font-black tracking-wider text-rose-600 uppercase dark:text-rose-400">
-                {ev.severity}
-              </span>
+              <div className="flex shrink-0 items-center gap-1.5">
+                {ev.scope && (
+                  <span
+                    className={`rounded-full border px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase ${
+                      ev.scope === 'global'
+                        ? 'border-indigo-500/30 bg-indigo-500/15 text-indigo-600 dark:text-indigo-400'
+                        : 'border-amber-500/30 bg-amber-500/15 text-amber-600 dark:text-amber-400'
+                    }`}
+                  >
+                    {ev.scope === 'global'
+                      ? t.rules.scopeGlobal || 'Global'
+                      : t.rules.scopeTargeted || 'Targeted'}
+                  </span>
+                )}
+                <span className="shrink-0 rounded-full border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 text-[10px] font-black tracking-wider text-rose-600 uppercase dark:text-rose-400">
+                  {ev.severity}
+                </span>
+              </div>
             </div>
             <p className="mt-2 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
               {ev.description[language] || ev.description.en}

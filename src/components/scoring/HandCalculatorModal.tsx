@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   X,
   Trophy,
@@ -80,6 +80,24 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
     setScores(initial);
   }, [isOpen, players, initialScores]);
 
+  const tableTimeBombMode: 'none' | 'defused' | 'exploded' = useMemo(() => {
+    const list = Object.values(scores);
+    if (list.length === 0) return 'none';
+    if (list.every((s) => s.timeBombModifier === 'expired_double')) {
+      return 'exploded';
+    }
+    if (
+      list.some(
+        (s) =>
+          s.timeBombModifier === 'winner_bonus' ||
+          s.timeBombModifier === 'loser_penalty'
+      )
+    ) {
+      return 'defused';
+    }
+    return 'none';
+  }, [scores]);
+
   if (!isOpen || players.length === 0) return null;
 
   const currentScore: HandScore = scores[selectedPlayerId] || {
@@ -112,7 +130,10 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
     });
   };
 
+  const isTableDoomsday = Object.values(scores).some((s) => s.isDoomsday);
+
   const handleWinnerToggle = () => {
+    if (isTableDoomsday) return;
     const nextIsWinner = !currentScore.isWinner;
     soundEffects.playClick();
 
@@ -121,7 +142,14 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
       if (nextIsWinner) {
         players.forEach((p) => {
           if (p.id !== selectedPlayerId && updated[p.id]?.isWinner) {
-            const cleared = { ...updated[p.id], isWinner: false };
+            const cleared = {
+              ...updated[p.id],
+              isWinner: false,
+              timeBombModifier:
+                updated[p.id].timeBombModifier === 'winner_bonus'
+                  ? ('loser_penalty' as TimeBombModifier)
+                  : updated[p.id].timeBombModifier,
+            };
             updated[p.id] = {
               ...cleared,
               totalPoints: calculateHandPoints(cleared),
@@ -130,9 +158,20 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
         });
       }
 
+      let nextTimeBomb = currentScore.timeBombModifier;
+      if (nextIsWinner && currentScore.timeBombModifier === 'loser_penalty') {
+        nextTimeBomb = 'winner_bonus';
+      } else if (
+        !nextIsWinner &&
+        currentScore.timeBombModifier === 'winner_bonus'
+      ) {
+        nextTimeBomb = 'loser_penalty';
+      }
+
       const merged: Omit<HandScore, 'totalPoints'> = {
         ...currentScore,
         isWinner: nextIsWinner,
+        timeBombModifier: nextTimeBomb,
         ...(nextIsWinner
           ? {
               numberCards: {},
@@ -155,7 +194,7 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
   };
 
   const handleDoomsdayToggle = () => {
-    const next = !currentScore.isDoomsday;
+    const next = !isTableDoomsday;
     soundEffects.playClick();
     setScores((prev) => {
       const updated = { ...prev };
@@ -164,7 +203,36 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
           ...DEFAULT_HAND_SCORE,
           totalPoints: 0,
         };
-        const merged = { ...pScore, isDoomsday: next };
+        const merged = {
+          ...pScore,
+          isDoomsday: next,
+          isWinner: next ? false : pScore.isWinner,
+        };
+        updated[p.id] = {
+          ...merged,
+          totalPoints: calculateHandPoints(merged),
+        };
+      });
+      return updated;
+    });
+  };
+
+  const handleTableTimeBombChange = (mode: 'none' | 'defused' | 'exploded') => {
+    soundEffects.playClick();
+    setScores((prev) => {
+      const updated = { ...prev };
+      players.forEach((p) => {
+        const pScore = updated[p.id] || {
+          ...DEFAULT_HAND_SCORE,
+          totalPoints: 0,
+        };
+        let newMod: TimeBombModifier = 'none';
+        if (mode === 'exploded') {
+          newMod = 'expired_double';
+        } else if (mode === 'defused') {
+          newMod = pScore.isWinner ? 'winner_bonus' : 'loser_penalty';
+        }
+        const merged = { ...pScore, timeBombModifier: newMod };
         updated[p.id] = {
           ...merged,
           totalPoints: calculateHandPoints(merged),
@@ -176,14 +244,19 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
 
   const handleResetCurrentPlayer = () => {
     soundEffects.playClick();
-    const raw = { ...DEFAULT_HAND_SCORE };
-    setScores((prev) => ({
-      ...prev,
-      [selectedPlayerId]: {
-        ...raw,
-        totalPoints: calculateHandPoints(raw),
-      },
-    }));
+    setScores((prev) => {
+      const raw = {
+        ...DEFAULT_HAND_SCORE,
+        isDoomsday: isTableDoomsday,
+      };
+      return {
+        ...prev,
+        [selectedPlayerId]: {
+          ...raw,
+          totalPoints: calculateHandPoints(raw),
+        },
+      };
+    });
   };
 
   const handleSubmit = () => {
@@ -279,10 +352,13 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
           <button
             type="button"
             onClick={handleWinnerToggle}
+            disabled={isTableDoomsday}
             className={`flex w-full items-center justify-between rounded-2xl border p-3.5 transition-all ${
-              currentScore.isWinner
-                ? 'border-emerald-500 bg-emerald-500/15 font-bold text-emerald-600 shadow-md dark:text-emerald-400'
-                : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300 dark:hover:border-neutral-700'
+              isTableDoomsday
+                ? 'cursor-not-allowed border-neutral-200 bg-neutral-100 text-neutral-400 opacity-60 dark:border-neutral-800 dark:bg-neutral-800/20'
+                : currentScore.isWinner
+                  ? 'border-emerald-500 bg-emerald-500/15 font-bold text-emerald-600 shadow-md dark:text-emerald-400'
+                  : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300 dark:hover:border-neutral-700'
             }`}
           >
             <div className="flex items-center gap-3">
@@ -358,10 +434,12 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
 
           {/* Event Modifiers Section */}
           <ScoringModifiers
-            isDoomsday={!!currentScore.isDoomsday}
+            isDoomsday={isTableDoomsday}
             timeBombModifier={currentScore.timeBombModifier || 'none'}
+            tableTimeBombMode={tableTimeBombMode}
             customModifier={currentScore.customModifier || 0}
             onToggleDoomsday={handleDoomsdayToggle}
+            onChangeTableTimeBomb={handleTableTimeBombChange}
             onChangeTimeBomb={(mod: TimeBombModifier) =>
               updateCurrentScore({ timeBombModifier: mod })
             }

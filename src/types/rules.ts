@@ -6,6 +6,7 @@ export {
 
 export type CardTiming = 'play' | 'passing' | 'landing' | 'reaction' | 'white';
 export type EventSeverity = 'positive' | 'negative' | 'chaos' | 'neutral';
+export type EventScope = 'global' | 'targeted';
 
 export type LocalizedMap = Record<Language, string>;
 
@@ -26,6 +27,7 @@ export interface EventItem {
   name: LocalizedMap;
   specialModifier?: string;
   severity: EventSeverity;
+  scope?: EventScope;
   expansion?: string;
   icon?: string;
   description: LocalizedMap;

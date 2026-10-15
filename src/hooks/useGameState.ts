@@ -128,6 +128,9 @@ export function useGameState() {
           roundNumber: nextRoundNumber,
           timestamp: Date.now(),
           activeRuleCardId: prev.activeRuleCardIds?.[0] || null,
+          activeRuleCardIds: prev.activeRuleCardIds
+            ? [...prev.activeRuleCardIds]
+            : [],
           scores,
           notes,
         };

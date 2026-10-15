@@ -96,6 +96,11 @@ export interface TranslationStrings {
     eventsAndModifiers: string;
     doomsdayToggle: string;
     doomsdayHint: string;
+    tableEventsTitle?: string;
+    tableEventsHint?: string;
+    timeBombTableNone?: string;
+    timeBombTableDefused?: string;
+    timeBombTableExploded?: string;
     timeBombModifier: string;
     timeBombNone: string;
     timeBombWinner: string;
@@ -153,6 +158,8 @@ export interface TranslationStrings {
     openPdf: string;
     downloadPdf: string;
     fullRulebook: string;
+    scopeGlobal?: string;
+    scopeTargeted?: string;
     quickReference: string;
     timings?: {
       play: string;

@@ -12,6 +12,7 @@ export const EVENTS_DATA: EventItem[] = [
     },
     specialModifier: 'doomsday',
     severity: 'chaos',
+    scope: 'global',
     expansion: 'base',
     icon: 'Skull',
     description: {
@@ -31,6 +32,7 @@ export const EVENTS_DATA: EventItem[] = [
     },
     specialModifier: 'timebomb',
     severity: 'chaos',
+    scope: 'global',
     expansion: 'base',
     icon: 'Bomb',
     description: {
@@ -49,6 +51,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Tornade',
     },
     severity: 'chaos',
+    scope: 'global',
     expansion: 'base',
     icon: 'Wind',
     description: {
@@ -67,6 +70,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Séisme',
     },
     severity: 'negative',
+    scope: 'global',
     expansion: 'base',
     icon: 'Activity',
     description: {
@@ -85,6 +89,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Ligne d’Arrivée',
     },
     severity: 'neutral',
+    scope: 'global',
     expansion: 'base',
     icon: 'Flag',
     description: {
@@ -103,6 +108,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Communisme',
     },
     severity: 'neutral',
+    scope: 'global',
     expansion: 'base',
     icon: 'Users',
     description: {
@@ -121,6 +127,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Fête Surprise',
     },
     severity: 'negative',
+    scope: 'global',
     expansion: 'base',
     icon: 'Gift',
     description: {
@@ -139,6 +146,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Charité',
     },
     severity: 'positive',
+    scope: 'targeted',
     expansion: 'base',
     icon: 'HeartHandshake',
     description: {
@@ -157,6 +165,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Expansion',
     },
     severity: 'negative',
+    scope: 'global',
     expansion: 'base',
     icon: 'Maximize2',
     description: {
@@ -175,6 +184,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Robin des Bois',
     },
     severity: 'positive',
+    scope: 'targeted',
     expansion: 'base',
     icon: 'Crosshair',
     description: {
@@ -193,6 +203,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Joueur Passionné',
     },
     severity: 'chaos',
+    scope: 'global',
     expansion: 'base',
     icon: 'Dices',
     description: {
@@ -211,6 +222,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Marché',
     },
     severity: 'positive',
+    scope: 'global',
     expansion: 'base',
     icon: 'ShoppingBag',
     description: {
@@ -229,6 +241,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Saison des Amours',
     },
     severity: 'positive',
+    scope: 'global',
     expansion: 'base',
     icon: 'Layers',
     description: {
@@ -247,6 +260,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Joyeux Noël',
     },
     severity: 'neutral',
+    scope: 'global',
     expansion: 'base',
     icon: 'Gift',
     description: {
@@ -265,6 +279,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Face-à-face Mexicain',
     },
     severity: 'chaos',
+    scope: 'global',
     expansion: 'base',
     icon: 'Crosshair',
     description: {
@@ -283,6 +298,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Récession',
     },
     severity: 'positive',
+    scope: 'global',
     expansion: 'base',
     icon: 'TrendingDown',
     description: {
@@ -301,6 +317,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'L’Œil qui Voit Tout',
     },
     severity: 'neutral',
+    scope: 'global',
     expansion: 'base',
     icon: 'Eye',
     description: {
@@ -319,6 +336,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Jamais Deux Sans Trois',
     },
     severity: 'negative',
+    scope: 'global',
     expansion: 'base',
     icon: 'HelpCircle',
     description: {
@@ -337,6 +355,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Vendredi 13',
     },
     severity: 'neutral',
+    scope: 'global',
     expansion: 'base',
     icon: 'Calendar',
     description: {
@@ -355,6 +374,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Vandalisme',
     },
     severity: 'chaos',
+    scope: 'global',
     expansion: 'base',
     icon: 'Hammer',
     description: {
@@ -375,6 +395,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Trou Noir',
     },
     severity: 'chaos',
+    scope: 'targeted',
     expansion: 'troublemaker',
     icon: 'Compass',
     description: {
@@ -393,6 +414,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Capitalisme',
     },
     severity: 'negative',
+    scope: 'global',
     expansion: 'troublemaker',
     icon: 'TrendingUp',
     description: {
@@ -411,6 +433,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Financement Participatif',
     },
     severity: 'positive',
+    scope: 'targeted',
     expansion: 'troublemaker',
     icon: 'Coins',
     description: {
@@ -429,6 +452,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Distributeur',
     },
     severity: 'chaos',
+    scope: 'global',
     expansion: 'troublemaker',
     icon: 'Share2',
     description: {
@@ -447,6 +471,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Double Imposition',
     },
     severity: 'negative',
+    scope: 'global',
     expansion: 'troublemaker',
     icon: 'DollarSign',
     description: {
@@ -465,6 +490,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Gestionnaire d’Événements',
     },
     severity: 'neutral',
+    scope: 'targeted',
     expansion: 'troublemaker',
     icon: 'Sliders',
     description: {
@@ -483,6 +509,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Vol d’Identité',
     },
     severity: 'chaos',
+    scope: 'targeted',
     expansion: 'troublemaker',
     icon: 'UserCheck',
     description: {
@@ -501,6 +528,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Dernière Chance',
     },
     severity: 'chaos',
+    scope: 'global',
     expansion: 'troublemaker',
     icon: 'AlertCircle',
     description: {
@@ -519,6 +547,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Peste',
     },
     severity: 'chaos',
+    scope: 'global',
     expansion: 'troublemaker',
     icon: 'Biohazard',
     description: {
@@ -537,6 +566,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Plus Un (+1)',
     },
     severity: 'negative',
+    scope: 'global',
     expansion: 'troublemaker',
     icon: 'Plus',
     description: {
@@ -555,6 +585,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Répétition',
     },
     severity: 'neutral',
+    scope: 'targeted',
     expansion: 'troublemaker',
     icon: 'Repeat',
     description: {
@@ -573,6 +604,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Roulette Russe',
     },
     severity: 'negative',
+    scope: 'global',
     expansion: 'troublemaker',
     icon: 'Target',
     description: {
@@ -591,6 +623,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Seppuku',
     },
     severity: 'chaos',
+    scope: 'targeted',
     expansion: 'troublemaker',
     icon: 'Sword',
     description: {
@@ -609,6 +642,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Saut de l’Ange',
     },
     severity: 'neutral',
+    scope: 'targeted',
     expansion: 'troublemaker',
     icon: 'Shield',
     description: {
@@ -629,6 +663,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Black Jack',
     },
     severity: 'chaos',
+    scope: 'global',
     expansion: 'supercharge',
     icon: 'Spade',
     description: {
@@ -647,6 +682,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Chargenado',
     },
     severity: 'chaos',
+    scope: 'global',
     expansion: 'supercharge',
     icon: 'Zap',
     description: {
@@ -665,6 +701,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Échec Épique',
     },
     severity: 'negative',
+    scope: 'targeted',
     expansion: 'supercharge',
     icon: 'AlertTriangle',
     description: {
@@ -683,6 +720,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Butin',
     },
     severity: 'neutral',
+    scope: 'global',
     expansion: 'supercharge',
     icon: 'Package',
     description: {
@@ -701,6 +739,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Parasite',
     },
     severity: 'positive',
+    scope: 'targeted',
     expansion: 'supercharge',
     icon: 'Bug',
     description: {
@@ -719,6 +758,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Rembobinage',
     },
     severity: 'chaos',
+    scope: 'global',
     expansion: 'supercharge',
     icon: 'Rewind',
     description: {
@@ -737,6 +777,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Émeute',
     },
     severity: 'chaos',
+    scope: 'global',
     expansion: 'supercharge',
     icon: 'Flame',
     description: {
@@ -755,6 +796,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Supercharge',
     },
     severity: 'positive',
+    scope: 'global',
     expansion: 'supercharge',
     icon: 'Zap',
     description: {
@@ -773,6 +815,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Tsunami',
     },
     severity: 'chaos',
+    scope: 'global',
     expansion: 'supercharge',
     icon: 'Waves',
     description: {
@@ -793,6 +836,7 @@ export const EVENTS_DATA: EventItem[] = [
       fr: 'Boîte de Pandore',
     },
     severity: 'chaos',
+    scope: 'global',
     expansion: 'pandoras-box',
     icon: 'Package',
     description: {

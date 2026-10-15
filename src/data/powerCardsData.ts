@@ -148,7 +148,7 @@ export const POWER_CARDS_DATA: PowerCardItem[] = [
   {
     id: 'recycling',
     points: 0,
-    timing: '2nd',
+    timing: '1st',
     charges: 1,
     name: {
       en: 'Recycling',
@@ -157,16 +157,16 @@ export const POWER_CARDS_DATA: PowerCardItem[] = [
       fr: 'Recyclage',
     },
     description: {
-      en: '2ND: The card you just played from your hand has to be put back in someone’s hand (you determine who, including yourself). The game continues as if the card had not been played. (Note: Wishes remain in force).',
-      de: '2ND: Die soeben gespielte Handkarte muss in die Hand einer beliebigen Person wandern (auch du selbst). Das Spiel läuft weiter, als wäre sie nicht gespielt worden.',
-      it: '2ND: La carta appena giocata dalla tua mano deve tornare nella mano di un giocatore a tua scelta (anche te stesso). Il gioco continua come se non fosse stata giocata.',
-      fr: '2ND : La carte tout juste jouée doit retourner dans la main d’un joueur de votre choix (vous y compris). Le jeu continue comme si elle n’avait pas été jouée.',
+      en: '1ST: The card you just played from your hand has to be put back in someone’s hand (you determine who, including yourself). The game continues as if the card had not been played. (Note: Wishes remain in force).',
+      de: '1ST: Die soeben gespielte Handkarte muss in die Hand einer beliebigen Person wandern (auch du selbst). Das Spiel läuft weiter, als wäre sie nicht gespielt worden.',
+      it: '1ST: La carta appena giocata dalla tua mano deve tornare nella mano di un giocatore a tua scelta (anche te stesso). Il gioco continua come se non fosse stata giocata.',
+      fr: '1ST : La carte tout juste jouée doit retourner dans la main d’un joueur de votre choix (vous y compris). Le jeu continue comme si elle n’avait pas été jouée.',
     },
   },
   {
     id: 'special-charge',
     points: 0,
-    timing: '1st',
+    timing: '2nd',
     charges: 1,
     name: {
       en: 'Special Charge',
@@ -175,10 +175,10 @@ export const POWER_CARDS_DATA: PowerCardItem[] = [
       fr: 'Charge Spéciale',
     },
     description: {
-      en: '1ST: Select a person who has to draw an additional card from the draw pile for every special card (all cards except numbers) they hold in their hand.',
-      de: '1ST: Wähle eine Person, die für jede Spezialkarte (alles ausser Zahlen) auf ihrer Hand eine zusätzliche Karte vom Nachziehstapel ziehen muss.',
-      it: '1ST: Scegli un giocatore che deve pescare 1 carta addizionale dal mazzo per ogni carta speciale (tutto tranne i numeri) che possiede in mano.',
-      fr: '1ST : Choisissez un joueur qui doit piocher 1 carte supplémentaire pour chaque carte spéciale (tout sauf les chiffres) qu’il a en main.',
+      en: '2ND: Select a person who has to draw an additional card from the draw pile for every special card (all cards except numbers) they hold in their hand.',
+      de: '2ND: Wähle eine Person, die für jede Spezialkarte (alles ausser Zahlen) auf ihrer Hand eine zusätzliche Karte vom Nachziehstapel ziehen muss.',
+      it: '2ND: Scegli un giocatore che deve pescare 1 carta addizionale dal mazzo per ogni carta speciale (tutto tranne i numeri) che possiede in mano.',
+      fr: '2ND : Choisissez un joueur qui doit piocher 1 carte supplémentaire pour chaque carte spéciale (tout sauf les chiffres) qu’il a en main.',
     },
   },
   {

@@ -1,14 +1,16 @@
 import React from 'react';
-import { Zap, Bomb, Check } from 'lucide-react';
+import { Zap, Bomb, Check, Globe } from 'lucide-react';
 import { Language, TimeBombModifier } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
 
 interface ScoringModifiersProps {
   isDoomsday: boolean;
   timeBombModifier: TimeBombModifier;
+  tableTimeBombMode?: 'none' | 'defused' | 'exploded';
   customModifier: number;
   onToggleDoomsday: () => void;
   onChangeTimeBomb: (modifier: TimeBombModifier) => void;
+  onChangeTableTimeBomb?: (mode: 'none' | 'defused' | 'exploded') => void;
   onChangeCustomModifier: (value: number) => void;
   language: Language;
 }
@@ -16,9 +18,11 @@ interface ScoringModifiersProps {
 export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
   isDoomsday,
   timeBombModifier,
+  tableTimeBombMode = 'none',
   customModifier,
   onToggleDoomsday,
   onChangeTimeBomb,
+  onChangeTableTimeBomb,
   onChangeCustomModifier,
   language,
 }) => {
@@ -26,10 +30,16 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
 
   return (
     <div className="space-y-3 rounded-2xl border border-neutral-200 bg-neutral-50 p-3 sm:p-4 dark:border-neutral-800 dark:bg-neutral-800/30">
-      <h4 className="flex items-center gap-2 text-xs font-bold tracking-wider text-neutral-700 uppercase dark:text-neutral-300">
-        <Zap className="h-3.5 w-3.5 shrink-0 text-amber-500 dark:text-amber-400" />
-        <span>{t.scoring.eventsAndModifiers}</span>
-      </h4>
+      <div className="flex items-center justify-between">
+        <h4 className="flex items-center gap-2 text-xs font-bold tracking-wider text-neutral-700 uppercase dark:text-neutral-300">
+          <Zap className="h-3.5 w-3.5 shrink-0 text-amber-500 dark:text-amber-400" />
+          <span>{t.scoring.eventsAndModifiers}</span>
+        </h4>
+        <span className="flex items-center gap-1 text-[10px] font-semibold text-neutral-400">
+          <Globe className="h-3 w-3" />
+          <span>{t.scoring.tableEventsTitle || 'Table Events'}</span>
+        </span>
+      </div>
 
       {/* Doomsday Switch */}
       <button
@@ -56,16 +66,50 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
         </div>
       </button>
 
-      {/* Time Bomb Selector */}
-      <div className="space-y-1">
+      {/* Table-wide Time Bomb Mode */}
+      {onChangeTableTimeBomb && (
+        <div className="space-y-1">
+          <label className="flex items-center gap-1 text-[11px] font-bold text-neutral-600 dark:text-neutral-400">
+            <Bomb className="h-3.5 w-3.5 shrink-0 text-amber-500" />
+            <span>{t.scoring.timeBombModifier} (Global)</span>
+          </label>
+          <select
+            value={tableTimeBombMode}
+            onChange={(e) =>
+              onChangeTableTimeBomb(
+                e.target.value as 'none' | 'defused' | 'exploded'
+              )
+            }
+            disabled={isDoomsday}
+            aria-label="Table Time Bomb Mode"
+            className="w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
+          >
+            <option value="none">
+              {t.scoring.timeBombTableNone || t.scoring.timeBombNone}
+            </option>
+            <option value="defused">
+              {t.scoring.timeBombTableDefused ||
+                'Defused: Winner shed hand (-10 winner / +10 others)'}
+            </option>
+            <option value="exploded">
+              {t.scoring.timeBombTableExploded ||
+                'Exploded: Timer ran out (All points doubled x2)'}
+            </option>
+          </select>
+        </div>
+      )}
+
+      {/* Time Bomb Selector (Player Override) */}
+      <div className="space-y-1 border-t border-neutral-200/60 pt-1 dark:border-neutral-700/60">
         <label className="flex items-center gap-1 text-[11px] font-bold text-neutral-600 dark:text-neutral-400">
           <Bomb className="h-3.5 w-3.5 shrink-0 text-amber-500" />
-          <span>{t.scoring.timeBombModifier}</span>
+          <span>{t.scoring.timeBombModifier} (Player Override)</span>
         </label>
         <select
           value={timeBombModifier}
           onChange={(e) => onChangeTimeBomb(e.target.value as TimeBombModifier)}
           disabled={isDoomsday}
+          aria-label={t.scoring.timeBombModifier}
           className="w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
         >
           <option value="none">{t.scoring.timeBombNone}</option>
@@ -76,7 +120,7 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
       </div>
 
       {/* Custom +/- modifier */}
-      <div className="flex items-center gap-2 pt-1">
+      <div className="flex items-center gap-2 border-t border-neutral-200/60 pt-1 dark:border-neutral-700/60">
         <div className="flex-1">
           <label className="text-[11px] font-bold text-neutral-600 dark:text-neutral-400">
             {t.scoring.customModifier}
