@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { X, Play, RotateCcw, AlertTriangle, Users } from 'lucide-react';
+import {
+  X,
+  Play,
+  RotateCcw,
+  AlertTriangle,
+  Users,
+  Clock,
+  Check,
+} from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Player, GameConfig, Language, PlayerColor } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
@@ -13,6 +21,7 @@ interface GameSetupModalProps {
   onClose: () => void;
   currentPlayers: Player[];
   currentConfig: GameConfig;
+  isMatchInProgress?: boolean;
   onSaveAndStart: (
     players: Player[],
     config: GameConfig,
@@ -26,6 +35,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
   onClose,
   currentPlayers,
   currentConfig,
+  isMatchInProgress = false,
   onSaveAndStart,
   language,
 }) => {
@@ -33,6 +43,9 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
 
   const [draftPlayers, setDraftPlayers] = useState<Player[]>(currentPlayers);
   const [draftConfig, setDraftConfig] = useState<GameConfig>(currentConfig);
+  const [draftRoundLimit, setDraftRoundLimit] = useState<string>(
+    currentConfig.roundLimit ? String(currentConfig.roundLimit) : ''
+  );
   const [customValue, setCustomValue] = useState<string>(
     currentConfig.presetName === 'custom'
       ? String(currentConfig.targetScore)
@@ -60,6 +73,9 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
       });
       setDraftPlayers(sanitized);
       setDraftConfig(currentConfig);
+      setDraftRoundLimit(
+        currentConfig.roundLimit ? String(currentConfig.roundLimit) : ''
+      );
       setShowConfirmReset(false);
       setCustomValue(
         currentConfig.presetName === 'custom'
@@ -174,6 +190,12 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
     }
   };
 
+  const getValidRoundLimit = (): number | null => {
+    if (!draftRoundLimit.trim()) return null;
+    const parsed = parseInt(draftRoundLimit.trim(), 10);
+    return !isNaN(parsed) && parsed > 0 ? parsed : null;
+  };
+
   const handleSaveOnly = () => {
     const validTargetScore = validateAndGetTargetScore();
     if (validTargetScore === null) {
@@ -185,6 +207,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
       {
         ...draftConfig,
         targetScore: validTargetScore,
+        roundLimit: getValidRoundLimit(),
       },
       false
     );
@@ -202,6 +225,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
       {
         ...draftConfig,
         targetScore: validTargetScore,
+        roundLimit: getValidRoundLimit(),
       },
       true
     );
@@ -256,6 +280,74 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
             onSubmitCustom={handleSaveOnly}
             language={language}
           />
+
+          <hr className="border-neutral-200 dark:border-neutral-800" />
+
+          {/* Round Limit Selector */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor="round-limit-input"
+                className="flex items-center gap-2 text-sm font-bold text-neutral-800 dark:text-neutral-200"
+              >
+                <Clock className="h-4 w-4 text-amber-500" />
+                <span>{t.setup?.roundLimit || 'Total Round Limit'}</span>
+              </label>
+              <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+                {draftRoundLimit && parseInt(draftRoundLimit, 10) > 0
+                  ? `${draftRoundLimit} ${t.setup?.roundLimitRounds || 'rounds'}`
+                  : t.setup?.roundLimitUnlimited || 'No Limit'}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+              <button
+                type="button"
+                onClick={() => setDraftRoundLimit('')}
+                className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 text-xs font-bold transition-all ${
+                  !draftRoundLimit || parseInt(draftRoundLimit, 10) <= 0
+                    ? 'border-amber-500 bg-amber-500/15 text-amber-600 dark:text-amber-400'
+                    : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300'
+                }`}
+              >
+                <span>{t.setup?.roundLimitUnlimited || 'No Limit'}</span>
+              </button>
+
+              {[5, 10, 15, 20].map((rounds) => {
+                const isSelected = parseInt(draftRoundLimit, 10) === rounds;
+                return (
+                  <button
+                    key={rounds}
+                    type="button"
+                    onClick={() => setDraftRoundLimit(String(rounds))}
+                    className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 text-xs font-bold transition-all ${
+                      isSelected
+                        ? 'border-amber-500 bg-amber-500/15 text-amber-600 dark:text-amber-400'
+                        : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300'
+                    }`}
+                  >
+                    <span>
+                      {rounds} {t.setup?.roundLimitRounds || 'Rounds'}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex items-center gap-2 pt-1">
+              <input
+                id="round-limit-input"
+                type="number"
+                min="1"
+                max="100"
+                placeholder="Custom round limit (optional)"
+                aria-label={t.setup?.roundLimit || 'Total Round Limit'}
+                value={draftRoundLimit}
+                onChange={(e) => setDraftRoundLimit(e.target.value)}
+                className="w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Footer Actions */}
@@ -276,8 +368,16 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
                 onClick={handleSaveOnly}
                 className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-xs font-extrabold text-white shadow-md transition-all hover:from-amber-400 hover:to-amber-500 active:scale-95 sm:px-6 sm:py-2.5 sm:text-sm"
               >
-                <Play className="h-4 w-4 shrink-0 fill-white" />
-                <span className="whitespace-nowrap">{t.setup.startMatch}</span>
+                {isMatchInProgress ? (
+                  <Check className="h-4 w-4 shrink-0" />
+                ) : (
+                  <Play className="h-4 w-4 shrink-0 fill-white" />
+                )}
+                <span className="whitespace-nowrap">
+                  {isMatchInProgress
+                    ? t.setup?.saveChanges || 'Save Changes'
+                    : t.setup.startMatch}
+                </span>
               </button>
             </div>
           ) : (

@@ -44,6 +44,10 @@ export interface TranslationStrings {
     confirmResetMessage: string;
     cancel: string;
     confirm: string;
+    saveChanges?: string;
+    roundLimit?: string;
+    roundLimitUnlimited?: string;
+    roundLimitRounds?: string;
   };
   scoreboard: {
     title: string;
@@ -217,6 +221,17 @@ export interface TranslationStrings {
     identicalScoresWarning: string;
     eventAction: string;
     swappedPoints: string;
+    seppuku: string;
+    seppukuDesc: string;
+    seppukuAction: string;
+    seppukuTitle: string;
+    seppukuSubtitle: string;
+    seppukuRiskNumber: string;
+    seppukuRiskSpecial: string;
+    seppukuNoRisk: string;
+    seppukuApply: string;
+    seppukuSuccess: string;
+    lateJoiner: string;
   };
 }
 
@@ -269,6 +284,10 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
         'Are you sure you want to reset all scores? This cannot be undone.',
       cancel: 'Cancel',
       confirm: 'Confirm',
+      saveChanges: 'Save Changes',
+      roundLimit: 'Total Round Limit',
+      roundLimitUnlimited: 'No Limit (Points Only)',
+      roundLimitRounds: 'rounds',
     },
     scoreboard: {
       title: 'Standings',
@@ -441,6 +460,19 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
         'Cannot swap: all player scores are currently identical.',
       eventAction: 'Event Action',
       swappedPoints: 'Points Swapped',
+      seppuku: 'Seppuku T',
+      seppukuDesc:
+        'Seppuku T: Flip top card (-21 number / +42 non-number) or refuse (+21)',
+      seppukuAction: 'Seppuku T',
+      seppukuTitle: 'Seppuku T – Point Adjustments',
+      seppukuSubtitle:
+        'In turn order, choose whether each player takes the risk or refuses',
+      seppukuRiskNumber: 'Risk: Number Card (-21 pts)',
+      seppukuRiskSpecial: 'Risk: Non-number / Special (+42 pts)',
+      seppukuNoRisk: 'No Risk (+21 pts)',
+      seppukuApply: 'Apply Seppuku',
+      seppukuSuccess: 'Seppuku T applied successfully!',
+      lateJoiner: 'Late Joiner',
     },
   },
   de: {
@@ -491,6 +523,10 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
         'Möchtest du wirklich alle Runden löschen? Dies kann nicht rückgängig gemacht werden.',
       cancel: 'Abbrechen',
       confirm: 'Bestätigen',
+      saveChanges: 'Änderungen speichern',
+      roundLimit: 'Rundenlimit',
+      roundLimitUnlimited: 'Kein Rundenlimit (nur Punkte)',
+      roundLimitRounds: 'Runden',
     },
     scoreboard: {
       title: 'Rangliste',
@@ -665,6 +701,19 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
         'Kein Tausch möglich: Alle Punktestände sind derzeit identisch.',
       eventAction: 'Ereignis-Aktion',
       swappedPoints: 'Punkte getauscht',
+      seppuku: 'Seppuku T',
+      seppukuDesc:
+        'Seppuku T: Karte aufdecken (-21 Zahl / +42 Nicht-Zahl) oder ablehnen (+21)',
+      seppukuAction: 'Seppuku T',
+      seppukuTitle: 'Seppuku T – Punkteanpassung',
+      seppukuSubtitle:
+        'Der Reihe nach entscheiden, ob Seppuku begangen wird oder kein Risiko gewählt wird',
+      seppukuRiskNumber: 'Risiko: Zahlenkarte (-21 Pkt)',
+      seppukuRiskSpecial: 'Risiko: Sonder- / Aktionskarte (+42 Pkt)',
+      seppukuNoRisk: 'Kein Risiko (+21 Pkt)',
+      seppukuApply: 'Seppuku anwenden',
+      seppukuSuccess: 'Seppuku T erfolgreich angewendet!',
+      lateJoiner: 'Später Beitritt',
     },
   },
   it: {
@@ -715,6 +764,10 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
         'Sei sicuro di voler cancellare tutti i punteggi? Operazione irreversibile.',
       cancel: 'Annulla',
       confirm: 'Conferma',
+      saveChanges: 'Salva Modifiche',
+      roundLimit: 'Limite di Round',
+      roundLimitUnlimited: 'Nessun Limite (Solo Punti)',
+      roundLimitRounds: 'round',
     },
     scoreboard: {
       title: 'Classifica',
@@ -889,6 +942,19 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
         'Impossibile scambiare: tutti i punteggi sono attualmente identici.',
       eventAction: 'Azione Evento',
       swappedPoints: 'Punti Scambiati',
+      seppuku: 'Seppuku T',
+      seppukuDesc:
+        'Seppuku T: Gira la prima carta (-21 numero / +42 non-numero) o rifiuta (+21)',
+      seppukuAction: 'Seppuku T',
+      seppukuTitle: 'Seppuku T – Regolazione Punti',
+      seppukuSubtitle:
+        'A turno, decidi se ciascun giocatore tenta il Seppuku o non rischia',
+      seppukuRiskNumber: 'Rischio: Carta Numero (-21 pt)',
+      seppukuRiskSpecial: 'Rischio: Carta Speciale / Non-numero (+42 pt)',
+      seppukuNoRisk: 'Nessun Rischio (+21 pt)',
+      seppukuApply: 'Applica Seppuku',
+      seppukuSuccess: 'Seppuku T applicato con successo!',
+      lateJoiner: 'Nuovo Giocatore',
     },
   },
   fr: {
@@ -939,6 +1005,10 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
         'Voulez-vous vraiment effacer tous les scores ? Irréversible.',
       cancel: 'Annuler',
       confirm: 'Confirmer',
+      saveChanges: 'Enregistrer les Modifications',
+      roundLimit: 'Limite de Manches',
+      roundLimitUnlimited: 'Pas de Limite (Points Seuls)',
+      roundLimitRounds: 'manches',
     },
     scoreboard: {
       title: 'Classement',
@@ -1114,6 +1184,19 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
         'Échange impossible: tous les scores sont actuellement identiques.',
       eventAction: 'Action Événement',
       swappedPoints: 'Points Échangés',
+      seppuku: 'Seppuku T',
+      seppukuDesc:
+        'Seppuku T: Révéler la 1ère carte (-21 chiffre / +42 non-chiffre) ou refuser (+21)',
+      seppukuAction: 'Seppuku T',
+      seppukuTitle: 'Seppuku T – Ajustement des Points',
+      seppukuSubtitle:
+        'Dans l’ordre du tour, choisissez si chaque joueur tente le Seppuku ou refuse le risque',
+      seppukuRiskNumber: 'Risque : Carte Chiffre (-21 pts)',
+      seppukuRiskSpecial: 'Risque : Carte Spéciale / Non-chiffre (+42 pts)',
+      seppukuNoRisk: 'Sans Risque (+21 pts)',
+      seppukuApply: 'Appliquer Seppuku',
+      seppukuSuccess: 'Seppuku T appliqué avec succès !',
+      lateJoiner: 'Arrivée en Cours',
     },
   },
 };

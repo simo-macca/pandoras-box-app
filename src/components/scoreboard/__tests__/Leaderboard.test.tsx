@@ -141,4 +141,20 @@ describe('Leaderboard component', () => {
 
     expect(onApplyIdentityTheft).toHaveBeenCalledTimes(1);
   });
+
+  it('renders and triggers onOpenSeppuku when Seppuku T button is clicked', async () => {
+    const user = userEvent.setup();
+    const onOpenSeppuku = vi.fn();
+
+    render(<Leaderboard {...defaultProps} onOpenSeppuku={onOpenSeppuku} />);
+
+    const seppukuBtn = screen.getByRole('button', {
+      name: /seppuku/i,
+    });
+    expect(seppukuBtn).toBeInTheDocument();
+    expect(seppukuBtn).not.toBeDisabled();
+    await user.click(seppukuBtn);
+
+    expect(onOpenSeppuku).toHaveBeenCalledTimes(1);
+  });
 });

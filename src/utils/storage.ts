@@ -24,6 +24,7 @@ export function getInitialGameState(): GameState {
     config: {
       targetScore: 154,
       presetName: 'medium',
+      roundLimit: null,
     },
     rounds: [],
     activeRuleCardIds: [],

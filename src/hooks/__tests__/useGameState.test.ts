@@ -2,7 +2,12 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useGameState } from '../useGameState';
 import { DEFAULT_HAND_SCORE } from '../../utils/scoring';
-import { HandScore, Player } from '../../types/game';
+import {
+  HandScore,
+  Player,
+  IdentityTheftEventMetadata,
+  SeppukuEventMetadata,
+} from '../../types/game';
 
 describe('useGameState hook', () => {
   beforeEach(() => {
@@ -182,7 +187,11 @@ describe('useGameState hook', () => {
     expect(result.current.gameState.players).toHaveLength(3);
     expect(result.current.gameState.players[0].name).toBe('Alice Super');
     expect(result.current.gameState.config.targetScore).toBe(200);
-    expect(result.current.gameState.rounds).toHaveLength(1);
+    // Regular rounds are preserved (1 regular round + 1 late-joiner event entry)
+    expect(
+      result.current.gameState.rounds.filter((r) => !r.isEvent)
+    ).toHaveLength(1);
+    expect(result.current.gameState.rounds).toHaveLength(2);
   });
 
   it('starts a new game and enforces target score floor of 50', () => {
@@ -358,10 +367,11 @@ describe('useGameState hook', () => {
         ];
       expect(lastEntry.isEvent).toBe(true);
       expect(lastEntry.eventType).toBe('identity-theft');
-      expect(lastEntry.eventMetadata?.lowPlayerId).toBe(p1.id);
-      expect(lastEntry.eventMetadata?.highPlayerId).toBe(p4.id);
-      expect(lastEntry.eventMetadata?.lowScoreBefore).toBe(10);
-      expect(lastEntry.eventMetadata?.highScoreBefore).toBe(80);
+      const eventMeta = lastEntry.eventMetadata as IdentityTheftEventMetadata;
+      expect(eventMeta?.lowPlayerId).toBe(p1.id);
+      expect(eventMeta?.highPlayerId).toBe(p4.id);
+      expect(eventMeta?.lowScoreBefore).toBe(10);
+      expect(eventMeta?.highScoreBefore).toBe(80);
     });
 
     it('handles ties deterministically by selecting the first player in roster order', () => {
@@ -521,6 +531,204 @@ describe('useGameState hook', () => {
         result.current.playerStats.find((p) => p.id === p4.id)!.totalScore
       ).toBe(50);
       expect(result.current.gameState.rounds).toHaveLength(1);
+    });
+  });
+
+  describe('Seppuku T event action', () => {
+    it('applies point adjustments for number (-21), special (+42), and no risk (+21) without advancing round count', () => {
+      const { result } = renderHook(() => useGameState());
+      const [p1, p2, p3, p4] = result.current.gameState.players;
+
+      act(() => {
+        result.current.addRound({
+          [p1.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+          [p2.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+          [p3.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+          [p4.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+        });
+      });
+
+      const roundCountBefore = result.current.gameState.rounds.filter(
+        (r) => !r.isEvent
+      ).length;
+      expect(roundCountBefore).toBe(1);
+
+      act(() => {
+        result.current.applySeppuku({
+          [p1.id]: 'risk_number',
+          [p2.id]: 'risk_special',
+          [p3.id]: 'no_risk',
+          [p4.id]: 'no_risk',
+        });
+      });
+
+      // Round count must NOT advance
+      const roundCountAfter = result.current.gameState.rounds.filter(
+        (r) => !r.isEvent
+      ).length;
+      expect(roundCountAfter).toBe(1);
+
+      // Verify immediate score updates:
+      // p1: 10 + (-21) = -11
+      // p2: 10 + 42 = 52
+      // p3: 10 + 21 = 31
+      // p4: 10 + 21 = 31
+      const p1Stats = result.current.playerStats.find((p) => p.id === p1.id)!;
+      const p2Stats = result.current.playerStats.find((p) => p.id === p2.id)!;
+      const p3Stats = result.current.playerStats.find((p) => p.id === p3.id)!;
+      const p4Stats = result.current.playerStats.find((p) => p.id === p4.id)!;
+
+      expect(p1Stats.totalScore).toBe(-11);
+      expect(p2Stats.totalScore).toBe(52);
+      expect(p3Stats.totalScore).toBe(31);
+      expect(p4Stats.totalScore).toBe(31);
+
+      const lastRound =
+        result.current.gameState.rounds[
+          result.current.gameState.rounds.length - 1
+        ];
+      expect(lastRound.isEvent).toBe(true);
+      expect(lastRound.eventType).toBe('seppuku');
+      const seppukuMeta = lastRound.eventMetadata as SeppukuEventMetadata;
+      expect(seppukuMeta?.choices?.[p1.id]?.points).toBe(-21);
+      expect(seppukuMeta?.choices?.[p2.id]?.points).toBe(42);
+      expect(seppukuMeta?.choices?.[p3.id]?.points).toBe(21);
+    });
+
+    it('reverts Seppuku T points when undoLastRound is invoked', () => {
+      const { result } = renderHook(() => useGameState());
+      const [p1] = result.current.gameState.players;
+
+      act(() => {
+        result.current.applySeppuku({
+          [p1.id]: 'risk_number',
+        });
+      });
+
+      expect(
+        result.current.playerStats.find((p) => p.id === p1.id)!.totalScore
+      ).toBe(-21);
+
+      act(() => {
+        result.current.undoLastRound();
+      });
+
+      expect(
+        result.current.playerStats.find((p) => p.id === p1.id)!.totalScore
+      ).toBe(0);
+      expect(result.current.gameState.rounds).toHaveLength(0);
+    });
+  });
+
+  describe('Mid-game settings, late joiners, and round limits', () => {
+    it('sets initial score of late-joining player to (highest current score) + 1', () => {
+      const { result } = renderHook(() => useGameState());
+      const [p1, p2, p3, p4] = result.current.gameState.players;
+
+      act(() => {
+        result.current.addRound({
+          [p1.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 15 } as HandScore,
+          [p2.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 45 } as HandScore,
+          [p3.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 20 } as HandScore,
+          [p4.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 30 } as HandScore,
+        });
+      });
+
+      // Highest score is Bob (p2) at 45 pts.
+      const newPlayer = {
+        id: 'p5-late',
+        name: 'Late Joiner Eve',
+        color: 'pink' as const,
+      };
+
+      act(() => {
+        result.current.updateGameSetup(
+          [...result.current.gameState.players, newPlayer],
+          result.current.gameState.config
+        );
+      });
+
+      // New player's score must be max(45) + 1 = 46
+      const eveStats = result.current.playerStats.find(
+        (p) => p.id === 'p5-late'
+      )!;
+      expect(eveStats).toBeDefined();
+      expect(eveStats.totalScore).toBe(46);
+
+      // Verify round counter did not advance
+      const actualRoundCount = result.current.gameState.rounds.filter(
+        (r) => !r.isEvent
+      ).length;
+      expect(actualRoundCount).toBe(1);
+
+      // Verify late-joiner event entry was created
+      const lateEntry = result.current.gameState.rounds.find(
+        (r) => r.eventType === 'late-joiner'
+      );
+      expect(lateEntry).toBeDefined();
+      expect(lateEntry?.scores['p5-late']?.totalPoints).toBe(46);
+    });
+
+    it('allows editing player names and colors mid-game', () => {
+      const { result } = renderHook(() => useGameState());
+      const currentPlayers = result.current.gameState.players;
+
+      const updatedPlayers = currentPlayers.map((p, idx) =>
+        idx === 0
+          ? { ...p, name: 'Alice The Great', color: 'purple' as const }
+          : p
+      );
+
+      act(() => {
+        result.current.updateGameSetup(
+          updatedPlayers,
+          result.current.gameState.config
+        );
+      });
+
+      const p1 = result.current.gameState.players[0];
+      expect(p1.name).toBe('Alice The Great');
+      expect(p1.color).toBe('purple');
+    });
+
+    it('triggers game over when completed rounds reach total roundLimit', () => {
+      const { result } = renderHook(() => useGameState());
+      const [p1, p2, p3, p4] = result.current.gameState.players;
+
+      act(() => {
+        result.current.updateGameSetup(result.current.gameState.players, {
+          targetScore: 200,
+          presetName: 'custom',
+          roundLimit: 2,
+        });
+      });
+
+      expect(result.current.gameState.isGameOver).toBe(false);
+
+      // Round 1
+      act(() => {
+        result.current.addRound({
+          [p1.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 5 } as HandScore,
+          [p2.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+          [p3.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 15 } as HandScore,
+          [p4.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 20 } as HandScore,
+        });
+      });
+
+      expect(result.current.gameState.isGameOver).toBe(false);
+
+      // Round 2 (reaches roundLimit: 2)
+      act(() => {
+        result.current.addRound({
+          [p1.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 5 } as HandScore,
+          [p2.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+          [p3.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 15 } as HandScore,
+          [p4.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 20 } as HandScore,
+        });
+      });
+
+      expect(result.current.gameState.isGameOver).toBe(true);
+      expect(result.current.gameState.winnerId).toBe(p1.id);
     });
   });
 });

@@ -12,6 +12,7 @@ export function useAppModals() {
   >('settings');
   const [isGameOverModalDismissed, setIsGameOverModalDismissed] =
     useState(false);
+  const [isSeppukuModalOpen, setIsSeppukuModalOpen] = useState(false);
 
   const openScoreModal = useCallback(
     (isGameOver: boolean, isContinued: boolean) => {
@@ -52,11 +53,20 @@ export function useAppModals() {
     setIsSetupModalOpen(false);
   }, []);
 
+  const openSeppukuModal = useCallback(() => {
+    setIsSeppukuModalOpen(true);
+  }, []);
+
+  const closeSeppukuModal = useCallback(() => {
+    setIsSeppukuModalOpen(false);
+  }, []);
+
   return {
     isScoreModalOpen,
     editingRoundNumber,
     isSetupModalOpen,
     isSettingsModalOpen,
+    isSeppukuModalOpen,
     settingsInitialTab,
     isGameOverModalDismissed,
     setIsGameOverModalDismissed,
@@ -67,5 +77,7 @@ export function useAppModals() {
     closeSettings,
     openSetup,
     closeSetup,
+    openSeppukuModal,
+    closeSeppukuModal,
   };
 }

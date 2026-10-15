@@ -9,6 +9,7 @@ interface NavbarProps {
   language: Language;
   roundsCount: number;
   targetScore: number;
+  roundLimit?: number | null;
   onOpenSetup: () => void;
   onOpenSettings?: () => void;
   theme?: ThemeMode;
@@ -19,6 +20,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   language,
   roundsCount,
   targetScore,
+  roundLimit,
   onOpenSetup,
   onOpenSettings,
   theme,
@@ -44,6 +46,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="flex items-center gap-1.5 truncate text-xs font-medium text-neutral-500 sm:gap-2 dark:text-neutral-400">
               <span className="whitespace-nowrap tabular-nums">
                 {t.scoreboard.round} {roundsCount}
+                {roundLimit && roundLimit > 0 ? ` / ${roundLimit}` : ''}
               </span>
               <span className="shrink-0">•</span>
               <span className="truncate font-bold whitespace-nowrap text-amber-500 tabular-nums">

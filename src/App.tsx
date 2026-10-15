@@ -15,7 +15,8 @@ import { RuleCardDrawer } from './components/rulecards/RuleCardDrawer';
 import { CardDictionary } from './components/rules/CardDictionary';
 import { GameSetupModal } from './components/setup/GameSetupModal';
 import { SettingsModal } from './components/layout/SettingsModal';
-import { HandScore, GameState } from './types/game';
+import { SeppukuModal } from './components/events/SeppukuModal';
+import { HandScore, GameState, SeppukuOutcome } from './types/game';
 import { calculatePlayerStats } from './utils/stats';
 
 export function App() {
@@ -30,6 +31,7 @@ export function App() {
     undoLastRound,
     applyIdentityTheft,
     canApplyIdentityTheft,
+    applySeppuku,
     setActiveRuleCardIds,
     startNewGame,
     updateGameSetup,
@@ -50,6 +52,7 @@ export function App() {
     editingRoundNumber,
     isSetupModalOpen,
     isSettingsModalOpen,
+    isSeppukuModalOpen,
     settingsInitialTab,
     isGameOverModalDismissed,
     setIsGameOverModalDismissed,
@@ -60,6 +63,8 @@ export function App() {
     closeSettings,
     openSetup,
     closeSetup,
+    openSeppukuModal,
+    closeSeppukuModal,
   } = useAppModals();
 
   const { showUndoToast } = useUndoToast({
@@ -144,6 +149,18 @@ export function App() {
     }
   };
 
+  const handleApplySeppuku = (choices: Record<string, SeppukuOutcome>) => {
+    const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
+    const success = applySeppuku(choices);
+    if (success) {
+      showUndoToast(
+        TRANSLATIONS[language].events?.seppukuSuccess ||
+          'Seppuku T applied successfully!',
+        previousSnapshot
+      );
+    }
+  };
+
   const handleUndoLastRound = () => {
     if (gameState.rounds.length > 0) {
       const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
@@ -203,6 +220,7 @@ export function App() {
         onThemeChange={setTheme}
         roundsCount={actualRoundsCount}
         targetScore={gameState.config.targetScore}
+        roundLimit={gameState.config.roundLimit}
         onOpenSetup={openSetup}
         onOpenSettings={() => openSettings('settings')}
       />
@@ -235,6 +253,7 @@ export function App() {
             onConcludeGame={handleConcludeGame}
             onApplyIdentityTheft={handleApplyIdentityTheft}
             canApplyIdentityTheft={canApplyIdentityTheft}
+            onOpenSeppuku={openSeppukuModal}
             language={language}
           />
         )}
@@ -277,7 +296,17 @@ export function App() {
         onClose={closeSetup}
         currentPlayers={gameState.players}
         currentConfig={gameState.config}
+        isMatchInProgress={actualRoundsCount > 0}
         onSaveAndStart={handleSaveSetup}
+        language={language}
+      />
+
+      {/* Seppuku T Event Modal */}
+      <SeppukuModal
+        isOpen={isSeppukuModalOpen}
+        onClose={closeSeppukuModal}
+        players={gameState.players}
+        onApplySeppuku={handleApplySeppuku}
         language={language}
       />
 

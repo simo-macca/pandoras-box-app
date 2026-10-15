@@ -10,6 +10,7 @@ describe('useAppModals hook', () => {
     expect(result.current.editingRoundNumber).toBeNull();
     expect(result.current.isSetupModalOpen).toBe(false);
     expect(result.current.isSettingsModalOpen).toBe(false);
+    expect(result.current.isSeppukuModalOpen).toBe(false);
     expect(result.current.settingsInitialTab).toBe('settings');
     expect(result.current.isGameOverModalDismissed).toBe(false);
   });
@@ -92,5 +93,19 @@ describe('useAppModals hook', () => {
       result.current.openScoreModal(true, true);
     });
     expect(result.current.isScoreModalOpen).toBe(true);
+  });
+
+  it('controls seppuku modal visibility', () => {
+    const { result } = renderHook(() => useAppModals());
+
+    act(() => {
+      result.current.openSeppukuModal();
+    });
+    expect(result.current.isSeppukuModalOpen).toBe(true);
+
+    act(() => {
+      result.current.closeSeppukuModal();
+    });
+    expect(result.current.isSeppukuModalOpen).toBe(false);
   });
 });

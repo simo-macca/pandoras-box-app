@@ -6,6 +6,7 @@ import {
   GameState,
   Language,
   HandScore,
+  SeppukuOutcome,
 } from '../types/game';
 import { soundEffects } from '../utils/sound';
 import {
@@ -77,12 +78,19 @@ export function useGameState() {
       return;
     }
 
+    const currentRoundCount = gameState.rounds.filter((r) => !r.isEvent).length;
+    const reachedRoundLimit = Boolean(
+      gameState.config.roundLimit &&
+      gameState.config.roundLimit > 0 &&
+      currentRoundCount >= gameState.config.roundLimit
+    );
     const someoneExceeded = playerStats.some(
       (p) => p.totalScore >= gameState.config.targetScore
     );
+    const isOver = someoneExceeded || reachedRoundLimit;
     const lowestScorePlayer = playerStats[0];
 
-    if (someoneExceeded) {
+    if (isOver) {
       if (!gameState.isGameOver && !gameState.isContinued) {
         soundEffects.playWinner();
         setGameState((prev) => ({
@@ -110,8 +118,9 @@ export function useGameState() {
     }
   }, [
     playerStats,
-    gameState.rounds.length,
+    gameState.rounds,
     gameState.config.targetScore,
+    gameState.config.roundLimit,
     gameState.isGameOver,
     gameState.isContinued,
     gameState.winnerId,
@@ -268,6 +277,65 @@ export function useGameState() {
     return true;
   }, [gameState]);
 
+  const applySeppuku = useCallback(
+    (choices: Record<string, SeppukuOutcome>): boolean => {
+      if (gameState.players.length === 0) return false;
+
+      const roundScores: Record<string, HandScore> = {};
+      const choicesMetadata: Record<
+        string,
+        {
+          playerName: string;
+          outcome: SeppukuOutcome;
+          points: number;
+        }
+      > = {};
+
+      gameState.players.forEach((p) => {
+        const choice = choices[p.id] || 'no_risk';
+        const points =
+          choice === 'risk_number' ? -21 : choice === 'risk_special' ? 42 : 21;
+
+        roundScores[p.id] = {
+          isWinner: false,
+          totalPoints: points,
+        };
+
+        choicesMetadata[p.id] = {
+          playerName: p.name,
+          outcome: choice,
+          points,
+        };
+      });
+
+      const timestamp = Date.now();
+      const currentRoundCount = gameState.rounds.filter(
+        (r) => !r.isEvent
+      ).length;
+      const eventEntry: RoundEntry = {
+        id: `event-seppuku-${timestamp}`,
+        roundNumber: currentRoundCount,
+        timestamp,
+        isEvent: true,
+        eventType: 'seppuku',
+        scores: roundScores,
+        notes: 'Seppuku T: Point adjustments applied',
+        eventMetadata: {
+          choices: choicesMetadata,
+        },
+      };
+
+      soundEffects.playClick();
+      setGameState((prev) => ({
+        ...prev,
+        rounds: [...prev.rounds, eventEntry],
+      }));
+
+      return true;
+    },
+    [gameState.players, gameState.rounds]
+  );
+
   const undoLastRound = useCallback(() => {
     soundEffects.playClick();
     setGameState((prev) => {
@@ -293,9 +361,13 @@ export function useGameState() {
       setGameState((prev) => {
         const finalPlayers = players || prev.players;
         const baseConfig = config || prev.config;
-        const finalConfig = {
+        const finalConfig: GameConfig = {
           ...baseConfig,
           targetScore: Math.max(50, baseConfig.targetScore),
+          roundLimit:
+            baseConfig.roundLimit && baseConfig.roundLimit > 0
+              ? baseConfig.roundLimit
+              : null,
         };
         return {
           players: finalPlayers,
@@ -316,14 +388,65 @@ export function useGameState() {
     (players: Player[], config: GameConfig) => {
       soundEffects.playClick();
       setGameState((prev) => {
-        const finalConfig = {
+        const finalConfig: GameConfig = {
           ...config,
           targetScore: Math.max(50, config.targetScore),
+          roundLimit:
+            config.roundLimit && config.roundLimit > 0
+              ? config.roundLimit
+              : null,
         };
+
+        // Detect mid-game late joiners: players whose id was not in prev.players
+        const prevIds = new Set(prev.players.map((p) => p.id));
+        const newPlayers = players.filter((p) => !prevIds.has(p.id));
+
+        const updatedRounds = [...prev.rounds];
+        if (newPlayers.length > 0 && prev.rounds.length > 0) {
+          const currentStats = calculatePlayerStats(
+            prev.players,
+            prev.rounds,
+            prev.config.targetScore
+          );
+          const currentScores = currentStats.map((s) => s.totalScore);
+          const maxScore =
+            currentScores.length > 0 ? Math.max(...currentScores) : 0;
+          const startingScore = maxScore + 1;
+          const currentRoundCount = prev.rounds.filter(
+            (r) => !r.isEvent
+          ).length;
+          const timestamp = Date.now();
+
+          newPlayers.forEach((newPlayer, idx) => {
+            const lateJoinerEntry: RoundEntry = {
+              id: `event-late-joiner-${newPlayer.id}-${timestamp + idx}`,
+              roundNumber: currentRoundCount,
+              timestamp: timestamp + idx,
+              isEvent: true,
+              eventType: 'late-joiner',
+              scores: {
+                [newPlayer.id]: {
+                  isWinner: false,
+                  totalPoints: startingScore,
+                },
+              },
+              notes: `Late Joiner: ${newPlayer.name} joined with starting score of ${startingScore} pts`,
+              eventMetadata: {
+                playerId: newPlayer.id,
+                playerName: newPlayer.name,
+                startingScore,
+                highestScoreBefore: maxScore,
+              },
+            };
+            updatedRounds.push(lateJoinerEntry);
+          });
+        }
+
         return {
           ...prev,
           players,
           config: finalConfig,
+          rounds: updatedRounds,
         };
       });
     },
@@ -447,6 +570,7 @@ export function useGameState() {
     undoLastRound,
     applyIdentityTheft,
     canApplyIdentityTheft,
+    applySeppuku,
     setActiveRuleCardIds,
     startNewGame,
     updateGameSetup,

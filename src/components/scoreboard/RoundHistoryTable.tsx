@@ -9,6 +9,8 @@ import {
   Skull,
   Bomb,
   UserCheck,
+  Swords,
+  UserPlus,
   X,
 } from 'lucide-react';
 import { Player, RoundEntry, Language } from '../../types/game';
@@ -96,7 +98,11 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
               key={entryKey}
               className={`rounded-3xl border p-3 shadow-sm transition-all sm:p-4 ${
                 round.isEvent
-                  ? 'border-indigo-500/30 bg-indigo-500/[0.03] dark:border-indigo-500/20 dark:bg-indigo-950/20'
+                  ? round.eventType === 'seppuku'
+                    ? 'border-rose-500/30 bg-rose-500/[0.03] dark:border-rose-500/20 dark:bg-rose-950/20'
+                    : round.eventType === 'late-joiner'
+                      ? 'border-emerald-500/30 bg-emerald-500/[0.03] dark:border-emerald-500/20 dark:bg-emerald-950/20'
+                      : 'border-indigo-500/30 bg-indigo-500/[0.03] dark:border-indigo-500/20 dark:bg-indigo-950/20'
                   : 'border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900'
               }`}
             >
@@ -104,22 +110,49 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
               <div className="mb-3 flex items-center justify-between gap-2 border-b border-neutral-100 pb-3 dark:border-neutral-800">
                 <div className="flex min-w-0 items-center gap-2">
                   {round.isEvent ? (
-                    <>
-                      <span className="flex shrink-0 items-center gap-1 rounded-xl border border-indigo-500/30 bg-indigo-500/15 px-2.5 py-1 text-xs font-black whitespace-nowrap text-indigo-600 tabular-nums dark:text-indigo-400">
-                        <UserCheck className="h-3.5 w-3.5 shrink-0" />
-                        <span>
-                          {t.events?.identityTheft || 'Identity Theft'}
+                    round.eventType === 'seppuku' ? (
+                      <>
+                        <span className="flex shrink-0 items-center gap-1 rounded-xl border border-rose-500/30 bg-rose-500/15 px-2.5 py-1 text-xs font-black whitespace-nowrap text-rose-600 tabular-nums dark:text-rose-400">
+                          <Swords className="h-3.5 w-3.5 shrink-0" />
+                          <span>{t.events?.seppuku || 'Seppuku T'}</span>
                         </span>
-                      </span>
-                      {round.eventMetadata && (
-                        <span className="hidden truncate text-xs font-semibold text-neutral-500 sm:inline dark:text-neutral-400">
-                          {round.eventMetadata.lowPlayerName} (
-                          {round.eventMetadata.lowScoreBefore} pts) ⇄{' '}
-                          {round.eventMetadata.highPlayerName} (
-                          {round.eventMetadata.highScoreBefore} pts)
+                        {round.notes && (
+                          <span className="hidden truncate text-xs font-semibold text-neutral-500 sm:inline dark:text-neutral-400">
+                            {round.notes}
+                          </span>
+                        )}
+                      </>
+                    ) : round.eventType === 'late-joiner' ? (
+                      <>
+                        <span className="flex shrink-0 items-center gap-1 rounded-xl border border-emerald-500/30 bg-emerald-500/15 px-2.5 py-1 text-xs font-black whitespace-nowrap text-emerald-600 tabular-nums dark:text-emerald-400">
+                          <UserPlus className="h-3.5 w-3.5 shrink-0" />
+                          <span>{t.events?.lateJoiner || 'Late Joiner'}</span>
                         </span>
-                      )}
-                    </>
+                        {round.notes && (
+                          <span className="hidden truncate text-xs font-semibold text-neutral-500 sm:inline dark:text-neutral-400">
+                            {round.notes}
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <span className="flex shrink-0 items-center gap-1 rounded-xl border border-indigo-500/30 bg-indigo-500/15 px-2.5 py-1 text-xs font-black whitespace-nowrap text-indigo-600 tabular-nums dark:text-indigo-400">
+                          <UserCheck className="h-3.5 w-3.5 shrink-0" />
+                          <span>
+                            {t.events?.identityTheft || 'Identity Theft'}
+                          </span>
+                        </span>
+                        {round.eventMetadata &&
+                          'lowPlayerName' in round.eventMetadata && (
+                            <span className="hidden truncate text-xs font-semibold text-neutral-500 sm:inline dark:text-neutral-400">
+                              {round.eventMetadata.lowPlayerName} (
+                              {round.eventMetadata.lowScoreBefore} pts) ⇄{' '}
+                              {round.eventMetadata.highPlayerName} (
+                              {round.eventMetadata.highScoreBefore} pts)
+                            </span>
+                          )}
+                      </>
+                    )
                   ) : (
                     <>
                       <span className="shrink-0 rounded-xl border border-amber-500/30 bg-amber-500/15 px-2.5 py-1 text-xs font-black whitespace-nowrap text-amber-600 tabular-nums dark:text-amber-400">

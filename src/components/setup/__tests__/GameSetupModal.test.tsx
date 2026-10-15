@@ -179,4 +179,34 @@ describe('GameSetupModal component', () => {
     expect(toast.error).toHaveBeenCalled();
     expect(onSaveAndStart).not.toHaveBeenCalled();
   });
+
+  it('displays "Save Changes" button when isMatchInProgress is true', () => {
+    render(<GameSetupModal {...defaultProps} isMatchInProgress={true} />);
+
+    expect(
+      screen.getByRole('button', { name: /save changes/i })
+    ).toBeInTheDocument();
+  });
+
+  it('allows configuring round limit via presets and custom input', async () => {
+    const user = userEvent.setup();
+    const onSaveAndStart = vi.fn();
+
+    render(
+      <GameSetupModal {...defaultProps} onSaveAndStart={onSaveAndStart} />
+    );
+
+    // Click 10 rounds preset
+    const tenRoundsBtn = screen.getByRole('button', { name: /10 rounds/i });
+    await user.click(tenRoundsBtn);
+
+    const startBtn = screen.getByRole('button', { name: /start/i });
+    await user.click(startBtn);
+
+    expect(onSaveAndStart).toHaveBeenCalledWith(
+      expect.any(Array),
+      expect.objectContaining({ roundLimit: 10 }),
+      false
+    );
+  });
 });

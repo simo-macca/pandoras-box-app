@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, PlusCircle, RotateCcw, UserCheck } from 'lucide-react';
+import { Trophy, PlusCircle, RotateCcw, UserCheck, Swords } from 'lucide-react';
 import { PlayerStats } from '../../utils/stats';
 import { RoundEntry, Player, Language } from '../../types/game';
 import { TRANSLATIONS } from '../../data/translations';
@@ -27,6 +27,7 @@ interface LeaderboardProps {
   onConcludeGame?: () => void;
   onApplyIdentityTheft?: () => void;
   canApplyIdentityTheft?: boolean;
+  onOpenSeppuku?: () => void;
   language: Language;
 }
 
@@ -48,6 +49,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
   onConcludeGame,
   onApplyIdentityTheft,
   canApplyIdentityTheft = false,
+  onOpenSeppuku,
   language,
 }) => {
   const t = TRANSLATIONS[language];
@@ -102,6 +104,27 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                 <UserCheck className="h-3.5 w-3.5 shrink-0 stroke-[2.2]" />
                 <span className="whitespace-nowrap">
                   {t.events?.identityTheft || 'Identity Theft'}
+                </span>
+              </button>
+            )}
+
+            {onOpenSeppuku && (
+              <button
+                type="button"
+                onClick={() => {
+                  soundEffects.playClick();
+                  onOpenSeppuku();
+                }}
+                disabled={players.length === 0}
+                className="flex items-center gap-1.5 rounded-xl border border-rose-500/40 bg-rose-500/10 px-2.5 py-1.5 text-xs font-bold text-rose-700 shadow-sm transition-all hover:bg-rose-500/20 active:scale-95 disabled:pointer-events-none disabled:opacity-40 sm:gap-2 sm:px-3 dark:border-rose-500/30 dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/50"
+                title={
+                  t.events?.seppukuDesc ||
+                  'Seppuku T: Flip top card (-21 number / +42 non-number) or refuse (+21)'
+                }
+              >
+                <Swords className="h-3.5 w-3.5 shrink-0 stroke-[2.2]" />
+                <span className="whitespace-nowrap">
+                  {t.events?.seppuku || 'Seppuku T'}
                 </span>
               </button>
             )}

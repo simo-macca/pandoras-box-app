@@ -46,6 +46,26 @@ export interface IdentityTheftEventMetadata {
   highScoreBefore: number;
 }
 
+export type SeppukuOutcome = 'risk_number' | 'risk_special' | 'no_risk';
+
+export interface SeppukuEventMetadata {
+  choices: Record<
+    string,
+    {
+      playerName: string;
+      outcome: SeppukuOutcome;
+      points: number;
+    }
+  >;
+}
+
+export interface LateJoinerEventMetadata {
+  playerId: string;
+  playerName: string;
+  startingScore: number;
+  highestScoreBefore: number;
+}
+
 export interface RoundEntry {
   id?: string;
   roundNumber: number;
@@ -55,8 +75,12 @@ export interface RoundEntry {
   scores: Record<string, HandScore>;
   notes?: string;
   isEvent?: boolean;
-  eventType?: 'identity-theft' | string;
-  eventMetadata?: IdentityTheftEventMetadata;
+  eventType?: 'identity-theft' | 'seppuku' | 'late-joiner' | string;
+  eventMetadata?:
+    | IdentityTheftEventMetadata
+    | SeppukuEventMetadata
+    | LateJoinerEventMetadata
+    | Record<string, any>;
 }
 
 export type RoundLog = RoundEntry;
@@ -72,6 +96,7 @@ export interface PlayerRoundScore {
 export interface GameConfig {
   targetScore: number;
   presetName: 'short' | 'medium' | 'long' | 'custom';
+  roundLimit?: number | null;
 }
 
 export interface GameState {

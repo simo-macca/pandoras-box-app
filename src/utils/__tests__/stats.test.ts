@@ -120,4 +120,29 @@ describe('stats utils', () => {
     expect(p3Stats.progressPct).toBe(100); // capped at 100
     expect(p3Stats.pointsRemaining).toBe(0); // clamped at 0
   });
+
+  it('correctly handles negative total scores (safety buffer expands, leader rank 1)', () => {
+    const rounds: RoundEntry[] = [
+      {
+        roundNumber: 1,
+        timestamp: 1000,
+        scores: {
+          p1: { ...DEFAULT_HAND_SCORE, totalPoints: -21 } as HandScore,
+          p2: { ...DEFAULT_HAND_SCORE, totalPoints: 10 } as HandScore,
+          p3: { ...DEFAULT_HAND_SCORE, totalPoints: 25 } as HandScore,
+        },
+      },
+    ];
+
+    const stats = calculatePlayerStats(players, rounds, targetScore);
+
+    const p1Stats = stats[0];
+    expect(p1Stats.id).toBe('p1');
+    expect(p1Stats.totalScore).toBe(-21);
+    expect(p1Stats.rank).toBe(1);
+    expect(p1Stats.isLeader).toBe(true);
+    expect(p1Stats.pointsRemaining).toBe(121); // 100 - (-21) = 121 pts safety buffer
+    expect(p1Stats.isInDanger).toBe(false);
+    expect(p1Stats.isEliminated).toBe(false);
+  });
 });
