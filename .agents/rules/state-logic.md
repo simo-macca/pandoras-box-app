@@ -1,6 +1,10 @@
 ---
 trigger: glob
-globs: 'src/{hooks,utils}/**/*.ts'
+globs:
+  - 'src/hooks/**/*.{ts,tsx}'
+  - 'src/utils/**/*.ts'
+  - 'src/types/**/*.ts'
+  - 'src/data/**/*.ts'
 ---
 
 # State & Domain Logic Guidelines

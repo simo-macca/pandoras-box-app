@@ -1,6 +1,9 @@
 ---
 trigger: glob
-globs: 'src/**/__tests__/**/*.test.{ts,tsx}'
+globs:
+  - 'src/**/__tests__/**/*.test.ts'
+  - 'src/**/__tests__/**/*.test.tsx'
+  - 'src/test/**/*.ts'
 ---
 
 # Testing Guidelines

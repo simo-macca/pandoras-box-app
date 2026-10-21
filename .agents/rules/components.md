@@ -1,6 +1,8 @@
 ---
 trigger: glob
-globs: 'src/components/**/*.tsx'
+globs:
+  - 'src/components/**/*.tsx'
+  - 'src/App.tsx'
 ---
 
 # UI Component Guidelines
