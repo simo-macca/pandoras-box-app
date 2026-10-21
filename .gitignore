@@ -168,9 +168,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Legacy Gemini CLI state & local caches
-.gemini/
-
-# Local MCP server configs (in case you ever add API keys/tokens later)
-.agents/mcp_config.json
