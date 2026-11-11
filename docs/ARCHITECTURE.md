@@ -257,7 +257,7 @@ sequenceDiagram
     P->>UI: Save Round Scores
     UI->>E: addRound(scores)
     E->>St: saveGameStateToStorage(state)
-    E-->>UI: Standings recomputed; game-over check
+    E-->>UI: Standings recomputed, game-over check
 ```
 
 ---
