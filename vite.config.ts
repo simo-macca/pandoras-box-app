@@ -54,6 +54,26 @@ export default defineConfig(({ mode }) => {
         },
       }),
     ],
+    build: {
+      rollupOptions: {
+        output: {
+          // Third-party code changes rarely: keep it in its own long-cached chunk.
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (
+                /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/.test(
+                  id
+                )
+              ) {
+                return 'react-vendor';
+              }
+              return 'vendor';
+            }
+            return undefined;
+          },
+        },
+      },
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, lazy, Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { useGameState } from './hooks/useGameState';
 import { useTheme } from './hooks/useTheme';
@@ -11,8 +11,6 @@ import { Footer } from './components/layout/Footer';
 import { Leaderboard } from './components/scoreboard/Leaderboard';
 import { GameOverModal } from './components/scoreboard/GameOverModal';
 import { HandCalculatorModal } from './components/scoring/HandCalculatorModal';
-import { RuleCardDrawer } from './components/rulecards/RuleCardDrawer';
-import { CardDictionary } from './components/rules/CardDictionary';
 import { GameSetupModal } from './components/setup/GameSetupModal';
 import { SettingsModal } from './components/layout/SettingsModal';
 import { SeppukuModal } from './components/events/SeppukuModal';
@@ -23,6 +21,26 @@ import {
   SeppukuEventMetadata,
 } from './types/game';
 import { calculatePlayerStats } from './utils/stats';
+
+// Secondary tabs are loaded on demand to keep the initial bundle small.
+// The service worker precaches these chunks, so they still work offline.
+const RuleCardDrawer = lazy(() =>
+  import('./components/rulecards/RuleCardDrawer').then((m) => ({
+    default: m.RuleCardDrawer,
+  }))
+);
+const CardDictionary = lazy(() =>
+  import('./components/rules/CardDictionary').then((m) => ({
+    default: m.CardDictionary,
+  }))
+);
+
+const TabFallback = () => (
+  <div
+    aria-busy="true"
+    className="mx-auto h-64 w-full max-w-3xl animate-pulse rounded-3xl bg-neutral-200/60 dark:bg-neutral-800/60"
+  />
+);
 
 export function App() {
   const {
@@ -293,17 +311,19 @@ export function App() {
           />
         )}
 
-        {activeTab === 'rulecards' && (
-          <RuleCardDrawer
-            activeRuleCardIds={gameState.activeRuleCardIds || []}
-            onSelectActiveRuleCard={(cardId) => {
-              setActiveRuleCardIds(cardId ? [cardId] : []);
-            }}
-            language={language}
-          />
-        )}
+        <Suspense fallback={<TabFallback />}>
+          {activeTab === 'rulecards' && (
+            <RuleCardDrawer
+              activeRuleCardIds={gameState.activeRuleCardIds || []}
+              onSelectActiveRuleCard={(cardId) => {
+                setActiveRuleCardIds(cardId ? [cardId] : []);
+              }}
+              language={language}
+            />
+          )}
 
-        {activeTab === 'rules' && <CardDictionary language={language} />}
+          {activeTab === 'rules' && <CardDictionary language={language} />}
+        </Suspense>
       </main>
 
       {/* Subtle Bottom Footer */}
