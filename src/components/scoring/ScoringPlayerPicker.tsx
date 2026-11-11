@@ -1,10 +1,10 @@
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
-import { Player, Language } from '../../types/game';
-import { PlayerStats } from '../../utils/stats';
-import { getPlayerColorTheme } from '../../utils/colors';
-import { soundEffects } from '../../utils/sound';
-import { TRANSLATIONS } from '../../data/translations';
+import { Player, Language } from '@/types/game';
+import { PlayerStats } from '@/utils/stats';
+import { getPlayerColorTheme } from '@/utils/colors';
+import { soundEffects } from '@/utils/sound';
+import { TRANSLATIONS } from '@/data/translations';
 
 interface ScoringPlayerPickerProps {
   players: Player[];

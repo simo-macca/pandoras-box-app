@@ -11,7 +11,7 @@ import {
   loadSavedTheme,
   saveThemeToStorage,
 } from '../storage';
-import { GameState } from '../../types/game';
+import { GameState } from '@/types/game';
 
 describe('storage utils', () => {
   beforeEach(() => {

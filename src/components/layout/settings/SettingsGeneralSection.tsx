@@ -1,8 +1,8 @@
 import React from 'react';
 import { Laptop, Sun, Moon, Volume2, VolumeX, Smartphone } from 'lucide-react';
-import { Language, ThemeMode } from '../../../types/game';
-import { TRANSLATIONS } from '../../../data/translations';
-import { LanguageSelector } from '../LanguageSelector';
+import { Language, ThemeMode } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
+import { LanguageSelector } from '@/components/layout/LanguageSelector';
 
 interface SettingsGeneralSectionProps {
   language: Language;

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useTheme } from '../useTheme';
-import { STORAGE_KEYS } from '../../utils/storage';
+import { STORAGE_KEYS } from '@/utils/storage';
 
 describe('useTheme hook', () => {
   beforeEach(() => {

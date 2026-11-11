@@ -1,241 +1,140 @@
-# Contributing & Developer How-To Guide
+# Contributing
 
-Thank you for contributing to **Frantic: Pandora's Box – Digital Companion App**! This guide contains instructions for setting up your workflow, adhering to code style standards, writing tests, and extending game datasets, scoring rules, and translations.
+Thank you for helping improve the app! This guide covers the workflow, coding standards and the most common changes.
 
 ---
 
 ## Table of Contents
 
-- [Code of Conduct & Contribution Workflow](#code-of-conduct--contribution-workflow)
-- [Coding Standards & Tooling](#coding-standards--tooling)
-- [Developer How-To Guides](#developer-how-to-guides)
-  - [1. Adding or Updating Cards, Events, or Rule Cards](#1-adding-or-updating-cards-events-or-rule-cards)
-  - [2. Adding or Modifying Translations](#2-adding-or-modifying-translations)
-  - [3. Modifying Scoring Rules & Hand Calculations](#3-modifying-scoring-rules--hand-calculations)
-  - [4. Creating New UI Components](#4-creating-new-ui-components)
-  - [5. Writing and Running Automated Tests](#5-writing-and-running-automated-tests)
-- [Verification & Pre-commit Quality Pipeline](#verification--pre-commit-quality-pipeline)
-- [Submitting Pull Requests](#submitting-pull-requests)
-- [Related Documentation](#related-documentation)
+- [Workflow](#workflow)
+- [Coding Standards](#coding-standards)
+- [How-To Guides](#how-to-guides)
+  - [1. Adding or Updating Cards, Events or Rule Cards](#1-adding-or-updating-cards-events-or-rule-cards)
+  - [2. Adding or Changing Translations](#2-adding-or-changing-translations)
+  - [3. Changing Scoring Rules](#3-changing-scoring-rules)
+  - [4. Creating UI Components](#4-creating-ui-components)
+  - [5. Writing Tests](#5-writing-tests)
+- [Before You Open a Pull Request](#before-you-open-a-pull-request)
 
 ---
 
-## Code of Conduct & Contribution Workflow
+## Workflow
 
-1. **Fork and Clone**:
+1. **Fork** the repository and clone your fork:
    ```bash
-   git clone https://github.com/simonemaccario/pandoras-box-app.git
+   git clone https://github.com/<your-username>/pandoras-box-app.git
    cd pandoras-box-app
-   git checkout -b feature/your-feature-name
+   npm ci
+   git checkout -b feat/short-description
    ```
-2. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
-3. **Develop & Verify**:
-   - Write clean, type-safe TypeScript code.
-   - Add or update automated tests in `__tests__/` directories.
-   - Run tests, type checks, and lint checks before committing.
-4. **Push & Open PR**:
-   - Push to your fork and submit a Pull Request targeting the `main` branch.
+2. **Develop** with tests for every behaviour change.
+3. **Verify** with `npm run validate` (and `npm run build` for build-related changes).
+4. **Commit** using [Conventional Commits](https://www.conventionalcommits.org/), e.g. `fix(scoring): …`, `feat(events): …`, `docs: …`.
+5. **Open a pull request** against `main` describing the problem, the change and how you tested it. CI must be green.
 
 ---
 
-## Coding Standards & Tooling
+## Coding Standards
 
-To ensure consistency across the project:
-
-- **TypeScript**:
-  - Always provide explicit type annotations for function signatures, data structures, and hook returns.
-  - Avoid `any`. Use strict interfaces defined in [`../src/types/`](../src/types/).
-- **Testing (Vitest & React Testing Library)**:
-  - Write unit tests for pure utility functions, hook integration tests for custom hooks, and interaction tests for UI components.
-  - Place tests adjacent to modules in `__tests__/` subdirectories (e.g. `src/utils/__tests__/`, `src/hooks/__tests__/`, `src/components/**/__tests__/`).
-- **ESLint**:
-  - Adhere to the ESLint configuration in [`../eslint.config.js`](../eslint.config.js).
-  - React Hooks rules (`rules-of-hooks`, `exhaustive-deps`) are strictly enforced.
-- **Prettier & Tailwind**:
-  - Code is automatically formatted using Prettier.
-  - Tailwind CSS classes are automatically sorted via `prettier-plugin-tailwindcss`.
-- **Portable Links**:
-  - Never commit machine-specific absolute file paths (e.g., `C:\...` or `/Users/...`).
-  - Use valid relative Markdown paths (`./docs/...`, `../src/...`) for all internal links.
+- **TypeScript** — strict mode; type function signatures and hook return values; avoid `any`. Shared models live in [`src/types/`](../src/types/).
+- **Pure domain logic** — scoring and standings belong in [`src/utils/scoring.ts`](../src/utils/scoring.ts) and [`src/utils/stats.ts`](../src/utils/stats.ts), without React imports.
+- **Rules fidelity** — any rule value must be backed by the official rulebook. Cite the page in a comment or test name. Mark non-official behaviour as a _house rule_ in the UI and in [GAME_RULES.md](GAME_RULES.md#app-specific-house-rules).
+- **Untrusted data** — anything read from storage or files goes through `sanitizeGameState()`.
+- **Localisation** — no hard-coded user-facing text in components; add keys to `translations.ts` in all four languages.
+- **Accessibility** — buttons need accessible names (`aria-label` for icon-only buttons); dialogs use `useModalA11y` plus `role="dialog"` / `aria-modal="true"`.
+- **Imports** — use the `@/` alias (it points to `src/`) for anything outside the current folder: `import { calculateHandPoints } from '@/utils/scoring'`. Keep `./` for files in the same folder. In `__tests__/`, the module under test may be imported from the parent folder with `../`. ESLint rejects any other `../` import. The alias is defined in both `tsconfig.json` (`paths`) and `vite.config.ts` (`resolve.alias`); keep them in sync.
+- **Asset URLs** — build them from `import.meta.env.BASE_URL`, never as hard-coded `/…` paths.
+- **Formatting** — Prettier with `prettier-plugin-tailwindcss` (class sorting). ESLint enforces React Hooks rules.
+- **Links in docs** — relative paths only (`../src/...`), no machine-specific paths.
 
 ---
 
-## Developer How-To Guides
+## How-To Guides
 
-### 1. Adding or Updating Cards, Events, or Rule Cards
+### 1. Adding or Updating Cards, Events or Rule Cards
 
-All card definitions reside in [`../src/data/`](../src/data/):
+| Dataset       | File                                                          | Type (in [`src/types/rules.ts`](../src/types/rules.ts)) |
+| :------------ | :------------------------------------------------------------ | :------------------------------------------------------ |
+| Special cards | [`src/data/cardsData.ts`](../src/data/cardsData.ts)           | `CardItem`                                              |
+| Event cards   | [`src/data/eventsData.ts`](../src/data/eventsData.ts)         | `EventItem`                                             |
+| Power cards   | [`src/data/powerCardsData.ts`](../src/data/powerCardsData.ts) | `PowerCardItem`                                         |
+| Rule cards    | [`src/data/ruleCardsData.ts`](../src/data/ruleCardsData.ts)   | `RuleCardItem`                                          |
 
-| Dataset           | Location                                                      | Interface Model                                              |
-| :---------------- | :------------------------------------------------------------ | :----------------------------------------------------------- |
-| **Special Cards** | [`src/data/cardsData.ts`](../src/data/cardsData.ts)           | `Card` in [`src/types/rules.ts`](../src/types/rules.ts)      |
-| **Event Cards**   | [`src/data/eventsData.ts`](../src/data/eventsData.ts)         | `EventCard` in [`src/types/rules.ts`](../src/types/rules.ts) |
-| **Power Cards**   | [`src/data/powerCardsData.ts`](../src/data/powerCardsData.ts) | `PowerCard` in [`src/types/rules.ts`](../src/types/rules.ts) |
-| **Rule Cards**    | [`src/data/ruleCardsData.ts`](../src/data/ruleCardsData.ts)   | `RuleCard` in [`src/types/rules.ts`](../src/types/rules.ts)  |
+Example `CardItem`:
 
-#### Example: Adding a New Card Definition
-
-To add or modify an entry, adhere to the typed schema:
-
-```typescript
-// Example entry for src/data/cardsData.ts
+```ts
 {
   id: 'card-identifier',
-  name: {
-    en: 'Card Name',
-    de: 'Kartenname',
-    it: 'Nome della carta',
-    fr: 'Nom de la carte',
-  },
+  // Card names are printed in English in every edition: keep them identical.
+  name: { en: 'Card Name', de: 'Card Name', it: 'Card Name', fr: 'Card Name' },
   points: 7,
-  category: 'special',
-  description: {
-    en: 'Card effect description...',
-    de: 'Beschreibung des Karteneffekts...',
-    it: 'Descrizione dell\'effetto della carta...',
-    fr: 'Description de l\'effet de la carte...',
-  },
-  tip: {
-    en: 'Tactical tip for gameplay...',
-    de: 'Taktischer Tipp...',
-    it: 'Consiglio strategico...',
-    fr: 'Conseil tactique...',
-  }
+  category: 'special',          // 'special' | 'unique' | 'power' | 'number'
+  subCategory: '1-colour',
+  description: { en: '…', de: '…', it: '…', fr: '…' },
+  tip: { en: '…', de: '…', it: '…', fr: '…' },
 }
 ```
 
-> [!IMPORTANT]
-> All multilingual strings (`en`, `de`, `it`, `fr`) are required to prevent missing translation fallbacks in the encyclopedia.
+All four languages are required; `gameData.test.ts` fails otherwise. Names must be the official English card name in every language (`officialNames.test.ts` enforces this); only descriptions and tips are translated, and they should refer to other cards by their English names. If you change counts (e.g. the number of events), update the integrity tests and the docs.
 
----
+### 2. Adding or Changing Translations
 
-### 2. Adding or Modifying Translations
+UI strings live in [`src/data/translations.ts`](../src/data/translations.ts) and are grouped by area (`common`, `nav`, `tabs`, `setup`, `scoreboard`, `scoring`, `rulecards`, `rules`, `settings`, `events`):
 
-UI translations are typed and stored in [`../src/data/translations.ts`](../src/data/translations.ts):
-
-1. **Add new string key to `TranslationStrings` interface**:
-   ```typescript
+1. add the key to the right group in the `TranslationStrings` interface:
+   ```ts
    export interface TranslationStrings {
-     // ...
-     newFeatureLabel: string;
+     // …
+     common: {
+       // …
+       newLabel: string;
+     };
    }
    ```
-2. **Add translations to all 4 languages in `TRANSLATIONS`**:
-   ```typescript
-   export const TRANSLATIONS: Record<
-     'en' | 'de' | 'it' | 'fr',
-     TranslationStrings
-   > = {
-     en: {
-       // ...
-       newFeatureLabel: 'Feature Title',
-     },
-     de: {
-       // ...
-       newFeatureLabel: 'Funktionstitel',
-     },
-     it: {
-       // ...
-       newFeatureLabel: 'Titolo Funzionalità',
-     },
-     fr: {
-       // ...
-       newFeatureLabel: 'Titre de la Fonctionnalité',
-     },
-   };
-   ```
-3. TypeScript will immediately alert you if any language dictionary lacks the required key.
+2. add the value under `en`, `de`, `it` and `fr` in `TRANSLATIONS`;
+3. use it in a component: `TRANSLATIONS[language].common.newLabel`.
+
+TypeScript reports any language that is missing the key.
+
+### 3. Changing Scoring Rules
+
+1. Update `calculateHandPoints()` or `CARD_POINTS` in [`src/utils/scoring.ts`](../src/utils/scoring.ts). Results may be negative (Time Bomb, Seppuku, free adjustments).
+2. If you add a new input, extend `HandScore` in [`src/types/game.ts`](../src/types/game.ts) and, if needed, `sanitizeGameState()` in [`src/utils/storage.ts`](../src/utils/storage.ts).
+3. Add the control in [`SpecialCounters.tsx`](../src/components/scoring/SpecialCounters.tsx) or [`ScoringModifiers.tsx`](../src/components/scoring/ScoringModifiers.tsx) and wire it in [`HandCalculatorModal.tsx`](../src/components/scoring/HandCalculatorModal.tsx).
+4. Add cases to [`scoring.test.ts`](../src/utils/__tests__/scoring.test.ts).
+
+The end-of-game condition is `isOverScoreLimit()` in [`stats.ts`](../src/utils/stats.ts) (official rule: the limit must be **exceeded**).
+
+### 4. Creating UI Components
+
+- Shared widgets go in `src/components/common/`; feature components in their folder (`scoring/`, `scoreboard/`, `rulecards/`, `rules/`, `setup/`, `layout/`, `events/`).
+- Declare `export const Name: React.FC<NameProps> = (…) => …` with the props interface at the top.
+- Accept `language: Language` and read strings from `TRANSLATIONS[language]`.
+- Check both light and dark themes and a narrow mobile viewport.
+
+### 5. Writing Tests
+
+- Place tests in a `__tests__/` folder next to the code (`*.test.ts` / `*.test.tsx`).
+- Use React Testing Library with `userEvent.setup()`; prefer accessible queries (`getByRole`, `getByLabelText`, `getByText`).
+- Mock callbacks with `vi.fn()`; build typed fixtures from `src/types/game.ts`.
+- `src/test/setup.ts` clears the DOM and `localStorage` after each test.
 
 ---
 
-### 3. Modifying Scoring Rules & Hand Calculations
-
-Scoring logic is decoupled into pure functions and typed models:
-
-1. **Update Calculation Logic**:
-   Modify `calculateHandPoints()` in [`../src/utils/scoring.ts`](../src/utils/scoring.ts). Ensure all calculation branches return non-negative integer point values.
-2. **Update Type Definitions**:
-   If introducing a new card type or modifier, update `HandScore` in [`../src/types/game.ts`](../src/types/game.ts).
-3. **Update UI Inputs**:
-   - Add stepper or toggle controls in [`../src/components/scoring/SpecialCounters.tsx`](../src/components/scoring/SpecialCounters.tsx) or [`../src/components/scoring/ScoringModifiers.tsx`](../src/components/scoring/ScoringModifiers.tsx).
-   - Verify modal score preview binds to updated fields in [`../src/components/scoring/HandCalculatorModal.tsx`](../src/components/scoring/HandCalculatorModal.tsx).
-4. **Update Automated Tests**:
-   - Add test cases to [`../src/utils/__tests__/scoring.test.ts`](../src/utils/__tests__/scoring.test.ts) covering new point combinations, modifiers, and edge cases.
-
----
-
-### 4. Creating New UI Components
-
-- Place shared UI widgets in [`../src/components/common/`](../src/components/common/).
-- Place view-specific components in their respective subdirectories (`scoring/`, `scoreboard/`, `rulecards/`, `rules/`, `setup/`, `layout/`).
-- Use Tailwind CSS utility classes and ensure components render properly in both Light and Dark themes.
-
----
-
-### 5. Writing and Running Automated Tests
-
-We use **Vitest** with **React Testing Library** and **@testing-library/jest-dom**:
-
-- **Running Tests**:
-  ```bash
-  npm run test        # Run once
-  npm run test:watch  # Interactive watch mode
-  ```
-- **Where to place tests**:
-  - Utilities: `src/utils/__tests__/<filename>.test.ts`
-  - Hooks: `src/hooks/__tests__/<filename>.test.ts`
-  - Components: `src/components/<category>/__tests__/<filename>.test.tsx`
-- **Setup & Environment**: `src/test/setup.ts` loads custom DOM matchers (`toBeInTheDocument()`, etc.) and automatically clears DOM and `localStorage` between tests.
-
----
-
-## Verification & Pre-commit Quality Pipeline
-
-Before committing, ensure all automated verification checks pass:
+## Before You Open a Pull Request
 
 ```bash
-# 1. Type verification (zero compiler errors allowed)
-npm run type-check
-
-# 2. Automated test suite (all tests must pass)
-npm run test
-
-# 3. Lint verification
-npm run lint
-
-# 4. Prettier check
-npm run format:check
+npm run validate   # type-check, lint, format check, tests
+npm run build      # if you touched config, assets or dependencies
 ```
 
-### Automated Pre-commit Hook
-
-The repository uses [Husky](https://typicode.github.io/husky/) and [lint-staged](https://github.com/lint-staged/lint-staged) via `.husky/pre-commit`. On every `git commit`, it automatically runs:
-
-1. `npx lint-staged` (`eslint --fix` and `prettier --write` on staged files)
-2. `npm run type-check` (`tsc --noEmit`)
-3. `npm run test` (`vitest run`)
-
-Any failing test, unfixable lint error, or type failure will automatically abort the commit.
-
----
-
-## Submitting Pull Requests
-
-1. Commit your changes with descriptive, conventional commit messages:
-   ```bash
-   git commit -m "feat(scoring): add support for custom tournament modifier"
-   ```
-2. Push your branch to GitHub.
-3. Open a Pull Request with a clear description of the problem solved, changes made, and testing steps performed.
+The pre-commit hook runs lint-staged, the type-check and the tests automatically; CI repeats everything and builds the app.
 
 ---
 
 ## Related Documentation
 
-- **[Local Development Setup](SETUP.md)**
-- **[System Architecture](ARCHITECTURE.md)**
-- **[Game Rules Reference](GAME_RULES.md)**
-- **[Deployment Guide](DEPLOYMENT.md)**
+- [Setup & Local Development](SETUP.md)
+- [Architecture](ARCHITECTURE.md)
+- [Game Rules Reference](GAME_RULES.md)
+- [Deployment](DEPLOYMENT.md)

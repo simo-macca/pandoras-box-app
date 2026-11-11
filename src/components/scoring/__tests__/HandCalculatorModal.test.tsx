@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { HandCalculatorModal } from '../HandCalculatorModal';
-import { Player } from '../../../types/game';
-import { TRANSLATIONS } from '../../../data/translations';
+import { Player } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 
 describe('HandCalculatorModal component', () => {
   const t = TRANSLATIONS.en;
@@ -300,5 +300,15 @@ describe('HandCalculatorModal component', () => {
       })
     );
     expect(onClose).toHaveBeenCalled();
+  });
+
+  it('shows the Double Special notice when that rule card is active', () => {
+    render(
+      <HandCalculatorModal
+        {...defaultProps}
+        activeRuleCardIds={['double-special']}
+      />
+    );
+    expect(screen.getByRole('status')).toHaveTextContent(/Double Special/);
   });
 });

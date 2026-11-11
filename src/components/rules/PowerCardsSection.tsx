@@ -1,8 +1,8 @@
 import React from 'react';
 import { Zap } from 'lucide-react';
-import { PowerCardItem } from '../../types/rules';
-import { Language } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
+import { PowerCardItem } from '@/types/rules';
+import { Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 
 interface PowerCardsSectionProps {
   powerCards: PowerCardItem[];

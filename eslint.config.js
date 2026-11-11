@@ -5,15 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default tseslint.config(
   {
-    ignores: [
-      'dist',
-      'node_modules',
-      'rules',
-      '*.config.js',
-      '*.config.ts',
-      'dist/**',
-      'tsconfig.tsbuildinfo',
-    ],
+    ignores: ['dist', 'node_modules', '*.config.js', '*.config.ts', 'dist/**'],
   },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
@@ -35,6 +27,39 @@ export default tseslint.config(
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
+        },
+      ],
+      // Cross-folder imports must use the `@/` alias (`@/utils/scoring`).
+      // Same-folder imports keep `./`.
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '^\\.\\./',
+              message:
+                "Use the '@/' alias for imports outside the current folder (e.g. '@/utils/scoring').",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    // Tests in `__tests__/` may import the module under test from the parent
+    // folder with a single `../`; anything further up must use `@/`.
+    files: ['**/__tests__/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '^\\.\\./\\.\\./',
+              message:
+                "Use the '@/' alias for imports more than one folder up (e.g. '@/types/game').",
+            },
+          ],
         },
       ],
     },

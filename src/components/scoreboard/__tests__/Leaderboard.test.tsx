@@ -2,8 +2,8 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Leaderboard } from '../Leaderboard';
-import { Player, RoundEntry } from '../../../types/game';
-import { PlayerStats } from '../../../utils/stats';
+import { Player, RoundEntry } from '@/types/game';
+import { PlayerStats } from '@/utils/stats';
 
 describe('Leaderboard component', () => {
   const players: Player[] = [
@@ -142,7 +142,7 @@ describe('Leaderboard component', () => {
     expect(onApplyIdentityTheft).toHaveBeenCalledTimes(1);
   });
 
-  it('renders and triggers onOpenSeppuku when Seppuku T button is clicked', async () => {
+  it('renders and triggers onOpenSeppuku when Seppuku button is clicked', async () => {
     const user = userEvent.setup();
     const onOpenSeppuku = vi.fn();
 

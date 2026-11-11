@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { RoundScoringModal } from '../RoundScoringModal';
-import { Player } from '../../../types/game';
+import { Player } from '@/types/game';
 
 describe('RoundScoringModal re-export', () => {
   const players: Player[] = [

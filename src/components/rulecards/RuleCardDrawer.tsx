@@ -7,10 +7,10 @@ import {
   X,
   Loader2,
 } from 'lucide-react';
-import { Language } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
-import { RULE_CARDS_DATA } from '../../data/ruleCardsData';
-import { soundEffects } from '../../utils/sound';
+import { Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
+import { RULE_CARDS_DATA } from '@/data/ruleCardsData';
+import { soundEffects } from '@/utils/sound';
 
 interface RuleCardDrawerProps {
   activeRuleCardIds: string[];
@@ -64,7 +64,7 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
   return (
     <div className="space-y-6">
       {/* Drawer Action Banner */}
-      <div className="relative overflow-hidden rounded-3xl border-2 border-purple-500/30 bg-gradient-to-br from-purple-100/80 via-indigo-50/60 to-purple-50 p-6 text-center shadow-sm dark:border-purple-500/40 dark:from-purple-900/40 dark:via-indigo-900/30 dark:to-purple-900/20 dark:shadow-xl">
+      <div className="relative overflow-hidden rounded-3xl border-2 border-purple-500/30 bg-linear-to-br from-purple-100/80 via-indigo-50/60 to-purple-50 p-6 text-center shadow-sm dark:border-purple-500/40 dark:from-purple-900/40 dark:via-indigo-900/30 dark:to-purple-900/20 dark:shadow-xl">
         <div className="relative z-10 mx-auto max-w-xl space-y-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/40 bg-purple-500/20 px-3 py-1 text-xs font-black tracking-wider text-purple-600 uppercase dark:text-purple-300">
             <Sparkles className="h-3.5 w-3.5" />
@@ -83,7 +83,7 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
               type="button"
               onClick={handleDrawRandom}
               disabled={isRolling}
-              className={`inline-flex transform items-center gap-2 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-3 text-sm font-extrabold text-white shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all hover:from-purple-500 hover:to-indigo-500 active:scale-95 ${
+              className={`inline-flex transform items-center gap-2 rounded-2xl bg-linear-to-r from-purple-600 to-indigo-600 px-6 py-3 text-sm font-extrabold text-white shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all hover:from-purple-500 hover:to-indigo-500 active:scale-95 ${
                 isRolling ? 'cursor-not-allowed opacity-90' : ''
               }`}
             >
@@ -109,7 +109,7 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
                 </span>
                 {activeRuleCardIds.includes(activeCard.id) && (
                   <span className="flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/20 px-2 py-0.5 text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400">
-                    <Check className="h-3 w-3 stroke-[3]" />
+                    <Check className="h-3 w-3 stroke-3" />
                     <span>{t.rulecards.activeForRound}</span>
                   </span>
                 )}
@@ -187,7 +187,7 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
                     </h4>
                     {isActive && (
                       <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-white">
-                        <Check className="h-3 w-3 stroke-[3]" />
+                        <Check className="h-3 w-3 stroke-3" />
                       </span>
                     )}
                   </div>

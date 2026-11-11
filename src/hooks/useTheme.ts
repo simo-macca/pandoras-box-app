@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ThemeMode } from '../types/game';
-import { loadSavedTheme, saveThemeToStorage } from '../utils/storage';
+import { ThemeMode } from '@/types/game';
+import { loadSavedTheme, saveThemeToStorage } from '@/utils/storage';
 
 export function useTheme() {
   const [theme, setThemeState] = useState<ThemeMode>(() => loadSavedTheme());

@@ -8,8 +8,8 @@ import {
   RotateCcw,
   Info,
 } from 'lucide-react';
-import { Language } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
+import { Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 import { OfficialPdfBanner } from './OfficialPdfBanner';
 
 interface RulesGuideProps {
@@ -611,9 +611,9 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
               {language === 'it'
                 ? 'L’effetto Power viene eseguito PRIMA dell’effetto della carta tenuta in mano (es. All Draw One, Special Charge, Special Seal).'
                 : language === 'de'
-                  ? 'Der Power-Effekt wird VOR dem Effekt der Handkarte ausgeführt (z. B. Alle Ziehen Eine, Spezialladung, Spezialsiegel).'
+                  ? 'Der Power-Effekt wird VOR dem Effekt der Handkarte ausgeführt (z. B. All Draw One, Special Charge, Special Seal).'
                   : language === 'fr'
-                    ? 'L’effet pouvoir est appliqué AVANT la carte en main (ex. Tous Piochent Une, Charge Spéciale, Sceau Spécial).'
+                    ? 'L’effet pouvoir est appliqué AVANT la carte en main (ex. All Draw One, Special Charge, Special Seal).'
                     : 'The power effect executes BEFORE the card played from hand (e.g. All Draw One, Special Charge, Special Seal).'}
             </p>
           </div>
@@ -637,9 +637,9 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
               {language === 'it'
                 ? 'L’effetto Power viene eseguito DOPO l’effetto della carta tenuta in mano (es. Black Wish, Colour Blockade, Troublecharger).'
                 : language === 'de'
-                  ? 'Der Power-Effekt wird NACH dem Effekt der Handkarte ausgeführt (z. B. Schwarzer Wunsch, Farblockade, Troublecharger).'
+                  ? 'Der Power-Effekt wird NACH dem Effekt der Handkarte ausgeführt (z. B. Black Wish, Colour Blockade, Troublecharger).'
                   : language === 'fr'
-                    ? 'L’effet pouvoir est appliqué APRÈS la carte en main (ex. Souhait Noir, Blocus de Couleur, Troublecharger).'
+                    ? 'L’effet pouvoir est appliqué APRÈS la carte en main (ex. Black Wish, Colour Blockade, Troublecharger).'
                     : 'The power effect executes AFTER the card played from hand (e.g. Black Wish, Colour Blockade, Troublecharger).'}
             </p>
           </div>

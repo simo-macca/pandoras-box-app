@@ -6,7 +6,7 @@ import {
   getPlayerColorTheme,
   DEFAULT_PLAYERS,
 } from '../colors';
-import { PlayerColor } from '../../types/game';
+import { PlayerColor } from '@/types/game';
 
 describe('colors utils', () => {
   it('defines theme properties for all standard pawn colors', () => {

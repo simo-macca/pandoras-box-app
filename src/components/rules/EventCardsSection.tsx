@@ -1,8 +1,8 @@
 import React from 'react';
 import { Flame } from 'lucide-react';
-import { EventItem } from '../../types/rules';
-import { Language } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
+import { EventItem } from '@/types/rules';
+import { Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 
 interface EventCardsSectionProps {
   events: EventItem[];

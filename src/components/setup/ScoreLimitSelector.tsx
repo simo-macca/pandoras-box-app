@@ -1,7 +1,7 @@
 import React from 'react';
 import { Target } from 'lucide-react';
-import { Language, GameConfig } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
+import { Language, GameConfig } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 
 interface ScoreLimitSelectorProps {
   targetScore: number;
@@ -14,12 +14,33 @@ interface ScoreLimitSelectorProps {
   language: Language;
 }
 
-const OFFICIAL_SCORE_PRESETS = [
-  { score: 113, label: '113 pts', note: '5–8 Short' },
-  { score: 137, label: '137 pts', note: '2–4 Short / 5–8 Med' },
-  { score: 154, label: '154 pts', note: '2–4 Med / 5–8 Long' },
-  { score: 179, label: '179 pts', note: '2–4 Long' },
-] as const;
+type PresetLength = 'short' | 'medium' | 'long';
+
+// Official Rulefactory point limits (rulebook p. 4).
+const OFFICIAL_SCORE_PRESETS: ReadonlyArray<{
+  score: number;
+  label: string;
+  uses: ReadonlyArray<{ players: string; length: PresetLength }>;
+}> = [
+  { score: 113, label: '113 pts', uses: [{ players: '5–8', length: 'short' }] },
+  {
+    score: 137,
+    label: '137 pts',
+    uses: [
+      { players: '2–4', length: 'short' },
+      { players: '5–8', length: 'medium' },
+    ],
+  },
+  {
+    score: 154,
+    label: '154 pts',
+    uses: [
+      { players: '2–4', length: 'medium' },
+      { players: '5–8', length: 'long' },
+    ],
+  },
+  { score: 179, label: '179 pts', uses: [{ players: '2–4', length: 'long' }] },
+];
 
 export const ScoreLimitSelector: React.FC<ScoreLimitSelectorProps> = ({
   targetScore,
@@ -32,6 +53,14 @@ export const ScoreLimitSelector: React.FC<ScoreLimitSelectorProps> = ({
   language,
 }) => {
   const t = TRANSLATIONS[language];
+  const lengthLabel: Record<PresetLength, string> = {
+    short: t.setup.shortGame,
+    medium: t.setup.mediumGame,
+    long: t.setup.longGame,
+  };
+  const formatNote = (
+    uses: ReadonlyArray<{ players: string; length: PresetLength }>
+  ) => uses.map((u) => `${u.players}: ${lengthLabel[u.length]}`).join(' · ');
 
   return (
     <div className="space-y-3">
@@ -41,7 +70,7 @@ export const ScoreLimitSelector: React.FC<ScoreLimitSelectorProps> = ({
           <span>{t.setup.targetScore}</span>
         </label>
         <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-          Official Limits
+          {t.common.officialLimits}
         </span>
       </div>
 
@@ -65,7 +94,7 @@ export const ScoreLimitSelector: React.FC<ScoreLimitSelectorProps> = ({
                 {preset.score}
               </span>
               <span className="text-[10px] font-semibold text-neutral-400">
-                {preset.note}
+                {formatNote(preset.uses)}
               </span>
             </button>
           );

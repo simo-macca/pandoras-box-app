@@ -1,9 +1,9 @@
 import React from 'react';
 import { Plus, Trash2, Users, X } from 'lucide-react';
-import { Player, Language } from '../../types/game';
-import { ALL_PAWN_COLORS, PAWN_COLORS } from '../../utils/colors';
-import { UI_TRANSLATIONS } from '../../data/translations';
-import { soundEffects } from '../../utils/sound';
+import { Player, Language } from '@/types/game';
+import { ALL_PAWN_COLORS, PAWN_COLORS } from '@/utils/colors';
+import { UI_TRANSLATIONS } from '@/data/translations';
+import { soundEffects } from '@/utils/sound';
 
 interface PlayerConfigProps {
   players: Player[];
@@ -46,7 +46,7 @@ export const PlayerConfig: React.FC<PlayerConfigProps> = ({
         </span>
       </div>
 
-      <div className="max-h-[340px] space-y-2.5 overflow-y-auto pr-1">
+      <div className="max-h-85 space-y-2.5 overflow-y-auto pr-1">
         {players.map((player, idx) => {
           return (
             <div
@@ -54,7 +54,7 @@ export const PlayerConfig: React.FC<PlayerConfigProps> = ({
               className="flex flex-col items-stretch gap-2.5 rounded-2xl border border-neutral-200/80 bg-neutral-100/80 p-2.5 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:border-neutral-700/80 dark:bg-neutral-800/70"
             >
               <div className="flex min-w-0 flex-1 items-center gap-2">
-                <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-white text-xs font-black text-neutral-600 shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-white text-xs font-black text-neutral-600 shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
                   {idx + 1}
                 </span>
 
@@ -104,7 +104,7 @@ export const PlayerConfig: React.FC<PlayerConfigProps> = ({
                           <div className="h-1.5 w-1.5 rounded-full bg-white shadow-xs" />
                         )}
                         {isTakenByOther && (
-                          <X className="h-2.5 w-2.5 stroke-[3] text-white drop-shadow-xs" />
+                          <X className="h-2.5 w-2.5 stroke-3 text-white drop-shadow-xs" />
                         )}
                       </button>
                     );

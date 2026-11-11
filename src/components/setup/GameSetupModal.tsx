@@ -9,12 +9,14 @@ import {
   Check,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { Player, GameConfig, Language, PlayerColor } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
+import { Player, GameConfig, Language, PlayerColor } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 import { PlayerConfig } from './PlayerConfig';
 import { ScoreLimitSelector } from './ScoreLimitSelector';
-import { ALL_PLAYER_COLORS } from '../../utils/colors';
-import { soundEffects } from '../../utils/sound';
+import { ALL_PLAYER_COLORS } from '@/utils/colors';
+import { soundEffects } from '@/utils/sound';
+import { getRecommendedPresets } from '@/utils/scoring';
+import { useModalA11y } from '@/hooks/useModalA11y';
 
 interface GameSetupModalProps {
   isOpen: boolean;
@@ -85,6 +87,8 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
     }
   }, [isOpen, currentPlayers, currentConfig]);
 
+  useModalA11y(isOpen, onClose);
+
   if (!isOpen) return null;
 
   const handleAddPlayer = () => {
@@ -128,17 +132,18 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
 
   const handleSelectScorePreset = (score: number) => {
     soundEffects.playClick();
-    setDraftConfig({
-      targetScore: score,
-      presetName:
-        score === 113
-          ? 'short'
-          : score === 137
-            ? 'short'
-            : score === 154
-              ? 'medium'
-              : 'long',
-    });
+    const recommended = getRecommendedPresets(draftPlayers.length);
+    const presetName: GameConfig['presetName'] =
+      score === recommended.short
+        ? 'short'
+        : score === recommended.medium
+          ? 'medium'
+          : score === recommended.long
+            ? 'long'
+            : score > recommended.long
+              ? 'long'
+              : 'short';
+    setDraftConfig({ targetScore: score, presetName });
   };
 
   const isValidTargetScore = (val: string | number): boolean => {
@@ -196,6 +201,13 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
     return !isNaN(parsed) && parsed > 0 ? parsed : null;
   };
 
+  // Never persist blank player names.
+  const getNormalizedPlayers = (): Player[] =>
+    draftPlayers.map((p, idx) => ({
+      ...p,
+      name: p.name.trim() || `Player ${idx + 1}`,
+    }));
+
   const handleSaveOnly = () => {
     const validTargetScore = validateAndGetTargetScore();
     if (validTargetScore === null) {
@@ -203,7 +215,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
     }
     soundEffects.playClick();
     onSaveAndStart(
-      draftPlayers,
+      getNormalizedPlayers(),
       {
         ...draftConfig,
         targetScore: validTargetScore,
@@ -221,7 +233,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
     }
     soundEffects.playClick();
     onSaveAndStart(
-      draftPlayers,
+      getNormalizedPlayers(),
       {
         ...draftConfig,
         targetScore: validTargetScore,
@@ -233,7 +245,11 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
   };
 
   return (
-    <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-2 backdrop-blur-sm sm:p-4">
+    <div
+      className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-2 backdrop-blur-sm sm:p-4"
+      role="dialog"
+      aria-modal="true"
+    >
       <div className="relative flex max-h-[90dvh] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-800 dark:bg-neutral-900">
         {/* Header */}
         <div className="flex shrink-0 items-center justify-between border-b border-neutral-200 bg-neutral-50 px-4 py-3 sm:px-6 sm:py-4 dark:border-neutral-800 dark:bg-neutral-900/60">
@@ -249,7 +265,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t.common.close}
             className="shrink-0 rounded-xl p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 sm:p-2 dark:hover:bg-neutral-800 dark:hover:text-white"
           >
             <X className="h-5 w-5 shrink-0" />
@@ -340,7 +356,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
                 type="number"
                 min="1"
                 max="100"
-                placeholder="Custom round limit (optional)"
+                placeholder={t.common.roundLimitPlaceholder}
                 aria-label={t.setup?.roundLimit || 'Total Round Limit'}
                 value={draftRoundLimit}
                 onChange={(e) => setDraftRoundLimit(e.target.value)}
@@ -366,7 +382,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
               <button
                 type="button"
                 onClick={handleSaveOnly}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-xs font-extrabold text-white shadow-md transition-all hover:from-amber-400 hover:to-amber-500 active:scale-95 sm:px-6 sm:py-2.5 sm:text-sm"
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-linear-to-r from-amber-500 to-amber-600 px-4 py-2 text-xs font-extrabold text-white shadow-md transition-all hover:from-amber-400 hover:to-amber-500 active:scale-95 sm:px-6 sm:py-2.5 sm:text-sm"
               >
                 {isMatchInProgress ? (
                   <Check className="h-4 w-4 shrink-0" />

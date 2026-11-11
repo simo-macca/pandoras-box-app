@@ -1,13 +1,28 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // Apply the saved theme before first paint to avoid a light/dark flash.
+      (function () {
+        try {
+          var mode = localStorage.getItem('frantic_theme_mode') || 'system';
+          var dark =
+            mode === 'dark' ||
+            (mode === 'system' &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <title>Frantic: Pandora's Box — Companion</title>
 
@@ -16,50 +31,38 @@
       name="robots"
       content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
     />
-    <meta
-      name="googlebot"
-      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
-    />
-    <meta
-      name="bingbot"
-      content="index, follow, max-snippet:-1, max-image-preview:large"
-    />
 
     <!-- Primary Meta & Categorization -->
     <meta name="title" content="Frantic: Pandora's Box — Companion" />
     <meta
       name="description"
-      content="The ultimate companion app for Pandora's Box &amp; Frantic by Rulefactory. Fast round scoring calculator, digital d20 event roller, interactive card dictionary, and official rulebooks in EN, IT, DE, and FR."
+      content="Unofficial, offline-first companion app for Frantic and Pandora's Box by Rulefactory: round scoring calculator, leaderboard, Seppuku and Identity Theft helpers, rule card drawer, card dictionary and official rulebooks in EN, DE, IT and FR."
     />
     <meta
       name="keywords"
-      content="Frantic, Frantic card game, Frantic Das Kartenspiel, Pandora's Box, Pandoras Box Frantic, Rulefactory, Rulefactory Frantic, Frantic companion app, Frantic scoring app, Frantic scorekeeper, Frantic punkterechner, Frantic segnapunti, Frantic point calculator, Frantic d20 roller, Frantic event dice, Frantic ereignisse, Frantic carte evento, Frantic rules, Frantic regeln pdf, Frantic regolamento, Frantic regles, Frantic cards dictionary, Frantic schweizer kartenspiel, card game scoring utility"
+      content="Frantic, Frantic card game, Frantic Das Kartenspiel, Pandora's Box, Pandoras Box Frantic, Rulefactory, Rulefactory Frantic, Frantic companion app, Frantic scoring app, Frantic scorekeeper, Frantic punkterechner, Frantic segnapunti, Frantic point calculator, Frantic ereignisse, Frantic carte evento, Frantic rules, Frantic regeln pdf, Frantic regolamento, Frantic regles, Frantic cards dictionary, Frantic schweizer kartenspiel, card game scoring utility"
     />
     <meta name="author" content="Simone Maccario" />
     <meta name="publisher" content="Simone Maccario" />
-    <meta name="classification" content="Games / Card Games / Utilities" />
-    <meta name="category" content="Board Game Companion App" />
-    <meta name="coverage" content="Worldwide" />
-    <meta name="distribution" content="Global" />
-    <meta name="rating" content="General" />
-    <meta name="revisit-after" content="7 days" />
     <meta name="theme-color" content="#0c0f17" />
     <meta name="color-scheme" content="dark light" />
     <meta name="format-detection" content="telephone=no" />
 
     <!-- Web App Manifest (PWA) -->
     <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="__SITE_URL__/" />
 
     <!-- Open Graph / Facebook / WhatsApp / Telegram / Discord -->
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="__SITE_URL__/" />
     <meta property="og:site_name" content="Frantic: Pandora's Box Companion" />
     <meta property="og:title" content="Frantic: Pandora's Box — Companion" />
     <meta
       property="og:description"
-      content="The ultimate digital companion app for Pandora's Box &amp; Frantic by Rulefactory. Fast round scoring, digital d20 event roller, interactive card dictionary, and official rulebooks."
+      content="Unofficial, offline-first companion app for Frantic and Pandora's Box by Rulefactory: fast round scoring, leaderboard, rule card drawer, card dictionary and official rulebooks."
     />
-    <meta property="og:image" content="/og-image.png" />
-    <meta property="og:image:secure_url" content="/og-image.png" />
+    <meta property="og:image" content="__SITE_URL__/og-image.png" />
+    <meta property="og:image:secure_url" content="__SITE_URL__/og-image.png" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -78,9 +81,9 @@
     <meta name="twitter:title" content="Frantic: Pandora's Box — Companion" />
     <meta
       name="twitter:description"
-      content="The ultimate digital companion app for Pandora's Box &amp; Frantic by Rulefactory. Fast round scoring, digital d20 event roller, interactive card dictionary, and official rulebooks."
+      content="Unofficial, offline-first companion app for Frantic and Pandora's Box by Rulefactory: fast round scoring, leaderboard, rule card drawer, card dictionary and official rulebooks."
     />
-    <meta name="twitter:image" content="/og-image.png" />
+    <meta name="twitter:image" content="__SITE_URL__/og-image.png" />
     <meta
       name="twitter:image:alt"
       content="Frantic: Pandora's Box Companion App preview card with interactive scoreboard and rulebook"
@@ -103,7 +106,7 @@
         "@graph": [
           {
             "@type": "WebApplication",
-            "@id": "#companion-app",
+            "@id": "__SITE_URL__/#companion-app",
             "name": "Frantic: Pandora's Box — Companion",
             "alternateName": [
               "Frantic Companion",
@@ -115,23 +118,24 @@
             "applicationCategory": "GameApplication",
             "operatingSystem": "All",
             "browserRequirements": "Requires JavaScript. Requires HTML5.",
-            "description": "Digital companion app for Pandora's Box & Frantic by Rulefactory. Fast round scoring calculator, digital d20 event dice roller, official rulebooks (EN, IT, DE, FR), and interactive card search dictionary.",
+            "description": "Unofficial companion app for Frantic and Pandora's Box by Rulefactory. Round scoring calculator, leaderboard, rule card drawer, official rulebooks (EN, DE, IT, FR) and interactive card dictionary.",
             "offers": {
               "@type": "Offer",
               "price": "0",
               "priceCurrency": "USD"
             },
             "inLanguage": ["en", "de", "it", "fr"],
-            "image": "/og-image.png",
-            "screenshot": "/og-image.png",
+            "image": "__SITE_URL__/og-image.png",
+            "screenshot": "__SITE_URL__/og-image.png",
+            "url": "__SITE_URL__/",
             "featureList": [
               "Fast Round Scoring Calculator",
-              "Digital d20 Event Dice Roller",
+              "Rule Card Drawer for Pandora's Box",
               "Interactive Card Dictionary with Special Rules",
               "Official PDF Rulebooks in EN, IT, DE, FR",
               "Customizable Score Limits and Player Colors",
               "Dark and Light Mode Support",
-              "Full Offline and Local Storage Functionality"
+              "Works offline as an installable PWA (data stored locally)"
             ],
             "author": {
               "@type": "Person",
@@ -140,15 +144,15 @@
           },
           {
             "@type": "WebSite",
-            "@id": "#website",
+            "@id": "__SITE_URL__/#website",
             "name": "Frantic: Pandora's Box Companion",
             "alternateName": "Frantic Companion",
             "description": "Interactive companion web application for Frantic and Pandora's Box card games by Rulefactory.",
             "inLanguage": ["en", "de", "it", "fr"],
             "about": {
               "@type": "Thing",
-              "name": "Frantic: Das Kartenspiel & Pandora's Box",
-              "sameAs": "https://rulefactory.ch"
+              "name": "Frantic & Pandora's Box (Rulefactory)",
+              "url": "https://rulefactory.ch"
             }
           }
         ]
@@ -156,8 +160,9 @@
     </script>
   </head>
   <body
-    class="bg-game-bg min-h-screen text-slate-100 antialiased selection:bg-amber-500 selection:text-black"
+    class="min-h-screen bg-neutral-100 text-neutral-900 antialiased selection:bg-amber-500 selection:text-black dark:bg-neutral-950 dark:text-neutral-100"
   >
+    <noscript>This app requires JavaScript to run.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

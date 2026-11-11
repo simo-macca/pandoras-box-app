@@ -1,7 +1,7 @@
 import React from 'react';
 import { ExternalLink, ShieldCheck } from 'lucide-react';
-import { Language } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
+import { Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 
 interface FooterProps {
   language: Language;

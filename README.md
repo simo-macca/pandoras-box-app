@@ -1,196 +1,151 @@
-# Frantic: Pandora's Box – Digital Companion App
+# Frantic: Pandora's Box – Companion App
 
-[![React](https://img.shields.io/badge/React-18.3.1-61dafb.svg?style=flat&logo=react)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7.3-3178c6.svg?style=flat&logo=typescript)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-6.1.0-646cff.svg?style=flat&logo=vite)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.3.3-38bdf8.svg?style=flat&logo=tailwindcss)](https://tailwindcss.com/)
-[![Vitest](https://img.shields.io/badge/Vitest-5.0.4-facc15.svg?style=flat&logo=vitest)](https://vitest.dev/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#disclaimer--credits)
+[![CI](https://github.com/simo-macca/pandoras-box-app/actions/workflows/ci.yml/badge.svg)](https://github.com/simo-macca/pandoras-box-app/actions/workflows/ci.yml)
+[![React](https://img.shields.io/badge/React-18-61dafb.svg?style=flat&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6.svg?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-6-646cff.svg?style=flat&logo=vite)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38bdf8.svg?style=flat&logo=tailwindcss)](https://tailwindcss.com/)
+[![PWA](https://img.shields.io/badge/PWA-offline_ready-5a0fc8.svg?style=flat)](docs/FEATURES.md#11-offline-use-persistence-backup--restore)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-An intuitive, responsive web companion app designed for the card game **[Frantic](https://rulefactory.ch/)** and its official expansion **Pandora's Box**, created by **Rulefactory**.
+An unofficial, offline-first web companion for the card game **[Frantic](https://rulefactory.ch/)** and its add-on **Pandora's Box**, both created by **Rulefactory**.
 
-Say goodbye to messy pen-and-paper scoring, manual card-counting errors, forgotten special rules, and lost rulebooks. This companion app automates round scoring, tracks leaderboard standings with elimination danger zones, draws Pandora's Box Rule Cards with simulated dice rolls, and provides an instant multilingual encyclopedia for every card, event, and power card in the game.
+The app replaces pen-and-paper scoring at the table: it calculates every player's hand points at the end of a round, keeps a live leaderboard, handles the score-changing events (Doomsday, Time Bomb, Identity Theft, Seppuku), helps you draw Pandora's Box rule cards, and puts a searchable, multilingual card dictionary and the official rulebooks in your pocket — all without an account, a backend, or an internet connection once installed.
 
----
-
-## Documentation Hub
-
-Explore the modular project documentation:
-
-| Document                                                   | Description                                                                                                                    |
-| :--------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
-| **[Setup & Local Development](docs/SETUP.md)**             | Prerequisites, installation, npm scripts, automated testing, and Husky/lint-staged pre-commit pipeline.                        |
-| **[System Architecture](docs/ARCHITECTURE.md)**            | Modular architecture, state engine (`useGameState`), domain calculators (`scoring.ts`, `stats.ts`), audio, and test structure. |
-| **[Application Features](docs/FEATURES.md)**               | Comprehensive walkthrough of all 9 core features, scoring tools, offline capabilities, and UI workflows.                       |
-| **[Game Rules Reference](docs/GAME_RULES.md)**             | Official Frantic and Pandora's Box rules reference, penalty scoring breakdown, and target presets.                             |
-| **[Developer & Contributing Guide](docs/CONTRIBUTING.md)** | How-to guides for adding cards, modifying translations, updating scoring logic, running tests, and code standards.             |
-| **[Deployment Guide](docs/DEPLOYMENT.md)**                 | Production builds, previewing, and hosting instructions for Netlify, Vercel, and custom servers.                               |
+> [!NOTE]
+> This is a fan project. It is not affiliated with, endorsed by, or sponsored by Rulefactory. See [Disclaimer & Credits](#disclaimer--credits).
 
 ---
 
-## Key Features at a Glance
+## Documentation
 
-- **Automated Hand Point Calculator**: Quick selectors for numbered cards (1–10), standard specials (7 pts), Curse (13 pts), The End (17 pts), Fuck You (42 pts), Mimicry (7 pts), and event modifiers (Doomsday 50 pts, Time Bomb table & player modifiers).
-- **Direct Freeform Numeric Modifiers & Negative Scores**: Freeform direct numeric text input for custom point adjustments (e.g. `-15`, `+25`), with unrestricted state and UI support for negative round scores and negative cumulative player totals.
-- **"Identity Theft" Event Action**: Quick-action button on the scoreboard that automatically swaps cumulative scores between the player with the lowest score and the player with the highest score, featuring deterministic tie-breaking, round counter preservation, and full JSON export/import persistence.
-- **"Seppuku T" Event Action & In-Place Editing**: Quick-action button on the scoreboard implementing D'Sinead Conception's event rules with an intuitive, rules-descriptive card UI (showing action names, draw criteria, and score pills). Fully supports retroactive in-place editing directly from match history in case of input errors, with zero round-counter advancement.
-- **Mid-Game Match Settings & Dynamic Late Joiners**: Edit player names, pawn colors, and total round limits while a match is in progress. Mid-game late joiners dynamically receive an initial score of `(highest current player's score) + 1` via tracked event entries.
-- **Live Leaderboard & Elimination Alerts**: Dynamically ranks players (lowest penalty points lead!), tracks round wins, and flags players in the **Danger Zone** ($\ge 80\%$ of target score).
-- **Rule Card Drawer**: Digital randomizer with rolling sound effects and animations for all 15 Pandora's Box Rule Cards, with an active banner reminder pinned to the scoreboard.
-- **Multilingual Card Encyclopedia**: Instant search and filtering across **23 Special Cards**, **44 Event Cards**, **12 Supercharge Power Cards**, and **15 Rule Cards** with tactical tips and timing guides.
-- **Official Rules Alignment**: Strictly aligned card timing (e.g., Recycling 1st, Special Charge 2nd), global vs. targeted event scopes, and table-wide Doomsday and Time Bomb state invariants.
-- **Offline PDF Manuals**: Local serving and in-browser viewing of official Rulefactory manuals and overview cards in 4 languages (**EN**, **DE**, **FR**, **IT**).
-- **Zero-Asset Procedural Audio**: Realistic dice rolls, clicks, and victory fanfare synthesized via the Web Audio API without binary audio downloads.
-- **State Persistence & Backup**: Local auto-save via `localStorage`, plus complete JSON match export and import for device migration or tournament records.
-- **Mobile-First & Theming**: Fully responsive layout with Dark, Light, and System theme switching.
-- **Automated Test Suite**: 20 test suites covering utilities, hooks, static game data, and UI components via Vitest and React Testing Library.
-
-_For a detailed breakdown of all capabilities, see the [Application Features Guide](docs/FEATURES.md)._
+| Document                                        | Contents                                                                         |
+| :---------------------------------------------- | :------------------------------------------------------------------------------- |
+| **[Setup & Local Development](docs/SETUP.md)**  | Prerequisites, installation, npm scripts, tests and the pre-commit pipeline.     |
+| **[Architecture](docs/ARCHITECTURE.md)**        | Project structure, state engine, domain logic, persistence, PWA and test layout. |
+| **[Features & Player Guide](docs/FEATURES.md)** | Game-night quick start and a walkthrough of every feature.                       |
+| **[Game Rules Reference](docs/GAME_RULES.md)**  | Scoring rules, point limits and event modifiers, with rulebook page references.  |
+| **[Contributing](docs/CONTRIBUTING.md)**        | Coding standards and how to add cards, translations and scoring rules.           |
+| **[Deployment](docs/DEPLOYMENT.md)**            | Netlify (current), GitHub Pages and other static hosts.                          |
 
 ---
 
-## Game Rules Alignment & Logic Integrity
+## Features at a Glance
 
-The application's rules engine, event resolution logic, and card taxonomies are synchronized against official Rulefactory rulebooks:
-
-- **Seppuku T Event Resolution & Retroactive Editing**:
-  - Implements D'Sinead Conception's event card where players choose in turn order to take the risk or refuse:
-    - **Risk Taken — Number card drawn**: `-21 pts` applied immediately.
-    - **Risk Taken — Non-number / Special card drawn**: `+42 pts` applied immediately.
-    - **No Risk / Refused**: `+21 pts` applied immediately.
-  - Features an overhauled turn-by-turn modal presenting rules explanations, explicit action names, and outcome badges.
-  - Supports in-place retroactive editing directly from the Match History table to effortlessly correct mistakes without round progression.
-  - Updates scoreboard standings immediately without advancing or incrementing the completed round counter.
-- **Mid-Game Late Joiners & Dynamic Roster**:
-  - Allows adding new players mid-match with starting score formula `(highest current player's score) + 1`.
-  - Supports editing player names, pawn colors/themes, and total round limits on the fly.
-- **Unrestricted Negative Scoring**:
-  - Removed all artificial 0-score clamping (`Math.max(0, ...)`), allowing negative round totals (e.g., Time Bomb defusal -10 pts, Seppuku number card -21 pts, or custom modifiers) and negative cumulative scores.
-- **Power Card Timing Integrity**:
-  - **Recycling**: Verified as `timing: '1st'` (triggered _before_ the hand card effect; draws 1 card from discard pile) per Rulefactory rulebook p. 19.
-  - **Special Charge**: Verified as `timing: '2nd'` (triggered _after_ the hand card effect; draws 2 cards) per Rulefactory rulebook p. 20.
-  - Descriptions and timing tips localized across English, German, Italian, and French.
-- **Event Scope Taxonomy**:
-  - Classified all 44 event cards into **Global** (table-wide effects affecting all players simultaneously) and **Targeted** (single-player or dueling actions), complete with UI badges and localized tags.
-- **Table-Level Global Event Synchronization**:
-  - **Doomsday (D20 = 20)**: Enforced table-wide invariant where all players receive exactly 50 points, round winner toggle is disabled, and table state is preserved upon individual player resets.
-  - **Time Bomb (D20 = 17)**: Integrated table-wide mode selector that automatically applies point doubling (`expired_double`) across all players or assigns winner bonus (-10 pts) and opponent penalties (+10 pts) on defusal.
-- **Round Snapshot Isolation**:
-  - Active rule cards and round modifiers are snapshotted immutably per round in `useGameState`, preventing temporary state leakage across rounds.
+- **Hand point calculator** — steppers for number cards 1–10 and for every special card value: coloured and open-wish specials (7), Mimicry (7), Curse (13), The End (17), Fuck You (42). The round winner scores 0.
+- **Table-wide event modifiers** — Doomsday (everyone scores 50), Time Bomb defused (winner −10, everyone else +10) or exploded (all hand points doubled), plus a free numeric adjustment per player (e.g. `-15`, `+25`). Negative scores are fully supported.
+- **Identity Theft** — one tap swaps the total score of the player with the highest score and the player with the lowest score, as written on the card.
+- **Seppuku** — a guided dialog for each player's choice: number card −21, any other card +42, refusal +21. Entries can be edited afterwards.
+- **Live leaderboard** — lowest score leads; players at 80 % of the limit are flagged in a _danger zone_; the match ends as soon as someone **exceeds** the limit, as the official rules prescribe.
+- **Rule card drawer** with the 15 official Pandora's Box rule cards and a reminder banner on the scoreboard; _Double Special_ is applied automatically when scoring.
+- **Card dictionary** — 23 special cards, 44 event cards, 12 Supercharge power cards (with official 1ST / 2ND timing) and 15 rule cards, searchable in English, German, Italian and French. Card names stay in English, as on the printed cards.
+- **Official rulebooks** — the Rulefactory rulebook and overview cards in EN, DE, FR and IT, viewable in the browser.
+- **Mid-game changes** — edit names, colours, the point limit and an optional round limit while a match is running; late joiners start at _highest current score + 1_ (a house rule, clearly labelled as such).
+- **Undo everywhere** — every action shows an undo toast; any past round can be edited or deleted.
+- **Offline & private** — installable Progressive Web App; all data stays in the browser (`localStorage`) and can be exported/imported as JSON.
+- **Polished UX** — responsive mobile-first layout, light/dark/system theme without flash, keyboard support (Esc closes dialogs), procedural sound effects and optional haptics.
+- **Quality gates** — strict TypeScript, ESLint, Prettier, 170 automated tests (Vitest + React Testing Library) and GitHub Actions CI.
 
 ---
 
 ## Quick Start
 
-### For Players (Game Night)
+### At the table
 
-1. **Setup Match**: Tap **Match Setup** to configure 2–8 players, choose pawn colors, and pick a score limit preset (_Short_, _Medium_, or _Long_).
-2. **Draw Rule Card** _(Pandora's Box)_: Go to the **Rule Cards** tab and tap **Draw Random Rule Card**, then tap **Activate for Round**.
-3. **Play Round**: Play your physical cards following standard Frantic rules.
-4. **Log Scores**: When the round concludes, tap **Score Round** (`+`). Select the round winner (0 pts) and log remaining cards for each player.
-5. **Crown Winner**: When a player crosses the score limit, the app celebrates the winner with confetti and fanfare!
+1. Tap **Players** to set up 2–8 players, their colours and the point limit (official _short / medium / long_ presets, or a custom value).
+2. _(Pandora's Box)_ Open **Rule Cards**, draw a card and activate it for the round.
+3. Play the round with your physical cards.
+4. Tap **Score Round**, mark the round winner and enter the cards left in everyone else's hand. Apply Doomsday or Time Bomb if they happened, then save.
+5. As soon as someone exceeds the limit, the player with the lowest score wins — confetti included.
 
-_Read the complete [Game Night Quick-Start Guide](docs/FEATURES.md#game-night-quick-start-guide)._
+The full walkthrough is in the [Features & Player Guide](docs/FEATURES.md#game-night-quick-start).
 
-### For Developers
+### For developers
+
+Requires **Node.js 22.12 or later**.
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/simonemaccario/pandoras-box-app.git
+git clone https://github.com/simo-macca/pandoras-box-app.git
 cd pandoras-box-app
-
-# 2. Install dependencies
-npm install
-
-# 3. Start local development server
-npm run dev
-
-# 4. Run test suite
-npm run test
+npm ci
+npm run dev        # http://localhost:5173
+npm run validate   # type-check + lint + format check + tests
 ```
 
-Open `http://localhost:5173` in your browser.
-
-_Read the complete [Setup Guide](docs/SETUP.md)._
+See [Setup & Local Development](docs/SETUP.md) for details.
 
 ---
 
-## Technology Stack
+## Scoring Quick Reference
 
-| Layer          | Technology                                                                                                                                           | Details                                                 |
-| :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------ |
-| **Framework**  | [React 18](https://react.dev/)                                                                                                                       | Component-based Single Page Application                 |
-| **Language**   | [TypeScript 5](https://www.typescriptlang.org/)                                                                                                      | Strict static typing and interface contracts            |
-| **Build Tool** | [Vite 6](https://vitejs.dev/)                                                                                                                        | Fast HMR dev server and optimized production bundler    |
-| **Testing**    | [Vitest](https://vitest.dev/), [React Testing Library](https://testing-library.com/), [jest-dom](https://github.com/testing-library/jest-dom), jsdom | Automated unit, hook, and UI component testing          |
-| **Styling**    | [Tailwind CSS 4](https://tailwindcss.com/)                                                                                                           | Responsive design tokens with dark mode support         |
-| **Audio**      | [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)                                                                      | Procedural synthesizer in `src/utils/sound.ts`          |
-| **Icons**      | [Lucide React](https://lucide.dev/)                                                                                                                  | Modern scalable vector UI iconography                   |
-| **Effects**    | [canvas-confetti](https://github.com/catdad/canvas-confetti)                                                                                         | Canvas particle celebrations for game-over victory      |
-| **Hosting**    | [Netlify](https://www.netlify.com/)                                                                                                                  | Static SPA hosting via [`netlify.toml`](./netlify.toml) |
+Points are **penalty points**: the lowest total wins. Values are taken from the official rulebook (pp. 5 and 11).
 
-_Read the complete [System Architecture](docs/ARCHITECTURE.md)._
+| Card / event                              | Points                                           |
+| :---------------------------------------- | :----------------------------------------------- |
+| Number cards (coloured or black)          | Face value (1–10)                                |
+| Plain-/bi-coloured and open-wish specials | 7                                                |
+| Mimicry                                   | 7                                                |
+| Curse                                     | 13                                               |
+| The End                                   | 17                                               |
+| Fuck You                                  | 42                                               |
+| Power cards (Supercharge)                 | 0                                                |
+| **Doomsday**                              | Everyone scores 50; hand cards are not counted   |
+| **Time Bomb** – round ended in time       | Player who ended it −10; everyone else hand + 10 |
+| **Time Bomb** – nobody ended it in time   | Everyone's hand points are doubled               |
+| **Identity Theft**                        | Highest and lowest total scores are swapped      |
+| **Seppuku**                               | Number card −21 · other card +42 · refused +21   |
 
----
-
-## Scoring Rules Quick Reference
-
-In Frantic, points represent **penalty points**. The player with the **lowest score** when someone hits the target limit wins!
-
-| Card Type                  | Examples                                                          |                Penalty Points                |
-| :------------------------- | :---------------------------------------------------------------- | :------------------------------------------: |
-| **Number Cards**           | `1` to `10` (any colour or black)                                 |          **Face value (1–10 pts)**           |
-| **Standard Specials**      | _Skip, Gift, Exchange, Second Chance, Colour Swap, Thief, etc._   |                  **7 pts**                   |
-| **Wish / Unique Specials** | _Fantastic, Fantastic Four, Equality, Inequality, Nice Try, etc._ |                  **7 pts**                   |
-| **Mimicry**                | _Mimicry_                                                         |                  **7 pts**                   |
-| **Curse**                  | _Curse_ (unplayable)                                              |                  **13 pts**                  |
-| **The End**                | _The End_ (playable only as last card)                            |                  **17 pts**                  |
-| **Fuck You**               | _Fuck You_ (playable only with 10 cards in hand)                  |                  **42 pts**                  |
-| **Power Cards**            | _Adrenaline, Teleport, Deflector, etc._                           |                  **0 pts**                   |
-| **Doomsday Modifier**      | Round ends immediately                                            |          **50 pts for all players**          |
-| **Identity Theft Event**   | Scores swapped between lowest and highest players                 |    **Net 0 pts (Round count unchanged)**     |
-| **Seppuku T Event**        | Risk: -21 pts (Number) / +42 pts (Special) vs Refuse: +21 pts     | **-21 / +42 / +21 pts (Round count static)** |
-| **Late Joiner Entry**      | Mid-game roster addition joins ongoing match                      |   **max(scores) + 1 (Round count static)**   |
-
-_Read the complete [Game Rules Reference](docs/GAME_RULES.md)._
+More detail, including official point-limit presets, is in the [Game Rules Reference](docs/GAME_RULES.md).
 
 ---
 
-## Official Rulebook PDFs
+## Technology
 
-Official rulebooks and player overview cards in [`rules/`](./rules/):
-
-| Language    | Complete Rulebook                                                            | Overview Cards                                           |
-| :---------- | :--------------------------------------------------------------------------- | :------------------------------------------------------- |
-| **English** | [Download EN Rulebook](rules/Pandoras_Box_Gesamtregelwerk_EN_web.pdf)        | [Download EN Cards](rules/Uebersichtskarten_EN_web.pdf)  |
-| **German**  | [Download DE Gesamtregelwerk](rules/Pandoras_Box_Gesamtregelwerk_DE_web.pdf) | [Download DE Karten](rules/Uebersichtskarten_DE_web.pdf) |
-| **French**  | [Download FR Règles](rules/Pandoras_Box_Gesamtregelwerk_FR.pdf)              | [Download FR Cartes](rules/Uebersichtskarten_FR_web.pdf) |
-| **Italian** | [Download IT Regolamento](rules/Pandoras_Box_Gesamtregelwerk_IT_web.pdf)     | [Download IT Carte](rules/Uebersichtskarten_IT_web.pdf)  |
+| Area        | Choice                                                                            |
+| :---------- | :-------------------------------------------------------------------------------- |
+| UI          | React 18, TypeScript (strict), Tailwind CSS 4, Lucide icons                       |
+| Build & PWA | Vite 6, `vite-plugin-pwa` (Workbox service worker, full offline precache)         |
+| Testing     | Vitest, React Testing Library, jest-dom, jsdom                                    |
+| Quality     | ESLint (typescript-eslint, react-hooks), Prettier, Husky + lint-staged, GitHub CI |
+| Feedback    | Web Audio API (procedural sounds), `react-hot-toast`, `canvas-confetti`           |
+| Hosting     | Any static host — configured for [Netlify](netlify.toml); GitHub Pages supported  |
 
 ---
 
-## Available Scripts
+## Scripts
 
-| Command                | Action                                                                 |
-| :--------------------- | :--------------------------------------------------------------------- |
-| `npm run dev`          | Starts the Vite development server with HMR.                           |
-| `npm run build`        | Compiles TypeScript and bundles production assets into `dist/`.        |
-| `npm run preview`      | Locally serves the production build.                                   |
-| `npm run test`         | Executes the automated test suite once via Vitest.                     |
-| `npm run test:watch`   | Runs Vitest in interactive watch mode for TDD / active development.    |
-| `npm run lint`         | Runs ESLint for syntax, code quality, and React Hook rules.            |
-| `npm run type-check`   | Type-checks the codebase via `tsc --noEmit` without emitting files.    |
-| `npm run format`       | Auto-formats code and reorders Tailwind classes with Prettier.         |
-| `npm run format:check` | Verifies code adheres to formatting standards without modifying files. |
+| Command                | Action                                                    |
+| :--------------------- | :-------------------------------------------------------- |
+| `npm run dev`          | Start the Vite dev server with hot reload.                |
+| `npm run build`        | Type-check and build the production bundle into `dist/`.  |
+| `npm run preview`      | Serve the production build locally.                       |
+| `npm run test`         | Run the test suite once.                                  |
+| `npm run test:watch`   | Run the test suite in watch mode.                         |
+| `npm run lint`         | Lint the codebase with ESLint.                            |
+| `npm run type-check`   | Type-check with `tsc --noEmit`.                           |
+| `npm run format`       | Format all files with Prettier (sorts Tailwind classes).  |
+| `npm run format:check` | Check formatting without writing.                         |
+| `npm run validate`     | Run type-check, lint, format check and tests in sequence. |
+
+---
+
+## Official Rulebooks
+
+The PDFs in [`public/rules/`](public/rules/) are the official files published by Rulefactory on [rulefactory.ch/en/rules](https://rulefactory.ch/en/rules/).
+
+| Language | Complete rulebook                                                            | Overview cards                                               |
+| :------- | :--------------------------------------------------------------------------- | :----------------------------------------------------------- |
+| English  | [Rulebook (EN)](public/rules/Pandoras_Box_Gesamtregelwerk_EN_web.pdf)        | [Overview (EN)](public/rules/Uebersichtskarten_EN_web.pdf)   |
+| German   | [Gesamtregelwerk (DE)](public/rules/Pandoras_Box_Gesamtregelwerk_DE_web.pdf) | [Übersicht (DE)](public/rules/Uebersichtskarten_DE_web.pdf)  |
+| French   | [Règles (FR)](public/rules/Pandoras_Box_Gesamtregelwerk_FR.pdf)              | [Aperçu (FR)](public/rules/Uebersichtskarten_FR_web.pdf)     |
+| Italian  | [Regolamento (IT)](public/rules/Pandoras_Box_Gesamtregelwerk_IT_web.pdf)     | [Panoramica (IT)](public/rules/Uebersichtskarten_IT_web.pdf) |
 
 ---
 
 ## Disclaimer & Credits
 
-> **Legal Disclaimer:**
-> Pandora's Box is a game created and published by **Rulefactory**. This website is an unofficial, non-commercial companion tool designed solely for scorekeeping and rule reference. It is not affiliated with, endorsed, or sponsored by Rulefactory. All trademarks, logos, and copyrighted materials belong to their respective owners.
+> **Frantic** and **Pandora's Box** are card games created and published by **[Rulefactory GmbH](https://rulefactory.ch/)** (Wil, Switzerland). Concept: Fabian Engeler, Pascal Frick, Pierre Lippuner, Stefan Weisskopf. Design: Pierre Lippuner.
+>
+> This is an unofficial, non-commercial fan project for scorekeeping and rules reference. It is not affiliated with, endorsed by, or sponsored by Rulefactory. All game names, rules, card texts, artwork, trademarks and the rulebook PDFs remain the property of Rulefactory. Event cards credited to community authors (e.g. _Seppuku_ by D'Sinead Conception) keep their original attribution.
 
-- **Frantic** and **Pandora's Box** are card games created and copyrighted by **[Rulefactory](https://rulefactory.ch/)** (Rulefactory GmbH).
-- All official game names, card designs, rules, and trademarks belong to their respective creators and Rulefactory.
-- This project is an unofficial, non-commercial open-source companion tool created by fans for fans.
-- Official rulebook PDFs included in the [`rules/`](./rules/) directory are provided for offline reference during gameplay and remain the intellectual property of Rulefactory.
+The **source code** is released under the [MIT License](LICENSE). The licence does not extend to Rulefactory's material.

@@ -1,6 +1,6 @@
-# Getting Started & Development Setup
+# Setup & Local Development
 
-This guide walks you through setting up **Frantic: Pandora's Box – Digital Companion App** on your local development machine, running the development server, using available npm scripts, executing the automated test suite, and understanding the pre-commit quality pipeline.
+How to install, run, test and verify the project locally.
 
 ---
 
@@ -11,174 +11,140 @@ This guide walks you through setting up **Frantic: Pandora's Box – Digital Com
 - [Local Development](#local-development)
 - [Available Scripts](#available-scripts)
 - [Automated Testing](#automated-testing)
-- [Code Quality & Pre-commit Pipeline](#code-quality--pre-commit-pipeline)
+- [Quality Pipeline](#quality-pipeline)
+- [Environment Variables](#environment-variables)
 - [Troubleshooting](#troubleshooting)
-- [Next Steps](#next-steps)
 
 ---
 
 ## Prerequisites
 
-Before setting up the project, make sure you have installed:
+| Tool    | Version                                | Check           |
+| :------ | :------------------------------------- | :-------------- |
+| Node.js | **22.12 or later** (Node 22 LTS or 24) | `node -v`       |
+| npm     | 10 or later (bundled with Node)        | `npm -v`        |
+| Git     | any recent version                     | `git --version` |
 
-- **Node.js**: `v18.0.0` or higher (Node `20.x` LTS or later recommended).
-  - Verify with: `node -v`
-- **npm**: `v9.0.0` or higher (bundled with Node.js) or an alternative package manager such as `pnpm` or `yarn`.
-  - Verify with: `npm -v`
-- **Git**: Installed and configured for version control.
-  - Verify with: `git --version`
+> [!NOTE]
+> Vitest 5, jsdom 30, ESLint 10 and lint-staged 17 require Node 22.12+. The minimum is declared in `package.json` (`engines`).
 
 ---
 
 ## Installation
 
-1. **Clone the repository**:
+```bash
+git clone https://github.com/simo-macca/pandoras-box-app.git
+cd pandoras-box-app
+npm ci          # installs the exact versions from package-lock.json
+```
 
-   ```bash
-   git clone https://github.com/simonemaccario/pandoras-box-app.git
-   cd pandoras-box-app
-   ```
-
-2. **Install project dependencies**:
-
-   ```bash
-   npm install
-   ```
-
-   > [!NOTE]
-   > The `prepare` script will automatically trigger on install, setting up [Husky](https://typicode.github.io/husky/) git hooks in `.husky/`.
+The `prepare` script installs the [Husky](https://typicode.github.io/husky/) Git hooks automatically.
 
 ---
 
 ## Local Development
 
-Start the local Vite development server with Hot Module Replacement (HMR):
-
 ```bash
 npm run dev
 ```
 
-Once the server boots, Vite displays the local network URL (typically `http://localhost:5173/`). Open this URL in your web browser.
+Open the URL Vite prints (usually `http://localhost:5173/`). Changes in `src/` reload instantly.
 
-- Changes made to files in `src/` are hot-reloaded instantly without losing state where supported.
-- Open your browser's Developer Tools (`F12` / `Cmd+Option+I`) to inspect console logs, Web Audio API activity, and `localStorage` state under Application > Local Storage (`frantic_game_state_v2`).
+Useful while debugging: _DevTools → Application → Local Storage_ shows `frantic_game_state_v2`, `frantic_lang_v2` and `frantic_theme_mode`. Clearing them resets the app.
+
+The service worker is only generated for production builds. To test offline behaviour, run `npm run build && npm run preview`, open the app once, then switch DevTools → Network to _Offline_ and reload.
 
 ---
 
 ## Available Scripts
 
-The following npm scripts are defined in [`package.json`](../package.json):
-
-| Command                | Description                                                                              |
-| :--------------------- | :--------------------------------------------------------------------------------------- |
-| `npm run dev`          | Boots the Vite development server with Hot Module Replacement (HMR).                     |
-| `npm run build`        | Runs TypeScript compilation (`tsc -b`) and bundles production assets into `dist/`.       |
-| `npm run preview`      | Serves the production build locally to verify deployment readiness.                      |
-| `npm run test`         | Executes the automated unit, hook, and component test suite once using Vitest.           |
-| `npm run test:watch`   | Runs Vitest in interactive watch mode for test-driven development (TDD).                 |
-| `npm run lint`         | Runs ESLint across the codebase to check code quality and React Hooks rules.             |
-| `npm run type-check`   | Runs TypeScript type checking (`tsc --noEmit`) without generating output files.          |
-| `npm run format`       | Automatically formats the codebase using Prettier, including Tailwind CSS class sorting. |
-| `npm run format:check` | Checks whether all files adhere to Prettier formatting without modifying them.           |
-| `npm run prepare`      | Configures Husky git hooks for local development.                                        |
+| Command                | Description                                                          |
+| :--------------------- | :------------------------------------------------------------------- |
+| `npm run dev`          | Start the Vite dev server with hot reload.                           |
+| `npm run build`        | Type-check (`tsc -b`) and build into `dist/` (incl. service worker). |
+| `npm run preview`      | Serve `dist/` locally (`http://localhost:4173/`).                    |
+| `npm run test`         | Run all tests once (Vitest).                                         |
+| `npm run test:watch`   | Run tests in watch mode.                                             |
+| `npm run lint`         | ESLint, including React Hooks rules.                                 |
+| `npm run type-check`   | TypeScript check without output (`tsc --noEmit`).                    |
+| `npm run format`       | Format everything with Prettier (sorts Tailwind classes).            |
+| `npm run format:check` | Check formatting without writing.                                    |
+| `npm run validate`     | type-check → lint → format:check → test (same as CI, minus build).   |
 
 ---
 
 ## Automated Testing
 
-The testing suite uses **Vitest**, **React Testing Library**, **@testing-library/jest-dom**, and **jsdom**:
-
 ```bash
-# Run all tests once
-npm run test
-
-# Run tests in watch mode during development
-npm run test:watch
-
-# Run a specific test file or filter by name
-npx vitest run src/utils/__tests__/scoring.test.ts
-npx vitest run -t "calculateHandPoints"
+npm run test                                       # whole suite
+npm run test:watch                                 # watch mode
+npx vitest run src/utils/__tests__/scoring.test.ts # one file
+npx vitest run -t "calculateHandPoints"            # by test name
 ```
 
-### Test Suite Structure
-
-- `src/utils/__tests__/`: Unit tests for scoring rules (`scoring.ts`), leaderboard analytics (`stats.ts`), persistence (`storage.ts`), search & i18n (`i18n.ts`), and colors (`colors.ts`).
-- `src/hooks/__tests__/`: Integration tests for state management (`useGameState.ts`), themes (`useTheme.ts`), and modal dialogs (`useAppModals.ts`).
-- `src/components/**/__tests__/`: Interaction tests for user flows including game setup, hand calculator scoring, and scoreboard tables.
+| Folder                         | Covers                                                               |
+| :----------------------------- | :------------------------------------------------------------------- |
+| `src/utils/__tests__/`         | Scoring, standings, storage and state sanitisation, i18n, colours    |
+| `src/data/__tests__/`          | Card data integrity, translations, official power-card timings       |
+| `src/hooks/__tests__/`         | Game engine, modals, theme, modal accessibility                      |
+| `src/components/**/__tests__/` | User flows: setup, calculator, leaderboard, history, Seppuku, drawer |
 
 ---
 
-## Code Quality & Pre-commit Pipeline
+## Quality Pipeline
 
-To maintain high code quality and prevent regressions, this repository employs an automated pre-commit workflow orchestrated by **Husky** and **lint-staged**:
+### On every commit (Husky)
 
-### Automated Pre-commit Checks
+`.husky/pre-commit` runs:
 
-When you run `git commit`, the hook in `.husky/pre-commit` triggers the following tasks in sequence:
+1. `npx lint-staged` — `eslint --fix` + `prettier --write` on staged `*.ts(x)`; `prettier --write` on staged `*.json, *.css, *.html, *.md`;
+2. `npm run type-check`;
+3. `npm run test`.
 
-1. **`npx lint-staged`**:
-   - **TypeScript & React Files (`*.{ts,tsx}`)**: runs `eslint --fix` and `prettier --write`.
-   - **Styles, Data & Markdown (`*.{json,css,html,md}`)**: runs `prettier --write`.
-2. **`npm run type-check`**:
-   - Executes `tsc --noEmit` to verify type safety across the entire application and tests.
-3. **`npm run test`**:
-   - Executes `vitest run` to ensure all 89 unit, hook, and component tests pass.
+The commit is blocked if any step fails.
 
-If any test fails, lint violation remains, or type error is detected, the commit is automatically blocked.
+### On every push / pull request (GitHub Actions)
 
-### Manual Verification
+[`.github/workflows/ci.yml`](../.github/workflows/ci.yml) runs `npm ci`, type-check, lint, format check, tests and a production build on Node 22.
 
-You can manually trigger these verification checks at any time prior to committing:
+---
 
-```bash
-# Verify TypeScript types
-npm run type-check
+## Environment Variables
 
-# Verify linting
-npm run lint
+All optional; set them in the shell or in a local `.env` file (git-ignored).
 
-# Run automated tests
-npm run test
-
-# Check formatting
-npm run format:check
-```
+| Variable        | Used for                                                                                      | Default                    |
+| :-------------- | :-------------------------------------------------------------------------------------------- | :------------------------- |
+| `BASE_PATH`     | Public base path, e.g. `/pandoras-box-app/` for a GitHub Pages project site.                  | `/`                        |
+| `VITE_SITE_URL` | Absolute site URL for Open Graph / Twitter images and the canonical link (no trailing slash). | Netlify's `URL`, else `""` |
 
 ---
 
 ## Troubleshooting
 
-### Node.js Version Mismatch
+**`EBADENGINE` warnings or syntax errors during install/test** — upgrade Node:
 
-- **Issue**: Errors mentioning unsupported Node version or unexpected token syntax during build.
-- **Resolution**: Upgrade your Node.js version to Node 20 LTS using [nvm](https://github.com/nvm-sh/nvm):
-  ```bash
-  nvm install 20
-  nvm use 20
-  ```
+```bash
+nvm install 22
+nvm use 22
+```
 
-### Husky Hooks Not Executing
+**Husky hooks don't run** — reinstall them:
 
-- **Issue**: Pre-commit hooks do not run on `git commit`.
-- **Resolution**: Reinitialize Husky manually:
-  ```bash
-  npm run prepare
-  chmod +x .husky/pre-commit
-  ```
+```bash
+npm run prepare
+chmod +x .husky/pre-commit
+```
 
-### Vite Port Collision
+**Port 5173 already in use** — run on another port: `npm run dev -- --port 3000`.
 
-- **Issue**: Vite warns that port `5173` is already in use and selects another port (e.g. `5174`).
-- **Resolution**: Stop any running process on port 5173 or specify a custom port in `vite.config.ts` or via CLI:
-  ```bash
-  npm run dev -- --port 3000
-  ```
+**An old version keeps loading after a deploy** — the service worker updates on the next load; reload once more, or in DevTools → Application → Service Workers click _Update_.
 
 ---
 
 ## Next Steps
 
-- **[System Architecture](ARCHITECTURE.md)**: Explore the codebase layout, custom hooks, and pure functions.
-- **[App Features](FEATURES.md)**: Understand the application's capabilities and user workflows.
-- **[Contributing Guide](CONTRIBUTING.md)**: Learn how to add cards, modify scoring rules, or add translations.
-- **[Deployment](DEPLOYMENT.md)**: Learn how to build and host the app on Netlify, Vercel, or custom static servers.
+- [Architecture](ARCHITECTURE.md)
+- [Features & Player Guide](FEATURES.md)
+- [Contributing](CONTRIBUTING.md)
+- [Deployment](DEPLOYMENT.md)

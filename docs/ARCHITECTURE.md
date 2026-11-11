@@ -1,255 +1,153 @@
-# System Architecture & Technical Design
+# Architecture
 
-This document details the software architecture, core design principles, modular state management engine, pure domain calculation utilities, procedural audio system, automated test suite, and project structure for **Frantic: Pandora's Box – Digital Companion App**.
+How the app is structured and why.
 
 ---
 
 ## Table of Contents
 
-- [Architectural Overview](#architectural-overview)
+- [Overview](#overview)
 - [Technology Stack](#technology-stack)
-- [Project Directory Structure](#project-directory-structure)
-- [Core Architecture Subsystems](#core-architecture-subsystems)
-  - [1. Game State Management & Custom Hooks (`useGameState.ts`, `useAppModals.ts`, `useUndoToast.tsx`)](#1-game-state-management--custom-hooks)
-  - [2. Domain Calculation & Rules Engine (`scoring.ts`, `stats.ts`)](#2-domain-calculation--rules-engine)
-  - [3. Persistence & Storage Subsystem (`storage.ts`)](#3-persistence--storage-subsystem)
-  - [4. Procedural Audio & Haptic Feedback (`sound.ts`)](#4-procedural-audio--haptic-feedback)
-  - [5. Theming & Design System (`colors.ts` & `useTheme.ts`)](#5-theming--design-system)
-  - [6. Internationalization & Search Engine (`i18n.ts` & `translations.ts`)](#6-internationalization--search-engine)
-  - [7. Automated Testing Architecture (Vitest & React Testing Library)](#7-automated-testing-architecture)
-- [Data Flow & Lifecycle](#data-flow--lifecycle)
-- [Related Documentation](#related-documentation)
+- [Project Structure](#project-structure)
+- [State Engine (`useGameState`)](#state-engine-usegamestate)
+- [Domain Logic (`scoring.ts`, `stats.ts`)](#domain-logic-scoringts-statsts)
+- [Persistence & Validation (`storage.ts`)](#persistence--validation-storagets)
+- [Offline Support (PWA)](#offline-support-pwa)
+- [UI Layer](#ui-layer)
+- [Internationalisation](#internationalisation)
+- [Audio & Haptics](#audio--haptics)
+- [Testing](#testing)
+- [Data Flow](#data-flow)
 
 ---
 
-## Architectural Overview
+## Overview
 
-The application is built as a responsive, offline-first client-side Single Page Application (SPA). Because it is used in real-time during physical card game sessions, the architecture emphasizes:
+The app is a client-only, offline-first single-page application. There is no backend: all state lives in the browser and is persisted to `localStorage`.
 
-1. **Deterministic Domain Logic**: Pure functions in `src/utils/` calculate hand scores, statistical standings, and presets deterministically without side effects.
-2. **Modular Root Architecture**: Components are strictly decomposed by responsibility into dedicated subdirectories (`layout/`, `setup/`, `scoring/`, `scoreboard/`, `rules/`, `rulecards/`).
-3. **Zero-Latency Interactions & Robust Persistence**: Immediate optimistic updates with automatic synchronization to browser `localStorage` and schema validation on restore/import.
-4. **Zero Asset Overhead**: Audio effects and icons are synthesized in code via Web Audio API or bundled via SVG primitives.
-5. **Strict Type Safety & Automated Verification**: Comprehensive TypeScript contracts paired with unit, hook, and integration tests covering all critical paths.
+Design principles:
+
+1. **Pure domain logic.** Scoring and standings are pure functions in `src/utils/`, independent of React and fully unit-tested.
+2. **One source of truth.** `useGameState` owns the match state; components receive data and callbacks through props.
+3. **Defensive persistence.** Anything read from outside the running app — saved state, imported files, undo snapshots — goes through `sanitizeGameState()` before use.
+4. **Rules fidelity.** Rule values (points, limits, timings, end-of-game condition) are taken from the official rulebook and locked in by tests.
+5. **No asset overhead.** Sounds are synthesised; icons are SVG components.
 
 ```mermaid
 flowchart TD
-    App["App Container (App.tsx)"] --> Layout["Layout & Navigation (Navbar, TabNavigation, ThemeToggle)"]
-    App --> Modals["Modals (GameSetup, HandCalculator, Settings, GameOver)"]
-    App --> Tabs["Active Tab Views"]
+    App["App.tsx"] --> Layout["Navbar · TabNavigation · Footer"]
+    App --> Tabs["Tabs: Leaderboard · RuleCardDrawer · CardDictionary"]
+    App --> Modals["Modals: GameSetup · HandCalculator · Seppuku · Settings · GameOver"]
 
-    Tabs --> Scoreboard["Scoreboard Tab (Leaderboard, PlayerCards, RoundHistoryTable)"]
-    Tabs --> RuleDrawer["Rule Cards Tab (RuleCardDrawer, ActiveRuleCardBanner)"]
-    Tabs --> Dictionary["Directory Tab (CardDictionary, RulesGuide)"]
+    State["useGameState"] -.->|state & actions| App
+    ModalState["useAppModals"] -.->|dialog visibility| App
+    Undo["useUndoToast"] -.->|undo snapshots| App
+    A11y["useModalA11y"] -.->|Esc / scroll lock| Modals
 
-    State["useGameState Hook"] -.->|State & Actions| App
-    ModalsState["useAppModals Hook"] -.->|Modal Visibility| App
-    Toast["useUndoToast Hook"] -.->|Undo Notifications| App
-
-    ScoringUtil["scoring.ts (Pure Functions)"] -.->|Computes Scores| State
-    StatsUtil["stats.ts (Pure Functions)"] -.->|Computes Leaderboard & Danger| State
-    StorageUtil["storage.ts (Storage Subsystem)"] -.->|Hydration & Storage| State
-    Audio["sound.ts (Web Audio API Synthesizer)"] -.->|Sound & Vibration| App
+    Scoring["utils/scoring.ts"] -.-> State
+    Stats["utils/stats.ts"] -.-> State
+    Storage["utils/storage.ts"] -.->|load · save · sanitize| State
+    Sound["utils/sound.ts"] -.-> App
 ```
 
 ---
 
 ## Technology Stack
 
-| Layer          | Technology                                                                                                                                                                             | Version   | Purpose                                                              |
-| :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------- | :------------------------------------------------------------------- |
-| **Framework**  | [React](https://react.dev/)                                                                                                                                                            | `^18.3.1` | Component-based UI with declarative state rendering                  |
-| **Language**   | [TypeScript](https://www.typescriptlang.org/)                                                                                                                                          | `^5.7.3`  | Static typing, interface contracts, and compile-time verification    |
-| **Build Tool** | [Vite](https://vitejs.dev/)                                                                                                                                                            | `^6.1.0`  | Ultra-fast development server with ES modules and production bundler |
-| **Testing**    | [Vitest](https://vitest.dev/), [React Testing Library](https://testing-library.com/), [jest-dom](https://github.com/testing-library/jest-dom), [jsdom](https://github.com/jsdom/jsdom) | `^5.0.4`  | Automated unit, hook, and UI component testing suite                 |
-| **Styling**    | [Tailwind CSS](https://tailwindcss.com/)                                                                                                                                               | `^4.3.3`  | Utility-first responsive CSS styling with custom theme tokens        |
-| **Icons**      | [Lucide React](https://lucide.dev/)                                                                                                                                                    | `^1.16.0` | Lightweight, scalable vector iconography                             |
-| **Animations** | [canvas-confetti](https://github.com/catdad/canvas-confetti)                                                                                                                           | `^1.9.4`  | High-performance particle celebration effects on match completion    |
-| **Feedback**   | [react-hot-toast](https://react-hot-toast.com/)                                                                                                                                        | `^2.6.1`  | Contextual toast notifications for alerts, copy, and undo events     |
-| **Audio**      | [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)                                                                                                        | Native    | Procedural sound generation without binary asset overhead            |
+| Layer    | Technology                                                 | Purpose                                         |
+| :------- | :--------------------------------------------------------- | :---------------------------------------------- |
+| UI       | React 18, TypeScript (strict)                              | Components and type-safe domain model           |
+| Styling  | Tailwind CSS 4 (`@tailwindcss/vite`, `tailwind.config.js`) | Utility classes, dark mode via the `dark` class |
+| Build    | Vite 6                                                     | Dev server and production bundle                |
+| Offline  | `vite-plugin-pwa` (Workbox `generateSW`)                   | Service worker precaching the app and the PDFs  |
+| Feedback | `react-hot-toast`, `canvas-confetti`, Web Audio API        | Toasts with undo, celebration, procedural sound |
+| Icons    | `lucide-react`                                             | SVG icons                                       |
+| Testing  | Vitest, React Testing Library, jest-dom, jsdom             | Unit, hook and component tests                  |
+| Quality  | ESLint, Prettier, Husky, lint-staged, GitHub Actions       | Static checks locally and in CI                 |
+
+Exact versions are pinned in [`package.json`](../package.json) and `package-lock.json`.
 
 ---
 
-## Project Directory Structure
+## Project Structure
 
 ```text
 pandoras-box-app/
-├── docs/                                  # Modular technical and game documentation
-│   ├── ARCHITECTURE.md                    # System architecture, state engine & design (this file)
-│   ├── CONTRIBUTING.md                    # Developer guidelines and extension workflows
-│   ├── DEPLOYMENT.md                      # Production build and hosting guide
-│   ├── FEATURES.md                        # Detailed app feature breakdown
-│   ├── GAME_RULES.md                      # Complete Frantic and Pandora's Box rules reference
-│   └── SETUP.md                           # Installation, local development, and scripts
-│
-├── public/                                # Static public assets (favicons, manifest)
-│
-├── rules/                                 # Official Rulefactory PDF rulebooks (EN, DE, FR, IT)
-│   ├── Pandoras_Box_Gesamtregelwerk_EN_web.pdf
-│   ├── Pandoras_Box_Gesamtregelwerk_DE_web.pdf
-│   ├── Pandoras_Box_Gesamtregelwerk_FR.pdf
-│   ├── Pandoras_Box_Gesamtregelwerk_IT_web.pdf
-│   ├── Uebersichtskarten_EN_web.pdf
-│   ├── Uebersichtskarten_DE_web.pdf
-│   ├── Uebersichtskarten_FR_web.pdf
-│   └── Uebersichtskarten_IT_web.pdf
-│
-├── src/                                   # Application source code
-│   ├── App.tsx                            # Root application component orchestrating view & modals
-│   ├── main.tsx                           # React DOM entry point
-│   ├── index.css                          # Global styling directives and theme setup
-│   │
-│   ├── components/                        # React UI components
-│   │   ├── common/                        # Shared reusable widgets
-│   │   │   ├── AppLogo.tsx                # Brand logo component
-│   │   │   └── HelpTooltip.tsx            # Contextual tooltip popover
-│   │   │
-│   │   ├── events/                        # Event-specific tools
-│   │   │   └── D20DiceRoller.tsx          # Interactive 20-sided dice roller
-│   │   │
-│   │   ├── layout/                        # Shell, headers, and modal wrappers
-│   │   │   ├── settings/                  # Decomposed settings modal sections
-│   │   │   │   ├── SettingsBackupSection.tsx  # JSON import, export, and reset controls
-│   │   │   │   ├── SettingsGeneralSection.tsx # Audio toggles and theme selector
-│   │   │   │   └── SettingsLegalSection.tsx   # Legal disclaimers and copyrights
-│   │   │   ├── Footer.tsx                 # Application footer
-│   │   │   ├── LanguageSelector.tsx       # Multilingual selector modal
-│   │   │   ├── Navbar.tsx                 # Top navigation header bar
-│   │   │   ├── SettingsModal.tsx          # Settings dialog shell
-│   │   │   ├── TabNavigation.tsx          # Bottom/top tab navigation bar
-│   │   │   └── ThemeToggle.tsx            # Theme mode toggle
-│   │   │
-│   │   ├── rulecards/                     # Pandora's Box expansion cards
-│   │   │   ├── ActiveRuleCardBanner.tsx   # Pinned active rule card banner
-│   │   │   └── RuleCardDrawer.tsx         # Randomizer drawer & card browser
-│   │   │
-│   │   ├── rules/                         # Encyclopedia & guide views
-│   │   │   ├── CardDictionary.tsx         # Searchable card & event database
-│   │   │   ├── EventCardsSection.tsx      # Event cards directory list
-│   │   │   ├── OfficialPdfBanner.tsx      # In-browser PDF rulebook launcher
-│   │   │   ├── PowerCardsSection.tsx      # Supercharge power cards directory
-│   │   │   ├── RuleCardsSection.tsx       # Rule cards directory list
-│   │   │   ├── RulesGuide.tsx             # Official rules guide container
-│   │   │   ├── RulesSummary.tsx           # Rules overview component
-│   │   │   ├── SearchBar.tsx              # Filter search input with clear trigger
-│   │   │   └── SpecialCardsSection.tsx    # Special cards directory list
-│   │   │
-│   │   ├── scoreboard/                    # Scoreboard views & components
-│   │   │   ├── __tests__/                 # Scoreboard component tests
-│   │   │   │   ├── Leaderboard.test.tsx       # Leaderboard integration tests
-│   │   │   │   └── RoundHistoryTable.test.tsx # Round history table tests
-│   │   │   ├── GameOverModal.tsx          # Winner celebration dialog
-│   │   │   ├── Leaderboard.tsx            # Standings & round history view
-│   │   │   ├── PlayerCard.tsx             # Player progress card
-│   │   │   ├── RoundHistoryTable.tsx      # Historical rounds list & actions
-│   │   │   └── StatsOverviewCards.tsx     # Leader & danger zone summary metrics
-│   │   │
-│   │   ├── scoring/                       # Round scoring calculators
-│   │   │   ├── __tests__/                 # Scoring calculator tests
-│   │   │   │   ├── HandCalculatorModal.test.tsx # Scoring modal interaction tests
-│   │   │   │   └── RoundScoringModal.test.tsx   # Scoring modal alias tests
-│   │   │   ├── HandCalculatorModal.tsx    # Interactive hand point calculator
-│   │   │   ├── NumberGrid.tsx             # 1–10 number cards stepper grid
-│   │   │   ├── RoundScoringModal.tsx      # Calculator component re-export alias
-│   │   │   ├── ScoringModifiers.tsx       # Doomsday, bomb, and custom modifiers
-│   │   │   ├── ScoringPlayerPicker.tsx    # Player selector for scoring
-│   │   │   └── SpecialCounters.tsx        # Special card count steppers
-│   │   │
-│   │   └── setup/                         # Match configuration
-│   │       ├── __tests__/                 # Setup component tests
-│   │       │   ├── GameSetupModal.test.tsx      # Match setup dialog tests
-│   │       │   └── ScoreLimitSelector.test.tsx  # Score limit selector tests
-│   │       ├── GameSetupModal.tsx         # Match configuration dialog
-│   │       ├── PlayerConfig.tsx           # Player roster and pawn color picker
-│   │       ├── ScoreLimitPresets.tsx      # Official score presets
-│   │       └── ScoreLimitSelector.tsx     # Custom and preset limit selector
-│   │
-│   ├── data/                              # Localized static datasets & constants
-│   │   ├── cardsData.ts                   # Special card definitions and tips
-│   │   ├── eventsData.ts                  # Event card definitions and ratings
-│   │   ├── faqData.ts                     # Common rule rulings and FAQ
-│   │   ├── powerCardsData.ts              # Supercharge power cards specifications
-│   │   ├── ruleCardsData.ts               # 15 Pandora's Box rule card definitions
-│   │   ├── rulesConstants.ts              # Official rule guide sections & rules
-│   │   └── translations.ts                # Multilingual dictionaries (EN, DE, IT, FR)
-│   │
-│   ├── hooks/                             # Custom React hooks
-│   │   ├── __tests__/                     # Hooks unit tests
-│   │   │   ├── useAppModals.test.ts       # Modal state management tests
-│   │   │   ├── useGameState.test.ts       # Central game engine hook tests
-│   │   │   └── useTheme.test.ts           # Theme toggle hook tests
-│   │   ├── useAppModals.ts                # Application modal visibility controller
-│   │   ├── useGameState.ts                # Central game engine state hook
-│   │   ├── useTheme.ts                    # Dark/Light/System theme provider hook
-│   │   └── useUndoToast.tsx               # Contextual undo action toast hook
-│   │
-│   ├── test/                              # Testing setup & environment
-│   │   └── setup.ts                       # Vitest setup file (jest-dom & browser mocks)
-│   │
-│   ├── types/                             # TypeScript model definitions
-│   │   ├── game.ts                        # Match state, round, player, & score models
-│   │   └── rules.ts                       # Card, event, and rule card interfaces
-│   │
-│   └── utils/                             # Pure calculation & system utilities
-│       ├── __tests__/                     # Pure utility unit tests
-│       │   ├── colors.test.ts             # Pawn theme color tests
-│       │   ├── i18n.test.ts               # Localization & search filter tests
-│       │   ├── scoring.test.ts            # Hand scoring calculation engine tests
-│       │   ├── stats.test.ts              # Leaderboard analytics & ranking tests
-│       │   └── storage.test.ts            # LocalStorage persistence tests
-│       ├── colors.ts                      # 10 player pawn theme color palettes
-│       ├── i18n.ts                        # Text localization & search matching helpers
-│       ├── scoring.ts                     # Pure scoring calculation engine & presets
-│       ├── sound.ts                       # Web Audio procedural sound synthesizer
-│       ├── stats.ts                       # Pure leaderboard metrics & danger calculator
-│       └── storage.ts                     # LocalStorage persistence & migration engine
-│
-├── .husky/                                # Git hook scripts
-│   └── pre-commit                         # Pre-commit hook running lint, type-check, and test
-├── eslint.config.js                       # ESLint configuration
-├── netlify.toml                           # Netlify hosting build & redirect configuration
-├── package.json                           # Dependencies, testing, and build scripts
-├── tailwind.config.js                     # Tailwind styling tokens and plugins
-├── tsconfig.json                          # TypeScript compiler configuration with test types
-└── vite.config.ts                         # Vite & Vitest configuration with plugins
+├── .github/workflows/ci.yml        # CI: type-check, lint, format, test, build
+├── .husky/pre-commit               # lint-staged + type-check + tests
+├── docs/                           # Project documentation
+├── public/
+│   ├── rules/                      # Official Rulefactory PDFs (EN, DE, FR, IT)
+│   ├── site.webmanifest            # PWA manifest
+│   └── …                           # Icons, Open Graph image, robots.txt
+├── src/
+│   ├── App.tsx                     # Root: wires state, tabs and modals
+│   ├── main.tsx                    # React entry point
+│   ├── index.css                   # Tailwind entry, custom utilities, reduced-motion
+│   ├── components/
+│   │   ├── common/                 # AppLogo, HelpTooltip
+│   │   ├── events/                 # SeppukuModal
+│   │   ├── layout/                 # Navbar, TabNavigation, Footer, ThemeToggle,
+│   │   │   │                       # LanguageSelector, SettingsModal
+│   │   │   └── settings/           # General, Backup and Legal settings sections
+│   │   ├── rulecards/              # RuleCardDrawer, ActiveRuleCardBanner
+│   │   ├── rules/                  # CardDictionary, RulesGuide, OfficialPdfBanner,
+│   │   │                           # Special/Event/Power/RuleCards sections
+│   │   ├── scoreboard/             # Leaderboard, PlayerCard, StatsOverviewCards,
+│   │   │                           # RoundHistoryTable, GameOverModal
+│   │   ├── scoring/                # HandCalculatorModal (+ RoundScoringModal alias),
+│   │   │                           # NumberGrid, SpecialCounters, ScoringModifiers,
+│   │   │                           # ScoringPlayerPicker
+│   │   └── setup/                  # GameSetupModal, PlayerConfig, ScoreLimitSelector
+│   ├── data/                       # cardsData, eventsData, powerCardsData,
+│   │                               # ruleCardsData, rulesConstants, translations
+│   ├── hooks/                      # useGameState, useAppModals, useUndoToast,
+│   │                               # useTheme, useModalA11y
+│   ├── test/setup.ts               # jest-dom matchers and browser mocks
+│   ├── types/                      # game.ts (match model), rules.ts (card model)
+│   └── utils/                      # scoring, stats, storage, i18n, colors, sound
+├── index.html                      # Meta tags, JSON-LD, no-flash theme script
+├── netlify.toml                    # Netlify build, headers and SPA fallback
+├── vite.config.ts                  # Vite, PWA, base path, site-URL injection, Vitest
+└── tailwind.config.js · tsconfig.json · eslint.config.js · .prettierrc
 ```
 
----
-
-## Core Architecture Subsystems
-
-### 1. Game State Management & Custom Hooks
-
-The application orchestrates state through specialized custom hooks:
-
-#### `useGameState.ts`
-
-The single source of truth for match progress:
-
-- **Round Lifecycle**: `addRound()`, `editRound()`, `deleteRound()`, `undoLastRound()`.
-- **Match Management**: `startNewGame()`, `updateGameSetup()`, `resetCurrentGame()`, `continueGame()`, `concludeGame()`, `resetAllData()`.
-- **Backup Serialization**: `exportGameState()`, `importGameState()`.
-- **Automatic Persistence**: Automatically syncs state to `storage.ts` whenever mutations occur.
-
-#### `useAppModals.ts`
-
-Decoupled dialog visibility manager controlling the Setup modal, Score/Hand Calculator modal, Settings modal (with initial tab selection), and Game Over dismissal states.
-
-#### `useUndoToast.tsx`
-
-Provides immediate feedback toasts with integrated action buttons (e.g. "Undo Round") using `react-hot-toast`.
+Tests live next to the code in `__tests__/` folders.
 
 ---
 
-### 2. Domain Calculation & Rules Engine
+## State Engine (`useGameState`)
 
-Domain rules are completely extracted into standalone pure functions in `src/utils/`:
+[`src/hooks/useGameState.ts`](../src/hooks/useGameState.ts) owns the `GameState`:
 
-#### `src/utils/scoring.ts`
+```ts
+interface GameState {
+  players: Player[];
+  config: { targetScore: number; presetName: …; roundLimit?: number | null };
+  rounds: RoundEntry[];          // rounds and event entries, in order
+  activeRuleCardIds?: string[];
+  isGameStarted: boolean;
+  isGameOver: boolean;
+  winnerId: string | null;
+  isContinued?: boolean;
+}
+```
 
-Contains official penalty card values and the pure calculation function:
+- **Rounds and events share one list.** A `RoundEntry` with `isEvent: true` (Identity Theft, Seppuku, late joiner) stores the point deltas it applied and does **not** count as a round. Its `roundNumber` is the number of completed rounds before it; deleting a round renumbers rounds and re-anchors events.
+- **Actions**: `addRound`, `editRound`, `deleteRound`, `undoLastRound`, `applyIdentityTheft`, `applySeppuku`, `setActiveRuleCardIds`, `startNewGame`, `updateGameSetup` (handles late joiners), `resetCurrentGame`, `continueGame`, `concludeGame`, `resetAllData`, `exportGameState`, `importGameState`, `restoreGameState`.
+- **Game-over lifecycle**: an effect watches the derived standings. The match ends when a player **exceeds** the limit (`isOverScoreLimit`) or the optional round limit is reached; the lowest score is the winner. `continueGame` suppresses the automatic end until `concludeGame`.
+- **Auto-save**: every state change is written to storage.
+- **Undo**: `App.tsx` passes a deep copy of the state to `useUndoToast` before each action; _Undo_ restores it through `restoreGameState`.
 
-```typescript
+[`useAppModals`](../src/hooks/useAppModals.ts) holds dialog visibility; [`useModalA11y`](../src/hooks/useModalA11y.ts) gives every dialog Esc-to-close and background scroll lock.
+
+---
+
+## Domain Logic (`scoring.ts`, `stats.ts`)
+
+**[`src/utils/scoring.ts`](../src/utils/scoring.ts)** — official values and the hand calculator:
+
+```ts
 export const CARD_POINTS = {
   SPECIAL: 7,
   CURSE: 13,
@@ -261,106 +159,113 @@ export const CARD_POINTS = {
   TIME_BOMB_PENALTY: 10,
 } as const;
 
-export function calculateHandPoints(
-  hand: Omit<HandScore, 'totalPoints'> | HandScore
-): number;
+export const SCORE_PRESETS = {
+  few: { short: 137, medium: 154, long: 179 }, // 2–4 players
+  many: { short: 113, medium: 137, long: 154 }, // 5–8 players
+} as const;
+
+export function calculateHandPoints(hand): number;
 ```
 
-Ensures zero discrepancy between the calculator UI preview, persisted history logs, and round editing.
+Order of evaluation: Doomsday (fixed 50) → winner (0, −10 if Time Bomb defused) → card points (special cards ×2 when the _Double Special_ rule card is active) → Time Bomb (×2 if exploded, +10 for the others if defused) → free adjustment. Results may be negative.
 
-#### `src/utils/stats.ts`
-
-Computes derived leaderboard standings:
-
-- **Score Accumulation**: Calculates total penalty points and round win totals.
-- **Rank Sorting**: Sorts players ascending (lowest score is rank 1 and leader).
-- **Danger Zone Detection**: Flags players when total score reaches $\ge 80\%$ of target score (`DANGER_THRESHOLD_RATIO = 0.8`).
-- **Elimination Status**: Flags players when total score crosses or equals the target score.
+**[`src/utils/stats.ts`](../src/utils/stats.ts)** — derived standings: totals, rounds won, rank (ascending), leader, danger zone (`DANGER_THRESHOLD_RATIO = 0.8`), progress and points remaining. `isOverScoreLimit(score, limit)` encodes the official end condition (`score > limit`).
 
 ---
 
-### 3. Persistence & Storage Subsystem (`storage.ts`)
+## Persistence & Validation (`storage.ts`)
 
-Encapsulates all browser `localStorage` operations under typed storage keys:
+[`src/utils/storage.ts`](../src/utils/storage.ts) wraps `localStorage`:
 
-- `STORAGE_KEYS.GAME_STATE` (`frantic_game_state_v2`)
-- `STORAGE_KEYS.LANGUAGE` (`frantic_lang_v2`)
-- `STORAGE_KEYS.THEME` (`frantic_theme_mode`)
+| Key                     | Content            |
+| :---------------------- | :----------------- |
+| `frantic_game_state_v2` | Match state        |
+| `frantic_lang_v2`       | Interface language |
+| `frantic_theme_mode`    | Theme mode         |
 
-Includes automatic schema validation and fallback recovery:
+`sanitizeGameState(input)` validates untrusted data and returns a normalised `GameState` or `null`:
 
-- Ensures minimum target score of 50 points on hydration.
-- Gracefully catches corrupted JSON records and returns clean initial state.
-- Validates supported language and theme codes.
+- players need a unique string `id`; blank names and unknown colours are repaired;
+- the limit is clamped to at least 50; invalid presets become `custom`; invalid round limits are dropped;
+- rounds without a `scores` object and scores without a finite `totalPoints` are discarded.
 
----
-
-### 4. Procedural Audio & Haptic Feedback (`sound.ts`)
-
-Synthesizes responsive sound effects on demand via the browser's native **Web Audio API** without external audio file dependencies:
-
-- **Dice Roll / Shuffle (`playDiceRoll`)**: Randomized multi-frequency oscillator bursts with mobile vibration feedback (`navigator.vibrate([30, 25, 20...])`).
-- **Tactile Click (`playClick`)**: High-frequency sine impulse for interactive button taps.
-- **Victory Chime (`playWinner`)**: Multi-harmonic arpeggiated fanfare for match-ending celebrations.
-- **Warning (`playWarning`)**: Sawtooth alert tone for validation warnings (e.g. score limit $< 50$).
+It is used when loading from storage, importing a JSON backup and restoring an undo snapshot. All storage calls are wrapped in `try/catch` (private mode, quota errors).
 
 ---
 
-### 5. Theming & Design System
+## Offline Support (PWA)
 
-- **Player Color System** ([`src/utils/colors.ts`](../src/utils/colors.ts)): Defines 10 distinct player pawns (Red, Blue, Green, Yellow, Purple, Orange, White, Black, Cyan, Pink) with full Tailwind badges, rings, and glowing border themes.
-- **Theme Provider** ([`src/hooks/useTheme.ts`](../src/hooks/useTheme.ts)): Supports `light`, `dark`, and `system` modes, tracking OS `prefers-color-scheme` dynamically.
+`vite-plugin-pwa` generates `sw.js` at build time:
 
----
+- precaches the app shell, icons and **all rulebook PDFs** (~4.8 MB), so the complete app works offline after the first visit;
+- `registerType: 'autoUpdate'` — new deployments activate automatically on the next load;
+- the hand-written [`public/site.webmanifest`](../public/site.webmanifest) is kept as the manifest (relative URLs, so it works on any base path).
 
-### 6. Internationalization & Search Engine
-
-- **Translations Engine** ([`src/utils/i18n.ts`](../src/utils/i18n.ts) & [`src/data/translations.ts`](../src/data/translations.ts)):
-  - 4 languages supported: **English (`en`)**, **German (`de`)**, **Italian (`it`)**, and **French (`fr`)**.
-  - `getLocalizedText(map, lang, fallback)` provides safe string retrieval.
-  - `matchesSearchQuery(fields, query)` provides unified multi-field search filtering for the card and rules encyclopedia.
+Netlify serves `sw.js` with `Cache-Control: no-cache` so updates are picked up promptly.
 
 ---
 
-### 7. Automated Testing Architecture
+## UI Layer
 
-Testing is built with **Vitest**, **React Testing Library**, **@testing-library/jest-dom**, and **jsdom**:
-
-- **Setup File** ([`src/test/setup.ts`](../src/test/setup.ts)): Configures custom DOM matchers, mocks `window.matchMedia` and `canvas-confetti`, and automatically clears DOM and `localStorage` between tests.
-- **Unit Tests** (`src/utils/__tests__/`): Tests pure domain calculations (`scoring.test.ts`, `stats.test.ts`, `storage.test.ts`, `i18n.test.ts`, `colors.test.ts`).
-- **Hook Tests** (`src/hooks/__tests__/`): Tests React hook lifecycle and state mutations (`useGameState.test.ts`, `useTheme.test.ts`, `useAppModals.test.ts`).
-- **Component Tests** (`src/components/**/__tests__/`): Tests complete user workflows via `@testing-library/user-event` for setup modals, limit selectors, hand calculators, leaderboards, and round history tables.
+- Components are typed `React.FC<Props>` with a props interface at the top of the file.
+- Styling uses Tailwind utilities only; dark mode uses the `dark` class on `<html>`, set by an inline script in `index.html` before first paint and kept in sync by `useTheme`.
+- Dialogs are controlled (`isOpen`, `onClose`), expose `role="dialog"` and `aria-modal`, and close on Esc.
+- Asset URLs use `import.meta.env.BASE_URL`, so the app works at a domain root (Netlify) or under a sub-path (GitHub Pages).
+- Animations respect `prefers-reduced-motion`.
 
 ---
 
-## Data Flow & Lifecycle
+## Internationalisation
+
+- [`src/data/translations.ts`](../src/data/translations.ts) — typed UI dictionary (`TranslationStrings`) for `en`, `de`, `it`, `fr`. A missing key is a compile error.
+- Card, event, power-card and rule-card texts are `LocalizedMap` objects in `src/data/*`.
+- [`src/utils/i18n.ts`](../src/utils/i18n.ts) — `getLocalizedText()` with fallback and `matchesSearchQuery()` for the dictionary search.
+
+---
+
+## Audio & Haptics
+
+[`src/utils/sound.ts`](../src/utils/sound.ts) synthesises sounds with oscillators (no files): click, dice roll, dice finish, warning and a victory fanfare; `navigator.vibrate` provides haptics where supported. Sound and haptics can be disabled independently.
+
+---
+
+## Testing
+
+- **Unit** — `src/utils/__tests__/`: scoring, stats, storage and sanitisation, i18n, colours.
+- **Data integrity** — `src/data/__tests__/gameData.test.ts`: card counts, point values, translations in all languages, power-card timings per rulebook.
+- **Hooks** — `src/hooks/__tests__/`: game engine (rounds, events, late joiners, game-over rule, import validation), modals, theme, modal accessibility.
+- **Components** — `src/components/**/__tests__/`: setup, score limits, calculator, modifiers, leaderboard, history, Seppuku, rule-card drawer, dictionary.
+
+[`src/test/setup.ts`](../src/test/setup.ts) registers jest-dom matchers, mocks `matchMedia` and `canvas-confetti`, and clears the DOM and storage between tests.
+
+---
+
+## Data Flow
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Player
+    actor P as Player
     participant UI as HandCalculatorModal
-    participant Calc as scoring.ts
-    participant Engine as useGameState
-    participant Storage as storage.ts
-    participant Audio as sound.ts
+    participant S as scoring.ts
+    participant E as useGameState
+    participant St as storage.ts
 
-    Player->>UI: Adjusts card counters
-    UI->>Calc: calculateHandPoints(currentHand)
-    Calc-->>UI: Live subtotal preview
-    Player->>UI: Tap "Save Round Scores"
-    UI->>Engine: addRound(allPlayerScores)
-    Engine->>Storage: saveGameStateToStorage(newGameState)
-    Engine->>Audio: playDiceFinish()
-    Engine-->>UI: Close modal & refresh leaderboard standings
+    P->>UI: Enters cards left in hand
+    UI->>S: calculateHandPoints(hand)
+    S-->>UI: Live total
+    P->>UI: Save Round Scores
+    UI->>E: addRound(scores)
+    E->>St: saveGameStateToStorage(state)
+    E-->>UI: Standings recomputed; game-over check
 ```
 
 ---
 
 ## Related Documentation
 
-- **[Installation & Setup](SETUP.md)**: Steps to run, test, and build the application locally.
-- **[Application Features](FEATURES.md)**: Detailed feature breakdown.
-- **[Game Rules Reference](GAME_RULES.md)**: Official rules and scoring specifications.
-- **[Contributing Guide](CONTRIBUTING.md)**: How to extend the card database, write tests, or modify logic.
-- **[Deployment Guide](DEPLOYMENT.md)**: Publishing to Netlify or static hosts.
+- [Setup & Local Development](SETUP.md)
+- [Features & Player Guide](FEATURES.md)
+- [Game Rules Reference](GAME_RULES.md)
+- [Contributing](CONTRIBUTING.md)
+- [Deployment](DEPLOYMENT.md)

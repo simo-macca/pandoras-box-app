@@ -1,189 +1,194 @@
-# Frantic & Pandora's Box Game Rules Reference
+# Game Rules Reference
 
-This guide provides a comprehensive summary of the official game rules for **Frantic** and its expansion **Pandora's Box**, developed by **[Rulefactory](https://rulefactory.ch/)**. It serves as an instant reference for resolving disputes at the table.
+A concise summary of the official rules for **Frantic** and its add-ons (**Troublemaker**, **Supercharge** and **Pandora's Box**) by **[Rulefactory](https://rulefactory.ch/)**, focused on what matters for scoring. Page numbers refer to the official English rulebook _Frantic Pandora's Box_ (© 2020 Rulefactory), included in [`public/rules/`](../public/rules/Pandoras_Box_Gesamtregelwerk_EN_web.pdf).
+
+> [!IMPORTANT]
+> The rulebook is the authority. This page is a summary; if anything here differs from the rulebook, the rulebook wins — please [open an issue](https://github.com/simo-macca/pandoras-box-app/issues).
 
 ---
 
 ## Table of Contents
 
-- [Goal & Winning Conditions](#goal--winning-conditions)
-- [Game Setup & Direction of Play](#game-setup--direction-of-play)
-- [Turn Flow & Ending a Round](#turn-flow--ending-a-round)
-- [The Golden Rule: Black Cards & Events](#the-golden-rule-black-cards--events)
-- [Round-End Scoring Breakdown](#round-end-scoring-breakdown)
-  - [Card Point Values Table](#card-point-values-table)
-  - [Special Event Scoring Modifiers](#special-event-scoring-modifiers)
-- [Official Score Limit Presets](#official-score-limit-presets)
-- [Pandora's Box Expansion Rules](#pandoras-box-expansion-rules)
-  - [Rule Cards (15 Cards)](#rule-cards-15-cards)
-  - [Supercharge Power Cards (12 Cards)](#supercharge-power-cards-12-cards)
-- [Official Rulebook PDF Downloads](#official-rulebook-pdf-downloads)
-- [Related Documentation](#related-documentation)
+- [Goal of the Game](#goal-of-the-game)
+- [Game Preparation](#game-preparation)
+- [Taking Turns](#taking-turns)
+- [Ending a Round & Scoring](#ending-a-round--scoring)
+- [End of the Game](#end-of-the-game)
+- [Black Cards & Events](#black-cards--events)
+- [Events That Change the Score](#events-that-change-the-score)
+- [Supercharge Power Cards](#supercharge-power-cards)
+- [Pandora's Box Rule Cards](#pandoras-box-rule-cards)
+- [App-Specific House Rules](#app-specific-house-rules)
+- [Official Rulebook PDFs](#official-rulebook-pdfs)
 
 ---
 
-## Goal & Winning Conditions
+## Goal of the Game
 
-- **Core Objective**: Shed all the cards in your hand as quickly as possible.
-- **Points are Penalties**: In Frantic, points accumulated at the end of each round represent **penalty points**. You want your score to remain as low as possible.
-- **Game Termination**: The game ends at the conclusion of any round in which at least one player reaches or exceeds the agreed **Target Score Limit**.
-- **Victory**: The player who holds the **lowest cumulative score** when the game terminates is crowned the winner!
+Every round, try to get rid of all your hand cards as quickly as possible. When one player is out of cards, the round ends and the cards left in everyone else's hand count as points — which is bad. Points add up round after round; **the player with the fewest points wins** (p. 4).
 
 ---
 
-## Game Setup & Direction of Play
+## Game Preparation
 
-- **Player Count**: 2 to 8 players.
-- **Hand Deal**: Deal **7 cards** to each player (deal at least 4 in shorter variants).
-- **Direction of Play**: Play moves strictly **anti-clockwise** (counter-clockwise).
-- **The Dealer**:
-  - **Round 1**: The owner of the game deals.
-  - **Subsequent Rounds**: The player who accumulated the highest score (the "loser") in the preceding round deals.
-- **Initial Discard**: The dealer flips the top card of the draw pile face-up to initiate the discard pile.
-  > [!IMPORTANT]
-  > **The effect of this initial card triggers immediately as if played by the dealer!**
+- Separate the playing cards (black back) from the event cards (white back) and shuffle both decks.
+- Deal **7 cards** to each player. To shorten rounds you may deal fewer, but never fewer than 4.
+- **Dealer**: in the first round, the owner of the game; afterwards, the player who lost the last round (scored the most points).
+- The dealer turns over the top card of the draw pile and treats it **as if they had played it**, with all its effects. It starts the discard pile.
+- Play proceeds **anticlockwise**.
+- **Supercharge**: each player also receives 2 power cards, face down on the table.
+- **Rule cards** (Pandora's Box): before each round, shuffle the rule card deck and draw one or more cards.
 
----
+### Recommended point limits (p. 4)
 
-## Turn Flow & Ending a Round
+| Players | Short | Medium | Long |
+| :------ | :---: | :----: | :--: |
+| 2–4     |  137  |  154   | 179  |
+| 5–8     |  113  |  137   | 154  |
 
-1. On your turn, play **1 card** from your hand matching the top card of the discard pile by:
-   - **Colour**, **Number**, or **Symbol**.
-2. If you cannot or choose not to play a card, draw **1 card** from the draw pile. If the card drawn is playable, you may play it immediately.
-3. **The "Last Card" Rule**:
-   - When you have only **1 card remaining** in hand, you must audibly announce: **"Last Card!"** before the next player takes their turn.
-   - If another player catches you forgetting to announce this, you must draw **4 penalty cards**.
-4. **Round End Triggers**:
-   - A player successfully sheds their final card. That player scores **0 points** for the round.
-   - A player must draw a card, but the draw pile is completely exhausted.
+Any other limit may be agreed: as a general rule, the bigger the group, the lower the limit. The app offers these presets and accepts any custom limit of 50 points or more.
 
 ---
 
-## The Golden Rule: Black Cards & Events
+## Taking Turns
 
-### Black is NOT a Colour
-
-- You cannot name "black" when playing a colour-wishing card (e.g., _Fantastic_).
-- You cannot play a black card simply because the previous top card was black.
-- A black card can only be played if:
-  - It matches the **exact number** of the top discard card, OR
-  - It is played via an open-wish special card.
-
-### Event Activation
-
-- Whenever any player plays a **black numbered card**, an **Event Card** is immediately drawn from the Event deck.
-- The event's effect resolves completely before normal play resumes.
+- On your turn you may play **one** card from your hand.
+- If you can't or don't want to play, draw a card from the draw pile. **Even after drawing, you may still play a card.**
+- Which cards you may play depends on the top card of the discard pile (see the card descriptions in the rulebook, pp. 5–11).
 
 ---
 
-## Round-End Scoring Breakdown
+## Ending a Round & Scoring
 
-When a round ends, players calculate penalty points for the cards remaining in their hands:
+A round ends when (p. 5):
 
-### Card Point Values Table
+- one player has no cards left in their hand, **or**
+- a player has to draw a card but the draw pile is used up.
 
-| Card Type                   | Examples                                                                                  |      Penalty Points       | Rule Constraints                                        |
-| :-------------------------- | :---------------------------------------------------------------------------------------- | :-----------------------: | :------------------------------------------------------ |
-| **Number Cards**            | `1` through `10` (any colour or black)                                                    | **Face value (1–10 pts)** | A `7` is 7 pts, a `10` is 10 pts, etc.                  |
-| **Standard Specials**       | _Skip, Gift, Exchange, Second Chance, Colour Swap, Thief, Troublemaker, Recharge_         |         **7 pts**         | Includes single-colour and dual-colour versions.        |
-| **Wish / Unique Specials**  | _Fantastic, Fantastic Four, Equality, Inequality, Nice Try, Lucky Bastard, Counterattack_ |         **7 pts**         | Standard special point value.                           |
-| **Mimicry**                 | _Mimicry_                                                                                 |         **7 pts**         | Copies another special card effect.                     |
-| **Curse**                   | _Curse_                                                                                   |        **13 pts**         | **Unplayable**: Cannot be discarded normally from hand! |
-| **The End**                 | _The End_                                                                                 |        **17 pts**         | Can only be played as your **very last card** in hand.  |
-| **Fuck You**                | _Fuck You_                                                                                |        **42 pts**         | Can only be played when holding **exactly 10 cards**!   |
-| **Supercharge Power Cards** | _Adrenaline, Teleport, Deflector, etc._                                                   |         **0 pts**         | Power cards never grant penalty points.                 |
+Every player who still holds cards adds up their points and adds them to their total:
 
-### Special Event Scoring Modifiers
+| Card                                       | Points            | Source |
+| :----------------------------------------- | :---------------- | :----- |
+| Coloured and black number cards            | Face value (1–10) | p. 5   |
+| Plain-/bi-coloured special cards           | 7                 | p. 5   |
+| Open-wish special cards                    | 7                 | p. 5   |
+| Mimicry                                    | 7                 | p. 11  |
+| Curse                                      | 13                | p. 11  |
+| The End                                    | 17                | p. 11  |
+| Fuck You                                   | 42                | p. 11  |
+| Power cards (Supercharge — not hand cards) | 0                 | p. 5   |
 
-Certain events alter round scoring outcomes:
+> [!NOTE]
+> Card names are printed in **English in every language edition** (DE, FR, IT included), so the app uses the English names everywhere.
 
-- **Doomsday**:
-  - If the Doomsday event resolves without being cancelled, the round ends instantly.
-  - **Every player receives 50 penalty points** regardless of the cards in their hand.
-- **Time Bomb**:
-  - **Winner Bonus**: If the player holding the active Time Bomb finishes their hand first, they receive a **-10 point bonus**.
-  - **Loser Penalty**: If another player finishes while you are holding the Time Bomb, you receive a **+10 point penalty**.
-  - **Expired Explosion**: If the bomb timer expires before anyone sheds their hand, the holder's round penalty score is **doubled ($\times 2$)**.
-- **Identity Theft**:
-  - Swaps cumulative scores between the player with the lowest score and the player with the highest score.
-  - Deterministic tie-breaking selects the first matching player in the roster order.
-  - Does not advance the round counter.
-- **Seppuku T**:
-  - Created by D'Sinead Conception: each player chooses in turn order whether to commit Seppuku.
-  - **Risk Taken — Number card drawn**: `-21 pts`.
-  - **Risk Taken — Non-number / Special card drawn**: `+42 pts`.
-  - **No Risk / Refused**: `+21 pts`.
-  - Applied directly to cumulative scores without advancing the round counter.
-- **Mid-Game Late Joiners**:
-  - When a new player joins an active match, their initial score is set to:
-    $$\text{Starting Score} = \max(\text{Current Scores}) + 1$$
-- **Unrestricted Negative Scores**:
-  - Scores are never artificially clamped to zero. Negative round scores and negative cumulative totals are fully permitted.
+The 23 special cards are: _2nd Chance, Skip, Gift, Exchange, Thief, Troublemaker, Colour Swap, Recharge_ (plain-/bi-coloured); _Fantastic, Fantastic Four, Counterattack, Equality, Inequality, Nice Try, Lucky Bastard, Special Favours, Edison, Update, Do It Yourself_ (open-wish); _Fuck You, Mimicry, Curse, The End_ (unique).
 
 ---
 
-## Official Score Limit Presets
+## End of the Game
 
-Target score thresholds from the official rulebook scale according to participant count:
+Rounds are played **until someone exceeds the set point limit**. The person with the **lowest score** wins (p. 5).
 
-| Player Count      | Short Game | Medium Game (Standard) | Long Game |
-| :---------------- | :--------: | :--------------------: | :-------: |
-| **2 – 4 Players** | `137 pts`  |       `154 pts`        | `179 pts` |
-| **5 – 8 Players** | `113 pts`  |       `137 pts`        | `154 pts` |
-
-> [!TIP]
-> The companion app automatically detects player count during setup and suggests the appropriate official presets.
+Reaching the limit exactly does **not** end the game — the app follows this rule.
 
 ---
 
-## Pandora's Box Expansion Rules
+## Black Cards & Events
 
-The **Pandora's Box** expansion introduces two dynamic mechanisms:
-
-### Rule Cards (15 Cards)
-
-At the beginning of each round, draw **1 Rule Card**:
-
-- The rule card applies globally to **all players** for the entire round.
-- Examples include:
-  - _Blind Date_: Players play cards face-down without seeing them.
-  - _Double Trouble_: Every penalty card draw is doubled.
-  - _Color Blind_: Cards can only be played by matching numbers, ignoring colours.
-  - _Blackout_: Black cards can be played on any card.
-  - _Anarchy_: Players take turns whenever they wish rather than in order.
-
-### Supercharge Power Cards (12 Cards)
-
-Power cards are dealt face-down in front of each player:
-
-- They do not count toward your hand limit and score **0 penalty points** at round end.
-- Can be activated during a player's turn when playing a hand card:
-  - **1ST Timing**: Activates **before** the played hand card resolves (e.g., _Adrenaline_, _Teleport_).
-  - **2ND Timing**: Activates **after** the played hand card resolves (e.g., _Deflector_, _Troublecharger_).
+- A black number card can be played only on the same number or on a matching number wish. **Black is not a colour**: it can't be wished for and a black card can't be followed by another black card except with the same number (p. 5).
+- Every time a black number card is played, the top event card is turned over and executed (p. 12). _Troublemaker_ also triggers an event.
+- Effects that hit several players are executed in order of play, starting with the person on the right of whoever triggered the event. If several players qualify for an effect, it affects the first person in the order of play (p. 12).
+- There are **44 event cards**: 20 in the base game, 14 in Troublemaker, 9 in Supercharge and 1 in Pandora's Box (p. 22).
 
 ---
 
-## Official Rulebook PDF Downloads
+## Events That Change the Score
 
-Official PDF manuals in the [`rules/`](../rules/) directory:
+These are the events the app handles directly. All other events affect the cards in play, not the score sheet.
 
-- **English**:
-  - [Complete Rulebook (EN)](../rules/Pandoras_Box_Gesamtregelwerk_EN_web.pdf)
-  - [Overview Cards (EN)](../rules/Uebersichtskarten_EN_web.pdf)
-- **German**:
-  - [Gesamtregelwerk (DE)](../rules/Pandoras_Box_Gesamtregelwerk_DE_web.pdf)
-  - [Übersichtskarten (DE)](../rules/Uebersichtskarten_DE_web.pdf)
-- **French**:
-  - [Règles complètes (FR)](../rules/Pandoras_Box_Gesamtregelwerk_FR.pdf)
-  - [Cartes d'aperçu (FR)](../rules/Uebersichtskarten_FR_web.pdf)
-- **Italian**:
-  - [Regolamento completo (IT)](../rules/Pandoras_Box_Gesamtregelwerk_IT_web.pdf)
-  - [Carte riassuntive (IT)](../rules/Uebersichtskarten_IT_web.pdf)
+| Event                       | Official effect                                                                                                                                                                                                                               | In the app                                   |
+| :-------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------- |
+| **Doomsday** (p. 13)        | The round ends immediately. Everyone scores 50 points; hand cards are not counted.                                                                                                                                                            | _Doomsday_ toggle in the round calculator    |
+| **Finish Line** (p. 14)     | The round ends immediately; everyone adds up their hand points.                                                                                                                                                                               | Score the round normally                     |
+| **Time Bomb** (p. 17)       | Everyone has three turns left. If someone ends the round before that, 10 points are subtracted from their total and everyone else adds 10 to their hand points. If no one ends the round within three turns, all players' points are doubled. | _Time Bomb_ selector: _defused_ / _exploded_ |
+| **Double Taxation** (p. 14) | When writing down points: every player immediately adds the value of their three highest hand cards to their total score.                                                                                                                     | Free numeric adjustment                      |
+| **Identity Theft** (p. 14)  | When writing down points: the person with the highest score swaps their score with the person with the lowest score.                                                                                                                          | _Identity Theft_ button                      |
+| **Seppuku** (p. 16)         | When writing down points: each player, in order of play, decides whether to take the risk and turn over the top draw-pile card. Number card: −21 points. Any other card: +42 points. Refusing: +21 points.                                    | _Seppuku_ dialog                             |
+| **Parasite** (p. 15)        | When someone ends the round, the person on their left may discard two cards before counting.                                                                                                                                                  | Enter the remaining cards only               |
+
+Notes:
+
+- **The End** (p. 11): if a player ends the round by playing _The End_, all active events (such as Time Bomb) are ignored and _Nice Try_ can no longer be played.
+- **Lucky Bastard** (p. 10): a player protected by Lucky Bastard is not affected by the event; if the event ends the round (e.g. Doomsday), that player writes down no points. Use the free adjustment to correct their row.
+- **Ties** for Identity Theft are resolved like every other event: the first qualifying person in the order of play. The app uses the order of the player list, so enter players in seating order.
+
+---
+
+## Supercharge Power Cards
+
+Power cards are activated (turned face up), not played, and only during your own turn together with a hand card. One activation per turn; an activated card can't be used again unless recharged. They are never hand cards and score 0 points (pp. 5, 18).
+
+The symbol in the corner of the card determines when its effect is executed relative to a special card played with it (pp. 19–20):
+
+| Timing                         | Power cards                                                                                 |
+| :----------------------------- | :------------------------------------------------------------------------------------------ |
+| **1ST** — before the hand card | All Draw One, Anti Counter, Open Hands, Special Charge, Special Seal                        |
+| **2ND** — after the hand card  | Black Wish, Colour Blockade, Looping, Number Wish, Random Chance, Recycling, Troublecharger |
+
+---
+
+## Pandora's Box Rule Cards
+
+Rule cards are optional. Before each round, shuffle the rule card deck and draw one or more cards; the rules for that round are modified accordingly (p. 21). _Do It Yourself_ and the _Pandora's Box_ event let you define your own effect before the game starts (pp. 9, 15).
+
+The add-on contains **15 rule cards**. The summaries below paraphrase Rulefactory's [digital rulebook](https://rulefactory.ch/rulebook/frantic/en/rule-cards); the app shows the official wording.
+
+| Rule card              | Effect (summary)                                                                                      |
+| :--------------------- | :---------------------------------------------------------------------------------------------------- |
+| **Fantastic Six**      | _Fantastic Four_ deals six cards.                                                                     |
+| **Always Lucky**       | Before every event, whoever triggers it picks one player who is not affected.                         |
+| **Mass Exchange**      | _Exchange_ swaps all cards.                                                                           |
+| **Double Special**     | All special cards count double at the end of the round. → **applied automatically by the calculator** |
+| **Double Trouble**     | One additional event is always triggered.                                                             |
+| **Gift Split**         | The two cards given with _Gift_ must be split between players.                                        |
+| **Your Choice**        | Make up your own rule (suggestion: playing a 10 triggers an event).                                   |
+| **Thief's Choice**     | With _Thief_, choose before resolving whether to take one, two or three cards.                        |
+| **Give a Fuck**        | With 13 or more cards in hand, a player may give _Fuck You_ away as their turn.                       |
+| **The Nicest Try**     | The victim of _Nice Try_ draws until they hold as many cards as its initiator, instead of three.      |
+| **Saboteur**           | _Counterattack_ may be thrown in without being attacked; you may then use the stolen effect yourself. |
+| **Special Compulsion** | Open-wish special effects must be executed whenever possible (not _Counterattack_ / _Nice Try_).      |
+| **Santa is not real**  | A round can't end on an open-wish special card; whoever tries draws two cards.                        |
+| **Safe Counter**       | _Counterattack_ can no longer be countered by another _Counterattack_.                                |
+| **The End is nigh**    | _The End_ may end the game early; scoring changes (see below).                                        |
+
+**The End is nigh — scoring.** Everyone counts their points. If the player who played _The End_ has the fewest points, their points are discarded and they win. Otherwise only that player's points are written down — tripled. Enter this with the free adjustment in the calculator.
+
+## App-Specific House Rules
+
+These are **not** official rules; they are conveniences of the app:
+
+- **Danger zone**: a player whose total reaches 80 % of the limit is highlighted.
+- **Late joiners**: a player added to a running match starts at _highest current score + 1_.
+- **Round limit**: an optional maximum number of rounds; when it is reached, the lowest score wins.
+- **Continue after game over**: you may keep playing past the limit and end the match manually.
+
+---
+
+## Official Rulebook PDFs
+
+| Language | Complete rulebook                                                                    | Overview cards                                                         |
+| :------- | :----------------------------------------------------------------------------------- | :--------------------------------------------------------------------- |
+| English  | [Rulebook (EN)](../public/rules/Pandoras_Box_Gesamtregelwerk_EN_web.pdf)             | [Overview cards (EN)](../public/rules/Uebersichtskarten_EN_web.pdf)    |
+| German   | [Gesamtregelwerk (DE)](../public/rules/Pandoras_Box_Gesamtregelwerk_DE_web.pdf)      | [Übersichtskarten (DE)](../public/rules/Uebersichtskarten_DE_web.pdf)  |
+| French   | [Règles complètes (FR)](../public/rules/Pandoras_Box_Gesamtregelwerk_FR.pdf)         | [Cartes d'aperçu (FR)](../public/rules/Uebersichtskarten_FR_web.pdf)   |
+| Italian  | [Regolamento completo (IT)](../public/rules/Pandoras_Box_Gesamtregelwerk_IT_web.pdf) | [Carte riassuntive (IT)](../public/rules/Uebersichtskarten_IT_web.pdf) |
+
+Source: [rulefactory.ch/en/rules](https://rulefactory.ch/en/rules/). Rulefactory has since published a 4th-edition rule sheet for the base game; this app follows the _Pandora's Box_ complete rulebook.
 
 ---
 
 ## Related Documentation
 
-- [Application Features Guide](FEATURES.md)
-- [Hand Point Calculator Engine](ARCHITECTURE.md#2-hand-calculation-engine)
-- [Developer Contributing Guide](CONTRIBUTING.md)
+- [Features & Player Guide](FEATURES.md)
+- [Architecture — domain logic](ARCHITECTURE.md#domain-logic-scoringts-statsts)
+- [Contributing](CONTRIBUTING.md)

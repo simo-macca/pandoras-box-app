@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SeppukuModal } from '../SeppukuModal';
-import { Player } from '../../../types/game';
+import { Player } from '@/types/game';
 
 describe('SeppukuModal component', () => {
   const players: Player[] = [
@@ -31,9 +31,9 @@ describe('SeppukuModal component', () => {
     expect(screen.getByText('Alice')).toBeInTheDocument();
     expect(screen.getByText('Bob')).toBeInTheDocument();
     expect(
-      screen.getByText(/Seppuku T – Point Adjustments/i)
+      screen.getByText(/Seppuku – Point Adjustments/i)
     ).toBeInTheDocument();
-    expect(screen.getByText(/Card Rules: Seppuku T/i)).toBeInTheDocument();
+    expect(screen.getByText(/Card Rules: Seppuku/i)).toBeInTheDocument();
   });
 
   it('allows selecting different outcomes and submitting choices in create mode', async () => {
@@ -96,7 +96,7 @@ describe('SeppukuModal component', () => {
     );
 
     expect(screen.getByText(/edit mode/i)).toBeInTheDocument();
-    expect(screen.getByText(/edit seppuku t/i)).toBeInTheDocument();
+    expect(screen.getByText(/edit seppuku/i)).toBeInTheDocument();
 
     // Change Alice from risk_number to no_risk
     const refuseButtons = screen.getAllByRole('button', {

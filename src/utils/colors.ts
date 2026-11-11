@@ -1,4 +1,4 @@
-import { PlayerColor } from '../types/game';
+import { PlayerColor } from '@/types/game';
 
 export interface PawnTheme {
   name: string;

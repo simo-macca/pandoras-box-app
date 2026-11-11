@@ -1,9 +1,9 @@
 import React from 'react';
 import { Sparkles, X, Shuffle } from 'lucide-react';
-import { Language } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
-import { RULE_CARDS_DATA } from '../../data/ruleCardsData';
-import { soundEffects } from '../../utils/sound';
+import { Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
+import { RULE_CARDS_DATA } from '@/data/ruleCardsData';
+import { soundEffects } from '@/utils/sound';
 
 interface ActiveRuleCardBannerProps {
   activeRuleCardIds: string[];
@@ -22,7 +22,7 @@ export const ActiveRuleCardBanner: React.FC<ActiveRuleCardBannerProps> = ({
 
   if (!activeRuleCardIds || activeRuleCardIds.length === 0) {
     return (
-      <div className="flex items-center justify-between rounded-2xl border border-purple-500/20 bg-gradient-to-r from-purple-500/10 via-amber-500/10 to-rose-500/10 p-3.5 dark:border-purple-500/30">
+      <div className="flex items-center justify-between rounded-2xl border border-purple-500/20 bg-linear-to-r from-purple-500/10 via-amber-500/10 to-rose-500/10 p-3.5 dark:border-purple-500/30">
         <div className="flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-500/20 text-purple-600 dark:text-purple-400">
             <Sparkles className="h-4 w-4" />
@@ -56,7 +56,7 @@ export const ActiveRuleCardBanner: React.FC<ActiveRuleCardBannerProps> = ({
   if (!activeCard) return null;
 
   return (
-    <div className="rounded-3xl border-2 border-purple-500/40 bg-gradient-to-r from-purple-100/70 via-indigo-50/70 to-purple-100/70 p-4 shadow-sm dark:border-purple-500/50 dark:from-purple-900/30 dark:via-indigo-900/20 dark:to-purple-900/30 dark:shadow-[0_0_25px_rgba(168,85,247,0.2)]">
+    <div className="rounded-3xl border-2 border-purple-500/40 bg-linear-to-r from-purple-100/70 via-indigo-50/70 to-purple-100/70 p-4 shadow-sm dark:border-purple-500/50 dark:from-purple-900/30 dark:via-indigo-900/20 dark:to-purple-900/30 dark:shadow-[0_0_25px_rgba(168,85,247,0.2)]">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-purple-600 text-white shadow-md">

@@ -8,10 +8,10 @@ import {
   CopyCheck,
   Sparkles,
 } from 'lucide-react';
-import { Language } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
-import { soundEffects } from '../../utils/sound';
-import { CARD_POINTS } from '../../utils/scoring';
+import { Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
+import { soundEffects } from '@/utils/sound';
+import { CARD_POINTS } from '@/utils/scoring';
 
 interface SpecialCountersProps {
   specialCardsCount: number;
@@ -80,7 +80,7 @@ const CounterRow: React.FC<CounterRowProps> = ({
       >
         <Minus className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" />
       </button>
-      <span className="min-w-[1.25rem] text-center text-xs font-black whitespace-nowrap text-neutral-900 tabular-nums sm:min-w-[1.5rem] sm:text-sm dark:text-white">
+      <span className="min-w-5 text-center text-xs font-black whitespace-nowrap text-neutral-900 tabular-nums sm:min-w-6 sm:text-sm dark:text-white">
         {count}
       </span>
       <button

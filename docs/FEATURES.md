@@ -1,225 +1,168 @@
-# Application Features & Player Guide
+# Features & Player Guide
 
-This document outlines the core capabilities, scoring tools, card databases, and player workflows available in **Frantic: Pandora's Box – Digital Companion App**.
+What the app does and how to use it at the table.
 
 ---
 
 ## Table of Contents
 
-- [Game Night Quick-Start Guide](#game-night-quick-start-guide)
+- [Game-Night Quick Start](#game-night-quick-start)
 - [Feature Walkthrough](#feature-walkthrough)
-  - [1. Real-time Leaderboard & Danger Zone](#1-real-time-leaderboard--danger-zone)
-  - [2. Interactive Hand Point Calculator](#2-interactive-hand-point-calculator)
+  - [1. Leaderboard & Danger Zone](#1-leaderboard--danger-zone)
+  - [2. Round Calculator](#2-round-calculator)
   - [3. Round History, Editing & Undo](#3-round-history-editing--undo)
-  - [4. "Identity Theft" Event Action & Match History](#4-identity-theft-event-action--match-history)
-  - [5. "Seppuku T" Event Action](#5-seppuku-t-event-action)
+  - [4. Identity Theft](#4-identity-theft)
+  - [5. Seppuku](#5-seppuku)
   - [6. Pandora's Box Rule Card Drawer](#6-pandoras-box-rule-card-drawer)
-  - [7. Multilingual Rules & Card Encyclopedia](#7-multilingual-rules--card-encyclopedia)
-  - [8. Match Configuration & Player Management](#8-match-configuration--player-management)
-  - [9. Game Over Celebration & Statistics](#9-game-over-celebration--statistics)
-  - [10. Audio Effects, Haptics & Dark Mode](#10-audio-effects-haptics--dark-mode)
-  - [11. Data Persistence, Backup & Restore](#11-data-persistence-backup--restore)
-- [Integrated PDF Rulebook Viewer](#integrated-pdf-rulebook-viewer)
-- [Related Documentation](#related-documentation)
+  - [7. Card Dictionary & Rules Guide](#7-card-dictionary--rules-guide)
+  - [8. Match Setup & Player Management](#8-match-setup--player-management)
+  - [9. End of the Match](#9-end-of-the-match)
+  - [10. Sound, Haptics, Theme & Language](#10-sound-haptics-theme--language)
+  - [11. Offline Use, Persistence, Backup & Restore](#11-offline-use-persistence-backup--restore)
+- [Official Rulebooks in the App](#official-rulebooks-in-the-app)
+- [Known Limitations](#known-limitations)
 
 ---
 
-## Game Night Quick-Start Guide
+## Game-Night Quick Start
 
-Running a match during game night is fast and seamless:
-
-1. **Configure Match**:
-   - Open the app and tap **Match Setup** (or the gear icon).
-   - Enter names for **2 to 8 players** and pick their pawn colors.
-   - Choose a target score preset (**Short**, **Medium**, or **Long**) or set a custom point limit.
-2. **Draw Pandora's Box Rule Card** _(if playing with expansion)_:
-   - Go to the **Rule Cards** tab.
-   - Tap **Draw Random Rule Card** to shuffle and reveal the global modifier for the upcoming round.
-   - Tap **Activate for Round** to pin the rule banner to your scoreboard.
-3. **Play Round**:
-   - Play your physical cards following standard Frantic rules.
-4. **Log Round Scores**:
-   - When the round ends, tap the **Score Round** (`+`) button.
-   - Switch between player tabs:
-     - Tap **Round Winner (0 pts)** for the player who emptied their hand.
-     - For other players, increment their remaining cards using the number grid and special card counters.
-     - Toggle **Doomsday** or select **Time Bomb** modifiers if those events occurred.
-   - Tap **Submit Round Scores**.
-5. **Monitor Standings & Crown the Winner**:
-   - Standings update immediately.
-   - When any player reaches or exceeds the target score limit, the app launches celebratory confetti and announces the overall winner (the player with the fewest penalty points!).
+1. **Set up the match** — tap **Players** in the top bar.
+   - Add **2 to 8 players** (enter them in seating order — event tie-breaks follow this order) and give each a colour.
+   - Pick an official point limit (_short_, _medium_, _long_ — the labels follow the player count) or type a custom limit (minimum 50).
+   - Optionally set a maximum number of rounds.
+2. **Draw a rule card** _(Pandora's Box, optional)_ — open **Rule Cards**, tap **Draw Random Rule Card** and activate it. It stays pinned above the scoreboard for the round.
+3. **Play the round** with your physical cards.
+4. **Score the round** — tap **Score Round**:
+   - pick each player in turn;
+   - mark the player who ran out of cards as **Round Winner** (0 points);
+   - for everyone else, enter the cards left in hand with the number grid and the special-card counters;
+   - if they happened, set **Doomsday** or **Time Bomb** (defused / exploded) — they apply to the whole table;
+   - tap **Save Round Scores**.
+5. **Watch the standings.** As soon as a player **exceeds** the limit, the match ends and the player with the lowest total wins.
 
 ---
 
 ## Feature Walkthrough
 
-### 1. Real-time Leaderboard & Danger Zone
+### 1. Leaderboard & Danger Zone
 
-The central Scoreboard provides instant clarity on match standings:
+- Players are ranked by total score; the **lowest score leads**.
+- Each player card shows the total, the points left before the limit, rounds won and a progress bar.
+- **Danger zone** (house rule): players at **80 %** of the limit or more are highlighted; the marker on each progress bar shows that threshold.
+- Summary cards show the current leader, the game limit and how many players are in the danger zone.
 
-- **Dynamic Sorting**: Players are sorted live by cumulative score. The player with the lowest penalty points holds 1st place.
-- **Visual Progress Bar**: Each player card features a progress meter showing their distance to the score limit.
-- **Danger Zone Warning**: When a player reaches or exceeds 80% of the target threshold, their card switches to a high-contrast warning state (yellow/red glow).
-- **Match Metrics**: Header stats display current round number, match leader, target score, and rounds won per player.
+### 2. Round Calculator
 
----
+Opened with **Score Round**. The total updates live as you enter cards.
 
-### 2. Interactive Hand Point Calculator
-
-Accessible via the floating `+` button or navigation bar, the hand calculator eliminates manual math errors:
-
-- **Player Tabs**: Quickly swipe or click between players in the match.
-- **One-Tap Winner**: Instantly assigns 0 points and marks the player as the round winner.
-- **Number Grid (1–10)**: Tap `+` or `-` buttons to log standard number cards.
-- **Special Card Counters**: Dedicated steppers for:
-  - Standard Specials (7 pts each)
-  - Mimicry (7 pts each)
-  - Curse (13 pts each)
-  - The End (17 pts each)
-  - Fuck You (42 pts each)
-- **Event Modifier Toggles**:
-  - **Doomsday (50 pts)**: Overrides hand score to 50 pts for all participants.
-  - **Time Bomb**: Choose from _Winner Bonus (-10 pts)_, _Loser Penalty (+10 pts)_, or _Expired Explosion (Double Points)_.
-- **Direct Freeform Numeric Modifiers**: Unrestricted manual numeric input allows typing positive or negative modifiers directly (e.g., `-15`, `+25`), eliminating cumbersome click steppers.
-- **Unrestricted Negative Scores**: Round scores and total scores fully support negative numbers without artificial 0-clamping.
-- **Live Calculation**: The computed score updates in real time as you adjust card quantities.
-
----
+- **Round winner** — one tap; the player scores 0 and their card inputs are cleared. Only one winner can be selected.
+- **Number cards 1–10** — a stepper per value.
+- **Special cards** — counters for:
+  - plain-/bi-coloured and open-wish specials — 7 points each;
+  - Mimicry — 7; Curse — 13; The End — 17; Fuck You — 42.
+- **Table events** (apply to every player at once):
+  - **Doomsday** — everyone scores 50; the winner toggle is disabled.
+  - **Time Bomb defused** — the round winner gets −10, everyone else +10 on top of their hand.
+  - **Time Bomb exploded** — every player's hand points are doubled.
+- **Free adjustment** — type any positive or negative number (e.g. `-15`, `+25`) for cases such as Double Taxation or Lucky Bastard.
+- **Negative scores** are allowed for rounds and for totals.
+- **Reset** clears the selected player's inputs.
 
 ### 3. Round History, Editing & Undo
 
-Mistakes at the table happen. The companion app offers full retrospective editing:
+- Every round and event appears in the match history with winner, events and the active rule card.
+- **Edit** a past round to reopen the calculator with that round's data.
+- **Delete** any entry (with an inline confirmation) or **undo** the most recent one.
+- After every action an **Undo** toast is shown for 5 seconds.
 
-- **Chronological Log**: View a full breakdown of every round played in reverse chronological order.
-- **Round Details**: Highlights round winners, Doomsday triggers, and Time Bomb penalties.
-- **Full Edit Mode**: Tap the edit pencil icon on any past round to open the hand calculator populated with that round's data, allowing correction of card counts.
-- **Undo / Delete**: Instantly revert the most recent round or delete specific rounds with confirmation dialogs.
+### 4. Identity Theft
 
----
+When the _Identity Theft_ event is revealed and you are writing down points:
 
-### 4. "Identity Theft" Event Action & Match History
+- tap **Identity Theft** in the scoreboard toolbar;
+- the totals of the player with the **highest** score and the player with the **lowest** score are swapped;
+- ties go to the first qualifying player in the player list (the official tie rule uses the order of play);
+- the button is disabled when all totals are equal;
+- the swap is stored as a history entry that does not count as a round, can be undone or deleted, and survives export/import.
 
-When the chaotic **Identity Theft** event card is triggered during gameplay:
+### 5. Seppuku
 
-- **One-Tap Execution**: Tap the **Identity Theft** button located directly on the Scoreboard actions toolbar.
-- **Automated Score Swap**: Automatically identifies the player with the lowest score and the player with the highest score, and swaps their cumulative penalty points.
-- **Deterministic Tie-Breaking**: If multiple players are tied for the lowest score or the highest score, ties are deterministically resolved by choosing the first matching player in the roster order (`gameState.players`).
-- **Identical Scores Protection**: When all player scores are currently identical (e.g., at the start of a match or after a perfectly tied round), the Identity Theft button is automatically disabled and safely no-ops.
-- **Round Counter Preservation**: Triggering the Identity Theft event records a dedicated transaction without incrementing or advancing the match round counter (subsequent rounds retain their proper sequence numbers).
-- **Match History & Persistence**: The event is recorded in the match history/log with an `Identity Theft` event badge, swapped player names, and point deltas. The swap is preserved in exported JSON match files, restoring exact scores and state history upon re-import.
-- **Instant Undo & Delete**: Accidental clicks can be immediately reverted via the undo toast notification or by deleting the event entry from the history table.
+When the _Seppuku_ event (Troublemaker, by D'Sinead Conception) is revealed and you are writing down points:
 
----
-
-### 5. "Seppuku T" Event Action & In-Place Editing
-
-When the **SEPPUKU T** event card (by D'Sinead Conception) is revealed:
-
-- **Turn-Order Modal**: Tap the **Seppuku T** button on the Scoreboard to launch the dedicated event modal. Players make their choices sequentially in turn order.
-- **Enhanced Rules UI & Action Cards**:
-  - **Rules Logic Callout**: A prominent banner reminds players of the card mechanics and stakes before committing.
-  - **Descriptive Action Cards**: Replaced cramped buttons with structured, high-contrast action cards displaying the action name, draw criteria ("Flipped 1–10", "Flipped action/special", "Declined to draw"), and high-contrast score delta pills:
-    - **Risk Taken — Number card drawn**: `-21 pts` immediately applied to the player's cumulative score.
-    - **Risk Taken — Non-number / Special card drawn**: `+42 pts` immediately applied to the player's cumulative score.
-    - **No Risk / Refused**: `+21 pts` immediately applied to the player's cumulative score.
-- **Immediate Scoreboard Updates**: Adjustments update rankings and leader standings instantly.
-- **Round Counter Preservation**: Like Identity Theft, Seppuku T executes as a standalone event entry (`eventType: 'seppuku'`) without advancing the completed round counter.
-- **In-Place Retroactive Editing**: Mistakes at the table can be corrected anytime! Tap the **Edit** pencil icon on any Seppuku T entry in the Match History table to reopen the modal in dedicated Edit Mode with previously selected choices prefilled. Updating saves changes in-place, recalculating scores immediately without creating duplicate entries.
-- **Full History & Persistence**: Detailed player choices and outcomes are stored in event metadata, displayed in round history with color-coded outcome badges (`Number (-21)`, `Special (+42)`, `No Risk (+21)`), and preserved across JSON exports and re-imports.
-
----
+- tap **Seppuku** in the scoreboard toolbar;
+- for each player, select the outcome:
+  - took the risk, **number card** turned over → **−21**;
+  - took the risk, **any other card** → **+42**;
+  - **refused** → **+21**;
+- the points are applied immediately as a history entry that does not count as a round;
+- use the **edit** icon on the entry to correct a choice afterwards — the entry is updated in place.
 
 ### 6. Pandora's Box Rule Card Drawer
 
-Bring the expansion's dynamic rules to life digitally:
+- **Draw Random Rule Card** shuffles with an animation and a sound effect.
+- Activate the drawn card to pin it above the scoreboard; the active card is saved with each round.
+- Browse all **15 official rule cards** with Rulefactory's wording in all four languages.
+- **Double Special** is scored automatically: while it is active, the calculator doubles every special card and shows a notice.
 
-- **Rolling Dice Animation**: Tap **Draw Random Rule Card** to initiate rolling animations and procedural tumbling sound effects.
-- **Active Rule Banner**: Pinned active rule cards remain visible at the top of the scoreboard so all players can reference the active modifier throughout the round.
-- **Complete Card Gallery**: Browse all 15 Rule Cards (_Blind Date_, _Double Trouble_, _Color Blind_, _Blackout_, _Anarchy_, etc.) with flavor text and detailed rulings.
+### 7. Card Dictionary & Rules Guide
 
----
+- **Rules guide** — goal, turns, scoring, black cards and power-card timing in a compact format.
+- **Dictionary** — search by name or effect and filter by type:
+  - **23 special cards** with tips;
+  - **44 event cards**, tagged by add-on (base, Troublemaker, Supercharge, Pandora's Box) and by scope (whole table vs. targeted players);
+  - **12 Supercharge power cards** with their official **1ST / 2ND** timing;
+  - **rule cards**.
+- All content is available in **English, German, Italian and French**. Card names stay in English in every language, exactly as on the printed cards.
 
-### 7. Multilingual Rules & Card Encyclopedia
+### 8. Match Setup & Player Management
 
-A comprehensive reference dictionary for card game nights:
+- **2–8 players**, each with a unique colour out of 8 (red, blue, green, yellow, purple, orange, cyan, pink).
+- **Official point limits** for 2–4 and 5–8 players, or a custom limit (minimum 50).
+- **Optional round limit** (quick picks 5/10/15/20 or a custom value): when reached, the lowest score wins.
+- **Change settings during a match** — names, colours, limits — without losing the history.
+- **Late joiners** (house rule): a player added to a running match starts at _highest current score + 1_, recorded as a history entry.
+- Blank names are replaced with _Player N_ when saving.
 
-- **Fast Search & Filter**: Search by card name or effect, filterable by:
-  - **Specials**: All 23 base and expansion special cards with tactical tips.
-  - **Events**: All 15 black-card events with severity ratings (Positive, Negative, Chaos, Neutral).
-  - **Power Cards**: All 12 Supercharge cards with 1st/2nd activation timing guides.
-  - **Rule Cards**: All 15 Pandora's Box round modifiers.
-- **Localized Content**: All card titles, descriptions, and strategic advice are available in **English**, **German**, **Italian**, and **French**.
-- **FAQ & Edge Cases**: Built-in answers to frequently contested card interactions.
+### 9. End of the Match
 
----
+- Triggered automatically when a player **exceeds** the limit (or the round limit is reached).
+- Confetti, a fanfare and the final ranking with totals and rounds won.
+- **Play again** keeps the players and clears the scores; **Continue** lets you keep playing and end the match later.
 
-### 8. Match Configuration & Player Management
+### 10. Sound, Haptics, Theme & Language
 
-Customizable match settings to fit any table:
+- Sounds are synthesised with the Web Audio API — no audio files to download.
+- Vibration feedback on devices that support it.
+- Sound and haptics can be switched off independently in **Settings**.
+- **Light**, **dark** or **system** theme, applied before the first paint (no flash).
+- Interface language: English, German, Italian or French.
+- Dialogs close with **Esc**; buttons carry accessible labels.
 
-- **2 to 8 Players**: Accommodates standard groups and large party sessions.
-- **10 Vibrant Colors**: Choose from Red, Blue, Green, Yellow, Purple, Orange, White, Black, Cyan, and Pink with custom avatars.
-- **Official Score Limits**: Quick-select buttons for Short, Medium, and Long matches automatically adjusted for player count.
-- **Custom Target Limits**: Set any custom score limit from 50 to 999 points.
-- **Total Round Limit**: Configure an optional fixed maximum round count (presets: 5, 10, 15, 20 rounds or custom limit). The match automatically concludes when the round limit is reached, declaring the lowest scorer the winner.
-- **Mid-Game Roster Adjustments**: Edit player names, avatar colors, and round limits mid-match without resetting rounds.
-- **Mid-Game Late Joiners**: Add new players to an active game at any point. The companion app automatically assigns their starting penalty points according to the rule:
-  $$\text{Starting Score} = \max(\text{Current Player Scores}) + 1$$
-  This ensures fair competition while seamlessly integrating new participants into the leaderboard.
+### 11. Offline Use, Persistence, Backup & Restore
 
----
-
-### 9. Game Over Celebration & Statistics
-
-When the elimination threshold is reached:
-
-- **Automated Detection**: Triggered immediately when any player's cumulative score equals or exceeds the target.
-- **Confetti Explosion**: Full-screen celebratory particle bursts powered by `canvas-confetti`.
-- **Fanfare Chime**: Audio fanfare synthesized dynamically via the Web Audio API.
-- **Podium Breakdown**: Displays final rankings, total points, and rounds won.
-- **Play Again**: Resets scores and round history while preserving player names and colors for the next rematch.
+- **Installable PWA** — after the first visit the app, including all rulebook PDFs, is cached by a service worker and works without a connection. Use _Add to Home Screen_ / _Install app_ in your browser.
+- **Auto-save** to the browser's `localStorage` after every action. Nothing is sent to a server.
+- **Export** the match as a dated `.json` file and **import** it on another device. Imported and saved data is validated; a corrupted file is rejected instead of breaking the app.
 
 ---
 
-### 10. Audio Effects, Haptics & Dark Mode
+## Official Rulebooks in the App
 
-Engineered for a responsive, tactile mobile experience:
-
-- **Zero-Asset Procedural Audio**: Uses Web Audio API oscillators to create dice rolls, tap feedback, and fanfares without downloading audio files.
-- **Haptic Vibration**: Provides subtle physical feedback on mobile browsers supporting `navigator.vibrate`.
-- **Independent Mute Controls**: Sound and haptics can be toggled on or off independently via the Navbar or Settings modal.
-- **Theme Modes**: Choose between Light mode, Dark mode, or automatic System preference.
+The **Rulebook** banner in the dictionary opens the official Rulefactory rulebook and overview cards in the selected language (EN, DE, FR, IT). The files live in [`public/rules/`](../public/rules/) and are listed in the [Game Rules Reference](GAME_RULES.md#official-rulebook-pdfs).
 
 ---
 
-### 11. Data Persistence, Backup & Restore
+## Known Limitations
 
-Keep your tournament logs safe:
-
-- **Automatic Auto-Save**: Saves state to `localStorage` (`frantic_game_state_v2`) after every action.
-- **JSON Match Export**: Download a timestamped `.json` file containing match configurations, player profiles, and round logs.
-- **JSON Match Import**: Restore past games or transfer ongoing sessions from mobile to desktop browsers.
-
----
-
-## Integrated PDF Rulebook Viewer
-
-The app provides offline access to official Rulefactory rulebooks in all 4 supported languages located in [`rules/`](../rules/):
-
-| Language    | Complete Rulebook                                                                             | Quick Reference Cards                                                   |
-| :---------- | :-------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------- |
-| **English** | [`Pandoras_Box_Gesamtregelwerk_EN_web.pdf`](../rules/Pandoras_Box_Gesamtregelwerk_EN_web.pdf) | [`Uebersichtskarten_EN_web.pdf`](../rules/Uebersichtskarten_EN_web.pdf) |
-| **German**  | [`Pandoras_Box_Gesamtregelwerk_DE_web.pdf`](../rules/Pandoras_Box_Gesamtregelwerk_DE_web.pdf) | [`Uebersichtskarten_DE_web.pdf`](../rules/Uebersichtskarten_DE_web.pdf) |
-| **French**  | [`Pandoras_Box_Gesamtregelwerk_FR.pdf`](../rules/Pandoras_Box_Gesamtregelwerk_FR.pdf)         | [`Uebersichtskarten_FR_web.pdf`](../rules/Uebersichtskarten_FR_web.pdf) |
-| **Italian** | [`Pandoras_Box_Gesamtregelwerk_IT_web.pdf`](../rules/Pandoras_Box_Gesamtregelwerk_IT_web.pdf) | [`Uebersichtskarten_IT_web.pdf`](../rules/Uebersichtskarten_IT_web.pdf) |
-
-Players can open and view these rulebooks directly in their browser or download them for offline access.
+- **The End is nigh** changes end-of-game scoring in a way that depends on all players' points; enter it with the free adjustment.
+- **Event entries store point deltas.** If you edit an earlier round after an Identity Theft, the swap is not recalculated.
+- **One round winner** can be selected; for events with several simultaneous winners, score the extra winners with 0 cards.
+- Data is stored per browser and device; use export/import to move a match.
 
 ---
 
 ## Related Documentation
 
-- **[Game Rules Reference](GAME_RULES.md)**: Full summary of Frantic and Pandora's Box mechanics.
-- **[System Architecture](ARCHITECTURE.md)**: State management and engineering design.
-- **[Setup & Local Development](SETUP.md)**: How to run the companion app locally.
-- **[Contributing Guide](CONTRIBUTING.md)**: Adding new cards, translations, and features.
+- [Game Rules Reference](GAME_RULES.md)
+- [Architecture](ARCHITECTURE.md)
+- [Setup & Local Development](SETUP.md)

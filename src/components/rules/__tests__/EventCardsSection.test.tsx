@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { EventCardsSection } from '../EventCardsSection';
-import { EventItem } from '../../../types/rules';
+import { EventItem } from '@/types/rules';
 
 describe('EventCardsSection component', () => {
   const mockEvents: EventItem[] = [

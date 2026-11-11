@@ -34,6 +34,8 @@ export interface HandScore {
   isDoomsday?: boolean;
   timeBombModifier?: TimeBombModifier;
   customModifier?: number;
+  /** Pandora's Box rule card "Double Special": all special cards count double. */
+  doubleSpecials?: boolean;
   totalPoints: number;
 }
 

@@ -2,7 +2,7 @@
 
 ## Tech Stack & Scripts
 
-- **Framework & Runtime**: React 18.3, TypeScript 5.7, Vite 6.1, Tailwind CSS 4.3.
+- **Framework & Runtime**: React 18.3, TypeScript 5.7, Vite 6, Tailwind CSS 4.3, `vite-plugin-pwa` 2. Node.js ≥ 22.12.
 - **Exact Scripts**:
   - `dev`: `vite`
   - `build`: `tsc -b && vite build`
@@ -13,18 +13,27 @@
   - `test:watch`: `vitest`
   - `format`: `prettier --write .`
   - `format:check`: `prettier --check .`
+  - `validate`: `npm run type-check && npm run lint && npm run format:check && npm run test`
   - `prepare`: `husky`
 
 ## Architecture Map
 
 - `src/components/`: Modular UI (common, layout, scoreboard, scoring, setup, rules, events)
-- `src/hooks/`: State & lifecycle management (`useGameState`, `useTheme`, `useAppModals`)
+- `src/hooks/`: State & lifecycle management (`useGameState`, `useAppModals`, `useUndoToast`, `useTheme`, `useModalA11y`)
 - `src/utils/`: Pure game domain logic, scoring calculation, storage, i18n, sound
-- `src/data/`: Static game card data, translations (`UI_TRANSLATIONS`), rules constants
+- `src/data/`: Static game card data, translations (`TRANSLATIONS`), rulebook PDF links
 - `src/types/`: Core TypeScript interfaces and domain models (`game.ts`, `rules.ts`)
 - `src/test/`: Test environment configuration (`setup.ts`)
-- `rules/`: Official game rule PDFs (multilingual)
-- `public/`: Static public assets and web manifest
+- `public/`: Static assets, PWA manifest, icons
+- `public/rules/`: Official Rulefactory rulebook PDFs (EN, DE, FR, IT)
+- `docs/`: Project documentation (keep in sync with behaviour changes)
+
+## Domain Rules (Must Not Regress)
+
+- Rule values come from the official rulebook in `public/rules/` and are locked in by tests: card points (7 / 13 / 17 / 42), point-limit presets, power-card 1ST/2ND timings, and the end-of-game rule (the limit must be **exceeded**: `isOverScoreLimit`).
+- Non-official behaviour (danger zone, late joiners, round limit) must be labelled as a house rule.
+- Untrusted state (storage, imports, undo snapshots) must pass through `sanitizeGameState()`.
+- Asset URLs must use `import.meta.env.BASE_URL`.
 
 ## Command & Tool Policy (Strict)
 

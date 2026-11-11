@@ -1,4 +1,4 @@
-import { HandScore, TimeBombModifier } from '../types/game';
+import { HandScore, TimeBombModifier } from '@/types/game';
 
 export const CARD_POINTS = {
   SPECIAL: 7,
@@ -23,6 +23,9 @@ export const SCORE_PRESETS = {
     long: 154,
   },
 } as const;
+
+/** Id of the Pandora's Box rule card that doubles special-card points. */
+export const DOUBLE_SPECIAL_RULE_CARD_ID = 'double-special';
 
 export function getRecommendedPresets(playerCount: number) {
   return playerCount <= 4 ? SCORE_PRESETS.few : SCORE_PRESETS.many;
@@ -67,11 +70,15 @@ export function calculateHandPoints(
     });
   }
 
-  total += (hand.specialCardsCount || 0) * CARD_POINTS.SPECIAL;
-  total += (hand.curseCount || 0) * CARD_POINTS.CURSE;
-  total += (hand.theEndCount || 0) * CARD_POINTS.THE_END;
-  total += (hand.fuckYouCount || 0) * CARD_POINTS.FUCK_YOU;
-  total += (hand.mimicryCount || 0) * CARD_POINTS.MIMICRY;
+  let specialTotal = 0;
+  specialTotal += (hand.specialCardsCount || 0) * CARD_POINTS.SPECIAL;
+  specialTotal += (hand.curseCount || 0) * CARD_POINTS.CURSE;
+  specialTotal += (hand.theEndCount || 0) * CARD_POINTS.THE_END;
+  specialTotal += (hand.fuckYouCount || 0) * CARD_POINTS.FUCK_YOU;
+  specialTotal += (hand.mimicryCount || 0) * CARD_POINTS.MIMICRY;
+  // Rule card "Double Special": all special cards (every non-number card)
+  // count double at the end of the round.
+  total += hand.doubleSpecials ? specialTotal * 2 : specialTotal;
 
   if (hand.timeBombModifier === 'expired_double') {
     total *= 2;

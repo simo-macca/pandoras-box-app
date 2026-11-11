@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { X, Flame, Skull, Shield, Check, Swords, Edit2 } from 'lucide-react';
-import { Player, Language, SeppukuOutcome } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
-import { soundEffects } from '../../utils/sound';
-import { getPlayerColorTheme } from '../../utils/colors';
+import { Player, Language, SeppukuOutcome } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
+import { soundEffects } from '@/utils/sound';
+import { getPlayerColorTheme } from '@/utils/colors';
+import { useModalA11y } from '@/hooks/useModalA11y';
 
 interface SeppukuModalProps {
   isOpen: boolean;
@@ -43,6 +44,8 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
     }
   }, [isOpen, players, initialChoices]);
 
+  useModalA11y(isOpen, onClose);
+
   if (!isOpen || players.length === 0) return null;
 
   const handleSelectOutcome = (playerId: string, outcome: SeppukuOutcome) => {
@@ -60,7 +63,11 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
   };
 
   return (
-    <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-2 backdrop-blur-sm sm:p-4">
+    <div
+      className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-2 backdrop-blur-sm sm:p-4"
+      role="dialog"
+      aria-modal="true"
+    >
       <div className="relative flex max-h-[92dvh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-800 dark:bg-neutral-900">
         {/* Header */}
         <div className="flex shrink-0 items-center justify-between border-b border-neutral-200 bg-neutral-50 px-4 py-3 sm:px-6 sm:py-4 dark:border-neutral-800 dark:bg-neutral-900/60">
@@ -71,8 +78,8 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
                 <span className="truncate">
                   {isEditing
                     ? t.events?.seppukuEditTitle ||
-                      'Edit Seppuku T – Adjust Choices'
-                    : t.events?.seppukuTitle || 'Seppuku T – Point Adjustments'}
+                      'Edit Seppuku – Adjust Choices'
+                    : t.events?.seppukuTitle || 'Seppuku – Point Adjustments'}
                 </span>
               </h2>
               {isEditing && (
@@ -93,7 +100,7 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t.common.close}
             className="shrink-0 rounded-xl p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 sm:p-2 dark:hover:bg-neutral-800 dark:hover:text-white"
           >
             <X className="h-5 w-5 shrink-0" />
@@ -108,7 +115,7 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
               <Swords className="h-4 w-4 shrink-0 text-rose-500" />
               <span>
                 {t.events?.seppukuRuleBannerTitle ||
-                  "Card Rules: Seppuku T (D'Sinead Conception)"}
+                  "Card Rules: Seppuku (D'Sinead Conception)"}
               </span>
             </div>
             <div className="mt-2 grid grid-cols-1 gap-2 text-xs text-neutral-600 sm:grid-cols-2 dark:text-neutral-300">
@@ -201,7 +208,7 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
                         </span>
                       </div>
                       {currentChoice === 'risk_number' && (
-                        <Check className="h-4 w-4 shrink-0 stroke-[3] text-emerald-600 dark:text-emerald-400" />
+                        <Check className="h-4 w-4 shrink-0 stroke-3 text-emerald-600 dark:text-emerald-400" />
                       )}
                     </div>
                     <p className="my-1.5 text-[11px] leading-tight text-neutral-500 dark:text-neutral-400">
@@ -237,7 +244,7 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
                         </span>
                       </div>
                       {currentChoice === 'risk_special' && (
-                        <Check className="h-4 w-4 shrink-0 stroke-[3] text-rose-600 dark:text-rose-400" />
+                        <Check className="h-4 w-4 shrink-0 stroke-3 text-rose-600 dark:text-rose-400" />
                       )}
                     </div>
                     <p className="my-1.5 text-[11px] leading-tight text-neutral-500 dark:text-neutral-400">
@@ -271,7 +278,7 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
                         </span>
                       </div>
                       {currentChoice === 'no_risk' && (
-                        <Check className="h-4 w-4 shrink-0 stroke-[3] text-amber-600 dark:text-amber-400" />
+                        <Check className="h-4 w-4 shrink-0 stroke-3 text-amber-600 dark:text-amber-400" />
                       )}
                     </div>
                     <p className="my-1.5 text-[11px] leading-tight text-neutral-500 dark:text-neutral-400">
@@ -302,7 +309,7 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
           <button
             type="button"
             onClick={handleSubmit}
-            className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 px-4 py-2 text-xs font-extrabold text-white shadow-md transition-all hover:from-rose-400 hover:to-rose-500 active:scale-95 sm:px-6 sm:py-2.5 sm:text-sm"
+            className="flex items-center gap-1.5 rounded-xl bg-linear-to-r from-rose-500 to-rose-600 px-4 py-2 text-xs font-extrabold text-white shadow-md transition-all hover:from-rose-400 hover:to-rose-500 active:scale-95 sm:px-6 sm:py-2.5 sm:text-sm"
           >
             <Swords className="h-4 w-4 shrink-0" />
             <span>

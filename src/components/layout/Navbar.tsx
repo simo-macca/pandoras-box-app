@@ -1,9 +1,9 @@
 import React from 'react';
 import { Settings, Users } from 'lucide-react';
-import { Language, ThemeMode } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
+import { Language, ThemeMode } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 import { ThemeToggle } from './ThemeToggle';
-import { AppLogo } from '../common/AppLogo';
+import { AppLogo } from '@/components/common/AppLogo';
 
 interface NavbarProps {
   language: Language;
@@ -59,7 +59,11 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
           {theme && onThemeChange && (
             <div className="hidden md:inline-flex">
-              <ThemeToggle theme={theme} onThemeChange={onThemeChange} />
+              <ThemeToggle
+                theme={theme}
+                onThemeChange={onThemeChange}
+                language={language}
+              />
             </div>
           )}
 

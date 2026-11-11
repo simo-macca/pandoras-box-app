@@ -165,9 +165,9 @@ export function App() {
       showUndoToast(
         existingRoundId
           ? TRANSLATIONS[language].events?.seppukuUpdatedSuccess ||
-              'Seppuku T choices updated successfully!'
+              'Seppuku choices updated successfully!'
           : TRANSLATIONS[language].events?.seppukuSuccess ||
-              'Seppuku T applied successfully!',
+              'Seppuku applied successfully!',
         previousSnapshot
       );
     }
@@ -220,7 +220,9 @@ export function App() {
   const actualRoundsCount = gameState.rounds.filter((r) => !r.isEvent).length;
 
   const editingRound = editingRoundNumber
-    ? gameState.rounds.find((r) => r.roundNumber === editingRoundNumber)
+    ? gameState.rounds.find(
+        (r) => !r.isEvent && r.roundNumber === editingRoundNumber
+      )
     : null;
 
   const editingSeppukuRound = editingSeppukuRoundId
@@ -321,6 +323,11 @@ export function App() {
         roundNumber={editingRoundNumber ?? actualRoundsCount + 1}
         initialScores={editingRound?.scores}
         isEditing={editingRoundNumber !== null}
+        activeRuleCardIds={
+          editingRound
+            ? (editingRound.activeRuleCardIds ?? [])
+            : (gameState.activeRuleCardIds ?? [])
+        }
       />
 
       {/* Match Setup Modal */}
@@ -334,7 +341,7 @@ export function App() {
         language={language}
       />
 
-      {/* Seppuku T Event Modal */}
+      {/* Seppuku Event Modal */}
       <SeppukuModal
         isOpen={isSeppukuModalOpen}
         onClose={closeSeppukuModal}

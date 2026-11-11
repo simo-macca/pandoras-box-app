@@ -1,4 +1,4 @@
-import { PowerCardItem } from '../types/rules';
+import { PowerCardItem } from '@/types/rules';
 
 export const POWER_CARDS_DATA: PowerCardItem[] = [
   {
@@ -7,10 +7,10 @@ export const POWER_CARDS_DATA: PowerCardItem[] = [
     timing: '1st',
     charges: 1,
     name: {
-      en: 'All Draw One (+1)',
-      de: 'Alle Ziehen Eine (+1)',
-      it: 'Tutti Pescano Una (+1)',
-      fr: 'Tous Piochent Une (+1)',
+      en: 'All Draw One',
+      de: 'All Draw One',
+      it: 'All Draw One',
+      fr: 'All Draw One',
     },
     description: {
       en: '1ST: Your fellow players have to draw a card from the draw pile. (Note: The player who activated "All Draw One" is not impacted by its effect).',
@@ -26,15 +26,15 @@ export const POWER_CARDS_DATA: PowerCardItem[] = [
     charges: 1,
     name: {
       en: 'Anti Counter',
-      de: 'Anti Konter',
-      it: 'Anti Contrattacco',
-      fr: 'Anti Contre',
+      de: 'Anti Counter',
+      it: 'Anti Counter',
+      fr: 'Anti Counter',
     },
     description: {
       en: '1ST: If you just played a special card, it cannot be averted with "Counterattack".',
-      de: '1ST: Hast du gerade eine Spezialkarte gespielt, kann diese nicht mit «Konter» abgewehrt werden.',
-      it: '1ST: Se hai appena giocato una carta speciale, non può essere respinta con "Contrattacco".',
-      fr: '1ST : Si vous venez de jouer une carte spéciale, elle ne peut pas être contrée avec "Contre-attaque".',
+      de: '1ST: Hast du gerade eine Spezialkarte gespielt, kann diese nicht mit «Counterattack» abgewehrt werden.',
+      it: '1ST: Se hai appena giocato una carta speciale, non può essere respinta con "Counterattack".',
+      fr: '1ST : Si vous venez de jouer une carte spéciale, elle ne peut pas être contrée avec "Counterattack".',
     },
   },
   {
@@ -44,9 +44,9 @@ export const POWER_CARDS_DATA: PowerCardItem[] = [
     charges: 1,
     name: {
       en: 'Black Wish',
-      de: 'Schwarzer Wunsch',
-      it: 'Desiderio Nero',
-      fr: 'Souhait Noir',
+      de: 'Black Wish',
+      it: 'Black Wish',
+      fr: 'Black Wish',
     },
     description: {
       en: '2ND: You wish for black as the colour. Your played card can now only be followed by one of the black cards or by an open-wish special card.',
@@ -62,9 +62,9 @@ export const POWER_CARDS_DATA: PowerCardItem[] = [
     charges: 1,
     name: {
       en: 'Colour Blockade',
-      de: 'Farblockade',
-      it: 'Blocco Colore',
-      fr: 'Blocus de Couleur',
+      de: 'Colour Blockade',
+      it: 'Colour Blockade',
+      fr: 'Colour Blockade',
     },
     description: {
       en: '2ND: Select a colour. The selected colour can no longer be used until you complete your next turn. (Note: Being skipped also counts as a turn; you are still affected during your next turn).',
@@ -98,9 +98,9 @@ export const POWER_CARDS_DATA: PowerCardItem[] = [
     charges: 1,
     name: {
       en: 'Number Wish',
-      de: 'Zahlenwunsch',
-      it: 'Desiderio Numero',
-      fr: 'Souhait de Chiffre',
+      de: 'Number Wish',
+      it: 'Number Wish',
+      fr: 'Number Wish',
     },
     description: {
       en: '2ND: Wish for a number at the end of your turn. (Note: If activated along with an open-wish card, this wish effect has no impact).',
@@ -116,9 +116,9 @@ export const POWER_CARDS_DATA: PowerCardItem[] = [
     charges: 1,
     name: {
       en: 'Open Hands',
-      de: 'Offene Hände',
-      it: 'Mani Scoperte',
-      fr: 'Mains Ouvertes',
+      de: 'Open Hands',
+      it: 'Open Hands',
+      fr: 'Open Hands',
     },
     description: {
       en: '1ST: Your fellow players have to reveal their hands of cards and play with them showing until it is your turn again. (Note: Being skipped also counts as a turn).',
@@ -133,52 +133,52 @@ export const POWER_CARDS_DATA: PowerCardItem[] = [
     timing: '2nd',
     charges: 1,
     name: {
-      en: 'Random Chance (+?)',
-      de: 'Zufallschance (+?)',
-      it: 'Caso Fortuito (+?)',
-      fr: 'Chance Aléatoire (+?)',
+      en: 'Random Chance',
+      de: 'Random Chance',
+      it: 'Random Chance',
+      fr: 'Random Chance',
     },
     description: {
       en: '2ND: Play another card of your choice from your hand. It does not have to match the last card played. The game continues with that card. (Note: Playing "Curse" is not allowed; "Fuck You" or "The End" only if conditions are met).',
-      de: '2ND: Lege eine weitere beliebige Karte aus deiner Hand. Sie muss nicht zur Vorlage passen. («Fluch» ist verboten; «Fuck You»/«The End» nur bei erfüllter Regel).',
-      it: '2ND: Gioca un’altra carta a tua scelta dalla mano: non deve combaciare con l’ultima carta giocata. ("Maledizione" non ammessa; "Fuck You"/"La Fine" solo con requisiti).',
-      fr: '2ND : Jouez une autre carte de votre choix sans obligation de correspondance. ("Malédiction" interdite ; "Fuck You"/"La Fin" seulement si conditions remplies).',
+      de: '2ND: Lege eine weitere beliebige Karte aus deiner Hand. Sie muss nicht zur Vorlage passen. («Curse» ist verboten; «Fuck You»/«The End» nur bei erfüllter Regel).',
+      it: '2ND: Gioca un’altra carta a tua scelta dalla mano: non deve combaciare con l’ultima carta giocata. ("Curse" non ammessa; "Fuck You"/"The End" solo con requisiti).',
+      fr: '2ND : Jouez une autre carte de votre choix sans obligation de correspondance. ("Curse" interdite ; "Fuck You"/"The End" seulement si conditions remplies).',
     },
   },
   {
     id: 'recycling',
     points: 0,
-    timing: '1st',
+    timing: '2nd',
     charges: 1,
     name: {
       en: 'Recycling',
       de: 'Recycling',
-      it: 'Riciclo',
-      fr: 'Recyclage',
+      it: 'Recycling',
+      fr: 'Recycling',
     },
     description: {
-      en: '1ST: The card you just played from your hand has to be put back in someone’s hand (you determine who, including yourself). The game continues as if the card had not been played. (Note: Wishes remain in force).',
-      de: '1ST: Die soeben gespielte Handkarte muss in die Hand einer beliebigen Person wandern (auch du selbst). Das Spiel läuft weiter, als wäre sie nicht gespielt worden.',
-      it: '1ST: La carta appena giocata dalla tua mano deve tornare nella mano di un giocatore a tua scelta (anche te stesso). Il gioco continua come se non fosse stata giocata.',
-      fr: '1ST : La carte tout juste jouée doit retourner dans la main d’un joueur de votre choix (vous y compris). Le jeu continue comme si elle n’avait pas été jouée.',
+      en: '2ND: The card you just played from your hand has to be put back in someone’s hand (you determine who, including yourself). The game continues as if the card had not been played. (Note: Wishes remain in force).',
+      de: '2ND: Die soeben gespielte Handkarte muss in die Hand einer beliebigen Person wandern (auch du selbst). Das Spiel läuft weiter, als wäre sie nicht gespielt worden.',
+      it: '2ND: La carta appena giocata dalla tua mano deve tornare nella mano di un giocatore a tua scelta (anche te stesso). Il gioco continua come se non fosse stata giocata.',
+      fr: '2ND : La carte tout juste jouée doit retourner dans la main d’un joueur de votre choix (vous y compris). Le jeu continue comme si elle n’avait pas été jouée.',
     },
   },
   {
     id: 'special-charge',
     points: 0,
-    timing: '2nd',
+    timing: '1st',
     charges: 1,
     name: {
       en: 'Special Charge',
-      de: 'Spezialladung',
-      it: 'Carica Speciale',
-      fr: 'Charge Spéciale',
+      de: 'Special Charge',
+      it: 'Special Charge',
+      fr: 'Special Charge',
     },
     description: {
-      en: '2ND: Select a person who has to draw an additional card from the draw pile for every special card (all cards except numbers) they hold in their hand.',
-      de: '2ND: Wähle eine Person, die für jede Spezialkarte (alles ausser Zahlen) auf ihrer Hand eine zusätzliche Karte vom Nachziehstapel ziehen muss.',
-      it: '2ND: Scegli un giocatore che deve pescare 1 carta addizionale dal mazzo per ogni carta speciale (tutto tranne i numeri) che possiede in mano.',
-      fr: '2ND : Choisissez un joueur qui doit piocher 1 carte supplémentaire pour chaque carte spéciale (tout sauf les chiffres) qu’il a en main.',
+      en: '1ST: Select a person who has to draw an additional card from the draw pile for every special card (all cards except numbers) they hold in their hand.',
+      de: '1ST: Wähle eine Person, die für jede Spezialkarte (alles ausser Zahlen) auf ihrer Hand eine zusätzliche Karte vom Nachziehstapel ziehen muss.',
+      it: '1ST: Scegli un giocatore che deve pescare 1 carta addizionale dal mazzo per ogni carta speciale (tutto tranne i numeri) che possiede in mano.',
+      fr: '1ST : Choisissez un joueur qui doit piocher 1 carte supplémentaire pour chaque carte spéciale (tout sauf les chiffres) qu’il a en main.',
     },
   },
   {
@@ -188,14 +188,14 @@ export const POWER_CARDS_DATA: PowerCardItem[] = [
     charges: 1,
     name: {
       en: 'Special Seal',
-      de: 'Spezialsiegel',
-      it: 'Sigillo Speciale',
-      fr: 'Sceau Spécial',
+      de: 'Special Seal',
+      it: 'Special Seal',
+      fr: 'Special Seal',
     },
     description: {
       en: '1ST: Playing special cards is not allowed until the person who activated "Special Seal" takes their next turn. (Note: Cannot be activated in combination with a special card).',
       de: '1ST: Das Ausspielen von Spezialkarten ist verboten, bis die aktivierende Person wieder an der Reihe ist. (Kann nicht mit Spezialkarten kombiniert werden).',
-      it: '1ST: È vietato giocare carte speciali finché chi ha attivato il "Sigillo Speciale" non fa il suo prossimo turno. (Non combinabile con una speciale).',
+      it: '1ST: È vietato giocare carte speciali finché chi ha attivato il "Special Seal" non fa il suo prossimo turno. (Non combinabile con una speciale).',
       fr: '1ST : Il est interdit de jouer des cartes spéciales jusqu’au prochain tour de la personne ayant activé ce pouvoir. (Non combinable avec une carte spéciale).',
     },
   },
@@ -213,8 +213,8 @@ export const POWER_CARDS_DATA: PowerCardItem[] = [
     description: {
       en: '2ND: The player who activated "Troublecharger" triggers an event at the end of their own turn. (Note: If activated along with "Troublemaker" or a black card, the two events trigger in that order).',
       de: '2ND: Die Person, die «Troublecharger» aktiviert, löst am Ende des eigenen Zuges ein Ereignis aus. (Mit «Troublemaker» oder Schwarzkarte: beide nacheinander).',
-      it: '2ND: Chi attiva "Troublecharger" scatena un evento alla fine del proprio turno. (Con "Attaccabrighe" o carta nera: i due eventi si attivano in sequenza).',
-      fr: '2ND : Déclenche un événement à la fin de votre propre tour. (Combiné avec «Fauteur de Troubles» ou une carte noire : les deux événements se déclenchent dans l’ordre).',
+      it: '2ND: Chi attiva "Troublecharger" scatena un evento alla fine del proprio turno. (Con "Troublemaker" o carta nera: i due eventi si attivano in sequenza).',
+      fr: '2ND : Déclenche un événement à la fin de votre propre tour. (Combiné avec «Troublemaker» ou une carte noire : les deux événements se déclenchent dans l’ordre).',
     },
   },
 ];

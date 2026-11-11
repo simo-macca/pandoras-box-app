@@ -7,14 +7,18 @@ import {
   Language,
   HandScore,
   SeppukuOutcome,
-} from '../types/game';
-import { soundEffects } from '../utils/sound';
+} from '@/types/game';
+import { soundEffects } from '@/utils/sound';
 import {
   calculateHandPoints,
   SCORE_PRESETS,
   getRecommendedPresets,
-} from '../utils/scoring';
-import { calculatePlayerStats, PlayerStats } from '../utils/stats';
+} from '@/utils/scoring';
+import {
+  calculatePlayerStats,
+  isOverScoreLimit,
+  PlayerStats,
+} from '@/utils/stats';
 import {
   INITIAL_PLAYERS,
   INITIAL_STATE,
@@ -23,7 +27,8 @@ import {
   saveGameStateToStorage,
   loadSavedLanguage,
   saveLanguageToStorage,
-} from '../utils/storage';
+  sanitizeGameState,
+} from '@/utils/storage';
 
 // Re-export domain models & pure functions for backward compatibility
 export {
@@ -84,8 +89,8 @@ export function useGameState() {
       gameState.config.roundLimit > 0 &&
       currentRoundCount >= gameState.config.roundLimit
     );
-    const someoneExceeded = playerStats.some(
-      (p) => p.totalScore >= gameState.config.targetScore
+    const someoneExceeded = playerStats.some((p) =>
+      isOverScoreLimit(p.totalScore, gameState.config.targetScore)
     );
     const isOver = someoneExceeded || reachedRoundLimit;
     const lowestScorePlayer = playerStats[0];
@@ -180,7 +185,10 @@ export function useGameState() {
       let currentRoundNum = 0;
       const renumbered = filtered.map((r) => {
         if (r.isEvent) {
-          return r;
+          // Events are anchored to the number of completed rounds before them.
+          return r.roundNumber === currentRoundNum
+            ? r
+            : { ...r, roundNumber: currentRoundNum };
         }
         currentRoundNum += 1;
         return {
@@ -323,7 +331,7 @@ export function useGameState() {
                   ? {
                       ...r,
                       scores: roundScores,
-                      notes: 'Seppuku T: Point adjustments applied',
+                      notes: 'Seppuku: Point adjustments applied',
                       eventMetadata: {
                         ...r.eventMetadata,
                         choices: choicesMetadata,
@@ -344,7 +352,7 @@ export function useGameState() {
           isEvent: true,
           eventType: 'seppuku',
           scores: roundScores,
-          notes: 'Seppuku T: Point adjustments applied',
+          notes: 'Seppuku: Point adjustments applied',
           eventMetadata: {
             choices: choicesMetadata,
           },
@@ -480,8 +488,9 @@ export function useGameState() {
 
   const restoreGameState = useCallback((stateToRestore: GameState) => {
     soundEffects.playClick();
-    setGameState(stateToRestore);
-    saveGameStateToStorage(stateToRestore);
+    const safeState = sanitizeGameState(stateToRestore) ?? stateToRestore;
+    setGameState(safeState);
+    saveGameStateToStorage(safeState);
   }, []);
 
   const resetCurrentGame = useCallback(() => {
@@ -540,27 +549,14 @@ export function useGameState() {
   const importGameState = useCallback((jsonString: string): boolean => {
     try {
       const parsed = JSON.parse(jsonString);
-      const stateToLoad: GameState = parsed.gameState || parsed;
+      const candidate = parsed && parsed.gameState ? parsed.gameState : parsed;
+      const stateToLoad = sanitizeGameState(candidate);
 
-      if (
-        !stateToLoad.players ||
-        !Array.isArray(stateToLoad.players) ||
-        !stateToLoad.config
-      ) {
+      if (!stateToLoad) {
         throw new Error('Invalid game state structure');
       }
 
-      setGameState({
-        players: stateToLoad.players,
-        config: stateToLoad.config,
-        rounds: Array.isArray(stateToLoad.rounds) ? stateToLoad.rounds : [],
-        activeRuleCardIds: stateToLoad.activeRuleCardIds || [],
-        isGameStarted: true,
-        isGameOver: !!stateToLoad.isGameOver,
-        winnerId: stateToLoad.winnerId || null,
-        isContinued: !!stateToLoad.isContinued,
-      });
-
+      setGameState(stateToLoad);
       soundEffects.playClick();
       return true;
     } catch (err) {
