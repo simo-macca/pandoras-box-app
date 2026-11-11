@@ -1,8 +1,23 @@
-import { Language } from '../types/game';
+import { Language } from '@/types/game';
 
 export interface TranslationStrings {
   appTitle: string;
   appSubtitle: string;
+  common: {
+    close: string;
+    clearSearch: string;
+    proximityToLoss: string;
+    dangerThreshold: string;
+    officialLimits: string;
+    roundLimitPlaceholder: string;
+    allSafe: string;
+    undoLastRoundHint: string;
+    themeLight: string;
+    themeDark: string;
+    themeSystem: string;
+    players: string;
+    doubleSpecialActive: string;
+  };
   nav: {
     scoreboard: string;
     scoreRound: string;
@@ -15,7 +30,6 @@ export interface TranslationStrings {
     logRound: string;
     rulecards: string;
     rules: string;
-    dice?: string;
   };
   setup: {
     title: string;
@@ -256,6 +270,22 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
   en: {
     appTitle: "Frantic: Pandora's Box",
     appSubtitle: 'Official Card Game Companion',
+    common: {
+      close: 'Close',
+      clearSearch: 'Clear search',
+      proximityToLoss: 'Proximity to loss',
+      dangerThreshold: 'Danger threshold (80% of the limit)',
+      officialLimits: 'Official limits',
+      roundLimitPlaceholder: 'Custom round limit (optional)',
+      allSafe: 'All safe',
+      undoLastRoundHint: 'Revert the scores of the most recent entry',
+      themeLight: 'Light mode',
+      themeDark: 'Dark mode',
+      themeSystem: 'System preference',
+      players: 'players',
+      doubleSpecialActive:
+        'Rule card “Double Special” is active: all special cards count double.',
+    },
     nav: {
       scoreboard: 'Standings',
       scoreRound: 'Score Round',
@@ -268,7 +298,6 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       logRound: 'Score Round',
       rulecards: 'Rule Cards',
       rules: 'Card Dictionary',
-      dice: 'd20 Dice',
     },
     setup: {
       title: 'Game Setup',
@@ -316,7 +345,7 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       eliminationLimit: 'Game Limit',
       limitHelpTitle: 'Game Limit',
       limitHelpDesc:
-        'The cumulative score ceiling that ends the game. As soon as at least one player reaches or exceeds this limit at the end of a round, the game is over. The player with the lowest score wins!',
+        'The cumulative score ceiling that ends the game. As soon as at least one player exceeds this limit at the end of a round, the game is over. The player with the lowest score wins!',
       dangerHelpTitle: 'Danger Zone',
       dangerHelpDesc:
         'Players within 20 points of the Game Limit are in the Danger Zone. Holding heavy cards like Fuck You (42 pts), The End (17 pts), or Curse (13 pts) at round end can easily push them over the limit!',
@@ -477,24 +506,24 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
         'Cannot swap: all player scores are currently identical.',
       eventAction: 'Event Action',
       swappedPoints: 'Points Swapped',
-      seppuku: 'Seppuku T',
+      seppuku: 'Seppuku',
       seppukuDesc:
-        'Seppuku T: Flip top card (-21 number / +42 non-number) or refuse (+21)',
-      seppukuAction: 'Seppuku T',
-      seppukuTitle: 'Seppuku T – Point Adjustments',
+        'Seppuku: Flip top card (-21 number / +42 non-number) or refuse (+21)',
+      seppukuAction: 'Seppuku',
+      seppukuTitle: 'Seppuku – Point Adjustments',
       seppukuSubtitle:
         'In turn order, choose whether each player takes the risk or refuses',
       seppukuRiskNumber: 'Risk: Number Card (-21 pts)',
       seppukuRiskSpecial: 'Risk: Non-number / Special (+42 pts)',
       seppukuNoRisk: 'No Risk (+21 pts)',
       seppukuApply: 'Apply Seppuku',
-      seppukuSuccess: 'Seppuku T applied successfully!',
-      seppukuEditTitle: 'Edit Seppuku T – Adjust Choices',
+      seppukuSuccess: 'Seppuku applied successfully!',
+      seppukuEditTitle: 'Edit Seppuku – Adjust Choices',
       seppukuEditSubtitle:
         'Correct previously recorded player choices and update cumulative points',
       seppukuEditBadge: 'Edit Mode',
-      seppukuUpdatedSuccess: 'Seppuku T choices updated successfully!',
-      seppukuRuleBannerTitle: "Card Rules: Seppuku T (D'Sinead Conception)",
+      seppukuUpdatedSuccess: 'Seppuku choices updated successfully!',
+      seppukuRuleBannerTitle: "Card Rules: Seppuku (D'Sinead Conception)",
       seppukuRuleRiskText:
         'Take Risk (draw top card): Number card (1–10) = -21 pts | Non-number / Special = +42 pts',
       seppukuRuleRefuseText: 'No Risk / Refused: +21 pts',
@@ -508,13 +537,29 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       seppukuBadgeNumber: 'Number (-21)',
       seppukuBadgeSpecial: 'Special (+42)',
       seppukuBadgeNoRisk: 'No Risk (+21)',
-      editSeppukuTooltip: 'Edit Seppuku T choices',
+      editSeppukuTooltip: 'Edit Seppuku choices',
       lateJoiner: 'Late Joiner',
     },
   },
   de: {
     appTitle: "Frantic: Pandora's Box",
     appSubtitle: 'Offizielle Kartenspiel-Begleit-App',
+    common: {
+      close: 'Schliessen',
+      clearSearch: 'Suche löschen',
+      proximityToLoss: 'Nähe zur Niederlage',
+      dangerThreshold: 'Gefahrenschwelle (80 % des Limits)',
+      officialLimits: 'Offizielle Limits',
+      roundLimitPlaceholder: 'Eigenes Rundenlimit (optional)',
+      allSafe: 'Alle sicher',
+      undoLastRoundHint: 'Punkte des letzten Eintrags rückgängig machen',
+      themeLight: 'Heller Modus',
+      themeDark: 'Dunkler Modus',
+      themeSystem: 'Systemeinstellung',
+      players: 'Spieler',
+      doubleSpecialActive:
+        'Regelkarte «Double Special» aktiv: Alle Spezialkarten zählen doppelt.',
+    },
     nav: {
       scoreboard: 'Spielstand',
       scoreRound: 'Runde werten',
@@ -527,7 +572,6 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       logRound: 'Runde werten',
       rulecards: 'Regelkarten',
       rules: 'Kartenlexikon',
-      dice: 'd20 Würfel',
     },
     setup: {
       title: 'Spieleinrichtung',
@@ -575,10 +619,10 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       eliminationLimit: 'Punktelimit',
       limitHelpTitle: 'Punktegrenze',
       limitHelpDesc:
-        'Die Gesamtpunktegrenze, die das Spiel beendet. Sobald am Ende einer Runde mindestens ein Spieler dieses Limit erreicht oder überschreitet, endet das Spiel. Wer die wenigsten Punkte hat, gewinnt!',
+        'Die Gesamtpunktegrenze, die das Spiel beendet. Sobald am Ende einer Runde mindestens ein Spieler dieses Limit überschreitet, endet das Spiel. Wer die wenigsten Punkte hat, gewinnt!',
       dangerHelpTitle: 'Gefahrenzone',
       dangerHelpDesc:
-        'Spieler, die weniger als 20 Punkte von der Punktegrenze entfernt sind, befinden sich in der Gefahrenzone. Teure Karten wie Fuck You (42 Pkt), The End (17 Pkt) oder Fluch (13 Pkt) können das Spiel sofort beenden!',
+        'Spieler, die weniger als 20 Punkte von der Punktegrenze entfernt sind, befinden sich in der Gefahrenzone. Teure Karten wie Fuck You (42 Pkt), The End (17 Pkt) oder Curse (13 Pkt) können das Spiel sofort beenden!',
       historyTitle: 'Rundenverlauf',
       undoLastRound: 'Runde rückgängig',
       undoRound: 'Letzte Runde rückgängig',
@@ -606,15 +650,15 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       numberCardsHint: '1 bis 10 Punkte pro Karte',
       specialCardsTitle: 'Sonder- & Spezialkarten',
       standardSpecials: 'Standard-Spezialkarten (je 7 Pkt)',
-      curseCard: 'Curse / Fluch (13 Pkt)',
+      curseCard: 'Curse (13 Pkt)',
       theEndCard: 'The End (17 Pkt)',
       fuckYouCard: 'Fuck You (42 Pkt)',
       mimicryCard: 'Mimicry (7 Pkt)',
       eventsAndModifiers: 'Ereignismodifikatoren',
-      doomsdayToggle: 'Doomsday / Weltuntergang (Alle 50 Pkt)',
+      doomsdayToggle: 'Doomsday (Alle 50 Pkt)',
       doomsdayHint:
         'Überschreibt alle Handkarten dieser Runde mit exakt 50 Punkten.',
-      timeBombModifier: 'Zeitbomben-Modifikator',
+      timeBombModifier: 'Time-Bomb-Modifikator',
       timeBombNone: 'Keiner / Inaktiv',
       timeBombWinner: 'Gewinner-Bonus (-10 Pkt)',
       timeBombLoser: 'Verlierer-Strafe (+10 Pkt)',
@@ -729,35 +773,34 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       viewScoreboard: 'Punkteübersicht',
     },
     events: {
-      identityTheft: 'Identitätsdiebstahl',
+      identityTheft: 'Identity Theft',
       identityTheftDesc:
         'Punkte zwischen Person mit höchster und niedrigster Punktzahl tauschen',
       identityTheftSuccess:
-        'Identitätsdiebstahl: Punkte zwischen {lowPlayer} und {highPlayer} getauscht!',
+        'Identity Theft: Punkte zwischen {lowPlayer} und {highPlayer} getauscht!',
       identicalScoresWarning:
         'Kein Tausch möglich: Alle Punktestände sind derzeit identisch.',
       eventAction: 'Ereignis-Aktion',
       swappedPoints: 'Punkte getauscht',
-      seppuku: 'Seppuku T',
+      seppuku: 'Seppuku',
       seppukuDesc:
-        'Seppuku T: Karte aufdecken (-21 Zahl / +42 Nicht-Zahl) oder ablehnen (+21)',
-      seppukuAction: 'Seppuku T',
-      seppukuTitle: 'Seppuku T – Punkteanpassung',
+        'Seppuku: Karte aufdecken (-21 Zahl / +42 Nicht-Zahl) oder ablehnen (+21)',
+      seppukuAction: 'Seppuku',
+      seppukuTitle: 'Seppuku – Punkteanpassung',
       seppukuSubtitle:
         'Der Reihe nach entscheiden, ob Seppuku begangen wird oder kein Risiko gewählt wird',
       seppukuRiskNumber: 'Risiko: Zahlenkarte (-21 Pkt)',
       seppukuRiskSpecial: 'Risiko: Sonder- / Aktionskarte (+42 Pkt)',
       seppukuNoRisk: 'Kein Risiko (+21 Pkt)',
       seppukuApply: 'Seppuku anwenden',
-      seppukuSuccess: 'Seppuku T erfolgreich angewendet!',
-      seppukuEditTitle: 'Seppuku T bearbeiten – Auswahl anpassen',
+      seppukuSuccess: 'Seppuku erfolgreich angewendet!',
+      seppukuEditTitle: 'Seppuku bearbeiten – Auswahl anpassen',
       seppukuEditSubtitle:
         'Zuvor erfasste Spielerentscheidungen korrigieren und Punkte aktualisieren',
       seppukuEditBadge: 'Bearbeitungsmodus',
-      seppukuUpdatedSuccess:
-        'Seppuku T-Entscheidungen erfolgreich aktualisiert!',
+      seppukuUpdatedSuccess: 'Seppuku-Entscheidungen erfolgreich aktualisiert!',
       seppukuRuleBannerTitle:
-        "Offizielle Kartenregeln: Seppuku T (D'Sinead Conception)",
+        "Offizielle Kartenregeln: Seppuku (D'Sinead Conception)",
       seppukuRuleRiskText:
         'Risiko eingegangen (oberste Karte): Zahlenkarte (1–10) = -21 Pkt | Nicht-Zahlen-/Sonderkarte = +42 Pkt',
       seppukuRuleRefuseText: 'Kein Risiko / Abgelehnt: +21 Pkt',
@@ -771,13 +814,29 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       seppukuBadgeNumber: 'Zahl (-21)',
       seppukuBadgeSpecial: 'Spezial (+42)',
       seppukuBadgeNoRisk: 'Kein Risiko (+21)',
-      editSeppukuTooltip: 'Seppuku T-Auswahl bearbeiten',
+      editSeppukuTooltip: 'Seppuku-Auswahl bearbeiten',
       lateJoiner: 'Später Beitritt',
     },
   },
   it: {
     appTitle: "Frantic: Pandora's Box",
     appSubtitle: 'Companion Ufficiale Gioco di Carte',
+    common: {
+      close: 'Chiudi',
+      clearSearch: 'Cancella ricerca',
+      proximityToLoss: 'Vicinanza alla sconfitta',
+      dangerThreshold: 'Soglia di pericolo (80% del limite)',
+      officialLimits: 'Limiti ufficiali',
+      roundLimitPlaceholder: 'Limite di round personalizzato (opzionale)',
+      allSafe: 'Tutti al sicuro',
+      undoLastRoundHint: 'Annulla i punteggi dell’ultima voce',
+      themeLight: 'Modalità chiara',
+      themeDark: 'Modalità scura',
+      themeSystem: 'Preferenza di sistema',
+      players: 'giocatori',
+      doubleSpecialActive:
+        'Carta regola «Double Special» attiva: tutte le carte speciali contano il doppio.',
+    },
     nav: {
       scoreboard: 'Classifica',
       scoreRound: 'Valuta Round',
@@ -790,7 +849,6 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       logRound: 'Valuta Round',
       rulecards: 'Carte Regola',
       rules: 'Dizionario Carte',
-      dice: 'Dado d20',
     },
     setup: {
       title: 'Configurazione Partita',
@@ -838,10 +896,10 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       eliminationLimit: 'Limite Partita',
       limitHelpTitle: 'Limite Punti',
       limitHelpDesc:
-        'Il limite massimo di punti cumulativi che determina la fine della partita. Quando al termine di un round almeno un giocatore raggiunge o supera questa soglia, la partita termina. Vince chi ha meno punti!',
+        'Il limite massimo di punti cumulativi che determina la fine della partita. Quando al termine di un round almeno un giocatore supera questa soglia, la partita termina. Vince chi ha meno punti!',
       dangerHelpTitle: 'Zona Pericolo',
       dangerHelpDesc:
-        'I giocatori a 20 punti o meno dalla soglia limite sono nella Zona Pericolo. Carte pesanti come Fuck You (42 pt), The End (17 pt) o Maledizione (13 pt) a fine round possono far superare la soglia e chiudere la partita!',
+        'I giocatori a 20 punti o meno dalla soglia limite sono nella Zona Pericolo. Carte pesanti come Fuck You (42 pt), The End (17 pt) o Curse (13 pt) a fine round possono far superare la soglia e chiudere la partita!',
       historyTitle: 'Storico Round',
       undoLastRound: 'Annulla Ultimo',
       undoRound: 'Annulla Ultimo Round',
@@ -869,15 +927,15 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       numberCardsHint: 'Da 1 a 10 punti per carta',
       specialCardsTitle: 'Carte Speciali & Uniche',
       standardSpecials: 'Speciali Standard (7 pt ciascuna)',
-      curseCard: 'Maledizione / Curse (13 pt)',
+      curseCard: 'Curse (13 pt)',
       theEndCard: 'The End (17 pt)',
       fuckYouCard: 'Fuck You (42 pt)',
       mimicryCard: 'Mimicry (7 pt)',
       eventsAndModifiers: 'Modificatori Evento',
-      doomsdayToggle: 'Giorno del Giudizio (Tutti 50 pt)',
+      doomsdayToggle: 'Doomsday (Tutti 50 pt)',
       doomsdayHint:
         'Imposta i punti di tutti a esattamente 50 per questo round.',
-      timeBombModifier: 'Bomba a Orologeria',
+      timeBombModifier: 'Time Bomb',
       timeBombNone: 'Nessuno / Inattivo',
       timeBombWinner: 'Bonus Vincitore (-10 pt)',
       timeBombLoser: 'Penalità Sconfitto (+10 pt)',
@@ -992,34 +1050,33 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       viewScoreboard: 'Vedi Tabellone',
     },
     events: {
-      identityTheft: 'Furto d’Identità',
+      identityTheft: 'Identity Theft',
       identityTheftDesc:
         'Scambia i punti tra il giocatore con il punteggio più alto e quello più basso',
       identityTheftSuccess:
-        'Furto d’Identità: Punti scambiati tra {lowPlayer} e {highPlayer}!',
+        'Identity Theft: Punti scambiati tra {lowPlayer} e {highPlayer}!',
       identicalScoresWarning:
         'Impossibile scambiare: tutti i punteggi sono attualmente identici.',
       eventAction: 'Azione Evento',
       swappedPoints: 'Punti Scambiati',
-      seppuku: 'Seppuku T',
+      seppuku: 'Seppuku',
       seppukuDesc:
-        'Seppuku T: Gira la prima carta (-21 numero / +42 non-numero) o rifiuta (+21)',
-      seppukuAction: 'Seppuku T',
-      seppukuTitle: 'Seppuku T – Regolazione Punti',
+        'Seppuku: Gira la prima carta (-21 numero / +42 non-numero) o rifiuta (+21)',
+      seppukuAction: 'Seppuku',
+      seppukuTitle: 'Seppuku – Regolazione Punti',
       seppukuSubtitle:
         'A turno, decidi se ciascun giocatore tenta il Seppuku o non rischia',
       seppukuRiskNumber: 'Rischio: Carta Numero (-21 pt)',
       seppukuRiskSpecial: 'Rischio: Carta Speciale / Non-numero (+42 pt)',
       seppukuNoRisk: 'Nessun Rischio (+21 pt)',
       seppukuApply: 'Applica Seppuku',
-      seppukuSuccess: 'Seppuku T applicato con successo!',
-      seppukuEditTitle: 'Modifica Seppuku T – Correggi Scelte',
+      seppukuSuccess: 'Seppuku applicato con successo!',
+      seppukuEditTitle: 'Modifica Seppuku – Correggi Scelte',
       seppukuEditSubtitle:
         'Correggi le scelte registrate e aggiorna i punteggi cumulativi',
       seppukuEditBadge: 'Modalità Modifica',
-      seppukuUpdatedSuccess: 'Scelte Seppuku T aggiornate con successo!',
-      seppukuRuleBannerTitle:
-        "Regole Ufficiali: Seppuku T (D'Sinead Conception)",
+      seppukuUpdatedSuccess: 'Scelte Seppuku aggiornate con successo!',
+      seppukuRuleBannerTitle: "Regole Ufficiali: Seppuku (D'Sinead Conception)",
       seppukuRuleRiskText:
         'Rischio (prima carta del mazzo): Carta Numero (1–10) = -21 pt | Carta Speciale / Non-numero = +42 pt',
       seppukuRuleRefuseText: 'Nessun Rischio / Rifiutato: +21 pt',
@@ -1032,13 +1089,29 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       seppukuBadgeNumber: 'Numero (-21)',
       seppukuBadgeSpecial: 'Speciale (+42)',
       seppukuBadgeNoRisk: 'Nessun Rischio (+21)',
-      editSeppukuTooltip: 'Modifica scelte Seppuku T',
+      editSeppukuTooltip: 'Modifica scelte Seppuku',
       lateJoiner: 'Nuovo Giocatore',
     },
   },
   fr: {
     appTitle: "Frantic: Pandora's Box",
     appSubtitle: 'Compagnon Officiel du Jeu de Cartes',
+    common: {
+      close: 'Fermer',
+      clearSearch: 'Effacer la recherche',
+      proximityToLoss: 'Proximité de la défaite',
+      dangerThreshold: 'Seuil de danger (80 % de la limite)',
+      officialLimits: 'Limites officielles',
+      roundLimitPlaceholder: 'Limite de manches personnalisée (facultatif)',
+      allSafe: 'Tous en sécurité',
+      undoLastRoundHint: 'Annuler les points de la dernière entrée',
+      themeLight: 'Mode clair',
+      themeDark: 'Mode sombre',
+      themeSystem: 'Préférence système',
+      players: 'joueurs',
+      doubleSpecialActive:
+        'Carte Règle «Double Special» active : toutes les cartes spéciales comptent double.',
+    },
     nav: {
       scoreboard: 'Classement',
       scoreRound: 'Noter Manche',
@@ -1051,7 +1124,6 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       logRound: 'Noter Manche',
       rulecards: 'Cartes Règle',
       rules: 'Dictionnaire',
-      dice: 'Dé d20',
     },
     setup: {
       title: 'Configuration de la Partie',
@@ -1099,10 +1171,10 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       eliminationLimit: 'Limite de Fin',
       limitHelpTitle: 'Limite de Points',
       limitHelpDesc:
-        'Le plafond de points cumulés qui met fin à la partie. Dès qu’au moins un joueur atteint ou dépasse cette limite à la fin d’une manche, la partie s’arrête. Le joueur ayant le moins de points l’emporte !',
+        'Le plafond de points cumulés qui met fin à la partie. Dès qu’au moins un joueur dépasse cette limite à la fin d’une manche, la partie s’arrête. Le joueur ayant le moins de points l’emporte !',
       dangerHelpTitle: 'Zone de Danger',
       dangerHelpDesc:
-        'Les joueurs à 20 points ou moins de la limite sont en zone de danger. Conserver des cartes pénalisantes comme Fuck You (42 pts), The End (17 pts) ou Malédiction (13 pts) peut rapidement dépasser la limite !',
+        'Les joueurs à 20 points ou moins de la limite sont en zone de danger. Conserver des cartes pénalisantes comme Fuck You (42 pts), The End (17 pts) ou Curse (13 pts) peut rapidement dépasser la limite !',
       historyTitle: 'Historique des Manches',
       undoLastRound: 'Annuler Dernière',
       undoRound: 'Annuler Dernière Manche',
@@ -1130,15 +1202,15 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       numberCardsHint: '1 à 10 points par carte',
       specialCardsTitle: 'Cartes Spéciales & Uniques',
       standardSpecials: 'Spéciales Standard (7 pts chacune)',
-      curseCard: 'Malédiction / Curse (13 pts)',
+      curseCard: 'Curse (13 pts)',
       theEndCard: 'The End (17 pts)',
       fuckYouCard: 'Fuck You (42 pts)',
       mimicryCard: 'Mimicry (7 pts)',
       eventsAndModifiers: 'Modificateurs d’Événements',
-      doomsdayToggle: 'Fin du Monde / Doomsday (Tous 50 pts)',
+      doomsdayToggle: 'Doomsday (Tous 50 pts)',
       doomsdayHint:
         'Attribue exactement 50 points à tous les joueurs pour cette manche.',
-      timeBombModifier: 'Bombe à Retardement',
+      timeBombModifier: 'Time Bomb',
       timeBombNone: 'Aucun / Inactif',
       timeBombWinner: 'Bonus Vainqueur (-10 pts)',
       timeBombLoser: 'Pénalité Perdant (+10 pts)',
@@ -1254,34 +1326,34 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       viewScoreboard: 'Voir le tableau',
     },
     events: {
-      identityTheft: 'Vol d’Identité',
+      identityTheft: 'Identity Theft',
       identityTheftDesc:
         'Échange les points entre le joueur avec le score le plus haut et le plus bas',
       identityTheftSuccess:
-        'Vol d’Identité: Points échangés entre {lowPlayer} et {highPlayer} !',
+        'Identity Theft: Points échangés entre {lowPlayer} et {highPlayer} !',
       identicalScoresWarning:
         'Échange impossible: tous les scores sont actuellement identiques.',
       eventAction: 'Action Événement',
       swappedPoints: 'Points Échangés',
-      seppuku: 'Seppuku T',
+      seppuku: 'Seppuku',
       seppukuDesc:
-        'Seppuku T: Révéler la 1ère carte (-21 chiffre / +42 non-chiffre) ou refuser (+21)',
-      seppukuAction: 'Seppuku T',
-      seppukuTitle: 'Seppuku T – Ajustement des Points',
+        'Seppuku: Révéler la 1ère carte (-21 chiffre / +42 non-chiffre) ou refuser (+21)',
+      seppukuAction: 'Seppuku',
+      seppukuTitle: 'Seppuku – Ajustement des Points',
       seppukuSubtitle:
         'Dans l’ordre du tour, choisissez si chaque joueur tente le Seppuku ou refuse le risque',
       seppukuRiskNumber: 'Risque : Carte Chiffre (-21 pts)',
       seppukuRiskSpecial: 'Risque : Carte Spéciale / Non-chiffre (+42 pts)',
       seppukuNoRisk: 'Sans Risque (+21 pts)',
       seppukuApply: 'Appliquer Seppuku',
-      seppukuSuccess: 'Seppuku T appliqué avec succès !',
-      seppukuEditTitle: 'Modifier Seppuku T – Corriger les Choix',
+      seppukuSuccess: 'Seppuku appliqué avec succès !',
+      seppukuEditTitle: 'Modifier Seppuku – Corriger les Choix',
       seppukuEditSubtitle:
         'Corriger les choix enregistrés et recalculer les points cumulés',
       seppukuEditBadge: 'Mode Modification',
-      seppukuUpdatedSuccess: 'Choix Seppuku T mis à jour avec succès !',
+      seppukuUpdatedSuccess: 'Choix Seppuku mis à jour avec succès !',
       seppukuRuleBannerTitle:
-        "Règles Officielles : Seppuku T (D'Sinead Conception)",
+        "Règles Officielles : Seppuku (D'Sinead Conception)",
       seppukuRuleRiskText:
         'Risque pris (1ère carte) : Carte Chiffre (1–10) = -21 pts | Non-chiffre / Spéciale = +42 pts',
       seppukuRuleRefuseText: 'Sans Risque / Refusé : +21 pts',
@@ -1294,7 +1366,7 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
       seppukuBadgeNumber: 'Chiffre (-21)',
       seppukuBadgeSpecial: 'Spéciale (+42)',
       seppukuBadgeNoRisk: 'Sans Risque (+21)',
-      editSeppukuTooltip: 'Modifier les choix Seppuku T',
+      editSeppukuTooltip: 'Modifier les choix Seppuku',
       lateJoiner: 'Arrivée en Cours',
     },
   },

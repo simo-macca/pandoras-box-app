@@ -1,13 +1,13 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useGameState } from '../useGameState';
-import { DEFAULT_HAND_SCORE } from '../../utils/scoring';
+import { DEFAULT_HAND_SCORE } from '@/utils/scoring';
 import {
   HandScore,
   Player,
   IdentityTheftEventMetadata,
   SeppukuEventMetadata,
-} from '../../types/game';
+} from '@/types/game';
 
 describe('useGameState hook', () => {
   beforeEach(() => {
@@ -534,7 +534,7 @@ describe('useGameState hook', () => {
     });
   });
 
-  describe('Seppuku T event action', () => {
+  describe('Seppuku event action', () => {
     it('applies point adjustments for number (-21), special (+42), and no risk (+21) without advancing round count', () => {
       const { result } = renderHook(() => useGameState());
       const [p1, p2, p3, p4] = result.current.gameState.players;
@@ -595,7 +595,7 @@ describe('useGameState hook', () => {
       expect(seppukuMeta?.choices?.[p3.id]?.points).toBe(21);
     });
 
-    it('reverts Seppuku T points when undoLastRound is invoked', () => {
+    it('reverts Seppuku points when undoLastRound is invoked', () => {
       const { result } = renderHook(() => useGameState());
       const [p1] = result.current.gameState.players;
 
@@ -619,7 +619,7 @@ describe('useGameState hook', () => {
       expect(result.current.gameState.rounds).toHaveLength(0);
     });
 
-    it('updates an existing Seppuku T event in place when existingRoundId is provided', () => {
+    it('updates an existing Seppuku event in place when existingRoundId is provided', () => {
       const { result } = renderHook(() => useGameState());
       const [p1, p2] = result.current.gameState.players;
 
@@ -648,7 +648,7 @@ describe('useGameState hook', () => {
         result.current.playerStats.find((p) => p.id === p2.id)!.totalScore
       ).toBe(52);
 
-      // Now edit the Seppuku T entry in place: p1 refused (+21), p2 risked number (-21)
+      // Now edit the Seppuku entry in place: p1 refused (+21), p2 risked number (-21)
       act(() => {
         result.current.applySeppuku(
           {
@@ -792,5 +792,76 @@ describe('useGameState hook', () => {
       expect(result.current.gameState.isGameOver).toBe(true);
       expect(result.current.gameState.winnerId).toBe(p1.id);
     });
+  });
+});
+
+describe('useGameState – rules regressions', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('does not end the game when a player lands exactly on the limit', () => {
+    const { result } = renderHook(() => useGameState());
+    const [p1, p2] = result.current.gameState.players;
+
+    act(() => {
+      result.current.updateGameSetup(result.current.gameState.players, {
+        targetScore: 100,
+        presetName: 'custom',
+      });
+    });
+    act(() => {
+      result.current.addRound({
+        [p1.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 100 } as HandScore,
+        [p2.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 0 } as HandScore,
+      });
+    });
+    expect(result.current.gameState.isGameOver).toBe(false);
+
+    act(() => {
+      result.current.addRound({
+        [p1.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 1 } as HandScore,
+        [p2.id]: { ...DEFAULT_HAND_SCORE, totalPoints: 0 } as HandScore,
+      });
+    });
+    expect(result.current.gameState.isGameOver).toBe(true);
+  });
+
+  it('re-anchors event entries when an earlier round is deleted', () => {
+    const { result } = renderHook(() => useGameState());
+    const [p1, p2] = result.current.gameState.players;
+    const round = (a: number, b: number) => ({
+      [p1.id]: { ...DEFAULT_HAND_SCORE, totalPoints: a } as HandScore,
+      [p2.id]: { ...DEFAULT_HAND_SCORE, totalPoints: b } as HandScore,
+    });
+
+    act(() => result.current.addRound(round(5, 10)));
+    act(() => result.current.addRound(round(7, 3)));
+    act(() => {
+      result.current.applySeppuku({ [p1.id]: 'risk_number' });
+    });
+
+    const seppukuBefore = result.current.gameState.rounds.find(
+      (r) => r.eventType === 'seppuku'
+    );
+    expect(seppukuBefore?.roundNumber).toBe(2);
+
+    act(() => result.current.deleteRound(1));
+
+    const seppukuAfter = result.current.gameState.rounds.find(
+      (r) => r.eventType === 'seppuku'
+    );
+    expect(seppukuAfter?.roundNumber).toBe(1);
+  });
+
+  it('rejects an imported backup with an invalid structure', () => {
+    const { result } = renderHook(() => useGameState());
+    let ok = true;
+    act(() => {
+      ok = result.current.importGameState(
+        JSON.stringify({ gameState: { players: [{}], config: {} } })
+      );
+    });
+    expect(ok).toBe(false);
   });
 });

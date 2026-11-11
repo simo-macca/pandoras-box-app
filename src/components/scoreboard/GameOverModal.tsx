@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { Trophy, Crown, RotateCcw, X, Award, Play, Eye } from 'lucide-react';
-import { PlayerStats } from '../../utils/stats';
-import { PAWN_COLORS } from '../../utils/colors';
-import { Language } from '../../types/game';
-import { UI_TRANSLATIONS } from '../../data/translations';
-import { soundEffects } from '../../utils/sound';
+import { PlayerStats } from '@/utils/stats';
+import { PAWN_COLORS } from '@/utils/colors';
+import { Language } from '@/types/game';
+import { UI_TRANSLATIONS } from '@/data/translations';
+import { soundEffects } from '@/utils/sound';
+import { useModalA11y } from '@/hooks/useModalA11y';
 
 interface GameOverModalProps {
   isOpen: boolean;
@@ -74,29 +75,31 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
     }
   }, [isOpen]);
 
+  useModalA11y(isOpen, onClose);
+
   if (!isOpen || !winner) return null;
 
   const winnerTheme = PAWN_COLORS[winner.color];
 
   return (
-    <div className="animate-fadeIn fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-2 backdrop-blur-md sm:p-4">
+    <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-2 backdrop-blur-md sm:p-4">
       <div
         className="flex max-h-[90dvh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border-2 border-amber-500/60 bg-white shadow-2xl dark:border-amber-500/60 dark:bg-neutral-900 dark:shadow-[0_0_50px_rgba(245,158,11,0.3)]"
         role="dialog"
         aria-modal="true"
         aria-labelledby="game-over-title"
       >
-        <div className="relative shrink-0 border-b border-neutral-200 bg-gradient-to-b from-amber-500/15 via-amber-500/5 to-transparent p-4 text-center sm:p-6 dark:border-neutral-800 dark:from-amber-500/20 dark:via-neutral-900/40">
+        <div className="relative shrink-0 border-b border-neutral-200 bg-linear-to-b from-amber-500/15 via-amber-500/5 to-transparent p-4 text-center sm:p-6 dark:border-neutral-800 dark:from-amber-500/20 dark:via-neutral-900/40">
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t.common.close}
             className="absolute top-3 right-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 sm:top-4 sm:right-4 dark:hover:bg-neutral-800 dark:hover:text-white"
           >
             <X className="h-5 w-5 shrink-0" />
           </button>
 
-          <div className="mx-auto mb-2 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-300 shadow-[0_0_30px_rgba(245,158,11,0.5)] sm:mb-3 sm:h-16 sm:w-16">
+          <div className="mx-auto mb-2 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-linear-to-tr from-amber-500 to-amber-300 shadow-[0_0_30px_rgba(245,158,11,0.5)] sm:mb-3 sm:h-16 sm:w-16">
             <Trophy className="h-8 w-8 shrink-0 stroke-[2.2] text-neutral-950 sm:h-9 sm:w-9" />
           </div>
 
@@ -209,7 +212,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
               soundEffects.playClick();
               onPlayAgain();
             }}
-            className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2.5 text-xs font-black text-neutral-950 shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all hover:from-amber-400 active:scale-95 sm:text-sm"
+            className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-amber-500 to-amber-600 px-4 py-2.5 text-xs font-black text-neutral-950 shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all hover:from-amber-400 active:scale-95 sm:text-sm"
           >
             <RotateCcw className="h-4 w-4 shrink-0 stroke-[2.5]" />
             <span className="whitespace-nowrap">{t.gameOver.newMatch}</span>
@@ -225,7 +228,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
                 soundEffects.playClick();
                 onClose();
               }}
-              className="flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-bold text-neutral-700 shadow-sm transition-all hover:bg-neutral-100 hover:text-neutral-900 active:scale-[0.98] sm:text-sm dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-white"
+              className="flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-bold text-neutral-700 shadow-sm transition-all hover:bg-neutral-100 hover:text-neutral-900 active:scale-[0.98] sm:text-sm dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-white"
             >
               <Eye className="h-4 w-4 shrink-0 stroke-[2.2]" />
               <span className="truncate">{t.gameOver.viewScoreboard}</span>
@@ -238,7 +241,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
                   soundEffects.playClick();
                   onContinue();
                 }}
-                className="flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-bold text-neutral-700 shadow-sm transition-all hover:bg-neutral-100 hover:text-neutral-900 active:scale-[0.98] sm:text-sm dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-white"
+                className="flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-bold text-neutral-700 shadow-sm transition-all hover:bg-neutral-100 hover:text-neutral-900 active:scale-[0.98] sm:text-sm dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-white"
               >
                 <Play className="h-4 w-4 shrink-0 stroke-[2.2]" />
                 <span className="truncate">{t.gameOver.continueGame}</span>

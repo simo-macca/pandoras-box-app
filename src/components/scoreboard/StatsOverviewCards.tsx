@@ -1,9 +1,9 @@
 import React from 'react';
 import { Trophy, AlertTriangle, ShieldCheck } from 'lucide-react';
-import { PlayerStats } from '../../utils/stats';
-import { Language } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
-import { HelpTooltip } from '../common/HelpTooltip';
+import { PlayerStats } from '@/utils/stats';
+import { Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
+import { HelpTooltip } from '@/components/common/HelpTooltip';
 
 interface StatsOverviewCardsProps {
   playerStats: PlayerStats[];
@@ -80,10 +80,12 @@ export const StatsOverviewCards: React.FC<StatsOverviewCardsProps> = ({
           <div className="text-base font-black text-neutral-800 sm:text-lg dark:text-neutral-200">
             {playersInDanger.length > 0 ? (
               <span className="font-bold whitespace-nowrap text-rose-500 tabular-nums">
-                {playersInDanger.length} in Danger Zone
+                {playersInDanger.length} × {t.scoreboard.dangerZone}
               </span>
             ) : (
-              <span className="font-bold text-emerald-500">All Safe</span>
+              <span className="font-bold text-emerald-500">
+                {t.common.allSafe}
+              </span>
             )}
           </div>
         </div>

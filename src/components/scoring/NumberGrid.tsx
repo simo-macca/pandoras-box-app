@@ -1,6 +1,6 @@
 import React from 'react';
 import { Plus, Minus } from 'lucide-react';
-import { soundEffects } from '../../utils/sound';
+import { soundEffects } from '@/utils/sound';
 
 interface NumberGridProps {
   counts: Record<number, number>;
@@ -69,7 +69,7 @@ export const NumberGrid: React.FC<NumberGridProps> = ({
               </button>
 
               <span
-                className={`min-w-[1rem] text-center text-xs font-extrabold whitespace-nowrap tabular-nums sm:min-w-[1.25rem] sm:text-sm ${
+                className={`min-w-4 text-center text-xs font-extrabold whitespace-nowrap tabular-nums sm:min-w-5 sm:text-sm ${
                   count > 0
                     ? 'text-amber-600 dark:text-amber-400'
                     : 'text-neutral-400'

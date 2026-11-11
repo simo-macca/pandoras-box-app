@@ -1,4 +1,4 @@
-import { Player, RoundEntry } from '../types/game';
+import { Player, RoundEntry } from '@/types/game';
 
 export interface PlayerStats extends Player {
   totalScore: number;
@@ -12,6 +12,14 @@ export interface PlayerStats extends Player {
 }
 
 export const DANGER_THRESHOLD_RATIO = 0.8;
+
+/**
+ * Official Rulefactory rule: "Rounds are played until someone exceeds the set
+ * point limit." Reaching the limit exactly does not end the game.
+ */
+export function isOverScoreLimit(score: number, targetScore: number): boolean {
+  return score > targetScore;
+}
 
 export function calculatePlayerStats(
   players: Player[],
@@ -39,12 +47,14 @@ export function calculatePlayerStats(
   const stats: PlayerStats[] = players.map((p) => {
     const totalScore = totals[p.id]?.score || 0;
     const wins = totals[p.id]?.wins || 0;
-    const progressPct = Math.min(
-      100,
-      Math.round((totalScore / targetScore) * 100)
+    const safeTarget = targetScore > 0 ? targetScore : 1;
+    const progressPct = Math.max(
+      0,
+      Math.min(100, Math.round((totalScore / safeTarget) * 100))
     );
     const pointsRemaining = Math.max(0, targetScore - totalScore);
-    const isEliminated = totalScore >= targetScore;
+    // Official rule: the game ends when someone EXCEEDS the point limit.
+    const isEliminated = isOverScoreLimit(totalScore, targetScore);
     const isInDanger =
       totalScore >= targetScore * DANGER_THRESHOLD_RATIO && !isEliminated;
 

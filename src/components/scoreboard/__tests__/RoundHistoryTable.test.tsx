@@ -2,8 +2,8 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RoundHistoryTable } from '../RoundHistoryTable';
-import { Player, RoundEntry, HandScore } from '../../../types/game';
-import { DEFAULT_HAND_SCORE } from '../../../utils/scoring';
+import { Player, RoundEntry, HandScore } from '@/types/game';
+import { DEFAULT_HAND_SCORE } from '@/utils/scoring';
 
 describe('RoundHistoryTable component', () => {
   const players: Player[] = [
@@ -88,7 +88,7 @@ describe('RoundHistoryTable component', () => {
     );
 
     const undoBtn = screen.getByTitle(
-      'Revert the scores of the most recent round'
+      'Revert the scores of the most recent entry'
     );
     await user.click(undoBtn);
 
@@ -204,7 +204,7 @@ describe('RoundHistoryTable component', () => {
     expect(editButtons).toHaveLength(1);
   });
 
-  it('renders Seppuku T event entries with outcome badges and calls onEditSeppuku when edit button is clicked', async () => {
+  it('renders Seppuku event entries with outcome badges and calls onEditSeppuku when edit button is clicked', async () => {
     const user = userEvent.setup();
     const onEditSeppuku = vi.fn();
     const rounds: RoundEntry[] = [
@@ -251,7 +251,7 @@ describe('RoundHistoryTable component', () => {
     expect(screen.getByText(/number \(-21\)/i)).toBeInTheDocument();
     expect(screen.getByText(/special \(\+42\)/i)).toBeInTheDocument();
 
-    // Edit button for Seppuku T
+    // Edit button for Seppuku
     const editSeppukuBtn = screen.getByTitle(/edit seppuku/i);
     expect(editSeppukuBtn).toBeInTheDocument();
 

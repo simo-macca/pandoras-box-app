@@ -1,8 +1,8 @@
 import React from 'react';
 import { Layers } from 'lucide-react';
-import { RuleCardItem } from '../../types/rules';
-import { Language } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
+import { RuleCardItem } from '@/types/rules';
+import { Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 
 interface RuleCardsSectionProps {
   ruleCards: RuleCardItem[];

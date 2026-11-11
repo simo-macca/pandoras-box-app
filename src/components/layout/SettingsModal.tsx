@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { X, Scale, Settings as SettingsIcon } from 'lucide-react';
-import { Language, ThemeMode } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
-import { soundEffects } from '../../utils/sound';
+import { Language, ThemeMode } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
+import { soundEffects } from '@/utils/sound';
 import { SettingsGeneralSection } from './settings/SettingsGeneralSection';
 import { SettingsBackupSection } from './settings/SettingsBackupSection';
 import { SettingsLegalSection } from './settings/SettingsLegalSection';
+import { useModalA11y } from '@/hooks/useModalA11y';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -46,6 +47,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     }
   }, [isOpen, initialTab]);
 
+  useModalA11y(isOpen, onClose);
+
   if (!isOpen) return null;
 
   const t = TRANSLATIONS[language];
@@ -65,7 +68,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   };
 
   return (
-    <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-2 backdrop-blur-sm sm:p-4">
+    <div
+      className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-2 backdrop-blur-sm sm:p-4"
+      role="dialog"
+      aria-modal="true"
+    >
       <div className="relative flex max-h-[90dvh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xl dark:border-neutral-800 dark:bg-neutral-900">
         {/* Header with Title and Close Button */}
         <div className="flex shrink-0 items-center justify-between gap-2 border-b border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-900/60">
@@ -107,7 +114,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t.common.close}
             className="shrink-0 rounded-xl p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 sm:p-2 dark:hover:bg-neutral-800 dark:hover:text-white"
           >
             <X className="h-5 w-5 shrink-0" />

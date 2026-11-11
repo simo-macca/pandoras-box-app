@@ -1,13 +1,13 @@
 import React from 'react';
 import { Trophy, PlusCircle, RotateCcw, UserCheck, Swords } from 'lucide-react';
-import { PlayerStats } from '../../utils/stats';
-import { RoundEntry, Player, Language } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
+import { PlayerStats } from '@/utils/stats';
+import { RoundEntry, Player, Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 import { PlayerCard } from './PlayerCard';
 import { RoundHistoryTable } from './RoundHistoryTable';
 import { StatsOverviewCards } from './StatsOverviewCards';
-import { ActiveRuleCardBanner } from '../rulecards/ActiveRuleCardBanner';
-import { soundEffects } from '../../utils/sound';
+import { ActiveRuleCardBanner } from '@/components/rulecards/ActiveRuleCardBanner';
+import { soundEffects } from '@/utils/sound';
 
 interface LeaderboardProps {
   playerStats: PlayerStats[];
@@ -121,12 +121,12 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                 className="flex items-center gap-1.5 rounded-xl border border-rose-500/40 bg-rose-500/10 px-2.5 py-1.5 text-xs font-bold text-rose-700 shadow-sm transition-all hover:bg-rose-500/20 active:scale-95 disabled:pointer-events-none disabled:opacity-40 sm:gap-2 sm:px-3 dark:border-rose-500/30 dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/50"
                 title={
                   t.events?.seppukuDesc ||
-                  'Seppuku T: Flip top card (-21 number / +42 non-number) or refuse (+21)'
+                  'Seppuku: Flip top card (-21 number / +42 non-number) or refuse (+21)'
                 }
               >
                 <Swords className="h-3.5 w-3.5 shrink-0 stroke-[2.2]" />
                 <span className="whitespace-nowrap">
-                  {t.events?.seppuku || 'Seppuku T'}
+                  {t.events?.seppuku || 'Seppuku'}
                 </span>
               </button>
             )}

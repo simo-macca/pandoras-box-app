@@ -1,9 +1,10 @@
 import React from 'react';
 import { Crown, AlertTriangle, Skull } from 'lucide-react';
-import { PlayerStats } from '../../hooks/useGameState';
-import { PAWN_COLORS } from '../../utils/colors';
-import { Language } from '../../types/game';
-import { UI_TRANSLATIONS } from '../../data/translations';
+import { PlayerStats } from '@/utils/stats';
+import { DANGER_THRESHOLD_RATIO } from '@/utils/stats';
+import { PAWN_COLORS } from '@/utils/colors';
+import { Language } from '@/types/game';
+import { UI_TRANSLATIONS } from '@/data/translations';
 
 interface PlayerCardProps {
   player: PlayerStats;
@@ -148,7 +149,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
 
       <div className="mt-3 space-y-1.5 sm:mt-4">
         <div className="flex items-center justify-between text-[11px] font-medium text-neutral-500 dark:text-slate-400">
-          <span>Proximity to Loss:</span>
+          <span>{t.common.proximityToLoss}:</span>
           <span className="font-mono font-bold whitespace-nowrap text-neutral-700 tabular-nums dark:text-slate-300">
             {player.progressPct.toFixed(0)}%
           </span>
@@ -165,9 +166,9 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
           <div
             className="absolute top-0 bottom-0 w-0.5 bg-rose-500/50"
             style={{
-              left: `${Math.max(0, ((targetScore - 20) / targetScore) * 100)}%`,
+              left: `${DANGER_THRESHOLD_RATIO * 100}%`,
             }}
-            title="Danger threshold (within 20 pts)"
+            title={t.common.dangerThreshold}
           />
         </div>
       </div>

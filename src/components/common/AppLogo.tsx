@@ -13,7 +13,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
 }) => {
   return (
     <img
-      src="/favicon.svg"
+      src={`${import.meta.env.BASE_URL}favicon.svg`}
       alt={alt}
       width={size}
       height={size}

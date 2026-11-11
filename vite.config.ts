@@ -1,78 +1,69 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vitest/config';
-import type { Plugin } from 'vite';
+import { loadEnv, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
-import fs from 'node:fs';
+import { VitePWA } from 'vite-plugin-pwa';
 import path from 'node:path';
 
-function serveRulesPlugin(): Plugin {
-  const copyRulesToDist = () => {
-    const srcDir = path.resolve(__dirname, 'rules');
-    const destDir = path.resolve(__dirname, 'dist', 'rules');
-    if (fs.existsSync(srcDir)) {
-      fs.mkdirSync(destDir, { recursive: true });
-      for (const file of fs.readdirSync(srcDir)) {
-        const srcFile = path.join(srcDir, file);
-        const destFile = path.join(destDir, file);
-        if (fs.statSync(srcFile).isFile()) {
-          fs.copyFileSync(srcFile, destFile);
-        }
-      }
-    }
-  };
-
+/**
+ * Replaces the `__SITE_URL__` placeholder in index.html with the absolute
+ * public URL of the deployment, so Open Graph / Twitter images resolve when the
+ * link is shared. Resolution order:
+ *   1. VITE_SITE_URL (set it manually, e.g. in a GitHub Actions workflow)
+ *   2. URL (injected automatically by Netlify at build time)
+ *   3. empty string → root-relative URLs (local development)
+ */
+function siteUrlPlugin(siteUrl: string): Plugin {
+  const normalized = siteUrl.replace(/\/+$/, '');
   return {
-    name: 'serve-rules-plugin',
-    configureServer(server) {
-      server.middlewares.use('/rules', (req, res, next) => {
-        const rawUrl = req.url?.split('?')[0] || '';
-        const safeUrl = decodeURIComponent(rawUrl).replace(/^\//, '');
-        const filePath = path.resolve(__dirname, 'rules', safeUrl);
-
-        if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-          res.setHeader('Content-Type', 'application/pdf');
-          res.setHeader('Content-Disposition', 'inline');
-          fs.createReadStream(filePath).pipe(res);
-          return;
-        }
-        next();
-      });
-    },
-    configurePreviewServer(server) {
-      server.middlewares.use('/rules', (req, res, next) => {
-        const rawUrl = req.url?.split('?')[0] || '';
-        const safeUrl = decodeURIComponent(rawUrl).replace(/^\//, '');
-        const distPath = path.resolve(__dirname, 'dist', 'rules', safeUrl);
-        const rootPath = path.resolve(__dirname, 'rules', safeUrl);
-        const filePath = fs.existsSync(distPath) ? distPath : rootPath;
-
-        if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-          res.setHeader('Content-Type', 'application/pdf');
-          res.setHeader('Content-Disposition', 'inline');
-          fs.createReadStream(filePath).pipe(res);
-          return;
-        }
-        next();
-      });
-    },
-    closeBundle() {
-      copyRulesToDist();
+    name: 'site-url-placeholder',
+    transformIndexHtml(html) {
+      return html.replace(/__SITE_URL__/g, normalized);
     },
   };
 }
 
-export default defineConfig({
-  plugins: [tailwindcss(), react(), serveRulesPlugin()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  // Use BASE_PATH=/pandoras-box-app/ when deploying to a GitHub Pages
+  // project site. Netlify and custom domains serve from the root.
+  const base = env.BASE_PATH || '/';
+  const basePath = base.replace(/\/+$/, '');
+  const siteUrl = env.VITE_SITE_URL || (env.URL ? `${env.URL}${basePath}` : '');
+
+  return {
+    base,
+    plugins: [
+      tailwindcss(),
+      react(),
+      siteUrlPlugin(siteUrl),
+      VitePWA({
+        registerType: 'autoUpdate',
+        injectRegister: 'auto',
+        // The hand-written public/site.webmanifest is kept as the source of truth.
+        manifest: false,
+        workbox: {
+          globPatterns: ['**/*.{js,css,html,svg,png,webmanifest,pdf}'],
+          globIgnores: ['**/og-image.*'],
+          // The largest rulebook PDF is ~1.4 MB.
+          maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+          navigateFallback: 'index.html',
+          navigateFallbackDenylist: [/\/rules\//],
+          cleanupOutdatedCaches: true,
+        },
+      }),
+    ],
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+      },
     },
-  },
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    pool: 'vmThreads',
-    setupFiles: ['./src/test/setup.ts'],
-  },
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      pool: 'vmThreads',
+      setupFiles: ['./src/test/setup.ts'],
+    },
+  };
 });

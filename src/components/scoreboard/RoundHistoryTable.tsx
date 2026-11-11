@@ -13,10 +13,10 @@ import {
   UserPlus,
   X,
 } from 'lucide-react';
-import { Player, RoundEntry, Language } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
-import { RULE_CARDS_DATA } from '../../data/ruleCardsData';
-import { soundEffects } from '../../utils/sound';
+import { Player, RoundEntry, Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
+import { RULE_CARDS_DATA } from '@/data/ruleCardsData';
+import { soundEffects } from '@/utils/sound';
 
 interface RoundHistoryTableProps {
   rounds: RoundEntry[];
@@ -76,7 +76,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
           type="button"
           onClick={handleUndo}
           className="flex shrink-0 items-center gap-1.5 rounded-xl border border-neutral-200 bg-neutral-100 px-3 py-1.5 text-xs font-semibold text-neutral-700 transition-all hover:bg-neutral-200 active:scale-95 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
-          title="Revert the scores of the most recent round"
+          title={t.common.undoLastRoundHint}
         >
           <RotateCcw className="h-3.5 w-3.5 shrink-0 text-amber-500" />
           <span className="whitespace-nowrap">{t.scoreboard.undoRound}</span>
@@ -101,10 +101,10 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
               className={`rounded-3xl border p-3 shadow-sm transition-all sm:p-4 ${
                 round.isEvent
                   ? round.eventType === 'seppuku'
-                    ? 'border-rose-500/30 bg-rose-500/[0.03] dark:border-rose-500/20 dark:bg-rose-950/20'
+                    ? 'border-rose-500/30 bg-rose-500/3 dark:border-rose-500/20 dark:bg-rose-950/20'
                     : round.eventType === 'late-joiner'
-                      ? 'border-emerald-500/30 bg-emerald-500/[0.03] dark:border-emerald-500/20 dark:bg-emerald-950/20'
-                      : 'border-indigo-500/30 bg-indigo-500/[0.03] dark:border-indigo-500/20 dark:bg-indigo-950/20'
+                      ? 'border-emerald-500/30 bg-emerald-500/3 dark:border-emerald-500/20 dark:bg-emerald-950/20'
+                      : 'border-indigo-500/30 bg-indigo-500/3 dark:border-indigo-500/20 dark:bg-indigo-950/20'
                   : 'border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900'
               }`}
             >
@@ -116,7 +116,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                       <>
                         <span className="flex shrink-0 items-center gap-1 rounded-xl border border-rose-500/30 bg-rose-500/15 px-2.5 py-1 text-xs font-black whitespace-nowrap text-rose-600 tabular-nums dark:text-rose-400">
                           <Swords className="h-3.5 w-3.5 shrink-0" />
-                          <span>{t.events?.seppuku || 'Seppuku T'}</span>
+                          <span>{t.events?.seppuku || 'Seppuku'}</span>
                         </span>
                         {round.notes && (
                           <span className="hidden truncate text-xs font-semibold text-neutral-500 sm:inline dark:text-neutral-400">
@@ -162,7 +162,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                       </span>
 
                       {activeRuleCard && (
-                        <span className="flex max-w-[160px] items-center gap-1 truncate rounded-xl border border-purple-500/30 bg-purple-500/15 px-2 py-1 text-xs font-bold text-purple-600 sm:max-w-[200px] sm:px-2.5 dark:text-purple-400">
+                        <span className="flex max-w-40 items-center gap-1 truncate rounded-xl border border-purple-500/30 bg-purple-500/15 px-2 py-1 text-xs font-bold text-purple-600 sm:max-w-50 sm:px-2.5 dark:text-purple-400">
                           <Sparkles className="h-3 w-3 shrink-0" />
                           <span className="truncate">
                             {activeRuleCard.name[language]}
@@ -195,12 +195,10 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                         onClick={() => onEditSeppuku(round.id!)}
                         className="rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-rose-500/10 hover:text-rose-500 dark:hover:bg-neutral-800"
                         title={
-                          t.events?.editSeppukuTooltip ||
-                          'Edit Seppuku T choices'
+                          t.events?.editSeppukuTooltip || 'Edit Seppuku choices'
                         }
                         aria-label={
-                          t.events?.editSeppukuTooltip ||
-                          'Edit Seppuku T choices'
+                          t.events?.editSeppukuTooltip || 'Edit Seppuku choices'
                         }
                       >
                         <Edit3 className="h-3.5 w-3.5 shrink-0" />

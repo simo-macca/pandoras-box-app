@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Zap, Bomb, Check, Globe } from 'lucide-react';
-import { Language, TimeBombModifier } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
+import { Language, TimeBombModifier } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 
 interface ScoringModifiersProps {
   isDoomsday: boolean;
@@ -107,7 +107,7 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
               : 'border-neutral-400 dark:border-neutral-600'
           }`}
         >
-          {isDoomsday && <Check className="h-3.5 w-3.5 shrink-0 stroke-[3]" />}
+          {isDoomsday && <Check className="h-3.5 w-3.5 shrink-0 stroke-3" />}
         </div>
       </button>
 

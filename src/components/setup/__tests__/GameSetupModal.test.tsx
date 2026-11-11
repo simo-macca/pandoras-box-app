@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { GameSetupModal } from '../GameSetupModal';
-import { Player, GameConfig } from '../../../types/game';
+import { Player, GameConfig } from '@/types/game';
 import toast from 'react-hot-toast';
 
 vi.mock('react-hot-toast', () => ({

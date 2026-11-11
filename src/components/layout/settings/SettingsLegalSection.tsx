@@ -1,7 +1,7 @@
 import React from 'react';
 import { Scale, Info, ExternalLink } from 'lucide-react';
-import { Language } from '../../../types/game';
-import { TRANSLATIONS } from '../../../data/translations';
+import { Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 
 interface SettingsLegalSectionProps {
   language: Language;

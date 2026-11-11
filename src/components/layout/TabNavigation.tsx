@@ -1,8 +1,8 @@
 import React from 'react';
 import { Trophy, Sparkles, BookOpen } from 'lucide-react';
-import { Language } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
-import { soundEffects } from '../../utils/sound';
+import { Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
+import { soundEffects } from '@/utils/sound';
 
 export type ActiveTab = 'scoreboard' | 'rulecards' | 'rules';
 
@@ -82,7 +82,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
       </nav>
 
       {/* Mobile Bottom Bar */}
-      <div className="pb-safe fixed right-0 bottom-0 left-0 z-40 border-t border-neutral-200 bg-white/95 px-2 pt-1 pb-2 shadow-[0_-4px_25px_rgba(0,0,0,0.15)] backdrop-blur-lg sm:pb-0 md:hidden dark:border-neutral-800 dark:bg-neutral-900/95 dark:shadow-[0_-4px_25px_rgba(0,0,0,0.5)]">
+      <div className="fixed right-0 bottom-0 left-0 z-40 border-t border-neutral-200 bg-white/95 px-2 pt-1 pb-2 shadow-[0_-4px_25px_rgba(0,0,0,0.15)] backdrop-blur-lg sm:pb-0 md:hidden dark:border-neutral-800 dark:bg-neutral-900/95 dark:shadow-[0_-4px_25px_rgba(0,0,0,0.5)]">
         <div className="mx-auto grid h-16 max-w-lg grid-cols-3 items-center gap-1">
           {navItems.map((item) => {
             const Icon = item.icon;

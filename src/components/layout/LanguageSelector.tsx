@@ -1,5 +1,5 @@
 import React from 'react';
-import { Language } from '../../types/game';
+import { Language } from '@/types/game';
 
 interface LanguageSelectorProps {
   currentLanguage: Language;

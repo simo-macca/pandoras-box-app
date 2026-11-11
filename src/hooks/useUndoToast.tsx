@@ -1,8 +1,8 @@
 import { useRef, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { RotateCcw } from 'lucide-react';
-import { GameState, Language } from '../types/game';
-import { TRANSLATIONS } from '../data/translations';
+import { GameState, Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 
 interface UseUndoToastOptions {
   language: Language;

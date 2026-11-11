@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { getLocalizedText, matchesSearchQuery } from '../i18n';
-import { LocalizedMap } from '../../types/rules';
+import { LocalizedMap } from '@/types/rules';
 
 describe('i18n utils', () => {
   describe('getLocalizedText', () => {

@@ -1,5 +1,5 @@
-import { Language } from '../types/game';
-import { LocalizedMap } from '../types/rules';
+import { Language } from '@/types/game';
+import { LocalizedMap } from '@/types/rules';
 
 export function getLocalizedText(
   map?: Partial<LocalizedMap> | null,

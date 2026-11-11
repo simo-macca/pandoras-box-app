@@ -1,8 +1,8 @@
 import React from 'react';
 import { Sparkles, Lightbulb } from 'lucide-react';
-import { CardItem } from '../../types/rules';
-import { Language } from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
+import { CardItem } from '@/types/rules';
+import { Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 
 interface SpecialCardsSectionProps {
   cards: CardItem[];

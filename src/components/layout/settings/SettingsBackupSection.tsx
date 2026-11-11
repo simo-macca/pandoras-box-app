@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { Download, Upload, CheckCircle2, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { Language } from '../../../types/game';
-import { TRANSLATIONS } from '../../../data/translations';
-import { soundEffects } from '../../../utils/sound';
+import { Language } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
+import { soundEffects } from '@/utils/sound';
 
 interface SettingsBackupSectionProps {
   language: Language;

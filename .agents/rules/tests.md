@@ -10,6 +10,7 @@ globs:
 
 - **Runner**: Import test primitives (`describe`, `it`, `expect`, `vi`) from `'vitest'`.
 - **Location**: Co-locate tests inside `__tests__/` subdirectories matching `*.test.ts` or `*.test.tsx`.
+- **Imports**: Import the module under test from the parent folder with `../` (e.g. `import { useGameState } from '../useGameState'`); everything else via the `@/` alias (e.g. `@/types/game`, `@/utils/scoring`). Module paths in `vi.mock()` must use the same form as the import.
 - **Component Tests**: Use `@testing-library/react` and `userEvent.setup()` for user interactions.
 - **Queries**: Prioritize accessible queries (`screen.getByRole`, `screen.getByText`) with `@testing-library/jest-dom`.
 - **Mocks**: Mock props and callback triggers with `vi.fn()`; avoid mocking internal React internals.

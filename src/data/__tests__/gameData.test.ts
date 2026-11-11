@@ -9,8 +9,8 @@ import {
 import { EVENTS_DATA } from '../eventsData';
 import { POWER_CARDS_DATA } from '../powerCardsData';
 import { RULE_CARDS_DATA } from '../ruleCardsData';
-import { CARD_POINTS } from '../../utils/scoring';
-import { Language } from '../../types/game';
+import { CARD_POINTS } from '@/utils/scoring';
+import { Language } from '@/types/game';
 
 const LANGUAGES: Language[] = ['en', 'de', 'it', 'fr'];
 
@@ -83,7 +83,7 @@ describe('Game Data, Taxonomy & Rules Integrity', () => {
         'all-draw-one',
         'anti-counter',
         'open-hands',
-        'recycling',
+        'special-charge',
         'special-seal',
       ];
       // 2ND timing power cards (executed after the hand card effect)
@@ -93,7 +93,7 @@ describe('Game Data, Taxonomy & Rules Integrity', () => {
         'looping',
         'number-wish',
         'random-chance',
-        'special-charge',
+        'recycling',
         'troublecharger',
       ];
 

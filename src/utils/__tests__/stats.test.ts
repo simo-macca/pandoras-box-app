@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { calculatePlayerStats, DANGER_THRESHOLD_RATIO } from '../stats';
-import { Player, RoundEntry, HandScore } from '../../types/game';
+import { Player, RoundEntry, HandScore } from '@/types/game';
 import { DEFAULT_HAND_SCORE } from '../scoring';
 
 describe('stats utils', () => {

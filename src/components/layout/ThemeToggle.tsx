@@ -1,18 +1,22 @@
 import React from 'react';
 import { Sun, Moon, Laptop } from 'lucide-react';
-import { ThemeMode } from '../../types/game';
+import { Language, ThemeMode } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 
 interface ThemeToggleProps {
   theme: ThemeMode;
   onThemeChange: (theme: ThemeMode) => void;
   className?: string;
+  language?: Language;
 }
 
 export const ThemeToggle: React.FC<ThemeToggleProps> = ({
   theme,
   onThemeChange,
   className = '',
+  language = 'en',
 }) => {
+  const t = TRANSLATIONS[language].common;
   return (
     <div
       className={`inline-flex items-center rounded-xl border border-neutral-300 bg-neutral-200/80 p-1 backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-800/80 ${className}`}
@@ -20,7 +24,9 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
       <button
         type="button"
         onClick={() => onThemeChange('light')}
-        title="Light Mode"
+        title={t.themeLight}
+        aria-label={t.themeLight}
+        aria-pressed={theme === 'light'}
         className={`rounded-lg p-1.5 text-xs font-medium transition-all ${
           theme === 'light'
             ? 'bg-white text-amber-500 shadow-sm'
@@ -33,7 +39,9 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
       <button
         type="button"
         onClick={() => onThemeChange('dark')}
-        title="Dark Mode"
+        title={t.themeDark}
+        aria-label={t.themeDark}
+        aria-pressed={theme === 'dark'}
         className={`rounded-lg p-1.5 text-xs font-medium transition-all ${
           theme === 'dark'
             ? 'bg-neutral-900 text-purple-400 shadow-sm'
@@ -46,7 +54,9 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
       <button
         type="button"
         onClick={() => onThemeChange('system')}
-        title="System Preference"
+        title={t.themeSystem}
+        aria-label={t.themeSystem}
+        aria-pressed={theme === 'system'}
         className={`rounded-lg p-1.5 text-xs font-medium transition-all ${
           theme === 'system'
             ? 'bg-white text-blue-500 shadow-sm dark:bg-neutral-700 dark:text-blue-300'

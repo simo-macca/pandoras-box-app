@@ -11,15 +11,15 @@ import {
   ExternalLink,
   ChevronDown,
 } from 'lucide-react';
-import { CARDS_DATA } from '../../data/cardsData';
-import { EVENTS_DATA } from '../../data/eventsData';
-import { POWER_CARDS_DATA } from '../../data/powerCardsData';
-import { RULE_CARDS_DATA } from '../../data/ruleCardsData';
-import { Language } from '../../types/game';
-import { OFFICIAL_PDF_LINKS } from '../../types/rules';
-import { TRANSLATIONS } from '../../data/translations';
-import { soundEffects } from '../../utils/sound';
-import { matchesSearchQuery } from '../../utils/i18n';
+import { CARDS_DATA } from '@/data/cardsData';
+import { EVENTS_DATA } from '@/data/eventsData';
+import { POWER_CARDS_DATA } from '@/data/powerCardsData';
+import { RULE_CARDS_DATA } from '@/data/ruleCardsData';
+import { Language } from '@/types/game';
+import { OFFICIAL_PDF_LINKS } from '@/types/rules';
+import { TRANSLATIONS } from '@/data/translations';
+import { soundEffects } from '@/utils/sound';
+import { matchesSearchQuery } from '@/utils/i18n';
 import { RulesGuide } from './RulesGuide';
 import { SpecialCardsSection } from './SpecialCardsSection';
 import { EventCardsSection } from './EventCardsSection';
@@ -203,7 +203,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
           href={OFFICIAL_PDF_LINKS[language] || OFFICIAL_PDF_LINKS.en}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-500/15 to-indigo-500/15 px-4 py-2 text-xs font-bold text-purple-700 shadow-sm transition-all hover:border-purple-500/50 hover:from-purple-500/25 hover:to-indigo-500/25 hover:shadow-md sm:text-sm dark:border-purple-500/30 dark:text-purple-300"
+          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-purple-500/30 bg-linear-to-r from-purple-500/15 to-indigo-500/15 px-4 py-2 text-xs font-bold text-purple-700 shadow-sm transition-all hover:border-purple-500/50 hover:from-purple-500/25 hover:to-indigo-500/25 hover:shadow-md sm:text-sm dark:border-purple-500/30 dark:text-purple-300"
           title={`View Official Rules (${language.toUpperCase()})`}
         >
           <BookOpen className="h-4 w-4 shrink-0 text-purple-600 dark:text-purple-400" />
@@ -245,7 +245,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
-                  aria-label="Clear search"
+                  aria-label={t.common.clearSearch}
                   className="absolute right-3 rounded-md p-1 text-neutral-400 transition-colors hover:text-neutral-700 dark:hover:text-white"
                 >
                   <X className="h-4 w-4" />

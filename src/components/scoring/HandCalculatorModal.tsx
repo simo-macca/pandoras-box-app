@@ -8,21 +8,21 @@ import {
   Calculator,
   Hash,
 } from 'lucide-react';
+import { Player, HandScore, Language, TimeBombModifier } from '@/types/game';
+import { TRANSLATIONS } from '@/data/translations';
 import {
-  Player,
-  HandScore,
-  Language,
-  TimeBombModifier,
-} from '../../types/game';
-import { TRANSLATIONS } from '../../data/translations';
-import { calculateHandPoints, DEFAULT_HAND_SCORE } from '../../utils/scoring';
-import { PlayerStats } from '../../utils/stats';
-import { getPlayerColorTheme } from '../../utils/colors';
-import { soundEffects } from '../../utils/sound';
+  calculateHandPoints,
+  DEFAULT_HAND_SCORE,
+  DOUBLE_SPECIAL_RULE_CARD_ID,
+} from '@/utils/scoring';
+import { PlayerStats } from '@/utils/stats';
+import { getPlayerColorTheme } from '@/utils/colors';
+import { soundEffects } from '@/utils/sound';
 import { NumberGrid } from './NumberGrid';
 import { SpecialCounters } from './SpecialCounters';
 import { ScoringPlayerPicker } from './ScoringPlayerPicker';
 import { ScoringModifiers } from './ScoringModifiers';
+import { useModalA11y } from '@/hooks/useModalA11y';
 
 interface HandCalculatorModalProps {
   isOpen: boolean;
@@ -34,6 +34,8 @@ interface HandCalculatorModalProps {
   roundNumber: number;
   initialScores?: Record<string, HandScore>;
   isEditing?: boolean;
+  /** Rule cards active for the round being scored. */
+  activeRuleCardIds?: string[];
 }
 
 export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
@@ -46,8 +48,12 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
   roundNumber,
   initialScores,
   isEditing = false,
+  activeRuleCardIds,
 }) => {
   const t = TRANSLATIONS[language];
+  const isDoubleSpecial = Boolean(
+    activeRuleCardIds?.includes(DOUBLE_SPECIAL_RULE_CARD_ID)
+  );
   const [selectedPlayerId, setSelectedPlayerId] = useState<string>(
     players[0]?.id || ''
   );
@@ -66,19 +72,19 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
 
     const initial: Record<string, HandScore> = {};
     players.forEach((p) => {
-      if (initialScores && initialScores[p.id]) {
-        initial[p.id] = initialScores[p.id];
-      } else {
-        const raw = { ...DEFAULT_HAND_SCORE };
-        initial[p.id] = {
-          ...raw,
-          totalPoints: calculateHandPoints(raw),
-        };
-      }
+      const base =
+        initialScores && initialScores[p.id]
+          ? initialScores[p.id]
+          : { ...DEFAULT_HAND_SCORE };
+      const raw = { ...base, doubleSpecials: isDoubleSpecial };
+      initial[p.id] = {
+        ...raw,
+        totalPoints: calculateHandPoints(raw),
+      };
     });
 
     setScores(initial);
-  }, [isOpen, players, initialScores]);
+  }, [isOpen, players, initialScores, isDoubleSpecial]);
 
   const tableTimeBombMode: 'none' | 'defused' | 'exploded' = useMemo(() => {
     const list = Object.values(scores);
@@ -97,6 +103,8 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
     }
     return 'none';
   }, [scores]);
+
+  useModalA11y(isOpen, onClose);
 
   if (!isOpen || players.length === 0) return null;
 
@@ -248,6 +256,7 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
       const raw = {
         ...DEFAULT_HAND_SCORE,
         isDoomsday: isTableDoomsday,
+        doubleSpecials: isDoubleSpecial,
       };
       return {
         ...prev,
@@ -270,7 +279,11 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
   const activeColorTheme = getPlayerColorTheme(activePlayer.color);
 
   return (
-    <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-2 backdrop-blur-sm sm:p-4">
+    <div
+      className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-2 backdrop-blur-sm sm:p-4"
+      role="dialog"
+      aria-modal="true"
+    >
       <div className="relative flex max-h-[90dvh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl sm:rounded-3xl dark:border-neutral-800 dark:bg-neutral-900">
         {/* Modal Header */}
         <div className="flex shrink-0 items-center justify-between gap-2 border-b border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-900/60">
@@ -289,7 +302,7 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t.common.close}
             className="shrink-0 rounded-xl p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-white"
           >
             <X className="h-5 w-5 shrink-0" />
@@ -348,6 +361,15 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
             </div>
           </div>
 
+          {isDoubleSpecial && (
+            <div
+              role="status"
+              className="rounded-2xl border border-purple-500/30 bg-purple-500/10 px-3.5 py-2.5 text-xs font-semibold text-purple-700 dark:text-purple-300"
+            >
+              {t.common.doubleSpecialActive}
+            </div>
+          )}
+
           {/* Winner Toggle */}
           <button
             type="button"
@@ -387,7 +409,7 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
               }`}
             >
               {currentScore.isWinner && (
-                <Check className="h-4 w-4 shrink-0 stroke-[3]" />
+                <Check className="h-4 w-4 shrink-0 stroke-3" />
               )}
             </div>
           </button>
@@ -463,9 +485,9 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
           <button
             type="button"
             onClick={handleSubmit}
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-rose-500 to-amber-600 px-4 py-2.5 text-xs font-extrabold text-white shadow-md transition-all hover:from-amber-400 hover:to-amber-500 active:scale-95 sm:px-6 sm:text-sm"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-linear-to-r from-amber-500 via-rose-500 to-amber-600 px-4 py-2.5 text-xs font-extrabold text-white shadow-md transition-all hover:from-amber-400 hover:to-amber-500 active:scale-95 sm:px-6 sm:text-sm"
           >
-            <Check className="h-4 w-4 shrink-0 stroke-[3]" />
+            <Check className="h-4 w-4 shrink-0 stroke-3" />
             <span>
               {isEditing ? t.scoring.saveChanges : t.scoring.submitRound}
             </span>

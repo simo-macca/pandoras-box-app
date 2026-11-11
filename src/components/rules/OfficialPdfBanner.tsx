@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { FileText, Layers, ExternalLink, Download } from 'lucide-react';
-import { Language } from '../../types/game';
-import {
-  OFFICIAL_PDF_LINKS,
-  OVERVIEW_CARDS_PDF_LINKS,
-} from '../../types/rules';
-import { TRANSLATIONS } from '../../data/translations';
-import { soundEffects } from '../../utils/sound';
+import { Language } from '@/types/game';
+import { OFFICIAL_PDF_LINKS, OVERVIEW_CARDS_PDF_LINKS } from '@/types/rules';
+import { TRANSLATIONS } from '@/data/translations';
+import { soundEffects } from '@/utils/sound';
 
 interface OfficialPdfBannerProps {
   language: Language;
@@ -42,7 +39,7 @@ export const OfficialPdfBanner: React.FC<OfficialPdfBannerProps> = ({
   ];
 
   return (
-    <div className="space-y-4 rounded-3xl border border-purple-200 bg-gradient-to-br from-white via-purple-50/50 to-indigo-50/60 p-6 text-neutral-900 shadow-sm dark:border-purple-500/30 dark:bg-gradient-to-br dark:from-neutral-900 dark:via-neutral-900 dark:to-purple-950/60 dark:text-white dark:shadow-xl">
+    <div className="space-y-4 rounded-3xl border border-purple-200 bg-linear-to-br from-white via-purple-50/50 to-indigo-50/60 p-6 text-neutral-900 shadow-sm dark:border-purple-500/30 dark:bg-gradient-to-br dark:from-neutral-900 dark:via-neutral-900 dark:to-purple-950/60 dark:text-white dark:shadow-xl">
       {/* Document Type Switcher */}
       <div className="flex w-fit items-center gap-1.5 rounded-2xl border border-neutral-200 bg-neutral-100/90 p-1 dark:border-neutral-700/60 dark:bg-neutral-800/80">
         <button
@@ -98,7 +95,7 @@ export const OfficialPdfBanner: React.FC<OfficialPdfBannerProps> = ({
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => soundEffects.playClick()}
-            className="flex transform items-center gap-2 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-2.5 text-xs font-black text-white shadow-lg shadow-purple-500/25 transition-all hover:from-purple-500 hover:to-indigo-500 active:scale-95 sm:text-sm"
+            className="flex transform items-center gap-2 rounded-2xl bg-linear-to-r from-purple-600 to-indigo-600 px-4 py-2.5 text-xs font-black text-white shadow-lg shadow-purple-500/25 transition-all hover:from-purple-500 hover:to-indigo-500 active:scale-95 sm:text-sm"
           >
             <ExternalLink className="h-4 w-4 stroke-[2.5]" />
             <span>{t.rules.openPdf}</span>

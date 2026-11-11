@@ -1,6 +1,6 @@
 dist
 node_modules
 package-lock.json
-rules/*.pdf
+public/rules/*.pdf
 *.buildinfo
-tsconfig.tsbuildinfo
+dev-dist

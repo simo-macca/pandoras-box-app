@@ -2,9 +2,8 @@ import { Language } from './game';
 export {
   OFFICIAL_PDF_LINKS,
   OVERVIEW_CARDS_PDF_LINKS,
-} from '../data/rulesConstants';
+} from '@/data/rulesConstants';
 
-export type CardTiming = 'play' | 'passing' | 'landing' | 'reaction' | 'white';
 export type EventSeverity = 'positive' | 'negative' | 'chaos' | 'neutral';
 export type EventScope = 'global' | 'targeted';
 
@@ -48,33 +47,4 @@ export interface RuleCardItem {
   description: LocalizedMap;
   flavor?: LocalizedMap;
   icon?: string;
-}
-
-// Backward-compatible interfaces
-export interface GameCard {
-  id: string;
-  names: Record<Language, string>;
-  timing: CardTiming;
-  descriptions: Record<Language, string>;
-  timingDetails: Record<Language, string>;
-  badgeColor?: string;
-  iconName?: string;
-  examples?: Record<Language, string>;
-}
-
-export interface BoardEvent {
-  number: number;
-  names: Record<Language, string>;
-  descriptions: Record<Language, string>;
-  clarifications?: Record<Language, string>;
-  severity: EventSeverity;
-  iconName?: string;
-}
-
-export interface FAQItem {
-  id: number;
-  titles: Record<Language, string>;
-  scenarios: Record<Language, string>;
-  rulings: Record<Language, string>;
-  proTips?: Record<Language, string>;
 }
