@@ -224,7 +224,7 @@ export const en: TranslationStrings = {
     confirmResetDataMessage:
       'Are you sure you want to reset all data (scores, players, cards)? This cannot be undone.',
     resetDataSuccess: 'All game data has been reset to defaults.',
-    version: "Frantic Pandora's Box Companion v2.0",
+    version: "Frantic Pandora's Box Companion v{version}",
     copyright:
       "Unofficial Companion — Based on Frantic & Pandora's Box by Rulefactory",
     aboutLegalTitle: 'About & Legal',

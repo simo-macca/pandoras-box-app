@@ -2,6 +2,7 @@ import React from 'react';
 import { Scale, Info, ExternalLink } from 'lucide-react';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
+import { APP_VERSION } from '@/data/appInfo';
 
 interface SettingsLegalSectionProps {
   language: Language;
@@ -59,7 +60,7 @@ export const SettingsLegalSection: React.FC<SettingsLegalSectionProps> = ({
         <div className="flex items-center gap-2">
           <Info className="h-4 w-4 shrink-0 text-blue-500" />
           <h5 className="text-xs font-bold text-neutral-900 dark:text-white">
-            {t.settings.version}
+            {t.settings.version.replace('{version}', APP_VERSION)}
           </h5>
         </div>
         <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">

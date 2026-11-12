@@ -228,7 +228,7 @@ export const fr: TranslationStrings = {
       'Voulez-vous vraiment réinitialiser toutes les données (points, noms des joueurs, cartes) ? Cette action est irréversible.',
     resetDataSuccess:
       'Toutes les données de jeu ont été réinitialisées par défaut.',
-    version: "Compagnon Frantic Pandora's Box v2.0",
+    version: "Compagnon Frantic Pandora's Box v{version}",
     copyright:
       "Compagnon non-officiel — Basé sur Frantic & Pandora's Box par Rulefactory",
     aboutLegalTitle: 'À propos & Mentions Légales',

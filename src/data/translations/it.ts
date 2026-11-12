@@ -227,7 +227,7 @@ export const it: TranslationStrings = {
       'Sei sicuro di voler ripristinare tutti i dati (punti, nomi giocatori, carte)? Questa operazione non può essere annullata.',
     resetDataSuccess:
       'Tutti i dati di gioco sono stati ripristinati allo stato iniziale.',
-    version: "Frantic Pandora's Box Companion v2.0",
+    version: "Frantic Pandora's Box Companion v{version}",
     copyright:
       "Companion non ufficiale — Basato su Frantic & Pandora's Box di Rulefactory",
     aboutLegalTitle: 'Informazioni & Note Legali',

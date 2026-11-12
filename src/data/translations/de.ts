@@ -229,7 +229,7 @@ export const de: TranslationStrings = {
       'Möchtest du wirklich alle Daten (Punkte, Spielernamen, Karten) zurücksetzen? Dies kann nicht rückgängig gemacht werden.',
     resetDataSuccess:
       'Alle Spieldaten wurden auf die Standardwerte zurückgesetzt.',
-    version: "Frantic Pandora's Box Begleiter v2.0",
+    version: "Frantic Pandora's Box Begleiter v{version}",
     copyright:
       "Inoffizielle Begleit-App — Basierend auf Frantic & Pandora's Box von Rulefactory",
     aboutLegalTitle: 'Über & Rechtliches',

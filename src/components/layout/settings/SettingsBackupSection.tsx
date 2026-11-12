@@ -3,6 +3,7 @@ import { Download, Upload, CheckCircle2, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
+import { APP_VERSION } from '@/data/appInfo';
 import { soundEffects } from '@/utils/sound';
 
 interface SettingsBackupSectionProps {
@@ -168,7 +169,7 @@ export const SettingsBackupSection: React.FC<SettingsBackupSectionProps> = ({
       {/* Version and Copyright notes */}
       <div className="space-y-0.5 pt-1 text-center text-[11px] text-neutral-400">
         <p className="font-semibold text-neutral-500 dark:text-neutral-400">
-          {t.settings.version}
+          {t.settings.version.replace('{version}', APP_VERSION)}
         </p>
         <p>{t.settings.copyright}</p>
       </div>
