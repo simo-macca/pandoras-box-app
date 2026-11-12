@@ -35,7 +35,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      soundEffects.playDiceFinish(true);
+      soundEffects.playChime(true);
 
       const count = 200;
       const defaults = {

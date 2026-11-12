@@ -16,7 +16,7 @@ import { EVENTS_DATA } from '@/data/eventsData';
 import { POWER_CARDS_DATA } from '@/data/powerCardsData';
 import { RULE_CARDS_DATA } from '@/data/ruleCardsData';
 import { Language } from '@/types/game';
-import { OFFICIAL_PDF_LINKS } from '@/types/rules';
+import { OFFICIAL_PDF_LINKS } from '@/data/rulesConstants';
 import { TRANSLATIONS } from '@/data/translations';
 import { soundEffects } from '@/utils/sound';
 import { matchesSearchQuery } from '@/utils/i18n';

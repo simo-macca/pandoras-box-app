@@ -1,4 +1,4 @@
-import { Player, RoundEntry } from '@/types/game';
+import { GameConfig, GameState, Player, RoundEntry } from '@/types/game';
 
 export interface PlayerStats extends Player {
   totalScore: number;
@@ -79,4 +79,60 @@ export function calculatePlayerStats(
   });
 
   return stats;
+}
+
+/** Number of played rounds (event entries such as Seppuku are not rounds). */
+export function countPlayedRounds(rounds: RoundEntry[]): number {
+  return rounds.filter((r) => !r.isEvent).length;
+}
+
+/** House rule: an optional maximum number of rounds. */
+export function isRoundLimitReached(
+  rounds: RoundEntry[],
+  roundLimit: GameConfig['roundLimit']
+): boolean {
+  return Boolean(
+    roundLimit && roundLimit > 0 && countPlayedRounds(rounds) >= roundLimit
+  );
+}
+
+export type GameOverUpdate = Pick<
+  GameState,
+  'isGameOver' | 'isContinued' | 'winnerId'
+>;
+
+/**
+ * Works out whether the game-over flags must change after the history or the
+ * configuration changed. Returns `null` when the state is already consistent.
+ *
+ * - The game is over when someone exceeds the point limit (official rule) or
+ *   the optional round limit is reached (house rule).
+ * - A match the players chose to continue stays open until it is concluded
+ *   manually.
+ * - The winner is always the player with the lowest score.
+ */
+export function getGameOverUpdate(
+  state: GameState,
+  stats: PlayerStats[]
+): Partial<GameOverUpdate> | null {
+  const isOver =
+    state.rounds.length > 0 &&
+    (stats.some((p) =>
+      isOverScoreLimit(p.totalScore, state.config.targetScore)
+    ) ||
+      isRoundLimitReached(state.rounds, state.config.roundLimit));
+  const leaderId = stats[0]?.id ?? null;
+
+  if (!isOver) {
+    return state.isGameOver || state.isContinued
+      ? { isGameOver: false, isContinued: false, winnerId: null }
+      : null;
+  }
+  if (!state.isGameOver && !state.isContinued) {
+    return { isGameOver: true, winnerId: leaderId };
+  }
+  if (state.isGameOver && state.winnerId !== leaderId) {
+    return { winnerId: leaderId };
+  }
+  return null;
 }

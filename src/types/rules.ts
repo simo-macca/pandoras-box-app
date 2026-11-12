@@ -1,8 +1,4 @@
-import { Language } from './game';
-export {
-  OFFICIAL_PDF_LINKS,
-  OVERVIEW_CARDS_PDF_LINKS,
-} from '@/data/rulesConstants';
+import { Language } from '@/types/game';
 
 export type EventSeverity = 'positive' | 'negative' | 'chaos' | 'neutral';
 export type EventScope = 'global' | 'targeted';

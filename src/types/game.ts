@@ -85,16 +85,6 @@ export interface RoundEntry {
     | Record<string, any>;
 }
 
-export type RoundLog = RoundEntry;
-
-export type RoundEndReason = 'destination' | 'deck_empty' | 'manual';
-
-export interface PlayerRoundScore {
-  pawnPosition: number;
-  hasFuckYouPenalty: boolean;
-  roundTotal: number;
-}
-
 export interface GameConfig {
   targetScore: number;
   presetName: 'short' | 'medium' | 'long' | 'custom';
@@ -110,14 +100,4 @@ export interface GameState {
   isGameOver: boolean;
   winnerId: string | null;
   isContinued?: boolean;
-}
-
-export interface PawnColorTheme {
-  name: string;
-  badgeBg: string;
-  badgeText: string;
-  borderColor: string;
-  accentBg: string;
-  glowClass: string;
-  hex: string;
 }

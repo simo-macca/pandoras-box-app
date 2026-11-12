@@ -497,6 +497,3 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
     </div>
   );
 };
-
-// Aliases for compatibility
-export const RoundScoringModal = HandCalculatorModal;

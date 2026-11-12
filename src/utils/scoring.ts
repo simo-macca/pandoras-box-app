@@ -1,4 +1,4 @@
-import { HandScore, TimeBombModifier } from '@/types/game';
+import { HandScore, SeppukuOutcome, TimeBombModifier } from '@/types/game';
 
 export const CARD_POINTS = {
   SPECIAL: 7,
@@ -23,6 +23,13 @@ export const SCORE_PRESETS = {
     long: 154,
   },
 } as const;
+
+/** Seppuku event (rulebook p. 16), applied to the total score. */
+export const SEPPUKU_POINTS: Record<SeppukuOutcome, number> = {
+  risk_number: -21,
+  risk_special: 42,
+  no_risk: 21,
+};
 
 /** Id of the Pandora's Box rule card that doubles special-card points. */
 export const DOUBLE_SPECIAL_RULE_CARD_ID = 'double-special';

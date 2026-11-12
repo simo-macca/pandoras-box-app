@@ -35,7 +35,7 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
   const handleDrawRandom = () => {
     if (isRolling) return;
     setIsRolling(true);
-    soundEffects.playDiceRoll();
+    soundEffects.playShuffle();
 
     let rollCount = 0;
     const interval = setInterval(() => {
@@ -46,7 +46,7 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
       if (rollCount >= 10) {
         clearInterval(interval);
         setIsRolling(false);
-        soundEffects.playDiceFinish(false);
+        soundEffects.playChime(false);
       }
     }, 80);
   };

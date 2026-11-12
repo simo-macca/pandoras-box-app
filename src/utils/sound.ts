@@ -1,6 +1,6 @@
 /**
  * Synthetic sound generator using Web Audio API
- * Generates dice rattling, rolling clicks, and fanfare victory sounds without external asset dependencies.
+ * Generates card-shuffle clicks, confirmation chimes and a victory fanfare without external asset dependencies.
  */
 
 class SoundEffectsManager {
@@ -25,7 +25,7 @@ class SoundEffectsManager {
     return this.audioCtx;
   }
 
-  public playDiceRoll() {
+  public playShuffle() {
     if (!this.enabled) return;
     const ctx = this.getAudioContext();
     if (!ctx) return;
@@ -55,7 +55,7 @@ class SoundEffectsManager {
     this.triggerHaptic([30, 25, 20, 20, 15, 10]);
   }
 
-  public playDiceFinish(isEpic: boolean = false) {
+  public playChime(isEpic: boolean = false) {
     if (!this.enabled) return;
     const ctx = this.getAudioContext();
     if (!ctx) return;
@@ -98,7 +98,7 @@ class SoundEffectsManager {
   }
 
   public playWinner() {
-    this.playDiceFinish(true);
+    this.playChime(true);
   }
 
   public playClick() {

@@ -1,36 +1,35 @@
 import { useState, useMemo, lazy, Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { useGameState } from './hooks/useGameState';
-import { useTheme } from './hooks/useTheme';
-import { useUndoToast } from './hooks/useUndoToast';
-import { useAppModals } from './hooks/useAppModals';
-import { TRANSLATIONS } from './data/translations';
-import { Navbar } from './components/layout/Navbar';
-import { TabNavigation, ActiveTab } from './components/layout/TabNavigation';
-import { Footer } from './components/layout/Footer';
-import { Leaderboard } from './components/scoreboard/Leaderboard';
-import { GameOverModal } from './components/scoreboard/GameOverModal';
-import { HandCalculatorModal } from './components/scoring/HandCalculatorModal';
-import { GameSetupModal } from './components/setup/GameSetupModal';
-import { SettingsModal } from './components/layout/SettingsModal';
-import { SeppukuModal } from './components/events/SeppukuModal';
+import { useGameState } from '@/hooks/useGameState';
+import { useTheme } from '@/hooks/useTheme';
+import { useUndoToast } from '@/hooks/useUndoToast';
+import { useAppModals } from '@/hooks/useAppModals';
+import { TRANSLATIONS } from '@/data/translations';
+import { Navbar } from '@/components/layout/Navbar';
+import { TabNavigation, ActiveTab } from '@/components/layout/TabNavigation';
+import { Footer } from '@/components/layout/Footer';
+import { Leaderboard } from '@/components/scoreboard/Leaderboard';
+import { GameOverModal } from '@/components/scoreboard/GameOverModal';
+import { HandCalculatorModal } from '@/components/scoring/HandCalculatorModal';
+import { GameSetupModal } from '@/components/setup/GameSetupModal';
+import { SettingsModal } from '@/components/layout/SettingsModal';
+import { SeppukuModal } from '@/components/events/SeppukuModal';
 import {
   HandScore,
   GameState,
   SeppukuOutcome,
   SeppukuEventMetadata,
-} from './types/game';
-import { calculatePlayerStats } from './utils/stats';
+} from '@/types/game';
 
 // Secondary tabs are loaded on demand to keep the initial bundle small.
 // The service worker precaches these chunks, so they still work offline.
 const RuleCardDrawer = lazy(() =>
-  import('./components/rulecards/RuleCardDrawer').then((m) => ({
+  import('@/components/rulecards/RuleCardDrawer').then((m) => ({
     default: m.RuleCardDrawer,
   }))
 );
 const CardDictionary = lazy(() =>
-  import('./components/rules/CardDictionary').then((m) => ({
+  import('@/components/rules/CardDictionary').then((m) => ({
     default: m.CardDictionary,
   }))
 );
@@ -46,6 +45,7 @@ export function App() {
   const {
     gameState,
     playerStats,
+    winner,
     language,
     setLanguage,
     addRound,
@@ -101,8 +101,6 @@ export function App() {
     },
   });
 
-  const winner = playerStats[0] || null;
-
   const handleOpenScoreModal = () => {
     openScoreModal(gameState.isGameOver, !!gameState.isContinued);
   };
@@ -146,30 +144,14 @@ export function App() {
 
   const handleApplyIdentityTheft = () => {
     const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
-    const currentStats = calculatePlayerStats(
-      gameState.players,
-      gameState.rounds,
-      gameState.config.targetScore
-    );
-    const scores = currentStats.map((s) => s.totalScore);
-    const minScore = Math.min(...scores);
-    const maxScore = Math.max(...scores);
-    const lowP = gameState.players.find(
-      (p) => currentStats.find((s) => s.id === p.id)?.totalScore === minScore
-    );
-    const highP = gameState.players.find(
-      (p) => currentStats.find((s) => s.id === p.id)?.totalScore === maxScore
-    );
-
-    const success = applyIdentityTheft();
-    if (success) {
-      const msg =
-        lowP && highP
-          ? TRANSLATIONS[language].events.identityTheftSuccess
-              .replace('{lowPlayer}', lowP.name)
-              .replace('{highPlayer}', highP.name)
-          : TRANSLATIONS[language].events.identityTheft;
-      showUndoToast(msg, previousSnapshot);
+    const pair = applyIdentityTheft();
+    if (pair) {
+      showUndoToast(
+        TRANSLATIONS[language].events.identityTheftSuccess
+          .replace('{lowPlayer}', pair.low.name)
+          .replace('{highPlayer}', pair.high.name),
+        previousSnapshot
+      );
     }
   };
 

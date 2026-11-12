@@ -343,12 +343,17 @@ describe('useGameState hook', () => {
 
       expect(result.current.canApplyIdentityTheft).toBe(true);
 
-      let success = false;
+      let pair: ReturnType<typeof result.current.applyIdentityTheft> = null;
       act(() => {
-        success = result.current.applyIdentityTheft();
+        pair = result.current.applyIdentityTheft();
       });
 
-      expect(success).toBe(true);
+      expect(pair).toMatchObject({
+        low: { id: p1.id },
+        high: { id: p4.id },
+        lowScore: 10,
+        highScore: 80,
+      });
       // P1 (lowest, 10) and P4 (highest, 80) swapped points
       const statsP1 = result.current.playerStats.find((p) => p.id === p1.id)!;
       const statsP2 = result.current.playerStats.find((p) => p.id === p2.id)!;
@@ -405,18 +410,18 @@ describe('useGameState hook', () => {
       expect(statsP4.totalScore).toBe(60);
     });
 
-    it('does nothing and returns false when all player scores are identical', () => {
+    it('does nothing and returns null when all player scores are identical', () => {
       const { result } = renderHook(() => useGameState());
 
       // At initial state, all scores are 0
       expect(result.current.canApplyIdentityTheft).toBe(false);
 
-      let success = true;
+      let pair: ReturnType<typeof result.current.applyIdentityTheft> = null;
       act(() => {
-        success = result.current.applyIdentityTheft();
+        pair = result.current.applyIdentityTheft();
       });
 
-      expect(success).toBe(false);
+      expect(pair).toBeNull();
       expect(result.current.gameState.rounds).toHaveLength(0);
     });
 

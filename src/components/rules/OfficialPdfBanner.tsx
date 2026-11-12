@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { FileText, Layers, ExternalLink, Download } from 'lucide-react';
 import { Language } from '@/types/game';
-import { OFFICIAL_PDF_LINKS, OVERVIEW_CARDS_PDF_LINKS } from '@/types/rules';
+import {
+  OFFICIAL_PDF_LINKS,
+  OVERVIEW_CARDS_PDF_LINKS,
+} from '@/data/rulesConstants';
 import { TRANSLATIONS } from '@/data/translations';
 import { soundEffects } from '@/utils/sound';
 
