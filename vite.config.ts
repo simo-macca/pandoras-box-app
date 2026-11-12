@@ -24,6 +24,44 @@ function siteUrlPlugin(siteUrl: string): Plugin {
   };
 }
 
+/**
+ * Emits robots.txt (always) and sitemap.xml (when the public URL is known).
+ * Both need the absolute deployment URL, which only exists at build time.
+ */
+function crawlerFilesPlugin(siteUrl: string): Plugin {
+  const normalized = siteUrl.replace(/\/+$/, '');
+  return {
+    name: 'crawler-files',
+    apply: 'build',
+    generateBundle() {
+      const robots = ['User-agent: *', 'Allow: /'];
+      if (normalized) {
+        robots.push('', `Sitemap: ${normalized}/sitemap.xml`);
+        this.emitFile({
+          type: 'asset',
+          fileName: 'sitemap.xml',
+          source: [
+            '<?xml version="1.0" encoding="UTF-8"?>',
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+            '  <url>',
+            `    <loc>${normalized}/</loc>`,
+            `    <lastmod>${new Date().toISOString().slice(0, 10)}</lastmod>`,
+            '    <changefreq>monthly</changefreq>',
+            '  </url>',
+            '</urlset>',
+            '',
+          ].join('\n'),
+        });
+      }
+      this.emitFile({
+        type: 'asset',
+        fileName: 'robots.txt',
+        source: `${robots.join('\n')}\n`,
+      });
+    },
+  };
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   // Use BASE_PATH=/pandoras-box-app/ when deploying to a GitHub Pages
@@ -38,6 +76,7 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
       react(),
       siteUrlPlugin(siteUrl),
+      crawlerFilesPlugin(siteUrl),
       VitePWA({
         registerType: 'autoUpdate',
         injectRegister: 'auto',

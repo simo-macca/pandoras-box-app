@@ -31,13 +31,14 @@ dist/
 ├── rules/                 # Official rulebook PDFs
 ├── sw.js, workbox-*.js    # Service worker (offline precache)
 ├── registerSW.js
-└── site.webmanifest, icons, robots.txt, og-image.*
+├── robots.txt, sitemap.xml # Generated at build time (sitemap only when the URL is known)
+└── site.webmanifest, icons, og-image.*
 ```
 
 Build-time variables (see [SETUP.md](SETUP.md#environment-variables)):
 
 - `BASE_PATH` — base path when the site is not at the domain root;
-- `VITE_SITE_URL` — absolute public URL used for social previews and the canonical link. On Netlify it is filled in automatically from Netlify's `URL` variable.
+- `VITE_SITE_URL` — absolute public URL used for social previews, the canonical link and `sitemap.xml` (plus the `Sitemap:` line in `robots.txt`). On Netlify it is filled in automatically from Netlify's `URL` variable. Without it, the build still emits `robots.txt` but skips the sitemap.
 
 ---
 
