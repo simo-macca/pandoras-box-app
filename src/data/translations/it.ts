@@ -65,7 +65,7 @@ export const it: TranslationStrings = {
     cancel: 'Annulla',
     confirm: 'Conferma',
     saveChanges: 'Salva Modifiche',
-    roundLimit: 'Limite di Round',
+    roundLimit: 'Limite di Round (regola della casa)',
     roundLimitUnlimited: 'Nessun Limite (Solo Punti)',
     roundLimitRounds: 'round',
   },
@@ -82,7 +82,7 @@ export const it: TranslationStrings = {
       'Il limite massimo di punti cumulativi che determina la fine della partita. Quando al termine di un round almeno un giocatore supera questa soglia, la partita termina. Vince chi ha meno punti!',
     dangerHelpTitle: 'Zona Pericolo',
     dangerHelpDesc:
-      'I giocatori a 20 punti o meno dalla soglia limite sono nella Zona Pericolo. Carte pesanti come Fuck You (42 pt), The End (17 pt) o Curse (13 pt) a fine round possono far superare la soglia e chiudere la partita!',
+      'Regola della casa: chi raggiunge l’80% del punteggio limite è nella Zona Pericolo. Carte pesanti come Fuck You (42 pt), The End (17 pt) o Curse (13 pt) rimaste in mano possono far superare la soglia!',
     historyTitle: 'Storico Round',
     undoLastRound: 'Annulla Ultimo',
     undoRound: 'Annulla Ultimo Round',
@@ -181,6 +181,10 @@ export const it: TranslationStrings = {
     expansion: 'Espansione',
     guideTab: 'Guida & Regolamento',
     dictionaryTab: 'Dizionario delle Carte',
+    searchSubtitle:
+      "Cerca carte, valori in punti, eventi e regole di Pandora's Box.",
+    categoryLabel: 'Categoria:',
+    viewOfficialRules: 'Vedi regolamento ufficiale',
     scopeGlobal: 'Globale',
     scopeTargeted: 'Mirato',
     officialPdfTitle: 'Regolamento Ufficiale Rulefactory',

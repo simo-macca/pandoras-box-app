@@ -65,7 +65,7 @@ export const de: TranslationStrings = {
     cancel: 'Abbrechen',
     confirm: 'Bestätigen',
     saveChanges: 'Änderungen speichern',
-    roundLimit: 'Rundenlimit',
+    roundLimit: 'Rundenlimit (Hausregel)',
     roundLimitUnlimited: 'Kein Rundenlimit (nur Punkte)',
     roundLimitRounds: 'Runden',
   },
@@ -82,7 +82,7 @@ export const de: TranslationStrings = {
       'Die Gesamtpunktegrenze, die das Spiel beendet. Sobald am Ende einer Runde mindestens ein Spieler dieses Limit überschreitet, endet das Spiel. Wer die wenigsten Punkte hat, gewinnt!',
     dangerHelpTitle: 'Gefahrenzone',
     dangerHelpDesc:
-      'Spieler, die weniger als 20 Punkte von der Punktegrenze entfernt sind, befinden sich in der Gefahrenzone. Teure Karten wie Fuck You (42 Pkt), The End (17 Pkt) oder Curse (13 Pkt) können das Spiel sofort beenden!',
+      'Hausregel: Wer 80 % des Punktelimits erreicht, ist in der Gefahrenzone. Teure Karten wie Fuck You (42 Pkt), The End (17 Pkt) oder Curse (13 Pkt) auf der Hand können das Limit schnell sprengen!',
     historyTitle: 'Rundenverlauf',
     undoLastRound: 'Runde rückgängig',
     undoRound: 'Letzte Runde rückgängig',
@@ -183,6 +183,10 @@ export const de: TranslationStrings = {
     expansion: 'Erweiterung',
     guideTab: 'Spielregeln & Anleitung',
     dictionaryTab: 'Kartenlexikon',
+    searchSubtitle:
+      "Durchsuche Karten, Punktewerte, Ereignisse und Pandora's-Box-Regeln.",
+    categoryLabel: 'Kategorie:',
+    viewOfficialRules: 'Offizielle Regeln ansehen',
     scopeGlobal: 'Global',
     scopeTargeted: 'Gezielt',
     officialPdfTitle: 'Offizielles Rulefactory Regelwerk',

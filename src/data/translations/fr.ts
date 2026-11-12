@@ -65,7 +65,7 @@ export const fr: TranslationStrings = {
     cancel: 'Annuler',
     confirm: 'Confirmer',
     saveChanges: 'Enregistrer les Modifications',
-    roundLimit: 'Limite de Manches',
+    roundLimit: 'Limite de Manches (règle maison)',
     roundLimitUnlimited: 'Pas de Limite (Points Seuls)',
     roundLimitRounds: 'manches',
   },
@@ -82,7 +82,7 @@ export const fr: TranslationStrings = {
       'Le plafond de points cumulés qui met fin à la partie. Dès qu’au moins un joueur dépasse cette limite à la fin d’une manche, la partie s’arrête. Le joueur ayant le moins de points l’emporte !',
     dangerHelpTitle: 'Zone de Danger',
     dangerHelpDesc:
-      'Les joueurs à 20 points ou moins de la limite sont en zone de danger. Conserver des cartes pénalisantes comme Fuck You (42 pts), The End (17 pts) ou Curse (13 pts) peut rapidement dépasser la limite !',
+      'Règle maison : les joueurs qui atteignent 80 % de la limite sont en zone de danger. Des cartes lourdes comme Fuck You (42 pts), The End (17 pts) ou Curse (13 pts) restées en main peuvent vite faire dépasser la limite !',
     historyTitle: 'Historique des Manches',
     undoLastRound: 'Annuler Dernière',
     undoRound: 'Annuler Dernière Manche',
@@ -182,6 +182,10 @@ export const fr: TranslationStrings = {
     expansion: 'Extension',
     guideTab: 'Guide des Règles',
     dictionaryTab: 'Dictionnaire des Cartes',
+    searchSubtitle:
+      "Recherchez cartes, valeurs en points, événements et règles de Pandora's Box.",
+    categoryLabel: 'Catégorie :',
+    viewOfficialRules: 'Voir les règles officielles',
     scopeGlobal: 'Global',
     scopeTargeted: 'Ciblé',
     officialPdfTitle: 'Règles Officielles Rulefactory',

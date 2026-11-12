@@ -64,7 +64,7 @@ export const en: TranslationStrings = {
     cancel: 'Cancel',
     confirm: 'Confirm',
     saveChanges: 'Save Changes',
-    roundLimit: 'Total Round Limit',
+    roundLimit: 'Round Limit (house rule)',
     roundLimitUnlimited: 'No Limit (Points Only)',
     roundLimitRounds: 'rounds',
   },
@@ -81,7 +81,7 @@ export const en: TranslationStrings = {
       'The cumulative score ceiling that ends the game. As soon as at least one player exceeds this limit at the end of a round, the game is over. The player with the lowest score wins!',
     dangerHelpTitle: 'Danger Zone',
     dangerHelpDesc:
-      'Players within 20 points of the Game Limit are in the Danger Zone. Holding heavy cards like Fuck You (42 pts), The End (17 pts), or Curse (13 pts) at round end can easily push them over the limit!',
+      'House rule: players who reach 80% of the point limit are in the Danger Zone. Heavy cards like Fuck You (42 pts), The End (17 pts) or Curse (13 pts) left in hand can easily push them over the limit!',
     historyTitle: 'Round History',
     undoLastRound: 'Undo Last',
     undoRound: 'Undo Last Round',
@@ -179,6 +179,10 @@ export const en: TranslationStrings = {
     expansion: 'Expansion',
     guideTab: 'Game Guide & Rules',
     dictionaryTab: 'Card Dictionary',
+    searchSubtitle:
+      "Search cards, point values, events and Pandora's Box rules.",
+    categoryLabel: 'Category:',
+    viewOfficialRules: 'View official rules',
     scopeGlobal: 'Global',
     scopeTargeted: 'Targeted',
     officialPdfTitle: 'Official Rulefactory Rulebook',

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { CARDS_DATA } from '../cardsData';
-import { EVENTS_DATA } from '../eventsData';
+import { CARDS_DATA } from '../cards';
+import { EVENTS_DATA } from '../events';
 import { POWER_CARDS_DATA } from '../powerCardsData';
 import { RULE_CARDS_DATA } from '../ruleCardsData';
 import { calculateHandPoints, DEFAULT_HAND_SCORE } from '@/utils/scoring';

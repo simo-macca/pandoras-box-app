@@ -1,12 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import {
-  CARDS_DATA,
-  SPECIAL_CARD_POINTS,
-  CURSE_POINTS,
-  THE_END_POINTS,
-  FUCK_YOU_POINTS,
-} from '../cardsData';
-import { EVENTS_DATA } from '../eventsData';
+import { CARDS_DATA } from '../cards';
+import { EVENTS_DATA } from '../events';
 import { POWER_CARDS_DATA } from '../powerCardsData';
 import { RULE_CARDS_DATA } from '../ruleCardsData';
 import { CARD_POINTS } from '@/utils/scoring';
@@ -15,7 +9,7 @@ import { Language } from '@/types/game';
 const LANGUAGES: Language[] = ['en', 'de', 'it', 'fr'];
 
 describe('Game Data, Taxonomy & Rules Integrity', () => {
-  describe('Special Cards (cardsData.ts)', () => {
+  describe('Special Cards (data/cards)', () => {
     it('contains exactly 23 special and unique cards', () => {
       expect(CARDS_DATA).toHaveLength(23);
     });
@@ -29,16 +23,16 @@ describe('Game Data, Taxonomy & Rules Integrity', () => {
     it('assigns correct official penalty points to each card category', () => {
       CARDS_DATA.forEach((card) => {
         if (card.id === 'fuck-you') {
-          expect(card.points).toBe(FUCK_YOU_POINTS);
+          expect(card.points).toBe(CARD_POINTS.FUCK_YOU);
           expect(card.points).toBe(42);
         } else if (card.id === 'the-end') {
-          expect(card.points).toBe(THE_END_POINTS);
+          expect(card.points).toBe(CARD_POINTS.THE_END);
           expect(card.points).toBe(17);
         } else if (card.id === 'curse') {
-          expect(card.points).toBe(CURSE_POINTS);
+          expect(card.points).toBe(CARD_POINTS.CURSE);
           expect(card.points).toBe(13);
         } else {
-          expect(card.points).toBe(SPECIAL_CARD_POINTS);
+          expect(card.points).toBe(CARD_POINTS.SPECIAL);
           expect(card.points).toBe(7);
         }
       });
@@ -130,7 +124,7 @@ describe('Game Data, Taxonomy & Rules Integrity', () => {
     });
   });
 
-  describe('Event Cards (eventsData.ts)', () => {
+  describe('Event Cards (data/events)', () => {
     it('contains exactly 44 events across all game expansions', () => {
       expect(EVENTS_DATA).toHaveLength(44);
 

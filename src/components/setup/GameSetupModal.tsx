@@ -1,22 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import {
-  X,
-  Play,
-  RotateCcw,
-  AlertTriangle,
-  Users,
-  Clock,
-  Check,
-} from 'lucide-react';
+import { X, Play, RotateCcw, AlertTriangle, Users, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Player, GameConfig, Language, PlayerColor } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { PlayerConfig } from './PlayerConfig';
 import { ScoreLimitSelector } from './ScoreLimitSelector';
+import { RoundLimitSelector } from './RoundLimitSelector';
 import { ALL_PLAYER_COLORS } from '@/utils/colors';
 import { soundEffects } from '@/utils/sound';
 import { getRecommendedPresets } from '@/utils/scoring';
 import { useModalA11y } from '@/hooks/useModalA11y';
+import { MIN_TARGET_SCORE } from '@/utils/storage';
 
 interface GameSetupModalProps {
   isOpen: boolean;
@@ -60,12 +54,8 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
       const used = new Set<PlayerColor>();
       const sanitized = currentPlayers.map((p, idx) => {
         let color = p.color;
-        if (
-          color === ('white' as PlayerColor) ||
-          color === ('black' as PlayerColor) ||
-          used.has(color) ||
-          !ALL_PLAYER_COLORS.includes(color)
-        ) {
+        // White and black are not offered (black cards are not a colour).
+        if (used.has(color) || !ALL_PLAYER_COLORS.includes(color)) {
           const available = ALL_PLAYER_COLORS.find((c) => !used.has(c));
           color =
             available || ALL_PLAYER_COLORS[idx % ALL_PLAYER_COLORS.length];
@@ -116,14 +106,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
       const isTaken = draftPlayers.some(
         (p) => p.id !== id && p.color === updates.color
       );
-      if (
-        isTaken ||
-        updates.color === ('white' as PlayerColor) ||
-        updates.color === ('black' as PlayerColor) ||
-        !ALL_PLAYER_COLORS.includes(updates.color)
-      ) {
-        return;
-      }
+      if (isTaken || !ALL_PLAYER_COLORS.includes(updates.color)) return;
     }
     setDraftPlayers(
       draftPlayers.map((p) => (p.id === id ? { ...p, ...updates } : p))
@@ -148,7 +131,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
 
   const isValidTargetScore = (val: string | number): boolean => {
     if (typeof val === 'number') {
-      return Number.isInteger(val) && val >= 50;
+      return Number.isInteger(val) && val >= MIN_TARGET_SCORE;
     }
     if (typeof val === 'string') {
       const trimmed = val.trim();
@@ -156,7 +139,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
         return false;
       }
       const num = Number(trimmed);
-      return Number.isSafeInteger(num) && num >= 50;
+      return Number.isSafeInteger(num) && num >= MIN_TARGET_SCORE;
     }
     return false;
   };
@@ -208,11 +191,10 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
       name: p.name.trim() || `Player ${idx + 1}`,
     }));
 
-  const handleSaveOnly = () => {
+  /** Validates the draft and hands it over; `isResetRounds` starts a new match. */
+  const submit = (isResetRounds: boolean) => {
     const validTargetScore = validateAndGetTargetScore();
-    if (validTargetScore === null) {
-      return;
-    }
+    if (validTargetScore === null) return;
     soundEffects.playClick();
     onSaveAndStart(
       getNormalizedPlayers(),
@@ -221,28 +203,12 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
         targetScore: validTargetScore,
         roundLimit: getValidRoundLimit(),
       },
-      false
+      isResetRounds
     );
     onClose();
   };
-
-  const handleResetAndStart = () => {
-    const validTargetScore = validateAndGetTargetScore();
-    if (validTargetScore === null) {
-      return;
-    }
-    soundEffects.playClick();
-    onSaveAndStart(
-      getNormalizedPlayers(),
-      {
-        ...draftConfig,
-        targetScore: validTargetScore,
-        roundLimit: getValidRoundLimit(),
-      },
-      true
-    );
-    onClose();
-  };
+  const handleSaveOnly = () => submit(false);
+  const handleResetAndStart = () => submit(true);
 
   return (
     <div
@@ -299,71 +265,11 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
 
           <hr className="border-neutral-200 dark:border-neutral-800" />
 
-          {/* Round Limit Selector */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="round-limit-input"
-                className="flex items-center gap-2 text-sm font-bold text-neutral-800 dark:text-neutral-200"
-              >
-                <Clock className="h-4 w-4 text-amber-500" />
-                <span>{t.setup.roundLimit}</span>
-              </label>
-              <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-                {draftRoundLimit && parseInt(draftRoundLimit, 10) > 0
-                  ? `${draftRoundLimit} ${t.setup.roundLimitRounds}`
-                  : t.setup.roundLimitUnlimited}
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
-              <button
-                type="button"
-                onClick={() => setDraftRoundLimit('')}
-                className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 text-xs font-bold transition-all ${
-                  !draftRoundLimit || parseInt(draftRoundLimit, 10) <= 0
-                    ? 'border-amber-500 bg-amber-500/15 text-amber-600 dark:text-amber-400'
-                    : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300'
-                }`}
-              >
-                <span>{t.setup.roundLimitUnlimited}</span>
-              </button>
-
-              {[5, 10, 15, 20].map((rounds) => {
-                const isSelected = parseInt(draftRoundLimit, 10) === rounds;
-                return (
-                  <button
-                    key={rounds}
-                    type="button"
-                    onClick={() => setDraftRoundLimit(String(rounds))}
-                    className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 text-xs font-bold transition-all ${
-                      isSelected
-                        ? 'border-amber-500 bg-amber-500/15 text-amber-600 dark:text-amber-400'
-                        : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300'
-                    }`}
-                  >
-                    <span>
-                      {rounds} {t.setup.roundLimitRounds}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="flex items-center gap-2 pt-1">
-              <input
-                id="round-limit-input"
-                type="number"
-                min="1"
-                max="100"
-                placeholder={t.common.roundLimitPlaceholder}
-                aria-label={t.setup.roundLimit}
-                value={draftRoundLimit}
-                onChange={(e) => setDraftRoundLimit(e.target.value)}
-                className="w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
-              />
-            </div>
-          </div>
+          <RoundLimitSelector
+            value={draftRoundLimit}
+            onChange={setDraftRoundLimit}
+            language={language}
+          />
         </div>
 
         {/* Footer Actions */}

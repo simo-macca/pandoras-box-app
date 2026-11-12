@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { X, Flame, Skull, Shield, Check, Swords, Edit2 } from 'lucide-react';
+import { X, Flame, Shield, Swords, Edit2 } from 'lucide-react';
 import { Player, Language, SeppukuOutcome } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { soundEffects } from '@/utils/sound';
-import { getPlayerColorTheme } from '@/utils/colors';
 import { useModalA11y } from '@/hooks/useModalA11y';
+import { SeppukuPlayerChoice } from './SeppukuPlayerChoice';
 
 interface SeppukuModalProps {
   isOpen: boolean;
@@ -110,10 +110,7 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
           <div className="rounded-2xl border border-rose-500/20 bg-rose-500/5 p-3 sm:p-4 dark:border-rose-500/30 dark:bg-rose-950/20">
             <div className="flex items-center gap-2 text-xs font-bold text-rose-700 dark:text-rose-400">
               <Swords className="h-4 w-4 shrink-0 text-rose-500" />
-              <span>
-                {t.events?.seppukuRuleBannerTitle ||
-                  "Card Rules: Seppuku (D'Sinead Conception)"}
-              </span>
+              <span>{t.events.seppukuRuleBannerTitle}</span>
             </div>
             <div className="mt-2 grid grid-cols-1 gap-2 text-xs text-neutral-600 sm:grid-cols-2 dark:text-neutral-300">
               <div className="flex items-start gap-2 rounded-xl border border-emerald-500/25 bg-emerald-500/10 p-2 text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-950/40 dark:text-emerald-300">
@@ -137,146 +134,17 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
             </div>
           </div>
 
-          {/* Player Choices List */}
-          {players.map((player, index) => {
-            const currentChoice = choices[player.id] || 'no_risk';
-            const colorTheme = getPlayerColorTheme(player.color);
-
-            return (
-              <div
-                key={player.id}
-                className="rounded-2xl border border-neutral-200 bg-neutral-50/70 p-3 shadow-xs dark:border-neutral-800 dark:bg-neutral-800/40"
-              >
-                {/* Player header */}
-                <div className="mb-2.5 flex items-center justify-between gap-2">
-                  <div className="flex min-w-0 items-center gap-2">
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-neutral-200 text-[10px] font-bold text-neutral-600 dark:bg-neutral-700 dark:text-neutral-300">
-                      {index + 1}
-                    </span>
-                    <span
-                      className={`h-2.5 w-2.5 shrink-0 rounded-full ${colorTheme.accentBg}`}
-                    />
-                    <span className="truncate text-sm font-bold text-neutral-900 dark:text-white">
-                      {player.name}
-                    </span>
-                  </div>
-
-                  <span
-                    className={`font-mono text-xs font-black ${
-                      currentChoice === 'risk_number'
-                        ? 'text-emerald-600 dark:text-emerald-400'
-                        : currentChoice === 'risk_special'
-                          ? 'text-rose-600 dark:text-rose-400'
-                          : 'text-amber-600 dark:text-amber-400'
-                    }`}
-                  >
-                    {currentChoice === 'risk_number'
-                      ? '-21 pts'
-                      : currentChoice === 'risk_special'
-                        ? '+42 pts'
-                        : '+21 pts'}
-                  </span>
-                </div>
-
-                {/* 3 Option Card Buttons */}
-                <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-                  {/* Option 1: Risk Number (-21) */}
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleSelectOutcome(player.id, 'risk_number')
-                    }
-                    aria-label={`Player ${player.name}: ${t.events.seppukuActionRiskNumberTitle} (-21 pts)`}
-                    className={`flex flex-col justify-between rounded-xl border p-2.5 text-left transition-all ${
-                      currentChoice === 'risk_number'
-                        ? 'border-emerald-500 bg-emerald-500/15 shadow-sm ring-1 ring-emerald-500/50 dark:bg-emerald-950/40'
-                        : 'border-neutral-200 bg-white text-neutral-700 hover:border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between gap-1">
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-700 dark:text-emerald-300">
-                        <Shield className="h-4 w-4 shrink-0 text-emerald-500" />
-                        <span>{t.events.seppukuActionRiskNumberTitle}</span>
-                      </div>
-                      {currentChoice === 'risk_number' && (
-                        <Check className="h-4 w-4 shrink-0 stroke-3 text-emerald-600 dark:text-emerald-400" />
-                      )}
-                    </div>
-                    <p className="my-1.5 text-[11px] leading-tight text-neutral-500 dark:text-neutral-400">
-                      {t.events.seppukuActionRiskNumberDesc}
-                    </p>
-                    <div className="mt-auto">
-                      <span className="inline-flex items-center rounded-lg border border-emerald-500/30 bg-emerald-500/20 px-2 py-0.5 font-mono text-[11px] font-black text-emerald-700 dark:text-emerald-300">
-                        -21 pts
-                      </span>
-                    </div>
-                  </button>
-
-                  {/* Option 2: Risk Special (+42) */}
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleSelectOutcome(player.id, 'risk_special')
-                    }
-                    aria-label={`Player ${player.name}: ${t.events.seppukuActionRiskSpecialTitle} (+42 pts)`}
-                    className={`flex flex-col justify-between rounded-xl border p-2.5 text-left transition-all ${
-                      currentChoice === 'risk_special'
-                        ? 'border-rose-500 bg-rose-500/15 shadow-sm ring-1 ring-rose-500/50 dark:bg-rose-950/40'
-                        : 'border-neutral-200 bg-white text-neutral-700 hover:border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between gap-1">
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-rose-700 dark:text-rose-300">
-                        <Skull className="h-4 w-4 shrink-0 text-rose-500" />
-                        <span>{t.events.seppukuActionRiskSpecialTitle}</span>
-                      </div>
-                      {currentChoice === 'risk_special' && (
-                        <Check className="h-4 w-4 shrink-0 stroke-3 text-rose-600 dark:text-rose-400" />
-                      )}
-                    </div>
-                    <p className="my-1.5 text-[11px] leading-tight text-neutral-500 dark:text-neutral-400">
-                      {t.events.seppukuActionRiskSpecialDesc}
-                    </p>
-                    <div className="mt-auto">
-                      <span className="inline-flex items-center rounded-lg border border-rose-500/30 bg-rose-500/20 px-2 py-0.5 font-mono text-[11px] font-black text-rose-700 dark:text-rose-300">
-                        +42 pts
-                      </span>
-                    </div>
-                  </button>
-
-                  {/* Option 3: No Risk (+21) */}
-                  <button
-                    type="button"
-                    onClick={() => handleSelectOutcome(player.id, 'no_risk')}
-                    aria-label={`Player ${player.name}: ${t.events.seppukuActionNoRiskTitle} (+21 pts)`}
-                    className={`flex flex-col justify-between rounded-xl border p-2.5 text-left transition-all ${
-                      currentChoice === 'no_risk'
-                        ? 'border-amber-500 bg-amber-500/15 shadow-sm ring-1 ring-amber-500/50 dark:bg-amber-950/40'
-                        : 'border-neutral-200 bg-white text-neutral-700 hover:border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between gap-1">
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-amber-700 dark:text-amber-300">
-                        <Flame className="h-4 w-4 shrink-0 text-amber-500" />
-                        <span>{t.events.seppukuActionNoRiskTitle}</span>
-                      </div>
-                      {currentChoice === 'no_risk' && (
-                        <Check className="h-4 w-4 shrink-0 stroke-3 text-amber-600 dark:text-amber-400" />
-                      )}
-                    </div>
-                    <p className="my-1.5 text-[11px] leading-tight text-neutral-500 dark:text-neutral-400">
-                      {t.events.seppukuActionNoRiskDesc}
-                    </p>
-                    <div className="mt-auto">
-                      <span className="inline-flex items-center rounded-lg border border-amber-500/30 bg-amber-500/20 px-2 py-0.5 font-mono text-[11px] font-black text-amber-700 dark:text-amber-300">
-                        +21 pts
-                      </span>
-                    </div>
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+          {/* One decision per player, in the order of play */}
+          {players.map((player, index) => (
+            <SeppukuPlayerChoice
+              key={player.id}
+              player={player}
+              position={index + 1}
+              choice={choices[player.id] ?? 'no_risk'}
+              onSelect={(outcome) => handleSelectOutcome(player.id, outcome)}
+              language={language}
+            />
+          ))}
         </div>
 
         {/* Footer Actions */}

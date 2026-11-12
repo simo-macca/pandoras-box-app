@@ -181,6 +181,9 @@ export interface TranslationStrings {
     openPdf: string;
     downloadPdf: string;
     fullRulebook: string;
+    searchSubtitle: string;
+    categoryLabel: string;
+    viewOfficialRules: string;
     scopeGlobal: string;
     scopeTargeted: string;
     quickReference: string;
