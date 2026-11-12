@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Sparkles, Shuffle, Loader2 } from 'lucide-react';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
-import { RULE_CARDS_DATA } from '@/data/ruleCardsData';
+import { RULE_CARDS_DATA } from '@/data/ruleCards';
 import { soundEffects } from '@/utils/sound';
 import { RuleCardSpotlight } from './RuleCardSpotlight';
 import { RuleCardTile } from './RuleCardTile';

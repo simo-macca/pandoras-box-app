@@ -27,12 +27,12 @@ import { getSeppukuChoices } from '@/utils/events';
 // Secondary tabs are loaded on demand to keep the initial bundle small.
 // The service worker precaches these chunks, so they still work offline.
 const RuleCardDrawer = lazy(() =>
-  import('@/components/rulecards/RuleCardDrawer').then((m) => ({
+  import('@/components/rule-cards/RuleCardDrawer').then((m) => ({
     default: m.RuleCardDrawer,
   }))
 );
 const CardDictionary = lazy(() =>
-  import('@/components/rules/CardDictionary').then((m) => ({
+  import('@/components/card-dictionary/CardDictionary').then((m) => ({
     default: m.CardDictionary,
   }))
 );

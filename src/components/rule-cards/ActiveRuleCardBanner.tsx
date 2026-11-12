@@ -2,7 +2,7 @@ import React from 'react';
 import { Sparkles, X, Shuffle } from 'lucide-react';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
-import { RULE_CARDS_DATA } from '@/data/ruleCardsData';
+import { RULE_CARDS_DATA } from '@/data/ruleCards';
 import { soundEffects } from '@/utils/sound';
 
 interface ActiveRuleCardBannerProps {

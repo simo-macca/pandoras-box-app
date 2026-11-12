@@ -4,7 +4,7 @@ import { Language } from '@/types/game';
 import {
   OFFICIAL_PDF_LINKS,
   OVERVIEW_CARDS_PDF_LINKS,
-} from '@/data/rulesConstants';
+} from '@/data/rulebookLinks';
 import { TRANSLATIONS } from '@/data/translations';
 import { soundEffects } from '@/utils/sound';
 

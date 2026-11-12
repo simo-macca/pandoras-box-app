@@ -8,8 +8,8 @@ import {
 } from '@/types/rules';
 import { CARDS_DATA } from '@/data/cards';
 import { EVENTS_DATA } from '@/data/events';
-import { POWER_CARDS_DATA } from '@/data/powerCardsData';
-import { RULE_CARDS_DATA } from '@/data/ruleCardsData';
+import { POWER_CARDS_DATA } from '@/data/powerCards';
+import { RULE_CARDS_DATA } from '@/data/ruleCards';
 import { matchesSearchQuery } from '@/utils/i18n';
 
 export type DictionaryCategory =

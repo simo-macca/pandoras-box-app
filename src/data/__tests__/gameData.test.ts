@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { CARDS_DATA } from '../cards';
 import { EVENTS_DATA } from '../events';
-import { POWER_CARDS_DATA } from '../powerCardsData';
-import { RULE_CARDS_DATA } from '../ruleCardsData';
+import { POWER_CARDS_DATA } from '../powerCards';
+import { RULE_CARDS_DATA } from '../ruleCards';
 import { CARD_POINTS } from '@/utils/scoring';
 import { Language } from '@/types/game';
 

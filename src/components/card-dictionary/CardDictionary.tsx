@@ -8,7 +8,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { Language } from '@/types/game';
-import { OFFICIAL_PDF_LINKS } from '@/data/rulesConstants';
+import { OFFICIAL_PDF_LINKS } from '@/data/rulebookLinks';
 import { TRANSLATIONS } from '@/data/translations';
 import { soundEffects } from '@/utils/sound';
 import { DictionaryCategory, searchDictionary } from '@/utils/cardSearch';

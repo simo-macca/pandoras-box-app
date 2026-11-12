@@ -6,7 +6,7 @@ import { TRANSLATIONS } from '@/data/translations';
 import { PlayerCard } from './PlayerCard';
 import { RoundHistoryTable } from './RoundHistoryTable';
 import { StatsOverviewCards } from './StatsOverviewCards';
-import { ActiveRuleCardBanner } from '@/components/rulecards/ActiveRuleCardBanner';
+import { ActiveRuleCardBanner } from '@/components/rule-cards/ActiveRuleCardBanner';
 import { soundEffects } from '@/utils/sound';
 
 interface LeaderboardProps {

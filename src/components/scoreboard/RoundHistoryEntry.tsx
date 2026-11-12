@@ -19,7 +19,7 @@ import {
   SeppukuEventMetadata,
 } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
-import { RULE_CARDS_DATA } from '@/data/ruleCardsData';
+import { RULE_CARDS_DATA } from '@/data/ruleCards';
 import { SEPPUKU_POINTS } from '@/utils/scoring';
 import { HistoryScoreCell, ScoreCellTone } from './HistoryScoreCell';
 
