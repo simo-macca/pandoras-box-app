@@ -1,0 +1,16 @@
+{
+  // Markdown lint rules. Formatting (spacing, wrapping, tables) is Prettier's
+  // job, so the "prettier" style turns off every rule that would conflict.
+  "config": {
+    "extends": "markdownlint/style/prettier",
+    "default": true,
+    // CHANGELOG repeats "### Fixed" / "### Added" under each release.
+    "MD024": { "siblings_only": true },
+    // GitHub alerts (> [!NOTE]) and badges are fine.
+    "MD033": false,
+    "MD041": false,
+  },
+  "globs": ["**/*.md"],
+  "ignores": ["node_modules/**", "dist/**", "dev-dist/**"],
+  "gitignore": true,
+}

@@ -8,9 +8,7 @@ The app builds to a fully static folder (`dist/`) — HTML, CSS, JavaScript, a s
 
 - [Building for Production](#building-for-production)
 - [Local Production Preview](#local-production-preview)
-- [Netlify (current setup)](#netlify-current-setup)
-- [GitHub Pages](#github-pages)
-- [Other Hosts](#other-hosts)
+- [Netlify](#netlify)
 - [Release Checklist](#release-checklist)
 
 ---
