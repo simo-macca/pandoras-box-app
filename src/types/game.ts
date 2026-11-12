@@ -17,6 +17,9 @@ export type ThemeMode = 'light' | 'dark' | 'system';
 export type TimeBombModifier =
   'none' | 'winner_bonus' | 'loser_penalty' | 'expired_double';
 
+/** Table-wide outcome of the Time Bomb event (rulebook p. 17). */
+export type TableTimeBombMode = 'none' | 'defused' | 'exploded';
+
 export interface Player {
   id: string;
   name: string;

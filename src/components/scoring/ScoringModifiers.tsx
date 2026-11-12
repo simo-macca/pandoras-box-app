@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Zap, Bomb, Check, Globe } from 'lucide-react';
-import { Language, TimeBombModifier } from '@/types/game';
+import { Language, TableTimeBombMode, TimeBombModifier } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
-
-export type TableTimeBombMode = 'none' | 'defused' | 'exploded';
 
 interface ScoringModifiersProps {
   isDoomsday: boolean;

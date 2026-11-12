@@ -178,3 +178,18 @@ export function renumberRounds(rounds: RoundEntry[]): RoundEntry[] {
     return r.roundNumber === played ? r : { ...r, roundNumber: played };
   });
 }
+
+/** Reads the per-player Seppuku choices stored on a Seppuku history entry. */
+export function getSeppukuChoices(
+  entry: RoundEntry | null | undefined
+): Record<string, SeppukuOutcome> | undefined {
+  const metadata = entry?.eventMetadata;
+  if (!metadata || !('choices' in metadata)) return undefined;
+  const result: Record<string, SeppukuOutcome> = {};
+  Object.entries((metadata as SeppukuEventMetadata).choices ?? {}).forEach(
+    ([playerId, item]) => {
+      result[playerId] = item.outcome;
+    }
+  );
+  return result;
+}

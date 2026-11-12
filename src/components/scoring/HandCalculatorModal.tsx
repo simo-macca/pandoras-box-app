@@ -1,28 +1,17 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import {
-  X,
-  Trophy,
-  Check,
-  Sparkles,
-  RefreshCw,
-  Calculator,
-  Hash,
-} from 'lucide-react';
-import { Player, HandScore, Language, TimeBombModifier } from '@/types/game';
+import React from 'react';
+import { X, Check, Sparkles, Calculator, Hash } from 'lucide-react';
+import { Player, HandScore, Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
-import {
-  calculateHandPoints,
-  DEFAULT_HAND_SCORE,
-  DOUBLE_SPECIAL_RULE_CARD_ID,
-} from '@/utils/scoring';
 import { PlayerStats } from '@/utils/stats';
-import { getPlayerColorTheme } from '@/utils/colors';
 import { soundEffects } from '@/utils/sound';
+import { useModalA11y } from '@/hooks/useModalA11y';
+import { useHandScores } from '@/hooks/useHandScores';
 import { NumberGrid } from './NumberGrid';
 import { SpecialCounters } from './SpecialCounters';
 import { ScoringPlayerPicker } from './ScoringPlayerPicker';
 import { ScoringModifiers } from './ScoringModifiers';
-import { useModalA11y } from '@/hooks/useModalA11y';
+import { ActivePlayerBanner } from './ActivePlayerBanner';
+import { WinnerToggle } from './WinnerToggle';
 
 interface HandCalculatorModalProps {
   isOpen: boolean;
@@ -38,6 +27,7 @@ interface HandCalculatorModalProps {
   activeRuleCardIds?: string[];
 }
 
+/** End-of-round calculator: enter every player's remaining hand cards. */
 export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
   isOpen,
   onClose,
@@ -51,215 +41,34 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
   activeRuleCardIds,
 }) => {
   const t = TRANSLATIONS[language];
-  const isDoubleSpecial = Boolean(
-    activeRuleCardIds?.includes(DOUBLE_SPECIAL_RULE_CARD_ID)
-  );
-  const [selectedPlayerId, setSelectedPlayerId] = useState<string>(
-    players[0]?.id || ''
-  );
-
-  // Map of playerId -> HandScore
-  const [scores, setScores] = useState<Record<string, HandScore>>({});
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    setSelectedPlayerId((prev) =>
-      players.length > 0 && !players.some((p) => p.id === prev)
-        ? players[0].id
-        : prev
-    );
-
-    const initial: Record<string, HandScore> = {};
-    players.forEach((p) => {
-      const base =
-        initialScores && initialScores[p.id]
-          ? initialScores[p.id]
-          : { ...DEFAULT_HAND_SCORE };
-      const raw = { ...base, doubleSpecials: isDoubleSpecial };
-      initial[p.id] = {
-        ...raw,
-        totalPoints: calculateHandPoints(raw),
-      };
-    });
-
-    setScores(initial);
-  }, [isOpen, players, initialScores, isDoubleSpecial]);
-
-  const tableTimeBombMode: 'none' | 'defused' | 'exploded' = useMemo(() => {
-    const list = Object.values(scores);
-    if (list.length === 0) return 'none';
-    if (list.every((s) => s.timeBombModifier === 'expired_double')) {
-      return 'exploded';
-    }
-    if (
-      list.some(
-        (s) =>
-          s.timeBombModifier === 'winner_bonus' ||
-          s.timeBombModifier === 'loser_penalty'
-      )
-    ) {
-      return 'defused';
-    }
-    return 'none';
-  }, [scores]);
+  const {
+    scores,
+    selectedPlayerId,
+    setSelectedPlayerId,
+    currentScore,
+    isDoubleSpecial,
+    isTableDoomsday,
+    tableTimeBombMode,
+    updateCurrentScore,
+    toggleWinner,
+    toggleDoomsday,
+    setTableTimeBomb,
+    resetCurrentPlayer,
+  } = useHandScores({ isOpen, players, initialScores, activeRuleCardIds });
 
   useModalA11y(isOpen, onClose);
 
   if (!isOpen || players.length === 0) return null;
 
-  const currentScore: HandScore = scores[selectedPlayerId] || {
-    ...DEFAULT_HAND_SCORE,
-    totalPoints: 0,
-  };
-
-  const updateCurrentScore = (
-    updates: Partial<Omit<HandScore, 'totalPoints'>>
-  ) => {
-    setScores((prev) => {
-      const existing = prev[selectedPlayerId] || {
-        ...DEFAULT_HAND_SCORE,
-        totalPoints: 0,
-      };
-      const merged: Omit<HandScore, 'totalPoints'> = {
-        ...existing,
-        ...updates,
-      };
-
-      const totalPoints = calculateHandPoints(merged);
-
-      return {
-        ...prev,
-        [selectedPlayerId]: {
-          ...merged,
-          totalPoints,
-        },
-      };
-    });
-  };
-
-  const isTableDoomsday = Object.values(scores).some((s) => s.isDoomsday);
-
-  const handleWinnerToggle = () => {
-    if (isTableDoomsday) return;
-    const nextIsWinner = !currentScore.isWinner;
-    soundEffects.playClick();
-
-    // Several players can end a round at the same time (rulebook pp. 10, 15),
-    // so marking a winner never un-marks the others.
-    setScores((prev) => {
-      const updated = { ...prev };
-      let nextTimeBomb = currentScore.timeBombModifier;
-      if (nextIsWinner && currentScore.timeBombModifier === 'loser_penalty') {
-        nextTimeBomb = 'winner_bonus';
-      } else if (
-        !nextIsWinner &&
-        currentScore.timeBombModifier === 'winner_bonus'
-      ) {
-        nextTimeBomb = 'loser_penalty';
-      }
-
-      const merged: Omit<HandScore, 'totalPoints'> = {
-        ...currentScore,
-        isWinner: nextIsWinner,
-        timeBombModifier: nextTimeBomb,
-        ...(nextIsWinner
-          ? {
-              numberCards: {},
-              specialCardsCount: 0,
-              curseCount: 0,
-              theEndCount: 0,
-              fuckYouCount: 0,
-              mimicryCount: 0,
-            }
-          : {}),
-      };
-
-      updated[selectedPlayerId] = {
-        ...merged,
-        totalPoints: calculateHandPoints(merged),
-      };
-
-      return updated;
-    });
-  };
-
-  const handleDoomsdayToggle = () => {
-    const next = !isTableDoomsday;
-    soundEffects.playClick();
-    setScores((prev) => {
-      const updated = { ...prev };
-      players.forEach((p) => {
-        const pScore = updated[p.id] || {
-          ...DEFAULT_HAND_SCORE,
-          totalPoints: 0,
-        };
-        const merged = {
-          ...pScore,
-          isDoomsday: next,
-          isWinner: next ? false : pScore.isWinner,
-        };
-        updated[p.id] = {
-          ...merged,
-          totalPoints: calculateHandPoints(merged),
-        };
-      });
-      return updated;
-    });
-  };
-
-  const handleTableTimeBombChange = (mode: 'none' | 'defused' | 'exploded') => {
-    soundEffects.playClick();
-    setScores((prev) => {
-      const updated = { ...prev };
-      players.forEach((p) => {
-        const pScore = updated[p.id] || {
-          ...DEFAULT_HAND_SCORE,
-          totalPoints: 0,
-        };
-        let newMod: TimeBombModifier = 'none';
-        if (mode === 'exploded') {
-          newMod = 'expired_double';
-        } else if (mode === 'defused') {
-          newMod = pScore.isWinner ? 'winner_bonus' : 'loser_penalty';
-        }
-        const merged = { ...pScore, timeBombModifier: newMod };
-        updated[p.id] = {
-          ...merged,
-          totalPoints: calculateHandPoints(merged),
-        };
-      });
-      return updated;
-    });
-  };
-
-  const handleResetCurrentPlayer = () => {
-    soundEffects.playClick();
-    setScores((prev) => {
-      const raw = {
-        ...DEFAULT_HAND_SCORE,
-        isDoomsday: isTableDoomsday,
-        doubleSpecials: isDoubleSpecial,
-      };
-      return {
-        ...prev,
-        [selectedPlayerId]: {
-          ...raw,
-          totalPoints: calculateHandPoints(raw),
-        },
-      };
-    });
-  };
+  const activePlayer =
+    players.find((p) => p.id === selectedPlayerId) ?? players[0];
+  const handLocked = currentScore.isWinner || Boolean(currentScore.isDoomsday);
 
   const handleSubmit = () => {
     soundEffects.playClick();
     onSubmitRound(scores);
     onClose();
   };
-
-  const activePlayer =
-    players.find((p) => p.id === selectedPlayerId) || players[0];
-  const activeColorTheme = getPlayerColorTheme(activePlayer.color);
 
   return (
     <div
@@ -268,7 +77,7 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
       aria-modal="true"
     >
       <div className="relative flex max-h-[90dvh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl sm:rounded-3xl dark:border-neutral-800 dark:bg-neutral-900">
-        {/* Modal Header */}
+        {/* Header */}
         <div className="flex shrink-0 items-center justify-between gap-2 border-b border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-neutral-800 dark:bg-neutral-900/60">
           <div className="flex min-w-0 items-center gap-2">
             <Calculator className="h-5 w-5 shrink-0 text-amber-500 dark:text-amber-400" />
@@ -292,7 +101,6 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
           </button>
         </div>
 
-        {/* Player Selection */}
         <ScoringPlayerPicker
           players={players}
           playerStats={playerStats}
@@ -301,48 +109,14 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
           language={language}
         />
 
-        {/* Scrollable Form Body */}
+        {/* Scrollable body */}
         <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-3">
-          {/* Active Player Banner & Total */}
-          <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50 p-3 sm:p-3.5 dark:border-neutral-700/80 dark:bg-neutral-800/60">
-            <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
-              <div
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl text-sm font-black text-white shadow-sm sm:h-10 sm:w-10 sm:text-base"
-                style={{ backgroundColor: activeColorTheme.hex }}
-              >
-                {activePlayer.name.slice(0, 2).toUpperCase()}
-              </div>
-              <div className="min-w-0">
-                <div className="truncate text-sm font-black text-neutral-900 sm:text-base dark:text-white">
-                  {activePlayer.name}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-              <button
-                type="button"
-                onClick={handleResetCurrentPlayer}
-                className="flex items-center gap-1 rounded-lg p-1.5 text-xs font-semibold text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-700 dark:hover:text-white"
-                title={t.scoring.quickZero}
-              >
-                <RefreshCw className="h-3.5 w-3.5 shrink-0" />
-                <span className="hidden sm:inline">{t.scoring.quickZero}</span>
-              </button>
-
-              <div className="text-right">
-                <div className="text-[10px] font-bold tracking-wider text-neutral-400 uppercase">
-                  {t.scoring.playerTotal}
-                </div>
-                <div className="text-xl font-black whitespace-nowrap text-amber-500 tabular-nums sm:text-2xl">
-                  {currentScore.totalPoints}{' '}
-                  <span className="text-xs font-semibold text-neutral-400">
-                    pts
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ActivePlayerBanner
+            player={activePlayer}
+            totalPoints={currentScore.totalPoints}
+            onReset={resetCurrentPlayer}
+            language={language}
+          />
 
           {isDoubleSpecial && (
             <div
@@ -353,110 +127,68 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
             </div>
           )}
 
-          {/* Winner Toggle */}
-          <button
-            type="button"
-            onClick={handleWinnerToggle}
+          <WinnerToggle
+            isWinner={currentScore.isWinner}
             disabled={isTableDoomsday}
-            className={`flex w-full items-center justify-between rounded-2xl border p-3.5 transition-all ${
-              isTableDoomsday
-                ? 'cursor-not-allowed border-neutral-200 bg-neutral-100 text-neutral-400 opacity-60 dark:border-neutral-800 dark:bg-neutral-800/20'
-                : currentScore.isWinner
-                  ? 'border-emerald-500 bg-emerald-500/15 font-bold text-emerald-600 shadow-md dark:text-emerald-400'
-                  : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300 dark:hover:border-neutral-700'
-            }`}
-          >
-            <div className="flex items-center gap-3">
-              <div
-                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${
-                  currentScore.isWinner
-                    ? 'bg-emerald-500 text-white'
-                    : 'bg-neutral-200 text-neutral-400 dark:bg-neutral-700'
-                }`}
-              >
-                <Trophy className="h-4 w-4 shrink-0" />
-              </div>
-              <div className="text-left">
-                <div className="text-xs font-black">{t.scoring.isWinner}</div>
-                <div className="text-[11px] opacity-75">
-                  {t.scoring.isWinnerHint}
-                </div>
-              </div>
-            </div>
+            onToggle={toggleWinner}
+            language={language}
+          />
 
-            <div
-              className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border ${
-                currentScore.isWinner
-                  ? 'border-emerald-500 bg-emerald-500 text-white'
-                  : 'border-neutral-300 dark:border-neutral-700'
-              }`}
-            >
-              {currentScore.isWinner && (
-                <Check className="h-4 w-4 shrink-0 stroke-3" />
-              )}
-            </div>
-          </button>
-
-          {/* Number Cards (1 to 10) */}
-          <div>
+          {/* Number cards (1–10) */}
+          <section>
             <div className="mb-2 flex items-center justify-between">
-              <label className="flex items-center gap-1.5 text-xs font-bold text-neutral-700 dark:text-neutral-300">
+              <h3 className="flex items-center gap-1.5 text-xs font-bold text-neutral-700 dark:text-neutral-300">
                 <Hash className="h-3.5 w-3.5 shrink-0 text-amber-500 dark:text-amber-400" />
                 <span>{t.scoring.numberCardsTitle}</span>
-              </label>
+              </h3>
               <span className="text-[11px] text-neutral-400">
                 {t.scoring.numberCardsHint}
               </span>
             </div>
             <NumberGrid
-              counts={currentScore.numberCards || {}}
-              onChange={(newCounts) =>
-                updateCurrentScore({ numberCards: newCounts })
-              }
-              disabled={currentScore.isWinner || currentScore.isDoomsday}
+              counts={currentScore.numberCards ?? {}}
+              onChange={(numberCards) => updateCurrentScore({ numberCards })}
+              disabled={handLocked}
             />
-          </div>
+          </section>
 
-          {/* Special & Unique Cards */}
-          <div>
-            <div className="mb-2 flex items-center justify-between">
-              <label className="flex items-center gap-1.5 text-xs font-bold text-neutral-700 dark:text-neutral-300">
-                <Sparkles className="h-3.5 w-3.5 shrink-0 text-purple-400" />
-                <span>{t.scoring.specialCardsTitle}</span>
-              </label>
-            </div>
+          {/* Special and unique cards */}
+          <section>
+            <h3 className="mb-2 flex items-center gap-1.5 text-xs font-bold text-neutral-700 dark:text-neutral-300">
+              <Sparkles className="h-3.5 w-3.5 shrink-0 text-purple-400" />
+              <span>{t.scoring.specialCardsTitle}</span>
+            </h3>
             <SpecialCounters
-              specialCardsCount={currentScore.specialCardsCount || 0}
-              curseCount={currentScore.curseCount || 0}
-              theEndCount={currentScore.theEndCount || 0}
-              fuckYouCount={currentScore.fuckYouCount || 0}
-              mimicryCount={currentScore.mimicryCount || 0}
-              onChange={(updates) => updateCurrentScore(updates)}
+              specialCardsCount={currentScore.specialCardsCount ?? 0}
+              curseCount={currentScore.curseCount ?? 0}
+              theEndCount={currentScore.theEndCount ?? 0}
+              fuckYouCount={currentScore.fuckYouCount ?? 0}
+              mimicryCount={currentScore.mimicryCount ?? 0}
+              onChange={updateCurrentScore}
               language={language}
-              disabled={currentScore.isWinner || currentScore.isDoomsday}
+              disabled={handLocked}
             />
-          </div>
+          </section>
 
-          {/* Event Modifiers Section */}
           <ScoringModifiers
             isDoomsday={isTableDoomsday}
             isWinner={currentScore.isWinner}
-            timeBombModifier={currentScore.timeBombModifier || 'none'}
+            timeBombModifier={currentScore.timeBombModifier ?? 'none'}
             tableTimeBombMode={tableTimeBombMode}
-            customModifier={currentScore.customModifier || 0}
-            onToggleDoomsday={handleDoomsdayToggle}
-            onChangeTableTimeBomb={handleTableTimeBombChange}
-            onChangeTimeBomb={(mod: TimeBombModifier) =>
-              updateCurrentScore({ timeBombModifier: mod })
+            customModifier={currentScore.customModifier ?? 0}
+            onToggleDoomsday={toggleDoomsday}
+            onChangeTableTimeBomb={setTableTimeBomb}
+            onChangeTimeBomb={(timeBombModifier) =>
+              updateCurrentScore({ timeBombModifier })
             }
-            onChangeCustomModifier={(val: number) =>
-              updateCurrentScore({ customModifier: val })
+            onChangeCustomModifier={(customModifier) =>
+              updateCurrentScore({ customModifier })
             }
             language={language}
           />
         </div>
 
-        {/* Footer Actions */}
+        {/* Footer */}
         <div className="flex shrink-0 items-center justify-between gap-2 border-t border-neutral-200 bg-neutral-50 px-4 py-3 sm:gap-3 dark:border-neutral-800 dark:bg-neutral-900/60">
           <button
             type="button"

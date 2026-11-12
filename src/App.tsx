@@ -1,5 +1,4 @@
-import { useState, useMemo, lazy, Suspense } from 'react';
-import { Toaster } from 'react-hot-toast';
+import { useState, lazy, Suspense } from 'react';
 import { useGameState } from '@/hooks/useGameState';
 import { useTheme } from '@/hooks/useTheme';
 import { useUndoToast } from '@/hooks/useUndoToast';
@@ -14,12 +13,16 @@ import { HandCalculatorModal } from '@/components/scoring/HandCalculatorModal';
 import { GameSetupModal } from '@/components/setup/GameSetupModal';
 import { SettingsModal } from '@/components/layout/SettingsModal';
 import { SeppukuModal } from '@/components/events/SeppukuModal';
+import { AppToaster } from '@/components/layout/AppToaster';
 import {
-  HandScore,
+  GameConfig,
   GameState,
+  HandScore,
+  Player,
   SeppukuOutcome,
-  SeppukuEventMetadata,
 } from '@/types/game';
+import { countPlayedRounds } from '@/utils/stats';
+import { getSeppukuChoices } from '@/utils/events';
 
 // Secondary tabs are loaded on demand to keep the initial bundle small.
 // The service worker precaches these chunks, so they still work offline.
@@ -101,6 +104,15 @@ export function App() {
     },
   });
 
+  const t = TRANSLATIONS[language];
+
+  /** Runs a state change and offers to undo it from a toast. */
+  const withUndo = (message: string, action: () => void) => {
+    const snapshot: GameState = structuredClone(gameState);
+    action();
+    showUndoToast(message, snapshot);
+  };
+
   const handleOpenScoreModal = () => {
     openScoreModal(gameState.isGameOver, !!gameState.isContinued);
   };
@@ -116,41 +128,31 @@ export function App() {
   };
 
   const handleSubmitScores = (scores: Record<string, HandScore>) => {
-    const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
     if (editingRoundNumber !== null) {
-      editRound(editingRoundNumber, scores);
-      showUndoToast(
-        TRANSLATIONS[language].scoring.roundModifiedSuccess,
-        previousSnapshot
+      withUndo(t.scoring.roundModifiedSuccess, () =>
+        editRound(editingRoundNumber, scores)
       );
     } else {
-      addRound(scores);
-      showUndoToast(
-        TRANSLATIONS[language].scoring.roundAddedSuccess,
-        previousSnapshot
-      );
+      withUndo(t.scoring.roundAddedSuccess, () => addRound(scores));
     }
     closeScoreModal();
   };
 
   const handleDeleteRound = (roundNumber: number, entryId?: string) => {
-    const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
-    deleteRound(roundNumber, entryId);
-    showUndoToast(
-      TRANSLATIONS[language].scoring.roundDeletedSuccess,
-      previousSnapshot
+    withUndo(t.scoring.roundDeletedSuccess, () =>
+      deleteRound(roundNumber, entryId)
     );
   };
 
   const handleApplyIdentityTheft = () => {
-    const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
+    const snapshot: GameState = structuredClone(gameState);
     const pair = applyIdentityTheft();
     if (pair) {
       showUndoToast(
-        TRANSLATIONS[language].events.identityTheftSuccess
+        t.events.identityTheftSuccess
           .replace('{lowPlayer}', pair.low.name)
           .replace('{highPlayer}', pair.high.name),
-        previousSnapshot
+        snapshot
       );
     }
   };
@@ -159,89 +161,61 @@ export function App() {
     choices: Record<string, SeppukuOutcome>,
     existingRoundId?: string
   ) => {
-    const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
-    const success = applySeppuku(choices, existingRoundId);
-    if (success) {
+    const snapshot: GameState = structuredClone(gameState);
+    if (applySeppuku(choices, existingRoundId)) {
       showUndoToast(
         existingRoundId
-          ? TRANSLATIONS[language].events.seppukuUpdatedSuccess
-          : TRANSLATIONS[language].events.seppukuSuccess,
-        previousSnapshot
+          ? t.events.seppukuUpdatedSuccess
+          : t.events.seppukuSuccess,
+        snapshot
       );
     }
   };
 
   const handleUndoLastRound = () => {
-    if (gameState.rounds.length > 0) {
-      const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
-      undoLastRound();
-      showUndoToast(
-        TRANSLATIONS[language].scoring.roundDeletedSuccess,
-        previousSnapshot
-      );
-    }
+    if (gameState.rounds.length === 0) return;
+    withUndo(t.scoring.roundDeletedSuccess, undoLastRound);
   };
 
   const handleSaveSetup = (
-    newPlayers: typeof gameState.players,
-    newConfig: typeof gameState.config,
+    newPlayers: Player[],
+    newConfig: GameConfig,
     isResetRounds: boolean
   ) => {
-    const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
     if (isResetRounds) {
-      startNewGame(newPlayers, newConfig);
-      setIsGameOverModalDismissed(false);
-      showUndoToast(
-        TRANSLATIONS[language].setup.confirmResetTitle,
-        previousSnapshot
-      );
+      withUndo(t.setup.confirmResetTitle, () => {
+        startNewGame(newPlayers, newConfig);
+        setIsGameOverModalDismissed(false);
+      });
     } else {
-      updateGameSetup(newPlayers, newConfig);
-      showUndoToast(
-        TRANSLATIONS[language].setup.setupUpdatedSuccess,
-        previousSnapshot
+      withUndo(t.setup.setupUpdatedSuccess, () =>
+        updateGameSetup(newPlayers, newConfig)
       );
     }
   };
 
   const handleResetData = () => {
-    const previousSnapshot: GameState = JSON.parse(JSON.stringify(gameState));
-    resetAllData();
-    closeScoreModal();
-    setIsGameOverModalDismissed(false);
-    showUndoToast(
-      TRANSLATIONS[language].settings.resetDataSuccess,
-      previousSnapshot
-    );
+    withUndo(t.settings.resetDataSuccess, () => {
+      resetAllData();
+      closeScoreModal();
+      setIsGameOverModalDismissed(false);
+    });
   };
 
-  const actualRoundsCount = gameState.rounds.filter((r) => !r.isEvent).length;
+  const playedRoundsCount = countPlayedRounds(gameState.rounds);
 
-  const editingRound = editingRoundNumber
-    ? gameState.rounds.find(
-        (r) => !r.isEvent && r.roundNumber === editingRoundNumber
-      )
-    : null;
+  const editingRound =
+    editingRoundNumber !== null
+      ? gameState.rounds.find(
+          (r) => !r.isEvent && r.roundNumber === editingRoundNumber
+        )
+      : undefined;
 
-  const editingSeppukuRound = editingSeppukuRoundId
-    ? gameState.rounds.find((r) => r.id === editingSeppukuRoundId)
-    : null;
-
-  const editingSeppukuChoices = useMemo(() => {
-    if (
-      !editingSeppukuRound ||
-      !editingSeppukuRound.eventMetadata ||
-      !('choices' in editingSeppukuRound.eventMetadata)
-    ) {
-      return undefined;
-    }
-    const metadata = editingSeppukuRound.eventMetadata as SeppukuEventMetadata;
-    const result: Record<string, SeppukuOutcome> = {};
-    Object.entries(metadata.choices || {}).forEach(([playerId, item]) => {
-      result[playerId] = item.outcome;
-    });
-    return result;
-  }, [editingSeppukuRound]);
+  const editingSeppukuChoices = getSeppukuChoices(
+    editingSeppukuRoundId
+      ? gameState.rounds.find((r) => r.id === editingSeppukuRoundId)
+      : undefined
+  );
 
   return (
     <div className="flex min-h-screen flex-col overflow-x-clip bg-neutral-100 font-sans text-neutral-900 transition-colors selection:bg-amber-500 selection:text-black dark:bg-neutral-950 dark:text-neutral-100">
@@ -250,7 +224,7 @@ export function App() {
         language={language}
         theme={theme}
         onThemeChange={setTheme}
-        roundsCount={actualRoundsCount}
+        roundsCount={playedRoundsCount}
         targetScore={gameState.config.targetScore}
         roundLimit={gameState.config.roundLimit}
         onOpenSetup={openSetup}
@@ -318,7 +292,7 @@ export function App() {
         playerStats={playerStats}
         onSubmitRound={handleSubmitScores}
         language={language}
-        roundNumber={editingRoundNumber ?? actualRoundsCount + 1}
+        roundNumber={editingRoundNumber ?? playedRoundsCount + 1}
         initialScores={editingRound?.scores}
         isEditing={editingRoundNumber !== null}
         activeRuleCardIds={
@@ -334,7 +308,7 @@ export function App() {
         onClose={closeSetup}
         currentPlayers={gameState.players}
         currentConfig={gameState.config}
-        isMatchInProgress={actualRoundsCount > 0}
+        isMatchInProgress={playedRoundsCount > 0}
         onSaveAndStart={handleSaveSetup}
         language={language}
       />
@@ -371,7 +345,7 @@ export function App() {
         winner={winner}
         standings={playerStats}
         targetScore={gameState.config.targetScore}
-        roundsCount={actualRoundsCount}
+        roundsCount={playedRoundsCount}
         onPlayAgain={() => {
           resetCurrentGame();
           setIsGameOverModalDismissed(false);
@@ -380,37 +354,7 @@ export function App() {
         language={language}
       />
 
-      {/* Global Toast Notifications */}
-      <Toaster
-        position="top-right"
-        containerStyle={{
-          top: 16,
-          right: 16,
-          zIndex: 99999,
-        }}
-        toastOptions={{
-          duration: 4000,
-          style: {
-            borderRadius: '14px',
-            background: '#1f2937',
-            color: '#fff',
-            fontSize: '13px',
-            fontWeight: '600',
-            boxShadow:
-              '0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3)',
-          },
-          error: {
-            style: {
-              background: '#ef4444',
-              color: '#ffffff',
-            },
-            iconTheme: {
-              primary: '#ffffff',
-              secondary: '#ef4444',
-            },
-          },
-        }}
-      />
+      <AppToaster />
     </div>
   );
 }
