@@ -15,3 +15,5 @@ globs:
 - **Queries**: Prioritize accessible queries (`screen.getByRole`, `screen.getByText`) with `@testing-library/jest-dom`.
 - **Mocks**: Mock props and callback triggers with `vi.fn()`; avoid mocking internal React internals.
 - **Fixtures**: Construct explicit `defaultProps` and state fixtures typed against `src/types/game.ts`.
+- **Rules Tests**: Name the rulebook page in the test name when a test locks in a rule (e.g. `'allows several winners in the same round (rulebook pp. 10, 15)'`).
+- **Running**: Don't run the suite after every edit; the pre-commit hook runs it on each commit and `npm run test` runs once at the end of a task.

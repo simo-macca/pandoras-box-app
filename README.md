@@ -44,7 +44,7 @@ The app replaces pen-and-paper scoring at the table: it calculates every player'
 - **Undo everywhere** — every action shows an undo toast; any past round can be edited or deleted.
 - **Offline & private** — installable Progressive Web App; all data stays in the browser (`localStorage`) and can be exported/imported as JSON.
 - **Polished UX** — responsive mobile-first layout, light/dark/system theme without flash, keyboard support (Esc closes dialogs), procedural sound effects and optional haptics.
-- **Quality gates** — strict TypeScript, ESLint, Prettier, 175 automated tests (Vitest + React Testing Library) and GitHub Actions CI.
+- **Quality gates** — strict TypeScript, ESLint, Prettier, markdownlint, 175 automated tests (Vitest + React Testing Library) and GitHub Actions CI.
 
 ---
 
@@ -125,14 +125,14 @@ Each folder keeps its tests in `__tests__/`. The full map, with the state engine
 
 ## Technology
 
-| Area        | Choice                                                                            |
-| :---------- | :-------------------------------------------------------------------------------- |
-| UI          | React 18, TypeScript (strict), Tailwind CSS 4, Lucide icons                       |
-| Build & PWA | Vite 6, `vite-plugin-pwa` (Workbox service worker, full offline precache)         |
-| Testing     | Vitest, React Testing Library, jest-dom, jsdom                                    |
-| Quality     | ESLint (typescript-eslint, react-hooks), Prettier, Husky + lint-staged, GitHub CI |
-| Feedback    | Web Audio API (procedural sounds), `react-hot-toast`, `canvas-confetti`           |
-| Hosting     | Any static host — configured for [Netlify](netlify.toml); GitHub Pages supported  |
+| Area        | Choice                                                                           |
+| :---------- | :------------------------------------------------------------------------------- |
+| UI          | React 18, TypeScript (strict), Tailwind CSS 4, Lucide icons                      |
+| Build & PWA | Vite 6, `vite-plugin-pwa` (Workbox service worker, full offline precache)        |
+| Testing     | Vitest, React Testing Library, jest-dom, jsdom                                   |
+| Quality     | ESLint, Prettier, markdownlint, Husky + lint-staged, GitHub Actions CI           |
+| Feedback    | Web Audio API (procedural sounds), `react-hot-toast`, `canvas-confetti`          |
+| Hosting     | Any static host — configured for [Netlify](netlify.toml); GitHub Pages supported |
 
 ---
 
@@ -146,10 +146,12 @@ Each folder keeps its tests in `__tests__/`. The full map, with the state engine
 | `npm run test`         | Run the test suite once.                                  |
 | `npm run test:watch`   | Run the test suite in watch mode.                         |
 | `npm run lint`         | Lint the codebase with ESLint.                            |
+| `npm run lint:md`      | Lint Markdown files with markdownlint.                    |
 | `npm run type-check`   | Type-check with `tsc --noEmit`.                           |
 | `npm run format`       | Format all files with Prettier (sorts Tailwind classes).  |
 | `npm run format:check` | Check formatting without writing.                         |
-| `npm run validate`     | Run type-check, lint, format check and tests in sequence. |
+| `npm run format:md`    | Format and autofix Markdown files.                        |
+| `npm run validate`     | Run type-check, lint, Markdown lint, format check, tests. |
 
 ---
 

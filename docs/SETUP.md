@@ -66,10 +66,12 @@ The service worker is only generated for production builds. To test offline beha
 | `npm run test`         | Run all tests once (Vitest).                                         |
 | `npm run test:watch`   | Run tests in watch mode.                                             |
 | `npm run lint`         | ESLint, including React Hooks rules.                                 |
+| `npm run lint:md`      | Lint Markdown files with markdownlint-cli2.                          |
 | `npm run type-check`   | TypeScript check without output (`tsc --noEmit`).                    |
 | `npm run format`       | Format everything with Prettier (sorts Tailwind classes).            |
 | `npm run format:check` | Check formatting without writing.                                    |
-| `npm run validate`     | type-check → lint → format:check → test (same as CI, minus build).   |
+| `npm run format:md`    | Format and autofix Markdown (Prettier, then markdownlint `--fix`).   |
+| `npm run validate`     | type-check → lint → lint:md → format:check → test (CI minus build).  |
 
 ---
 
@@ -97,7 +99,7 @@ npx vitest run -t "calculateHandPoints"            # by test name
 
 `.husky/pre-commit` runs:
 
-1. `npx lint-staged` — `eslint --fix` + `prettier --write` on staged `*.ts(x)`; `prettier --write` on staged `*.json, *.css, *.html, *.md`;
+1. `npx lint-staged` — `eslint --fix` + `prettier --write` on staged `*.ts(x)`; `markdownlint-cli2 --fix` + `prettier --write` on staged `*.md`; `prettier --write` on staged `*.json, *.css, *.html`;
 2. `npm run type-check`;
 3. `npm run test`.
 
@@ -105,7 +107,7 @@ The commit is blocked if any step fails.
 
 ### On every push / pull request (GitHub Actions)
 
-[`.github/workflows/ci.yml`](../.github/workflows/ci.yml) runs `npm ci`, type-check, lint, format check, tests and a production build on Node 22.
+[`.github/workflows/ci.yml`](../.github/workflows/ci.yml) runs `npm ci`, type-check, lint, Markdown lint, format check, tests and a production build on Node 22.
 
 ---
 

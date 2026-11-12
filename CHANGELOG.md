@@ -33,6 +33,11 @@ All notable changes to this project are documented here. The format follows [Kee
 - Folders renamed: `components/rulecards` → `components/rule-cards`, `components/rules` → `components/card-dictionary`; `powerCardsData.ts` → `powerCards.ts`, `ruleCardsData.ts` → `ruleCards.ts`, `rulesConstants.ts` → `rulebookLinks.ts`.
 - Removed the unused Tailwind JS config, unused types and backward-compatibility aliases.
 
+### Added — tooling
+
+- Markdown linting with markdownlint-cli2 (Prettier-compatible style): `npm run lint:md` in `validate` and CI, `npm run format:md` to autofix, and automatic fixes on staged `.md` files.
+- Agent rules for Markdown files (`.agents/rules/docs.md`); `AGENTS.md` documents the pre-commit hook and the scoring rules added in this release.
+
 ## [1.1.0] – 2026-11-11
 
 ### Fixed — rules accuracy

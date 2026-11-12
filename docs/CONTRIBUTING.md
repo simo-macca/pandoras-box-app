@@ -45,7 +45,7 @@ Thank you for helping improve the app! This guide covers the workflow, coding st
 - **Imports** — use the `@/` alias (it points to `src/`) for anything outside the current folder: `import { calculateHandPoints } from '@/utils/scoring'`. Keep `./` for files in the same folder. In `__tests__/`, the module under test may be imported from the parent folder with `../`. ESLint rejects any other `../` import. The alias is defined in both `tsconfig.json` (`paths`) and `vite.config.ts` (`resolve.alias`); keep them in sync.
 - **Asset URLs** — build them from `import.meta.env.BASE_URL`, never as hard-coded `/…` paths.
 - **Formatting** — Prettier with `prettier-plugin-tailwindcss` (class sorting). ESLint enforces React Hooks rules.
-- **Links in docs** — relative paths only (`../src/...`), no machine-specific paths.
+- **Links in docs** — relative paths only (`../src/...`), no machine-specific paths; anchors must match a heading. `npm run lint:md` checks Markdown and `npm run format:md` fixes it.
 
 ---
 
