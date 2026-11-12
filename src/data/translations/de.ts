@@ -70,6 +70,7 @@ export const de: TranslationStrings = {
     roundLimitRounds: 'Runden',
   },
   scoreboard: {
+    lowestScoreLeads: 'Tiefste Punktzahl führt',
     title: 'Rangliste',
     round: 'Runde',
     currentLeader: 'Führende Person',

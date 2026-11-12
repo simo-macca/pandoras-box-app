@@ -82,7 +82,7 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
           <div className="flex min-w-0 items-center gap-2">
             <Calculator className="h-5 w-5 shrink-0 text-amber-500 dark:text-amber-400" />
             <div className="min-w-0">
-              <h2 className="truncate text-base leading-tight font-bold text-neutral-900 sm:text-lg dark:text-white">
+              <h2 className="text-base leading-tight font-bold text-neutral-900 sm:text-lg dark:text-white">
                 {isEditing ? t.scoring.editModalTitle : t.scoring.modalTitle}
               </h2>
               <span className="truncate text-xs font-semibold whitespace-nowrap text-amber-500 tabular-nums">

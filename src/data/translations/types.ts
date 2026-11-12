@@ -63,6 +63,7 @@ export interface TranslationStrings {
     roundLimitRounds: string;
   };
   scoreboard: {
+    lowestScoreLeads: string;
     title: string;
     round: string;
     currentLeader: string;

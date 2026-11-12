@@ -69,6 +69,7 @@ export const en: TranslationStrings = {
     roundLimitRounds: 'rounds',
   },
   scoreboard: {
+    lowestScoreLeads: 'Lowest score is leading',
     title: 'Standings',
     round: 'Round',
     currentLeader: 'Current Leader',

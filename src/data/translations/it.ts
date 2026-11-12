@@ -70,6 +70,7 @@ export const it: TranslationStrings = {
     roundLimitRounds: 'round',
   },
   scoreboard: {
+    lowestScoreLeads: 'Vince il punteggio più basso',
     title: 'Classifica',
     round: 'Round',
     currentLeader: 'In Testa',

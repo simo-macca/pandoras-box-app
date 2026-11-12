@@ -70,6 +70,7 @@ export const fr: TranslationStrings = {
     roundLimitRounds: 'manches',
   },
   scoreboard: {
+    lowestScoreLeads: 'Le score le plus bas mène',
     title: 'Classement',
     round: 'Manche',
     currentLeader: 'Meneur Actuel',

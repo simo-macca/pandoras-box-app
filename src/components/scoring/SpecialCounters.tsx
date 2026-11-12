@@ -64,10 +64,10 @@ const CounterRow: React.FC<CounterRowProps> = ({
         {icon}
       </div>
       <div className="min-w-0">
-        <div className="truncate text-xs font-bold text-neutral-900 dark:text-white">
+        <div className="text-xs leading-tight font-bold text-neutral-900 dark:text-white">
           {title}
         </div>
-        <div className="truncate text-[11px] whitespace-nowrap text-neutral-500 tabular-nums dark:text-neutral-400">
+        <div className="mt-0.5 text-[11px] leading-snug text-neutral-500 tabular-nums dark:text-neutral-400">
           {subtitle}
         </div>
       </div>

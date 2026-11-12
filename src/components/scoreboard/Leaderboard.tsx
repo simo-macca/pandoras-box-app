@@ -81,11 +81,13 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
           <h2 className="flex min-w-0 items-center gap-1.5 text-base font-black text-neutral-900 sm:gap-2 sm:text-lg md:text-xl dark:text-white">
             <span className="truncate">{t.scoreboard.title}</span>
             <span className="hidden text-xs font-medium text-neutral-500 sm:inline">
-              (Lowest score is leading)
+              ({t.scoreboard.lowestScoreLeads})
             </span>
           </h2>
 
-          <div className="flex shrink-0 flex-wrap items-center gap-2">
+          {/* max-w-full lets the actions wrap on narrow screens instead of
+              overflowing (shrink-0 kept them at their single-row width). */}
+          <div className="flex max-w-full flex-wrap items-center gap-2">
             {onApplyIdentityTheft && (
               <button
                 type="button"

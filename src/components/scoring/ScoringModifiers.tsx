@@ -166,15 +166,15 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
         </select>
       </div>
 
-      {/* Custom +/- modifier */}
-      <div className="flex items-center gap-2 border-t border-neutral-200/60 pt-1 dark:border-neutral-700/60">
-        <div className="flex-1">
-          <label
-            htmlFor="custom-modifier-input"
-            className="text-[11px] font-bold text-neutral-600 dark:text-neutral-400"
-          >
-            {t.scoring.customModifier}
-          </label>
+      {/* Custom +/- modifier: label on its own line, input and hint below */}
+      <div className="space-y-1 border-t border-neutral-200/60 pt-2 dark:border-neutral-700/60">
+        <label
+          htmlFor="custom-modifier-input"
+          className="block text-[11px] font-bold text-neutral-600 dark:text-neutral-400"
+        >
+          {t.scoring.customModifier}
+        </label>
+        <div className="flex items-center gap-2">
           <input
             id="custom-modifier-input"
             type="text"
@@ -184,11 +184,11 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
             value={localCustomModifier}
             onChange={handleCustomModifierChange}
             onBlur={handleCustomModifierBlur}
-            className="w-full rounded-xl border border-neutral-300 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
+            className="w-24 shrink-0 rounded-xl border border-neutral-300 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none sm:w-32 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
           />
-        </div>
-        <div className="flex-1 pt-4 text-[10px] text-neutral-400">
-          {t.scoring.customModifierHint}
+          <p className="min-w-0 text-[10px] leading-snug text-neutral-400">
+            {t.scoring.customModifierHint}
+          </p>
         </div>
       </div>
     </div>

@@ -40,7 +40,7 @@ export const NumberGrid: React.FC<NumberGridProps> = ({
         return (
           <div
             key={num}
-            className={`flex flex-row items-center justify-between rounded-2xl border p-2 transition-all min-[440px]:flex-col min-[440px]:justify-between ${
+            className={`flex min-w-0 flex-row items-center justify-between rounded-2xl border p-1.5 transition-all min-[360px]:p-2 min-[440px]:flex-col min-[440px]:justify-between ${
               count > 0
                 ? 'border-amber-500 bg-amber-500/15 shadow-sm'
                 : 'border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-800/40'
@@ -51,7 +51,8 @@ export const NumberGrid: React.FC<NumberGridProps> = ({
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-neutral-900 text-xs font-black text-white dark:bg-neutral-100 dark:text-neutral-900">
                 {num}
               </span>
-              <span className="text-[10px] font-bold whitespace-nowrap text-neutral-400 tabular-nums">
+              {/* Hidden on very narrow phones; the player total is shown above. */}
+              <span className="text-[10px] font-bold whitespace-nowrap text-neutral-400 tabular-nums max-[359px]:hidden">
                 {num * count} pts
               </span>
             </div>
