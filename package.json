@@ -1,7 +1,7 @@
 {
   "name": "pandoras-box-app",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Unofficial, offline-first companion app and scorekeeper for the card games Frantic and Pandora's Box by Rulefactory.",
   "license": "MIT",
   "author": "Simone Maccario",

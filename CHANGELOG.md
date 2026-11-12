@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.2.0] – 2026-11-12
 
 ### Fixed — rules accuracy
 
@@ -23,6 +23,8 @@ All notable changes to this project are documented here. The format follows [Kee
 - The rule card shuffle timer is cleared when the tab closes.
 - Translation keys that existed only as hard-coded English fallbacks (table events, Time Bomb labels, event scopes, dictionary texts) are now translated in all languages.
 - The web manifest no longer advertises a "d20 event roller".
+- **Mobile**: the Score Round button was pushed off-screen by the standings toolbar; the calculator's card labels, title, number grid (at 320 px) and free adjustment field no longer overflow or get cut off.
+- The version in Settings was hard-coded as "v2.0"; it now comes from `package.json`.
 
 ### Changed — code structure
 
