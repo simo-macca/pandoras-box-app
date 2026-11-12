@@ -37,10 +37,10 @@ Thank you for helping improve the app! This guide covers the workflow, coding st
 ## Coding Standards
 
 - **TypeScript** — strict mode; type function signatures and hook return values; avoid `any`. Shared models live in [`src/types/`](../src/types/).
-- **Pure domain logic** — scoring and standings belong in [`src/utils/scoring.ts`](../src/utils/scoring.ts) and [`src/utils/stats.ts`](../src/utils/stats.ts), without React imports.
+- **Pure domain logic** — scoring belongs in [`src/utils/scoring.ts`](../src/utils/scoring.ts), standings and the game-over rule in [`src/utils/stats.ts`](../src/utils/stats.ts), score-changing events in [`src/utils/events.ts`](../src/utils/events.ts) — all without React imports.
 - **Rules fidelity** — any rule value must be backed by the official rulebook. Cite the page in a comment or test name. Mark non-official behaviour as a _house rule_ in the UI and in [GAME_RULES.md](GAME_RULES.md#app-specific-house-rules).
 - **Untrusted data** — anything read from storage or files goes through `sanitizeGameState()`.
-- **Localisation** — no hard-coded user-facing text in components; add keys to `translations.ts` in all four languages.
+- **Localisation** — no hard-coded user-facing text in components and no `|| 'English fallback'`; add keys to [`src/data/translations/`](../src/data/translations/) in all four languages.
 - **Accessibility** — buttons need accessible names (`aria-label` for icon-only buttons); dialogs use `useModalA11y` plus `role="dialog"` / `aria-modal="true"`.
 - **Imports** — use the `@/` alias (it points to `src/`) for anything outside the current folder: `import { calculateHandPoints } from '@/utils/scoring'`. Keep `./` for files in the same folder. In `__tests__/`, the module under test may be imported from the parent folder with `../`. ESLint rejects any other `../` import. The alias is defined in both `tsconfig.json` (`paths`) and `vite.config.ts` (`resolve.alias`); keep them in sync.
 - **Asset URLs** — build them from `import.meta.env.BASE_URL`, never as hard-coded `/…` paths.
@@ -53,12 +53,13 @@ Thank you for helping improve the app! This guide covers the workflow, coding st
 
 ### 1. Adding or Updating Cards, Events or Rule Cards
 
-| Dataset       | File                                                          | Type (in [`src/types/rules.ts`](../src/types/rules.ts)) |
-| :------------ | :------------------------------------------------------------ | :------------------------------------------------------ |
-| Special cards | [`src/data/cardsData.ts`](../src/data/cardsData.ts)           | `CardItem`                                              |
-| Event cards   | [`src/data/eventsData.ts`](../src/data/eventsData.ts)         | `EventItem`                                             |
-| Power cards   | [`src/data/powerCardsData.ts`](../src/data/powerCardsData.ts) | `PowerCardItem`                                         |
-| Rule cards    | [`src/data/ruleCardsData.ts`](../src/data/ruleCardsData.ts)   | `RuleCardItem`                                          |
+| Dataset       | File                                                                                               | Type (in [`src/types/rules.ts`](../src/types/rules.ts)) |
+| :------------ | :------------------------------------------------------------------------------------------------- | :------------------------------------------------------ |
+| Special cards | [`src/data/cards/`](../src/data/cards/) (`colouredSpecials`, `openWishSpecials`, `uniqueSpecials`) | `CardItem`                                              |
+| Event cards   | [`src/data/events/`](../src/data/events/) (`base`, `troublemaker`, `supercharge`, `pandorasBox`)   | `EventItem`                                             |
+| Power cards   | [`src/data/powerCards.ts`](../src/data/powerCards.ts)                                              | `PowerCardItem`                                         |
+| Rule cards    | [`src/data/ruleCards.ts`](../src/data/ruleCards.ts)                                                | `RuleCardItem`                                          |
+| Rules summary | [`src/data/rulesGuideContent.ts`](../src/data/rulesGuideContent.ts)                                | `LocalizedMap` per string                               |
 
 Example `CardItem`:
 
@@ -67,7 +68,7 @@ Example `CardItem`:
   id: 'card-identifier',
   // Card names are printed in English in every edition: keep them identical.
   name: { en: 'Card Name', de: 'Card Name', it: 'Card Name', fr: 'Card Name' },
-  points: 7,
+  points: CARD_POINTS.SPECIAL, // from @/utils/scoring, never a literal
   category: 'special',          // 'special' | 'unique' | 'power' | 'number'
   subCategory: '1-colour',
   description: { en: '…', de: '…', it: '…', fr: '…' },
@@ -79,9 +80,9 @@ All four languages are required; `gameData.test.ts` fails otherwise. Names must 
 
 ### 2. Adding or Changing Translations
 
-UI strings live in [`src/data/translations.ts`](../src/data/translations.ts) and are grouped by area (`common`, `nav`, `tabs`, `setup`, `scoreboard`, `scoring`, `rulecards`, `rules`, `settings`, `events`):
+UI strings live in [`src/data/translations/`](../src/data/translations/): `types.ts` declares the `TranslationStrings` interface, grouped by area (`common`, `nav`, `tabs`, `setup`, `scoreboard`, `scoring`, `rulecards`, `rules`, `settings`, `events`), and `en.ts`, `de.ts`, `it.ts`, `fr.ts` implement it:
 
-1. add the key to the right group in the `TranslationStrings` interface:
+1. add the key to the right group in `types.ts` (keys are required, never optional):
    ```ts
    export interface TranslationStrings {
      // …
@@ -91,7 +92,7 @@ UI strings live in [`src/data/translations.ts`](../src/data/translations.ts) and
      };
    }
    ```
-2. add the value under `en`, `de`, `it` and `fr` in `TRANSLATIONS`;
+2. add the value to `en.ts`, `de.ts`, `it.ts` and `fr.ts`;
 3. use it in a component: `TRANSLATIONS[language].common.newLabel`.
 
 TypeScript reports any language that is missing the key.
@@ -100,14 +101,15 @@ TypeScript reports any language that is missing the key.
 
 1. Update `calculateHandPoints()` or `CARD_POINTS` in [`src/utils/scoring.ts`](../src/utils/scoring.ts). Results may be negative (Time Bomb, Seppuku, free adjustments).
 2. If you add a new input, extend `HandScore` in [`src/types/game.ts`](../src/types/game.ts) and, if needed, `sanitizeGameState()` in [`src/utils/storage.ts`](../src/utils/storage.ts).
-3. Add the control in [`SpecialCounters.tsx`](../src/components/scoring/SpecialCounters.tsx) or [`ScoringModifiers.tsx`](../src/components/scoring/ScoringModifiers.tsx) and wire it in [`HandCalculatorModal.tsx`](../src/components/scoring/HandCalculatorModal.tsx).
+3. Add the control in [`SpecialCounters.tsx`](../src/components/scoring/SpecialCounters.tsx) or [`ScoringModifiers.tsx`](../src/components/scoring/ScoringModifiers.tsx), add any table-wide behaviour to [`useHandScores`](../src/hooks/useHandScores.ts) and wire it in [`HandCalculatorModal.tsx`](../src/components/scoring/HandCalculatorModal.tsx).
 4. Add cases to [`scoring.test.ts`](../src/utils/__tests__/scoring.test.ts).
 
 The end-of-game condition is `isOverScoreLimit()` in [`stats.ts`](../src/utils/stats.ts) (official rule: the limit must be **exceeded**).
 
 ### 4. Creating UI Components
 
-- Shared widgets go in `src/components/common/`; feature components in their folder (`scoring/`, `scoreboard/`, `rulecards/`, `rules/`, `setup/`, `layout/`, `events/`).
+- Shared widgets go in `src/components/common/`; feature components in their folder (`scoring/`, `scoreboard/`, `rule-cards/`, `card-dictionary/`, `setup/`, `layout/`, `events/`).
+- Keep files small: when a component grows past ~250 lines, move state into a hook and repeated markup into a sub-component in the same folder.
 - Declare `export const Name: React.FC<NameProps> = (…) => …` with the props interface at the top.
 - Accept `language: Language` and read strings from `TRANSLATIONS[language]`.
 - Check both light and dark themes and a narrow mobile viewport.

@@ -18,10 +18,10 @@
 
 ## Architecture Map
 
-- `src/components/`: Modular UI (common, layout, scoreboard, scoring, setup, rules, events)
-- `src/hooks/`: State & lifecycle management (`useGameState`, `useAppModals`, `useUndoToast`, `useTheme`, `useModalA11y`)
-- `src/utils/`: Pure game domain logic, scoring calculation, storage, i18n, sound
-- `src/data/`: Static game card data, translations (`TRANSLATIONS`), rulebook PDF links
+- `src/components/`: Modular UI (card-dictionary, common, events, layout, rule-cards, scoreboard, scoring, setup)
+- `src/hooks/`: State & lifecycle management (`useGameState`, `useHandScores`, `useAppModals`, `useUndoToast`, `useTheme`, `useModalA11y`)
+- `src/utils/`: Pure game domain logic (`scoring`, `stats`, `events`), storage, card search, i18n, colours, sound
+- `src/data/`: Card data (`cards/`, `events/`, `powerCards`, `ruleCards`), translations (`translations/`), rules summary text, rulebook PDF links
 - `src/types/`: Core TypeScript interfaces and domain models (`game.ts`, `rules.ts`)
 - `src/test/`: Test environment configuration (`setup.ts`)
 - `public/`: Static assets, PWA manifest, icons

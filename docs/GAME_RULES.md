@@ -83,6 +83,9 @@ Every player who still holds cards adds up their points and adds them to their t
 
 The 23 special cards are: _2nd Chance, Skip, Gift, Exchange, Thief, Troublemaker, Colour Swap, Recharge_ (plain-/bi-coloured); _Fantastic, Fantastic Four, Counterattack, Equality, Inequality, Nice Try, Lucky Bastard, Special Favours, Edison, Update, Do It Yourself_ (open-wish); _Fuck You, Mimicry, Curse, The End_ (unique).
 
+- **Several winners** are possible: _Nice Try_ (p. 10) and _Parasite_ (p. 15) mention rounds where several players get rid of their cards at once. Each of them scores 0.
+- **Unique cards** — _Fuck You_, _Mimicry_, _Curse_ and _The End_ — exist once in the whole game (p. 22), so a hand can hold at most one of each.
+
 ---
 
 ## End of the Game
@@ -106,20 +109,20 @@ Reaching the limit exactly does **not** end the game — the app follows this ru
 
 These are the events the app handles directly. All other events affect the cards in play, not the score sheet.
 
-| Event                       | Official effect                                                                                                                                                                                                                               | In the app                                   |
-| :-------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------- |
-| **Doomsday** (p. 13)        | The round ends immediately. Everyone scores 50 points; hand cards are not counted.                                                                                                                                                            | _Doomsday_ toggle in the round calculator    |
-| **Finish Line** (p. 14)     | The round ends immediately; everyone adds up their hand points.                                                                                                                                                                               | Score the round normally                     |
-| **Time Bomb** (p. 17)       | Everyone has three turns left. If someone ends the round before that, 10 points are subtracted from their total and everyone else adds 10 to their hand points. If no one ends the round within three turns, all players' points are doubled. | _Time Bomb_ selector: _defused_ / _exploded_ |
-| **Double Taxation** (p. 14) | When writing down points: every player immediately adds the value of their three highest hand cards to their total score.                                                                                                                     | Free numeric adjustment                      |
-| **Identity Theft** (p. 14)  | When writing down points: the person with the highest score swaps their score with the person with the lowest score.                                                                                                                          | _Identity Theft_ button                      |
-| **Seppuku** (p. 16)         | When writing down points: each player, in order of play, decides whether to take the risk and turn over the top draw-pile card. Number card: −21 points. Any other card: +42 points. Refusing: +21 points.                                    | _Seppuku_ dialog                             |
-| **Parasite** (p. 15)        | When someone ends the round, the person on their left may discard two cards before counting.                                                                                                                                                  | Enter the remaining cards only               |
+| Event                       | Official effect                                                                                                                                                                                                                               | In the app                                                              |
+| :-------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------- |
+| **Doomsday** (p. 13)        | The round ends immediately. Everyone scores 50 points; hand cards are not counted.                                                                                                                                                            | _Doomsday_ toggle in the round calculator                               |
+| **Finish Line** (p. 14)     | The round ends immediately; everyone adds up their hand points.                                                                                                                                                                               | Score the round normally                                                |
+| **Time Bomb** (p. 17)       | Everyone has three turns left. If someone ends the round before that, 10 points are subtracted from their total and everyone else adds 10 to their hand points. If no one ends the round within three turns, all players' points are doubled. | _Time Bomb_ selector: _defused_ (−10 winners / +10 others) / _exploded_ |
+| **Double Taxation** (p. 14) | When writing down points: every player immediately adds the value of their three highest hand cards to their total score.                                                                                                                     | Free numeric adjustment                                                 |
+| **Identity Theft** (p. 14)  | When writing down points: the person with the highest score swaps their score with the person with the lowest score.                                                                                                                          | _Identity Theft_ button                                                 |
+| **Seppuku** (p. 16)         | When writing down points: each player, in order of play, decides whether to take the risk and turn over the top draw-pile card. Number card: −21 points. Any other card: +42 points. Refusing: +21 points.                                    | _Seppuku_ dialog                                                        |
+| **Parasite** (p. 15)        | When someone ends the round, the person on their left may discard two cards before counting.                                                                                                                                                  | Enter the remaining cards only                                          |
 
 Notes:
 
 - **The End** (p. 11): if a player ends the round by playing _The End_, all active events (such as Time Bomb) are ignored and _Nice Try_ can no longer be played.
-- **Lucky Bastard** (p. 10): a player protected by Lucky Bastard is not affected by the event; if the event ends the round (e.g. Doomsday), that player writes down no points. Use the free adjustment to correct their row.
+- **Lucky Bastard** (p. 10): a player protected by Lucky Bastard is not affected by the event; if the event ends the round (e.g. Doomsday), that player writes down no points. The free adjustment is applied even on Doomsday, so enter `-50` for that player.
 - **Ties** for Identity Theft are resolved like every other event: the first qualifying person in the order of play. The app uses the order of the player list, so enter players in seating order.
 
 ---
@@ -139,7 +142,7 @@ The symbol in the corner of the card determines when its effect is executed rela
 
 ## Pandora's Box Rule Cards
 
-Rule cards are optional. Before each round, shuffle the rule card deck and draw one or more cards; the rules for that round are modified accordingly (p. 21). _Do It Yourself_ and the _Pandora's Box_ event let you define your own effect before the game starts (pp. 9, 15).
+Rule cards are optional. Before each round, shuffle the rule card deck and draw one or more cards; the rules for that round are modified accordingly (p. 21). The app lets you activate as many rule cards as you drew. _Do It Yourself_ and the _Pandora's Box_ event let you define your own effect before the game starts (pp. 9, 15).
 
 The add-on contains **15 rule cards**. The summaries below paraphrase Rulefactory's [digital rulebook](https://rulefactory.ch/rulebook/frantic/en/rule-cards); the app shows the official wording.
 

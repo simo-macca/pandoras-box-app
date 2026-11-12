@@ -29,12 +29,12 @@ What the app does and how to use it at the table.
 1. **Set up the match** — tap **Players** in the top bar.
    - Add **2 to 8 players** (enter them in seating order — event tie-breaks follow this order) and give each a colour.
    - Pick an official point limit (_short_, _medium_, _long_ — the labels follow the player count) or type a custom limit (minimum 50).
-   - Optionally set a maximum number of rounds.
-2. **Draw a rule card** _(Pandora's Box, optional)_ — open **Rule Cards**, tap **Draw Random Rule Card** and activate it. It stays pinned above the scoreboard for the round.
+   - Optionally set a maximum number of rounds (house rule).
+2. **Draw rule cards** _(Pandora's Box, optional)_ — open **Rule Cards**, tap **Draw Random Rule Card** and activate it. Repeat if you play with more than one rule card per round; the active cards stay pinned above the scoreboard.
 3. **Play the round** with your physical cards.
 4. **Score the round** — tap **Score Round**:
    - pick each player in turn;
-   - mark the player who ran out of cards as **Round Winner** (0 points);
+   - mark the player who ran out of cards as **Round Winner** (0 points) — several players can win the same round;
    - for everyone else, enter the cards left in hand with the number grid and the special-card counters;
    - if they happened, set **Doomsday** or **Time Bomb** (defused / exploded) — they apply to the whole table;
    - tap **Save Round Scores**.
@@ -55,22 +55,22 @@ What the app does and how to use it at the table.
 
 Opened with **Score Round**. The total updates live as you enter cards.
 
-- **Round winner** — one tap; the player scores 0 and their card inputs are cleared. Only one winner can be selected.
+- **Round winner** — one tap; the player scores 0 and their card inputs are cleared. Several players can be winners of the same round (e.g. after _Nice Try_ or an event that empties more than one hand).
 - **Number cards 1–10** — a stepper per value.
 - **Special cards** — counters for:
   - plain-/bi-coloured and open-wish specials — 7 points each;
-  - Mimicry — 7; Curse — 13; The End — 17; Fuck You — 42.
+  - Mimicry — 7; Curse — 13; The End — 17; Fuck You — 42. These four cards exist once in the game, so their counters stop at 1.
 - **Table events** (apply to every player at once):
-  - **Doomsday** — everyone scores 50; the winner toggle is disabled.
-  - **Time Bomb defused** — the round winner gets −10, everyone else +10 on top of their hand.
+  - **Doomsday** — everyone scores 50; the winner toggle is disabled. The free adjustment still applies (e.g. `-50` for a player protected by _Lucky Bastard_).
+  - **Time Bomb defused** — the round winners get −10, everyone else +10 on top of their hand. The per-player selector only offers the option that fits the player (−10 for winners, +10 for the others).
   - **Time Bomb exploded** — every player's hand points are doubled.
-- **Free adjustment** — type any positive or negative number (e.g. `-15`, `+25`) for cases such as Double Taxation or Lucky Bastard.
+- **Free adjustment** — type any positive or negative number (e.g. `-15`, `+25`) for cases such as Double Taxation, _The End is nigh_ or Lucky Bastard. It is always added last.
 - **Negative scores** are allowed for rounds and for totals.
 - **Reset** clears the selected player's inputs.
 
 ### 3. Round History, Editing & Undo
 
-- Every round and event appears in the match history with winner, events and the active rule card.
+- Every round and event appears in the match history with winners, events and all the rule cards that were active.
 - **Edit** a past round to reopen the calculator with that round's data.
 - **Delete** any entry (with an inline confirmation) or **undo** the most recent one.
 - After every action an **Undo** toast is shown for 5 seconds.
@@ -100,7 +100,7 @@ When the _Seppuku_ event (Troublemaker, by D'Sinead Conception) is revealed and 
 ### 6. Pandora's Box Rule Card Drawer
 
 - **Draw Random Rule Card** shuffles with an animation and a sound effect.
-- Activate the drawn card to pin it above the scoreboard; the active card is saved with each round.
+- Activate the drawn card to pin it above the scoreboard. **Several rule cards can be active at once** (the rulebook allows one or more per round); _Draw_ only picks from cards that are not active yet, and _Clear all_ removes them. The active cards are saved with each round.
 - Browse all **15 official rule cards** with Rulefactory's wording in all four languages.
 - **Double Special** is scored automatically: while it is active, the calculator doubles every special card and shows a notice.
 
@@ -111,14 +111,14 @@ When the _Seppuku_ event (Troublemaker, by D'Sinead Conception) is revealed and 
   - **23 special cards** with tips;
   - **44 event cards**, tagged by add-on (base, Troublemaker, Supercharge, Pandora's Box) and by scope (whole table vs. targeted players);
   - **12 Supercharge power cards** with their official **1ST / 2ND** timing;
-  - **rule cards**.
+  - **15 rule cards**.
 - All content is available in **English, German, Italian and French**. Card names stay in English in every language, exactly as on the printed cards.
 
 ### 8. Match Setup & Player Management
 
 - **2–8 players**, each with a unique colour out of 8 (red, blue, green, yellow, purple, orange, cyan, pink).
 - **Official point limits** for 2–4 and 5–8 players, or a custom limit (minimum 50).
-- **Optional round limit** (quick picks 5/10/15/20 or a custom value): when reached, the lowest score wins.
+- **Optional round limit** (house rule; quick picks 5/10/15/20 or a custom value): when reached, the lowest score wins.
 - **Change settings during a match** — names, colours, limits — without losing the history.
 - **Late joiners** (house rule): a player added to a running match starts at _highest current score + 1_, recorded as a history entry.
 - Blank names are replaced with _Player N_ when saving.
@@ -156,7 +156,6 @@ The **Rulebook** banner in the dictionary opens the official Rulefactory ruleboo
 
 - **The End is nigh** changes end-of-game scoring in a way that depends on all players' points; enter it with the free adjustment.
 - **Event entries store point deltas.** If you edit an earlier round after an Identity Theft, the swap is not recalculated.
-- **One round winner** can be selected; for events with several simultaneous winners, score the extra winners with 0 cards.
 - Data is stored per browser and device; use export/import to move a match.
 
 ---

@@ -2,6 +2,37 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed — rules accuracy
+
+- **Doomsday** (p. 13) no longer ignores the free adjustment, so a player protected by _Lucky Bastard_ (p. 10) can cancel the 50 points.
+- **Several winners** can be marked in the same round (_Nice Try_ p. 10, _Parasite_ p. 15).
+- **Several rule cards** can be active per round (p. 21); the drawer only draws cards that are not active yet, and the scoreboard and history show all of them.
+- **Unique cards** (Curse, The End, Fuck You, Mimicry) are capped at one per hand: each exists once in the game (p. 22).
+- **Time Bomb** (p. 17): the −10 bonus is offered only to winners and +10 only to the others.
+- **Danger Zone** help text said "within 20 points of the limit"; it now describes the 80 % house rule. The round limit is labelled as a house rule.
+- The Italian rules summary called the points "negative"; the app subtitle said "Official" in every language.
+
+### Fixed — bugs
+
+- Undo ignores snapshots that fail validation instead of restoring them unchecked.
+- The game-over dialog shows the stored winner instead of the current first row.
+- CODEOWNERS moved from `.github/workflows/` (ignored by GitHub) to `.github/` with a `*` pattern.
+- Rounds without a Time Bomb value no longer show the bomb icon in the history.
+- The rule card shuffle timer is cleared when the tab closes.
+- Translation keys that existed only as hard-coded English fallbacks (table events, Time Bomb labels, event scopes, dictionary texts) are now translated in all languages.
+- The web manifest no longer advertises a "d20 event roller".
+
+### Changed — code structure
+
+- Translations split into `src/data/translations/` (one file per language); every key is required.
+- Card data split into `src/data/cards/` and `src/data/events/`; points reference `CARD_POINTS`.
+- Pure event logic in `src/utils/events.ts`; game-over detection in `getGameOverUpdate()`.
+- Calculator state in the new `useHandScores` hook; large components (calculator, rules guide, history, setup, dictionary, Seppuku, rule card drawer) split into smaller ones.
+- Folders renamed: `components/rulecards` → `components/rule-cards`, `components/rules` → `components/card-dictionary`; `powerCardsData.ts` → `powerCards.ts`, `ruleCardsData.ts` → `ruleCards.ts`, `rulesConstants.ts` → `rulebookLinks.ts`.
+- Removed the unused Tailwind JS config, unused types and backward-compatibility aliases.
+
 ## [1.1.0] – 2026-11-11
 
 ### Fixed — rules accuracy
