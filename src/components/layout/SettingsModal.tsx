@@ -156,7 +156,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             onClick={onClose}
             className="rounded-xl bg-neutral-200 px-4 py-2 text-xs font-bold text-neutral-800 transition-colors hover:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
           >
-            {t.setup.cancel || 'Close'}
+            {t.setup.cancel}
           </button>
         </div>
       </div>

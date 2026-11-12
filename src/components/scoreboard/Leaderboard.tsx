@@ -97,15 +97,13 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                 className="flex items-center gap-1.5 rounded-xl border border-indigo-500/40 bg-indigo-500/10 px-2.5 py-1.5 text-xs font-bold text-indigo-700 shadow-sm transition-all hover:bg-indigo-500/20 active:scale-95 disabled:pointer-events-none disabled:opacity-40 sm:gap-2 sm:px-3 dark:border-indigo-500/30 dark:bg-indigo-950/40 dark:text-indigo-300 dark:hover:bg-indigo-900/50"
                 title={
                   canApplyIdentityTheft
-                    ? t.events?.identityTheftDesc ||
-                      'Identity Theft: Swap points between highest and lowest score players'
-                    : t.events?.identicalScoresWarning ||
-                      'Cannot swap: all scores are currently identical'
+                    ? t.events.identityTheftDesc
+                    : t.events.identicalScoresWarning
                 }
               >
                 <UserCheck className="h-3.5 w-3.5 shrink-0 stroke-[2.2]" />
                 <span className="whitespace-nowrap">
-                  {t.events?.identityTheft || 'Identity Theft'}
+                  {t.events.identityTheft}
                 </span>
               </button>
             )}
@@ -119,15 +117,10 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                 }}
                 disabled={players.length === 0}
                 className="flex items-center gap-1.5 rounded-xl border border-rose-500/40 bg-rose-500/10 px-2.5 py-1.5 text-xs font-bold text-rose-700 shadow-sm transition-all hover:bg-rose-500/20 active:scale-95 disabled:pointer-events-none disabled:opacity-40 sm:gap-2 sm:px-3 dark:border-rose-500/30 dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/50"
-                title={
-                  t.events?.seppukuDesc ||
-                  'Seppuku: Flip top card (-21 number / +42 non-number) or refuse (+21)'
-                }
+                title={t.events.seppukuDesc}
               >
                 <Swords className="h-3.5 w-3.5 shrink-0 stroke-[2.2]" />
-                <span className="whitespace-nowrap">
-                  {t.events?.seppuku || 'Seppuku'}
-                </span>
+                <span className="whitespace-nowrap">{t.events.seppuku}</span>
               </button>
             )}
 

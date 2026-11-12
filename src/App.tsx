@@ -164,10 +164,8 @@ export function App() {
     if (success) {
       showUndoToast(
         existingRoundId
-          ? TRANSLATIONS[language].events?.seppukuUpdatedSuccess ||
-              'Seppuku choices updated successfully!'
-          : TRANSLATIONS[language].events?.seppukuSuccess ||
-              'Seppuku applied successfully!',
+          ? TRANSLATIONS[language].events.seppukuUpdatedSuccess
+          : TRANSLATIONS[language].events.seppukuSuccess,
         previousSnapshot
       );
     }
@@ -194,7 +192,7 @@ export function App() {
       startNewGame(newPlayers, newConfig);
       setIsGameOverModalDismissed(false);
       showUndoToast(
-        TRANSLATIONS[language].setup.confirmResetTitle || 'Match Reset',
+        TRANSLATIONS[language].setup.confirmResetTitle,
         previousSnapshot
       );
     } else {
@@ -297,9 +295,7 @@ export function App() {
           {activeTab === 'rulecards' && (
             <RuleCardDrawer
               activeRuleCardIds={gameState.activeRuleCardIds || []}
-              onSelectActiveRuleCard={(cardId) => {
-                setActiveRuleCardIds(cardId ? [cardId] : []);
-              }}
+              onChangeActiveRuleCards={setActiveRuleCardIds}
               language={language}
             />
           )}

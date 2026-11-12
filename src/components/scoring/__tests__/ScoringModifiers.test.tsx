@@ -22,8 +22,8 @@ describe('ScoringModifiers component', () => {
     expect(
       screen.getByRole('button', { name: /doomsday/i })
     ).toBeInTheDocument();
-    expect(screen.getByLabelText(/table time bomb mode/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/player override/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/whole table/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/this player/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/custom/i)).toBeInTheDocument();
   });
 
@@ -38,12 +38,13 @@ describe('ScoringModifiers component', () => {
     expect(onToggle).toHaveBeenCalledTimes(1);
   });
 
-  it('disables other controls when isDoomsday is true', () => {
+  it('disables Time Bomb on Doomsday but keeps the free adjustment', () => {
     render(<ScoringModifiers {...defaultProps} isDoomsday={true} />);
 
-    expect(screen.getByLabelText(/table time bomb mode/i)).toBeDisabled();
-    expect(screen.getByLabelText(/player override/i)).toBeDisabled();
-    expect(screen.getByLabelText(/custom/i)).toBeDisabled();
+    expect(screen.getByLabelText(/whole table/i)).toBeDisabled();
+    expect(screen.getByLabelText(/this player/i)).toBeDisabled();
+    // Lucky Bastard (p. 10) must be able to cancel the 50 Doomsday points.
+    expect(screen.getByLabelText(/custom/i)).toBeEnabled();
   });
 
   it('calls onChangeTableTimeBomb when table time bomb mode changes', async () => {
@@ -56,7 +57,7 @@ describe('ScoringModifiers component', () => {
       />
     );
 
-    const tableSelect = screen.getByLabelText(/table time bomb mode/i);
+    const tableSelect = screen.getByLabelText(/whole table/i);
     await user.selectOptions(tableSelect, 'exploded');
 
     expect(onChangeTableTimeBomb).toHaveBeenCalledWith('exploded');
@@ -69,10 +70,23 @@ describe('ScoringModifiers component', () => {
       <ScoringModifiers {...defaultProps} onChangeTimeBomb={onChangeTimeBomb} />
     );
 
-    const playerSelect = screen.getByLabelText(/player override/i);
-    await user.selectOptions(playerSelect, 'winner_bonus');
+    const playerSelect = screen.getByLabelText(/this player/i);
+    await user.selectOptions(playerSelect, 'loser_penalty');
 
-    expect(onChangeTimeBomb).toHaveBeenCalledWith('winner_bonus');
+    expect(onChangeTimeBomb).toHaveBeenCalledWith('loser_penalty');
+  });
+
+  it('offers the −10 bonus only to winners and +10 only to the others', () => {
+    const { rerender } = render(<ScoringModifiers {...defaultProps} />);
+    const options = () =>
+      Array.from(
+        (screen.getByLabelText(/this player/i) as HTMLSelectElement).options
+      ).map((o) => o.value);
+
+    expect(options()).toEqual(['none', 'loser_penalty', 'expired_double']);
+
+    rerender(<ScoringModifiers {...defaultProps} isWinner={true} />);
+    expect(options()).toEqual(['none', 'winner_bonus', 'expired_double']);
   });
 
   it('calls onChangeCustomModifier when custom modifier input changes', async () => {

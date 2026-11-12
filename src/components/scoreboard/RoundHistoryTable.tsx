@@ -116,7 +116,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                       <>
                         <span className="flex shrink-0 items-center gap-1 rounded-xl border border-rose-500/30 bg-rose-500/15 px-2.5 py-1 text-xs font-black whitespace-nowrap text-rose-600 tabular-nums dark:text-rose-400">
                           <Swords className="h-3.5 w-3.5 shrink-0" />
-                          <span>{t.events?.seppuku || 'Seppuku'}</span>
+                          <span>{t.events.seppuku}</span>
                         </span>
                         {round.notes && (
                           <span className="hidden truncate text-xs font-semibold text-neutral-500 sm:inline dark:text-neutral-400">
@@ -128,7 +128,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                       <>
                         <span className="flex shrink-0 items-center gap-1 rounded-xl border border-emerald-500/30 bg-emerald-500/15 px-2.5 py-1 text-xs font-black whitespace-nowrap text-emerald-600 tabular-nums dark:text-emerald-400">
                           <UserPlus className="h-3.5 w-3.5 shrink-0" />
-                          <span>{t.events?.lateJoiner || 'Late Joiner'}</span>
+                          <span>{t.events.lateJoiner}</span>
                         </span>
                         {round.notes && (
                           <span className="hidden truncate text-xs font-semibold text-neutral-500 sm:inline dark:text-neutral-400">
@@ -140,9 +140,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                       <>
                         <span className="flex shrink-0 items-center gap-1 rounded-xl border border-indigo-500/30 bg-indigo-500/15 px-2.5 py-1 text-xs font-black whitespace-nowrap text-indigo-600 tabular-nums dark:text-indigo-400">
                           <UserCheck className="h-3.5 w-3.5 shrink-0" />
-                          <span>
-                            {t.events?.identityTheft || 'Identity Theft'}
-                          </span>
+                          <span>{t.events.identityTheft}</span>
                         </span>
                         {round.eventMetadata &&
                           'lowPlayerName' in round.eventMetadata && (
@@ -194,12 +192,8 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                         type="button"
                         onClick={() => onEditSeppuku(round.id!)}
                         className="rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-rose-500/10 hover:text-rose-500 dark:hover:bg-neutral-800"
-                        title={
-                          t.events?.editSeppukuTooltip || 'Edit Seppuku choices'
-                        }
-                        aria-label={
-                          t.events?.editSeppukuTooltip || 'Edit Seppuku choices'
-                        }
+                        title={t.events.editSeppukuTooltip}
+                        aria-label={t.events.editSeppukuTooltip}
                       >
                         <Edit3 className="h-3.5 w-3.5 shrink-0" />
                       </button>
@@ -278,10 +272,10 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                           : 'bg-amber-500/20 text-amber-700 dark:text-amber-300';
 
                       const badgeText = isRiskNumber
-                        ? t.events?.seppukuBadgeNumber || 'Number (-21)'
+                        ? t.events.seppukuBadgeNumber
                         : isRiskSpecial
-                          ? t.events?.seppukuBadgeSpecial || 'Special (+42)'
-                          : t.events?.seppukuBadgeNoRisk || 'No Risk (+21)';
+                          ? t.events.seppukuBadgeSpecial
+                          : t.events.seppukuBadgeNoRisk;
 
                       return (
                         <div
@@ -324,7 +318,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                               {player.name}
                             </span>
                             <span className="rounded-md bg-emerald-500/20 px-1.5 py-0.5 text-[9px] font-bold text-emerald-700 dark:text-emerald-300">
-                              {t.events?.lateJoiner || 'Late Joiner'}
+                              {t.events.lateJoiner}
                             </span>
                           </div>
 
@@ -356,7 +350,7 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
                           </span>
                           {hasDelta && (
                             <span className="rounded-md bg-indigo-500/20 px-1.5 py-0.5 text-[9px] font-bold text-indigo-700 dark:text-indigo-300">
-                              {t.events?.swappedPoints || 'Swapped'}
+                              {t.events.swappedPoints}
                             </span>
                           )}
                         </div>

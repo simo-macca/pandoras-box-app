@@ -315,7 +315,7 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
                   >
                     {Icon && (
                       <Icon
-                        className={`h-3.5 w-3.5 shrink-0 ${cat.colorClass || ''}`}
+                        className={`h-3.5 w-3.5 shrink-0 ${cat.colorClass}`}
                       />
                     )}
                     <span>{cat.label}</span>

@@ -51,16 +51,16 @@ export interface TranslationStrings {
     startMatch: string;
     resetMatch: string;
     newGame: string;
-    newMatch?: string;
+    newMatch: string;
     setupUpdatedSuccess: string;
     confirmResetTitle: string;
     confirmResetMessage: string;
     cancel: string;
     confirm: string;
-    saveChanges?: string;
-    roundLimit?: string;
-    roundLimitUnlimited?: string;
-    roundLimitRounds?: string;
+    saveChanges: string;
+    roundLimit: string;
+    roundLimitUnlimited: string;
+    roundLimitRounds: string;
   };
   scoreboard: {
     title: string;
@@ -113,11 +113,13 @@ export interface TranslationStrings {
     eventsAndModifiers: string;
     doomsdayToggle: string;
     doomsdayHint: string;
-    tableEventsTitle?: string;
-    tableEventsHint?: string;
-    timeBombTableNone?: string;
-    timeBombTableDefused?: string;
-    timeBombTableExploded?: string;
+    tableEventsTitle: string;
+    timeBombTableLabel: string;
+    timeBombPlayerLabel: string;
+    timeBombTableNone: string;
+    timeBombTableDefused: string;
+    timeBombTableExploded: string;
+    uniqueCardHint: string;
     timeBombModifier: string;
     timeBombNone: string;
     timeBombWinner: string;
@@ -150,6 +152,10 @@ export interface TranslationStrings {
     deactivateCard: string;
     allCards: string;
     allRuleCards: string;
+    selected: string;
+    clickToInspect: string;
+    multipleHint: string;
+    clearAll: string;
     activeForRound: string;
     searchPlaceholder: string;
   };
@@ -175,8 +181,8 @@ export interface TranslationStrings {
     openPdf: string;
     downloadPdf: string;
     fullRulebook: string;
-    scopeGlobal?: string;
-    scopeTargeted?: string;
+    scopeGlobal: string;
+    scopeTargeted: string;
     quickReference: string;
     timings?: {
       play: string;

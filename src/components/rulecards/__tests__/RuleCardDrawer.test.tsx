@@ -6,7 +6,7 @@ import { RuleCardDrawer } from '../RuleCardDrawer';
 describe('RuleCardDrawer component', () => {
   const defaultProps = {
     activeRuleCardIds: [] as string[],
-    onSelectActiveRuleCard: vi.fn(),
+    onChangeActiveRuleCards: vi.fn(),
     language: 'en' as const,
   };
 
@@ -28,18 +28,52 @@ describe('RuleCardDrawer component', () => {
     const user = userEvent.setup();
     const onSelect = vi.fn();
     render(
-      <RuleCardDrawer {...defaultProps} onSelectActiveRuleCard={onSelect} />
+      <RuleCardDrawer {...defaultProps} onChangeActiveRuleCards={onSelect} />
     );
 
     // Click on the first Activate button
     const activateButtons = screen.getAllByRole('button', {
-      name: /activate/i,
+      name: /^activate rule$/i,
     });
     expect(activateButtons.length).toBeGreaterThan(0);
     await user.click(activateButtons[0]);
 
-    // Should call onSelectActiveRuleCard with the first card ID
-    expect(onSelect).toHaveBeenCalledWith('fantastic-six');
+    // Activating adds the card to the list of active rule cards
+    expect(onSelect).toHaveBeenCalledWith(['fantastic-six']);
+  });
+
+  it('keeps other active cards when activating another one (p. 21)', async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(
+      <RuleCardDrawer
+        {...defaultProps}
+        activeRuleCardIds={['double-special']}
+        onChangeActiveRuleCards={onChange}
+      />
+    );
+
+    await user.click(
+      screen.getAllByRole('button', { name: /^activate rule$/i })[0]
+    );
+    expect(onChange).toHaveBeenCalledWith(['double-special', 'fantastic-six']);
+  });
+
+  it('removes only the deactivated card', async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(
+      <RuleCardDrawer
+        {...defaultProps}
+        activeRuleCardIds={['fantastic-six', 'double-special']}
+        onChangeActiveRuleCards={onChange}
+      />
+    );
+
+    await user.click(
+      screen.getAllByRole('button', { name: /^deactivate rule$/i })[0]
+    );
+    expect(onChange).toHaveBeenCalledWith(['double-special']);
   });
 
   it('draws a random card using timer', () => {

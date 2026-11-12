@@ -49,6 +49,16 @@ describe('scoring utils', () => {
       expect(score).toBe(CARD_POINTS.DOOMSDAY);
     });
 
+    it('still applies the free adjustment on Doomsday (e.g. Lucky Bastard, p. 10)', () => {
+      expect(
+        calculateHandPoints({
+          ...DEFAULT_HAND_SCORE,
+          isDoomsday: true,
+          customModifier: -50,
+        })
+      ).toBe(0);
+    });
+
     it('calculates winner score as 0 by default', () => {
       const score = calculateHandPoints({
         ...DEFAULT_HAND_SCORE,
@@ -122,13 +132,13 @@ describe('scoring utils', () => {
         })
       ).toBe(30);
 
-      // winner_bonus on loser: 20 - 10 = 10
+      // The winner bonus is reserved for players who ended the round.
       expect(
         calculateHandPoints({
           ...baseHand,
           timeBombModifier: 'winner_bonus',
         })
-      ).toBe(10);
+      ).toBe(20);
     });
 
     it('applies customModifier and supports negative total points without clamping at 0', () => {

@@ -45,8 +45,8 @@ export const EventCardsSection: React.FC<EventCardsSectionProps> = ({
                     }`}
                   >
                     {ev.scope === 'global'
-                      ? t.rules.scopeGlobal || 'Global'
-                      : t.rules.scopeTargeted || 'Targeted'}
+                      ? t.rules.scopeGlobal
+                      : t.rules.scopeTargeted}
                   </span>
                 )}
                 <span className="shrink-0 rounded-full border border-rose-500/30 bg-rose-500/15 px-2 py-0.5 text-[10px] font-black tracking-wider text-rose-600 uppercase dark:text-rose-400">

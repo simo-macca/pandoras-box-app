@@ -51,50 +51,66 @@ export const DEFAULT_HAND_SCORE: Omit<HandScore, 'totalPoints'> = {
   customModifier: 0,
 };
 
+/**
+ * Unique special cards exist once in the whole game (rulebook p. 22), so a
+ * hand can hold at most one of each.
+ */
+export const UNIQUE_CARD_LIMIT = 1;
+
+/**
+ * Points a player writes down for one round (lower is better).
+ *
+ * - Doomsday (p. 13): everyone scores 50, hand cards are not counted.
+ * - Winners (no cards left, p. 5) score 0. Several winners are possible
+ *   (pp. 10, 15).
+ * - Otherwise: number cards at face value, specials 7, Mimicry 7, Curse 13,
+ *   The End 17, Fuck You 42 (pp. 5, 11). The rule card "Double Special"
+ *   doubles every special card.
+ * - Time Bomb (p. 17): a player who ends the round in time gets −10 and the
+ *   others add 10 to their hand points; if nobody does, hand points double.
+ * - `customModifier` is a free adjustment that is always applied last, so the
+ *   players can record effects the calculator does not model (Double
+ *   Taxation, The End is nigh, Lucky Bastard protecting from Doomsday, ...).
+ */
 export function calculateHandPoints(
   hand: Omit<HandScore, 'totalPoints'> | HandScore
 ): number {
+  const adjustment = hand.customModifier || 0;
+
   if (hand.isDoomsday) {
-    return CARD_POINTS.DOOMSDAY;
+    return CARD_POINTS.DOOMSDAY + adjustment;
   }
 
   if (hand.isWinner) {
-    let pts = 0;
-    if (hand.timeBombModifier === 'winner_bonus') {
-      pts -= CARD_POINTS.TIME_BOMB_BONUS;
-    }
-    pts += hand.customModifier || 0;
-    return pts;
+    const timeBomb =
+      hand.timeBombModifier === 'winner_bonus'
+        ? -CARD_POINTS.TIME_BOMB_BONUS
+        : 0;
+    return timeBomb + adjustment;
   }
 
   let total = 0;
-  if (hand.numberCards) {
-    Object.entries(hand.numberCards).forEach(([numStr, count]) => {
-      const num = parseInt(numStr, 10);
-      if (!isNaN(num) && count) {
-        total += num * count;
-      }
-    });
-  }
+  Object.entries(hand.numberCards ?? {}).forEach(([numStr, count]) => {
+    const num = parseInt(numStr, 10);
+    if (!isNaN(num) && count) {
+      total += num * count;
+    }
+  });
 
-  let specialTotal = 0;
-  specialTotal += (hand.specialCardsCount || 0) * CARD_POINTS.SPECIAL;
-  specialTotal += (hand.curseCount || 0) * CARD_POINTS.CURSE;
-  specialTotal += (hand.theEndCount || 0) * CARD_POINTS.THE_END;
-  specialTotal += (hand.fuckYouCount || 0) * CARD_POINTS.FUCK_YOU;
-  specialTotal += (hand.mimicryCount || 0) * CARD_POINTS.MIMICRY;
-  // Rule card "Double Special": all special cards (every non-number card)
-  // count double at the end of the round.
+  const specialTotal =
+    (hand.specialCardsCount || 0) * CARD_POINTS.SPECIAL +
+    (hand.curseCount || 0) * CARD_POINTS.CURSE +
+    (hand.theEndCount || 0) * CARD_POINTS.THE_END +
+    (hand.fuckYouCount || 0) * CARD_POINTS.FUCK_YOU +
+    (hand.mimicryCount || 0) * CARD_POINTS.MIMICRY;
   total += hand.doubleSpecials ? specialTotal * 2 : specialTotal;
 
+  // The winner-only bonus never applies to a player who still holds cards.
   if (hand.timeBombModifier === 'expired_double') {
     total *= 2;
   } else if (hand.timeBombModifier === 'loser_penalty') {
     total += CARD_POINTS.TIME_BOMB_PENALTY;
-  } else if (hand.timeBombModifier === 'winner_bonus') {
-    total -= CARD_POINTS.TIME_BOMB_BONUS;
   }
 
-  total += hand.customModifier || 0;
-  return total;
+  return total + adjustment;
 }

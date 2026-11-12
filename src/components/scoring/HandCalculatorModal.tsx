@@ -145,27 +145,10 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
     const nextIsWinner = !currentScore.isWinner;
     soundEffects.playClick();
 
+    // Several players can end a round at the same time (rulebook pp. 10, 15),
+    // so marking a winner never un-marks the others.
     setScores((prev) => {
       const updated = { ...prev };
-      if (nextIsWinner) {
-        players.forEach((p) => {
-          if (p.id !== selectedPlayerId && updated[p.id]?.isWinner) {
-            const cleared = {
-              ...updated[p.id],
-              isWinner: false,
-              timeBombModifier:
-                updated[p.id].timeBombModifier === 'winner_bonus'
-                  ? ('loser_penalty' as TimeBombModifier)
-                  : updated[p.id].timeBombModifier,
-            };
-            updated[p.id] = {
-              ...cleared,
-              totalPoints: calculateHandPoints(cleared),
-            };
-          }
-        });
-      }
-
       let nextTimeBomb = currentScore.timeBombModifier;
       if (nextIsWinner && currentScore.timeBombModifier === 'loser_penalty') {
         nextTimeBomb = 'winner_bonus';
@@ -457,6 +440,7 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
           {/* Event Modifiers Section */}
           <ScoringModifiers
             isDoomsday={isTableDoomsday}
+            isWinner={currentScore.isWinner}
             timeBombModifier={currentScore.timeBombModifier || 'none'}
             tableTimeBombMode={tableTimeBombMode}
             customModifier={currentScore.customModifier || 0}

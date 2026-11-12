@@ -52,8 +52,11 @@ export const ActiveRuleCardBanner: React.FC<ActiveRuleCardBannerProps> = ({
     );
   }
 
-  const activeCard = RULE_CARDS_DATA.find((c) => c.id === activeRuleCardIds[0]);
-  if (!activeCard) return null;
+  // Several rule cards can be active in the same round (rulebook p. 21).
+  const activeCards = RULE_CARDS_DATA.filter((c) =>
+    activeRuleCardIds.includes(c.id)
+  );
+  if (activeCards.length === 0) return null;
 
   return (
     <div className="rounded-3xl border-2 border-purple-500/40 bg-linear-to-r from-purple-100/70 via-indigo-50/70 to-purple-100/70 p-4 shadow-sm dark:border-purple-500/50 dark:from-purple-900/30 dark:via-indigo-900/20 dark:to-purple-900/30 dark:shadow-[0_0_25px_rgba(168,85,247,0.2)]">
@@ -62,16 +65,9 @@ export const ActiveRuleCardBanner: React.FC<ActiveRuleCardBannerProps> = ({
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-purple-600 text-white shadow-md">
             <Sparkles className="h-5 w-5" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="rounded-full border border-purple-500/30 bg-purple-500/20 px-2 py-0.5 text-[10px] font-extrabold tracking-wider text-purple-600 uppercase dark:text-purple-300">
-                {t.rulecards.activeForRound}
-              </span>
-            </div>
-            <h3 className="mt-0.5 text-base font-black text-neutral-900 dark:text-white">
-              {activeCard.name[language]}
-            </h3>
-          </div>
+          <span className="rounded-full border border-purple-500/30 bg-purple-500/20 px-2 py-0.5 text-[10px] font-extrabold tracking-wider text-purple-600 uppercase dark:text-purple-300">
+            {t.rulecards.activeForRound} ({activeCards.length})
+          </span>
         </div>
 
         <div className="flex items-center gap-1">
@@ -83,7 +79,7 @@ export const ActiveRuleCardBanner: React.FC<ActiveRuleCardBannerProps> = ({
             }}
             className="rounded-xl bg-neutral-200/80 px-2.5 py-1 text-xs font-bold text-neutral-700 transition-colors hover:text-neutral-900 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:text-white"
           >
-            {t.rulecards.drawnCard}
+            {t.scoreboard.drawRuleCard}
           </button>
           <button
             type="button"
@@ -92,22 +88,26 @@ export const ActiveRuleCardBanner: React.FC<ActiveRuleCardBannerProps> = ({
               onClearActive();
             }}
             className="rounded-lg p-1 text-neutral-400 transition-colors hover:text-red-500"
-            title={t.rulecards.deactivateCard}
+            title={t.rulecards.clearAll}
+            aria-label={t.rulecards.clearAll}
           >
             <X className="h-4 w-4" />
           </button>
         </div>
       </div>
 
-      <p className="mt-2 text-xs leading-relaxed font-medium text-neutral-700 sm:text-sm dark:text-neutral-300">
-        {activeCard.description[language]}
-      </p>
-
-      {activeCard.flavor && activeCard.flavor[language] && (
-        <div className="mt-2 border-l-2 border-purple-500/40 pl-2 text-[11px] text-purple-600/80 italic dark:text-purple-300/80">
-          "{activeCard.flavor[language]}"
-        </div>
-      )}
+      <ul className="mt-3 space-y-2">
+        {activeCards.map((card) => (
+          <li key={card.id}>
+            <h3 className="text-base font-black text-neutral-900 dark:text-white">
+              {card.name[language]}
+            </h3>
+            <p className="text-xs leading-relaxed font-medium text-neutral-700 sm:text-sm dark:text-neutral-300">
+              {card.description[language]}
+            </p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

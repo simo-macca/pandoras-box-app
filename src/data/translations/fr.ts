@@ -3,7 +3,7 @@ import { TranslationStrings } from './types';
 /** French UI strings. Card names stay in English, as printed on the cards. */
 export const fr: TranslationStrings = {
   appTitle: "Frantic: Pandora's Box",
-  appSubtitle: 'Compagnon Officiel du Jeu de Cartes',
+  appSubtitle: 'Compagnon non officiel du jeu de cartes',
   common: {
     close: 'Fermer',
     clearSearch: 'Effacer la recherche',
@@ -105,7 +105,8 @@ export const fr: TranslationStrings = {
     roundNumber: 'Manche',
     roundWinner: 'Vainqueur de la manche',
     isWinner: 'Vainqueur de la manche (Main vide: 0 pt)',
-    isWinnerHint: 'Définit les points de main du vainqueur à 0',
+    isWinnerHint:
+      'Plus de cartes : 0 point. Plusieurs vainqueurs sont possibles.',
     numberCardsTitle: 'Cartes Chiffres (1-10 Valeur faciale)',
     numberCardsHint: '1 à 10 points par carte',
     specialCardsTitle: 'Cartes Spéciales & Uniques',
@@ -117,14 +118,22 @@ export const fr: TranslationStrings = {
     eventsAndModifiers: 'Modificateurs d’Événements',
     doomsdayToggle: 'Doomsday (Tous 50 pts)',
     doomsdayHint:
-      'Attribue exactement 50 points à tous les joueurs pour cette manche.',
+      'Tout le monde marque 50 ; les cartes en main ne comptent pas. L’ajustement libre s’applique toujours.',
+    tableEventsTitle: 'Événements de table',
+    timeBombTableLabel: 'Time Bomb (toute la table)',
+    timeBombPlayerLabel: 'Time Bomb (ce joueur)',
+    timeBombTableNone: 'Pas jouée ce tour-ci',
+    timeBombTableDefused: 'Manche finie à temps (vainqueurs −10, autres +10)',
+    timeBombTableExploded: 'Explosée : personne n’a fini (points doublés)',
+    uniqueCardHint: 'une seule dans le jeu',
     timeBombModifier: 'Time Bomb',
     timeBombNone: 'Aucun / Inactif',
     timeBombWinner: 'Bonus Vainqueur (-10 pts)',
     timeBombLoser: 'Pénalité Perdant (+10 pts)',
     timeBombExpired: 'Temps Écoulé (Points x2)',
     customModifier: 'Modificateur Personnalisé (+/- pts)',
-    customModifierHint: 'Modificateur optionnel pour événements personnalisés',
+    customModifierHint:
+      'p. ex. Double Taxation, The End is nigh, Lucky Bastard',
     cancel: 'Annuler',
     saveChanges: 'Enregistrer les modifications',
     quickZero: 'Réinitialiser',
@@ -150,6 +159,11 @@ export const fr: TranslationStrings = {
     deactivateCard: 'Désactiver la Règle',
     allCards: 'Toutes les Cartes Règle',
     allRuleCards: 'Toutes les Cartes Règle',
+    selected: 'Sélectionnée',
+    clickToInspect: 'Cliquer pour voir',
+    multipleHint:
+      'Le livret prévoit une ou plusieurs cartes règle par manche : activez toutes celles tirées.',
+    clearAll: 'Tout retirer',
     activeForRound: 'Active Cette Manche',
     searchPlaceholder: 'Rechercher une règle...',
   },
@@ -168,6 +182,8 @@ export const fr: TranslationStrings = {
     expansion: 'Extension',
     guideTab: 'Guide des Règles',
     dictionaryTab: 'Dictionnaire des Cartes',
+    scopeGlobal: 'Global',
+    scopeTargeted: 'Ciblé',
     officialPdfTitle: 'Règles Officielles Rulefactory',
     officialPdfDesc:
       'Consultez ou téléchargez le livret complet de 22 pages des règles officielles de Pandora’s Box.',

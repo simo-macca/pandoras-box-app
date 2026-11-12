@@ -3,7 +3,7 @@ import { TranslationStrings } from './types';
 /** German UI strings. Card names stay in English, as printed on the cards. */
 export const de: TranslationStrings = {
   appTitle: "Frantic: Pandora's Box",
-  appSubtitle: 'Offizielle Kartenspiel-Begleit-App',
+  appSubtitle: 'Inoffizielle Kartenspiel-Begleit-App',
   common: {
     close: 'Schliessen',
     clearSearch: 'Suche löschen',
@@ -105,7 +105,7 @@ export const de: TranslationStrings = {
     roundNumber: 'Runde',
     roundWinner: 'Rundensieger',
     isWinner: 'Rundensieger (Keine Handkarten: 0 Pkt)',
-    isWinnerHint: 'Setzt Handkarten für diesen Spieler auf 0',
+    isWinnerHint: 'Keine Karten mehr: 0 Punkte. Mehrere Gewinner sind möglich.',
     numberCardsTitle: 'Zahlenkarten (1-10 Augenwert)',
     numberCardsHint: '1 bis 10 Punkte pro Karte',
     specialCardsTitle: 'Sonder- & Spezialkarten',
@@ -117,14 +117,23 @@ export const de: TranslationStrings = {
     eventsAndModifiers: 'Ereignismodifikatoren',
     doomsdayToggle: 'Doomsday (Alle 50 Pkt)',
     doomsdayHint:
-      'Überschreibt alle Handkarten dieser Runde mit exakt 50 Punkten.',
+      'Alle erhalten 50; Handkarten zählen nicht. Die freie Korrektur gilt weiterhin.',
+    tableEventsTitle: 'Tisch-Ereignisse',
+    timeBombTableLabel: 'Time Bomb (ganzer Tisch)',
+    timeBombPlayerLabel: 'Time Bomb (dieser Spieler)',
+    timeBombTableNone: 'In dieser Runde nicht gespielt',
+    timeBombTableDefused:
+      'Runde rechtzeitig beendet (Gewinner −10, andere +10)',
+    timeBombTableExploded:
+      'Explodiert: niemand fertig (alle Punkte verdoppelt)',
+    uniqueCardHint: 'nur einmal im Spiel',
     timeBombModifier: 'Time-Bomb-Modifikator',
     timeBombNone: 'Keiner / Inaktiv',
     timeBombWinner: 'Gewinner-Bonus (-10 Pkt)',
     timeBombLoser: 'Verlierer-Strafe (+10 Pkt)',
     timeBombExpired: 'Zeit abgelaufen (Handpunkte x2)',
     customModifier: 'Eigener Modifikator (+/- Pkt)',
-    customModifierHint: 'Optionaler Punktezuschlag für Ereignisse',
+    customModifierHint: 'z. B. Double Taxation, The End is nigh, Lucky Bastard',
     cancel: 'Abbrechen',
     saveChanges: 'Änderungen speichern',
     quickZero: 'Zurücksetzen',
@@ -151,6 +160,11 @@ export const de: TranslationStrings = {
     deactivateCard: 'Regel deaktivieren',
     allCards: 'Alle Regelkarten',
     allRuleCards: 'Alle Regelkarten',
+    selected: 'Ausgewählt',
+    clickToInspect: 'Zum Ansehen klicken',
+    multipleHint:
+      'Laut Regelwerk gelten pro Runde eine oder mehrere Regelkarten: aktiviere alle gezogenen.',
+    clearAll: 'Alle entfernen',
     activeForRound: 'Diese Runde aktiv',
     searchPlaceholder: 'Regelkarten durchsuchen...',
   },
@@ -169,6 +183,8 @@ export const de: TranslationStrings = {
     expansion: 'Erweiterung',
     guideTab: 'Spielregeln & Anleitung',
     dictionaryTab: 'Kartenlexikon',
+    scopeGlobal: 'Global',
+    scopeTargeted: 'Gezielt',
     officialPdfTitle: 'Offizielles Rulefactory Regelwerk',
     officialPdfDesc:
       'Das vollständige offizielle 22-seitige Pandora’s Box Regelwerk ansehen oder herunterladen.',

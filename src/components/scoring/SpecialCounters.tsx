@@ -11,7 +11,7 @@ import {
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { soundEffects } from '@/utils/sound';
-import { CARD_POINTS } from '@/utils/scoring';
+import { CARD_POINTS, UNIQUE_CARD_LIMIT } from '@/utils/scoring';
 
 interface SpecialCountersProps {
   specialCardsCount: number;
@@ -40,6 +40,8 @@ interface CounterRowProps {
   onIncrement: () => void;
   disabled: boolean;
   ariaLabel: string;
+  /** Upper bound for the counter (unique cards exist only once). */
+  max?: number;
 }
 
 const CounterRow: React.FC<CounterRowProps> = ({
@@ -52,6 +54,7 @@ const CounterRow: React.FC<CounterRowProps> = ({
   onIncrement,
   disabled,
   ariaLabel,
+  max,
 }) => (
   <div className="flex items-center justify-between gap-2 rounded-2xl border border-neutral-200 bg-neutral-50 p-2.5 sm:p-3 dark:border-neutral-800 dark:bg-neutral-800/40">
     <div className="flex min-w-0 items-center gap-2.5">
@@ -86,7 +89,7 @@ const CounterRow: React.FC<CounterRowProps> = ({
       <button
         type="button"
         onClick={onIncrement}
-        disabled={disabled}
+        disabled={disabled || (max !== undefined && count >= max)}
         aria-label={`Increase ${ariaLabel}`}
         className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs text-neutral-800 transition-colors hover:bg-neutral-300 disabled:opacity-30 sm:h-9 sm:w-9 sm:rounded-xl sm:text-sm dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-600"
       >
@@ -116,10 +119,12 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
       | 'fuckYouCount'
       | 'mimicryCount',
     delta: number,
-    current: number
+    current: number,
+    max: number = Infinity
   ) => {
     if (disabled) return;
-    const nextVal = Math.max(0, current + delta);
+    const nextVal = Math.min(max, Math.max(0, current + delta));
+    if (nextVal === current) return;
     soundEffects.playClick();
     onChange({ [key]: nextVal });
   };
@@ -150,12 +155,15 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
         icon={<Skull className="h-5 w-5 shrink-0" />}
         iconBorderClass="border-rose-500/30 bg-rose-500/15 text-rose-600 dark:text-rose-400"
         title={t.scoring.curseCard}
-        subtitle={`+${CARD_POINTS.CURSE} pts`}
+        subtitle={`+${CARD_POINTS.CURSE} pts · ${t.scoring.uniqueCardHint}`}
         count={curseCount}
         onDecrement={() => updateCounter('curseCount', -1, curseCount)}
-        onIncrement={() => updateCounter('curseCount', 1, curseCount)}
+        onIncrement={() =>
+          updateCounter('curseCount', 1, curseCount, UNIQUE_CARD_LIMIT)
+        }
         disabled={disabled}
         ariaLabel="curse card"
+        max={UNIQUE_CARD_LIMIT}
       />
 
       {/* The End Card (17 pts) */}
@@ -163,12 +171,15 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
         icon={<Hourglass className="h-5 w-5 shrink-0" />}
         iconBorderClass="border-amber-500/30 bg-amber-500/15 text-amber-600 dark:text-amber-400"
         title={t.scoring.theEndCard}
-        subtitle={`+${CARD_POINTS.THE_END} pts`}
+        subtitle={`+${CARD_POINTS.THE_END} pts · ${t.scoring.uniqueCardHint}`}
         count={theEndCount}
         onDecrement={() => updateCounter('theEndCount', -1, theEndCount)}
-        onIncrement={() => updateCounter('theEndCount', 1, theEndCount)}
+        onIncrement={() =>
+          updateCounter('theEndCount', 1, theEndCount, UNIQUE_CARD_LIMIT)
+        }
         disabled={disabled}
         ariaLabel="the end card"
+        max={UNIQUE_CARD_LIMIT}
       />
 
       {/* Fuck You Card (42 pts) */}
@@ -176,12 +187,15 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
         icon={<Zap className="h-5 w-5 shrink-0" />}
         iconBorderClass="border-red-600/40 bg-red-600/20 text-red-600 dark:text-red-400"
         title={t.scoring.fuckYouCard}
-        subtitle={`+${CARD_POINTS.FUCK_YOU} pts!`}
+        subtitle={`+${CARD_POINTS.FUCK_YOU} pts · ${t.scoring.uniqueCardHint}`}
         count={fuckYouCount}
         onDecrement={() => updateCounter('fuckYouCount', -1, fuckYouCount)}
-        onIncrement={() => updateCounter('fuckYouCount', 1, fuckYouCount)}
+        onIncrement={() =>
+          updateCounter('fuckYouCount', 1, fuckYouCount, UNIQUE_CARD_LIMIT)
+        }
         disabled={disabled}
         ariaLabel="fuck you card"
+        max={UNIQUE_CARD_LIMIT}
       />
 
       {/* Mimicry Card (7 pts) */}
@@ -189,12 +203,15 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
         icon={<CopyCheck className="h-5 w-5 shrink-0" />}
         iconBorderClass="border-blue-500/30 bg-blue-500/15 text-blue-600 dark:text-blue-400"
         title={t.scoring.mimicryCard}
-        subtitle={`+${CARD_POINTS.MIMICRY} pts`}
+        subtitle={`+${CARD_POINTS.MIMICRY} pts · ${t.scoring.uniqueCardHint}`}
         count={mimicryCount}
         onDecrement={() => updateCounter('mimicryCount', -1, mimicryCount)}
-        onIncrement={() => updateCounter('mimicryCount', 1, mimicryCount)}
+        onIncrement={() =>
+          updateCounter('mimicryCount', 1, mimicryCount, UNIQUE_CARD_LIMIT)
+        }
         disabled={disabled}
         ariaLabel="mimicry card"
+        max={UNIQUE_CARD_LIMIT}
       />
     </div>
   );

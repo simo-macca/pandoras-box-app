@@ -307,12 +307,12 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
                 className="flex items-center gap-2 text-sm font-bold text-neutral-800 dark:text-neutral-200"
               >
                 <Clock className="h-4 w-4 text-amber-500" />
-                <span>{t.setup?.roundLimit || 'Total Round Limit'}</span>
+                <span>{t.setup.roundLimit}</span>
               </label>
               <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
                 {draftRoundLimit && parseInt(draftRoundLimit, 10) > 0
-                  ? `${draftRoundLimit} ${t.setup?.roundLimitRounds || 'rounds'}`
-                  : t.setup?.roundLimitUnlimited || 'No Limit'}
+                  ? `${draftRoundLimit} ${t.setup.roundLimitRounds}`
+                  : t.setup.roundLimitUnlimited}
               </span>
             </div>
 
@@ -326,7 +326,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
                     : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300'
                 }`}
               >
-                <span>{t.setup?.roundLimitUnlimited || 'No Limit'}</span>
+                <span>{t.setup.roundLimitUnlimited}</span>
               </button>
 
               {[5, 10, 15, 20].map((rounds) => {
@@ -343,7 +343,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
                     }`}
                   >
                     <span>
-                      {rounds} {t.setup?.roundLimitRounds || 'Rounds'}
+                      {rounds} {t.setup.roundLimitRounds}
                     </span>
                   </button>
                 );
@@ -357,7 +357,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
                 min="1"
                 max="100"
                 placeholder={t.common.roundLimitPlaceholder}
-                aria-label={t.setup?.roundLimit || 'Total Round Limit'}
+                aria-label={t.setup.roundLimit}
                 value={draftRoundLimit}
                 onChange={(e) => setDraftRoundLimit(e.target.value)}
                 className="w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
@@ -390,9 +390,7 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
                   <Play className="h-4 w-4 shrink-0 fill-white" />
                 )}
                 <span className="whitespace-nowrap">
-                  {isMatchInProgress
-                    ? t.setup?.saveChanges || 'Save Changes'
-                    : t.setup.startMatch}
+                  {isMatchInProgress ? t.setup.saveChanges : t.setup.startMatch}
                 </span>
               </button>
             </div>

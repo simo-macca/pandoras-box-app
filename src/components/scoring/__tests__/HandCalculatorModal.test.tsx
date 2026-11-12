@@ -115,6 +115,38 @@ describe('HandCalculatorModal component', () => {
     expect(getPlayerTotalBanner()).toHaveTextContent('0 pts');
   });
 
+  it('allows several winners in the same round (rulebook pp. 10, 15)', async () => {
+    const user = userEvent.setup();
+    const onSubmitRound = vi.fn();
+    render(
+      <HandCalculatorModal {...defaultProps} onSubmitRound={onSubmitRound} />
+    );
+
+    await user.click(screen.getByRole('button', { name: /round winner/i }));
+    await user.selectOptions(screen.getByLabelText(/player name:/i), 'p2');
+    await user.click(screen.getByRole('button', { name: /round winner/i }));
+    await user.click(
+      screen.getByRole('button', { name: /save round scores/i })
+    );
+
+    expect(onSubmitRound).toHaveBeenCalledWith(
+      expect.objectContaining({
+        p1: expect.objectContaining({ isWinner: true }),
+        p2: expect.objectContaining({ isWinner: true }),
+      })
+    );
+  });
+
+  it('caps unique special cards at one per hand', async () => {
+    const user = userEvent.setup();
+    render(<HandCalculatorModal {...defaultProps} />);
+
+    const incCurse = screen.getByLabelText('Increase curse card');
+    await user.click(incCurse);
+    expect(incCurse).toBeDisabled();
+    expect(getPlayerTotalBanner()).toHaveTextContent('13 pts');
+  });
+
   it('toggles Doomsday across all players, disables winner button, and clears existing winner', async () => {
     const user = userEvent.setup();
     const onSubmitRound = vi.fn();
@@ -182,7 +214,7 @@ describe('HandCalculatorModal component', () => {
     expect(getPlayerTotalBanner()).toHaveTextContent('8 pts');
 
     // Select Table Time Bomb Mode = exploded
-    const tableSelect = screen.getByLabelText(/table time bomb mode/i);
+    const tableSelect = screen.getByLabelText(/whole table/i);
     await user.selectOptions(tableSelect, 'exploded');
 
     // Bob total is now doubled: 8 * 2 = 16 pts
@@ -211,7 +243,7 @@ describe('HandCalculatorModal component', () => {
     await user.click(inc10);
 
     // Set Table Time Bomb Mode = defused
-    const tableSelect = screen.getByLabelText(/table time bomb mode/i);
+    const tableSelect = screen.getByLabelText(/whole table/i);
     await user.selectOptions(tableSelect, 'defused');
 
     // Bob (loser) gets 10 + 10 = 20 pts

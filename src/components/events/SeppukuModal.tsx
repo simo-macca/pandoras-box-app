@@ -77,24 +77,21 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
                 <Swords className="h-5 w-5 shrink-0 text-rose-500" />
                 <span className="truncate">
                   {isEditing
-                    ? t.events?.seppukuEditTitle ||
-                      'Edit Seppuku – Adjust Choices'
-                    : t.events?.seppukuTitle || 'Seppuku – Point Adjustments'}
+                    ? t.events.seppukuEditTitle
+                    : t.events.seppukuTitle}
                 </span>
               </h2>
               {isEditing && (
                 <span className="inline-flex items-center gap-1 rounded-lg border border-amber-500/30 bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:text-amber-300">
                   <Edit2 className="h-3 w-3" />
-                  <span>{t.events?.seppukuEditBadge || 'Edit Mode'}</span>
+                  <span>{t.events.seppukuEditBadge}</span>
                 </span>
               )}
             </div>
             <p className="mt-0.5 truncate text-xs text-neutral-500 dark:text-neutral-400">
               {isEditing
-                ? t.events?.seppukuEditSubtitle ||
-                  'Correct previously recorded player choices and update cumulative points'
-                : t.events?.seppukuSubtitle ||
-                  'In turn order, choose whether each player takes the risk or refuses'}
+                ? t.events.seppukuEditSubtitle
+                : t.events.seppukuSubtitle}
             </p>
           </div>
           <button
@@ -123,21 +120,18 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
                 <Shield className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
                 <div className="min-w-0 leading-snug">
                   <span className="font-bold">
-                    {t.events?.seppukuActionRiskNumberTitle || 'Take Risk'}
+                    {t.events.seppukuActionRiskNumberTitle}
                   </span>
-                  :{' '}
-                  {t.events?.seppukuRuleRiskText ||
-                    'Number card = -21 pts | Non-number / Special = +42 pts'}
+                  : {t.events.seppukuRuleRiskText}
                 </div>
               </div>
               <div className="flex items-start gap-2 rounded-xl border border-amber-500/25 bg-amber-500/10 p-2 text-amber-900 dark:border-amber-500/30 dark:bg-amber-950/40 dark:text-amber-300">
                 <Flame className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
                 <div className="min-w-0 leading-snug">
                   <span className="font-bold">
-                    {t.events?.seppukuActionNoRiskTitle || 'No Risk'}
+                    {t.events.seppukuActionNoRiskTitle}
                   </span>
-                  :{' '}
-                  {t.events?.seppukuRuleRefuseText || 'Refused draw = +21 pts'}
+                  : {t.events.seppukuRuleRefuseText}
                 </div>
               </div>
             </div>
@@ -192,7 +186,7 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
                     onClick={() =>
                       handleSelectOutcome(player.id, 'risk_number')
                     }
-                    aria-label={`Player ${player.name}: ${t.events?.seppukuActionRiskNumberTitle || 'Risk: Number Card'} (-21 pts)`}
+                    aria-label={`Player ${player.name}: ${t.events.seppukuActionRiskNumberTitle} (-21 pts)`}
                     className={`flex flex-col justify-between rounded-xl border p-2.5 text-left transition-all ${
                       currentChoice === 'risk_number'
                         ? 'border-emerald-500 bg-emerald-500/15 shadow-sm ring-1 ring-emerald-500/50 dark:bg-emerald-950/40'
@@ -202,18 +196,14 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
                     <div className="flex items-center justify-between gap-1">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-700 dark:text-emerald-300">
                         <Shield className="h-4 w-4 shrink-0 text-emerald-500" />
-                        <span>
-                          {t.events?.seppukuActionRiskNumberTitle ||
-                            'Risk: Drew Number'}
-                        </span>
+                        <span>{t.events.seppukuActionRiskNumberTitle}</span>
                       </div>
                       {currentChoice === 'risk_number' && (
                         <Check className="h-4 w-4 shrink-0 stroke-3 text-emerald-600 dark:text-emerald-400" />
                       )}
                     </div>
                     <p className="my-1.5 text-[11px] leading-tight text-neutral-500 dark:text-neutral-400">
-                      {t.events?.seppukuActionRiskNumberDesc ||
-                        'Flipped a numbered card (1–10)'}
+                      {t.events.seppukuActionRiskNumberDesc}
                     </p>
                     <div className="mt-auto">
                       <span className="inline-flex items-center rounded-lg border border-emerald-500/30 bg-emerald-500/20 px-2 py-0.5 font-mono text-[11px] font-black text-emerald-700 dark:text-emerald-300">
@@ -228,7 +218,7 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
                     onClick={() =>
                       handleSelectOutcome(player.id, 'risk_special')
                     }
-                    aria-label={`Player ${player.name}: ${t.events?.seppukuActionRiskSpecialTitle || 'Risk: Non-number / Special'} (+42 pts)`}
+                    aria-label={`Player ${player.name}: ${t.events.seppukuActionRiskSpecialTitle} (+42 pts)`}
                     className={`flex flex-col justify-between rounded-xl border p-2.5 text-left transition-all ${
                       currentChoice === 'risk_special'
                         ? 'border-rose-500 bg-rose-500/15 shadow-sm ring-1 ring-rose-500/50 dark:bg-rose-950/40'
@@ -238,18 +228,14 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
                     <div className="flex items-center justify-between gap-1">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-rose-700 dark:text-rose-300">
                         <Skull className="h-4 w-4 shrink-0 text-rose-500" />
-                        <span>
-                          {t.events?.seppukuActionRiskSpecialTitle ||
-                            'Risk: Drew Special'}
-                        </span>
+                        <span>{t.events.seppukuActionRiskSpecialTitle}</span>
                       </div>
                       {currentChoice === 'risk_special' && (
                         <Check className="h-4 w-4 shrink-0 stroke-3 text-rose-600 dark:text-rose-400" />
                       )}
                     </div>
                     <p className="my-1.5 text-[11px] leading-tight text-neutral-500 dark:text-neutral-400">
-                      {t.events?.seppukuActionRiskSpecialDesc ||
-                        'Flipped an action or special card'}
+                      {t.events.seppukuActionRiskSpecialDesc}
                     </p>
                     <div className="mt-auto">
                       <span className="inline-flex items-center rounded-lg border border-rose-500/30 bg-rose-500/20 px-2 py-0.5 font-mono text-[11px] font-black text-rose-700 dark:text-rose-300">
@@ -262,7 +248,7 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
                   <button
                     type="button"
                     onClick={() => handleSelectOutcome(player.id, 'no_risk')}
-                    aria-label={`Player ${player.name}: ${t.events?.seppukuActionNoRiskTitle || 'No Risk'} (+21 pts)`}
+                    aria-label={`Player ${player.name}: ${t.events.seppukuActionNoRiskTitle} (+21 pts)`}
                     className={`flex flex-col justify-between rounded-xl border p-2.5 text-left transition-all ${
                       currentChoice === 'no_risk'
                         ? 'border-amber-500 bg-amber-500/15 shadow-sm ring-1 ring-amber-500/50 dark:bg-amber-950/40'
@@ -272,18 +258,14 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
                     <div className="flex items-center justify-between gap-1">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-amber-700 dark:text-amber-300">
                         <Flame className="h-4 w-4 shrink-0 text-amber-500" />
-                        <span>
-                          {t.events?.seppukuActionNoRiskTitle ||
-                            'Refuse Seppuku'}
-                        </span>
+                        <span>{t.events.seppukuActionNoRiskTitle}</span>
                       </div>
                       {currentChoice === 'no_risk' && (
                         <Check className="h-4 w-4 shrink-0 stroke-3 text-amber-600 dark:text-amber-400" />
                       )}
                     </div>
                     <p className="my-1.5 text-[11px] leading-tight text-neutral-500 dark:text-neutral-400">
-                      {t.events?.seppukuActionNoRiskDesc ||
-                        'Declined to draw a card; safe play'}
+                      {t.events.seppukuActionNoRiskDesc}
                     </p>
                     <div className="mt-auto">
                       <span className="inline-flex items-center rounded-lg border border-amber-500/30 bg-amber-500/20 px-2 py-0.5 font-mono text-[11px] font-black text-amber-700 dark:text-amber-300">
@@ -304,7 +286,7 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
             onClick={onClose}
             className="rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 sm:px-4 sm:py-2.5 sm:text-sm dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
           >
-            {t.setup?.cancel || 'Cancel'}
+            {t.setup.cancel}
           </button>
           <button
             type="button"
@@ -313,9 +295,7 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
           >
             <Swords className="h-4 w-4 shrink-0" />
             <span>
-              {isEditing
-                ? t.setup?.saveChanges || 'Save Changes'
-                : t.events?.seppukuApply || 'Apply Seppuku'}
+              {isEditing ? t.setup.saveChanges : t.events.seppukuApply}
             </span>
           </button>
         </div>
