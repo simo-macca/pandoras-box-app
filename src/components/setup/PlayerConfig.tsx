@@ -2,7 +2,7 @@ import React from 'react';
 import { Plus, Trash2, Users, X } from 'lucide-react';
 import { Player, Language } from '@/types/game';
 import { ALL_PAWN_COLORS, PAWN_COLORS } from '@/utils/colors';
-import { UI_TRANSLATIONS } from '@/data/translations';
+import { TRANSLATIONS } from '@/data/translations';
 import { soundEffects } from '@/utils/sound';
 
 interface PlayerConfigProps {
@@ -20,7 +20,7 @@ export const PlayerConfig: React.FC<PlayerConfigProps> = ({
   onUpdatePlayer,
   language,
 }) => {
-  const t = UI_TRANSLATIONS[language];
+  const t = TRANSLATIONS[language];
 
   const handleAdd = () => {
     soundEffects.playClick();

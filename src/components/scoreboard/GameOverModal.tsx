@@ -4,7 +4,7 @@ import { Trophy, Crown, RotateCcw, X, Award, Play, Eye } from 'lucide-react';
 import { PlayerStats } from '@/utils/stats';
 import { PAWN_COLORS } from '@/utils/colors';
 import { Language } from '@/types/game';
-import { UI_TRANSLATIONS } from '@/data/translations';
+import { TRANSLATIONS } from '@/data/translations';
 import { soundEffects } from '@/utils/sound';
 import { useModalA11y } from '@/hooks/useModalA11y';
 
@@ -31,7 +31,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
   onContinue,
   language,
 }) => {
-  const t = UI_TRANSLATIONS[language];
+  const t = TRANSLATIONS[language];
 
   useEffect(() => {
     if (isOpen) {

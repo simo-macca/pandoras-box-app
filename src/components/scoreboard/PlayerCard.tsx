@@ -4,7 +4,7 @@ import { PlayerStats } from '@/utils/stats';
 import { DANGER_THRESHOLD_RATIO } from '@/utils/stats';
 import { PAWN_COLORS } from '@/utils/colors';
 import { Language } from '@/types/game';
-import { UI_TRANSLATIONS } from '@/data/translations';
+import { TRANSLATIONS } from '@/data/translations';
 
 interface PlayerCardProps {
   player: PlayerStats;
@@ -17,7 +17,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
   targetScore,
   language,
 }) => {
-  const t = UI_TRANSLATIONS[language];
+  const t = TRANSLATIONS[language];
   const theme = PAWN_COLORS[player.color];
 
   const getRankBadge = (rank: number) => {
