@@ -207,11 +207,13 @@ Order of evaluation: Doomsday (50) or winner (0, −10 if Time Bomb defused) or 
 
 [`src/utils/storage.ts`](../src/utils/storage.ts) wraps `localStorage`:
 
-| Key                     | Content            |
-| :---------------------- | :----------------- |
-| `frantic_game_state_v2` | Match state        |
-| `frantic_lang_v2`       | Interface language |
-| `frantic_theme_mode`    | Theme mode         |
+| Key                             | Content            |
+| :------------------------------ | :----------------- |
+| `frantic_game_state_v<version>` | Match state        |
+| `frantic_lang_v<version>`       | Interface language |
+| `frantic_theme_mode`            | Theme mode         |
+
+`<version>` is the app version from `package.json` (e.g. `frantic_game_state_v1.2.0`), injected at build time as `__APP_VERSION__` and exposed as `APP_VERSION` from [`src/data/appInfo.ts`](../src/data/appInfo.ts). On load, `readVersionedItem()` moves the newest value saved under an older version of the key (including the pre-1.2.0 `…_v2` keys) to the current key and deletes the older copies, so a release never loses a saved match. The theme key has no version because the inline script in `index.html` reads it before the app starts. Exported backups record the app version in their `version` field.
 
 `sanitizeGameState(input)` validates untrusted data and returns a normalised `GameState` or `null`:
 

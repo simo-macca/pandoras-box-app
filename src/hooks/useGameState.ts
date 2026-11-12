@@ -9,6 +9,7 @@ import {
   SeppukuOutcome,
 } from '@/types/game';
 import { soundEffects } from '@/utils/sound';
+import { APP_VERSION } from '@/data/appInfo';
 import {
   calculatePlayerStats,
   countPlayedRounds,
@@ -287,7 +288,11 @@ export function useGameState() {
   const exportGameState = useCallback(
     (): string =>
       JSON.stringify(
-        { version: 2, exportDate: new Date().toISOString(), gameState },
+        {
+          version: APP_VERSION,
+          exportDate: new Date().toISOString(),
+          gameState,
+        },
         null,
         2
       ),

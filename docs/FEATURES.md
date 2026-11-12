@@ -141,7 +141,7 @@ When the _Seppuku_ event (Troublemaker, by D'Sinead Conception) is revealed and 
 ### 11. Offline Use, Persistence, Backup & Restore
 
 - **Installable PWA** — after the first visit the app, including all rulebook PDFs, is cached by a service worker and works without a connection. Use _Add to Home Screen_ / _Install app_ in your browser.
-- **Auto-save** to the browser's `localStorage` after every action. Nothing is sent to a server.
+- **Auto-save** to the browser's `localStorage` after every action. Nothing is sent to a server. Saved matches carry over to new app versions automatically.
 - **Export** the match as a dated `.json` file and **import** it on another device. Imported and saved data is validated; a corrupted file is rejected instead of breaking the app.
 
 ---

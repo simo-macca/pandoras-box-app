@@ -1,3 +1,4 @@
+import { APP_VERSION } from '@/data/appInfo';
 import {
   GameState,
   GameConfig,
@@ -9,11 +10,58 @@ import {
   HandScore,
 } from '@/types/game';
 
+/** Prefixes of the keys that carry the app version (e.g. `frantic_lang_v1.2.0`). */
+export const VERSIONED_KEY_PREFIXES = {
+  GAME_STATE: 'frantic_game_state_v',
+  LANGUAGE: 'frantic_lang_v',
+} as const;
+
+/**
+ * localStorage keys. Match state and language are stored under the current
+ * app version; older keys (`…_v2`, `…_v1.2.0`, …) are migrated on first load.
+ * The theme key has no version because index.html reads it before React.
+ */
 export const STORAGE_KEYS = {
-  GAME_STATE: 'frantic_game_state_v2',
-  LANGUAGE: 'frantic_lang_v2',
+  GAME_STATE: `${VERSIONED_KEY_PREFIXES.GAME_STATE}${APP_VERSION}`,
+  LANGUAGE: `${VERSIONED_KEY_PREFIXES.LANGUAGE}${APP_VERSION}`,
   THEME: 'frantic_theme_mode',
 } as const;
+
+/** Compares version suffixes ("1.2.0", "2"); non-semver legacy suffixes sort first. */
+function compareVersionSuffixes(a: string, b: string): number {
+  const parse = (v: string) =>
+    /^\d+\.\d+\.\d+$/.test(v) ? v.split('.').map(Number) : null;
+  const pa = parse(a);
+  const pb = parse(b);
+  if (!pa || !pb) return pa ? 1 : pb ? -1 : 0;
+  for (let i = 0; i < 3; i += 1) {
+    if (pa[i] !== pb[i]) return pa[i] - pb[i];
+  }
+  return 0;
+}
+
+/**
+ * Reads a versioned key. When it does not exist yet, the newest value stored
+ * under an older version of the same key is moved to the current key and all
+ * older copies are removed, so upgrading never loses a saved match.
+ */
+export function readVersionedItem(key: string, prefix: string): string | null {
+  const current = localStorage.getItem(key);
+  if (current !== null) return current;
+
+  const legacyKeys = Object.keys(localStorage)
+    .filter((k) => k.startsWith(prefix) && k !== key)
+    .sort((a, b) =>
+      compareVersionSuffixes(a.slice(prefix.length), b.slice(prefix.length))
+    );
+  if (legacyKeys.length === 0) return null;
+
+  const value = localStorage.getItem(legacyKeys[legacyKeys.length - 1]);
+  if (value === null) return null;
+  localStorage.setItem(key, value);
+  legacyKeys.forEach((k) => localStorage.removeItem(k));
+  return value;
+}
 
 export const INITIAL_PLAYERS: Player[] = [
   { id: 'p1', name: 'Player 1', color: 'red' },
@@ -155,7 +203,10 @@ export function sanitizeGameState(input: unknown): GameState | null {
 export function loadSavedGameState(): GameState {
   if (typeof window === 'undefined') return getInitialGameState();
   try {
-    const stored = localStorage.getItem(STORAGE_KEYS.GAME_STATE);
+    const stored = readVersionedItem(
+      STORAGE_KEYS.GAME_STATE,
+      VERSIONED_KEY_PREFIXES.GAME_STATE
+    );
     if (stored) {
       const sanitized = sanitizeGameState(JSON.parse(stored));
       if (sanitized) return sanitized;
@@ -179,7 +230,10 @@ export function saveGameStateToStorage(gameState: GameState): void {
 export function loadSavedLanguage(): Language {
   if (typeof window === 'undefined') return 'en';
   try {
-    const stored = localStorage.getItem(STORAGE_KEYS.LANGUAGE) as Language;
+    const stored = readVersionedItem(
+      STORAGE_KEYS.LANGUAGE,
+      VERSIONED_KEY_PREFIXES.LANGUAGE
+    ) as Language | null;
     if (stored && ['en', 'de', 'it', 'fr'].includes(stored)) {
       return stored;
     }

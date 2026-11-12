@@ -50,7 +50,7 @@ npm run dev
 
 Open the URL Vite prints (usually `http://localhost:5173/`). Changes in `src/` reload instantly.
 
-Useful while debugging: _DevTools → Application → Local Storage_ shows `frantic_game_state_v2`, `frantic_lang_v2` and `frantic_theme_mode`. Clearing them resets the app.
+Useful while debugging: _DevTools → Application → Local Storage_ shows `frantic_game_state_v<version>`, `frantic_lang_v<version>` (e.g. `frantic_game_state_v1.2.0`) and `frantic_theme_mode`. Clearing them resets the app. Keys from older versions are migrated automatically on the next load.
 
 The service worker is only generated for production builds. To test offline behaviour, run `npm run build && npm run preview`, open the app once, then switch DevTools → Network to _Offline_ and reload.
 

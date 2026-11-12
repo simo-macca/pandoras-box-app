@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- localStorage keys are named after the app version (`frantic_game_state_v1.2.0`, `frantic_lang_v1.2.0`) instead of `…_v2`. Saved matches and the language are migrated automatically from any older key, which is then removed.
+- Exported backups record the app version (`"version": "1.2.0"`) instead of the fixed `2`.
+
 ## [1.2.0] – 2026-11-12
 
 ### Fixed — rules accuracy

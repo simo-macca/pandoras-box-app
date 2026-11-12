@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
   STORAGE_KEYS,
+  VERSIONED_KEY_PREFIXES,
   INITIAL_PLAYERS,
   INITIAL_STATE,
   getInitialGameState,
@@ -12,6 +13,7 @@ import {
   saveThemeToStorage,
 } from '../storage';
 import { GameState } from '@/types/game';
+import { APP_VERSION } from '@/data/appInfo';
 
 describe('storage utils', () => {
   beforeEach(() => {
@@ -115,6 +117,55 @@ describe('storage utils', () => {
     it('ignores unsupported theme values', () => {
       localStorage.setItem(STORAGE_KEYS.THEME, 'sepia');
       expect(loadSavedTheme()).toBe('system');
+    });
+  });
+
+  describe('versioned keys and migration', () => {
+    it('names the keys after the current app version', () => {
+      expect(STORAGE_KEYS.GAME_STATE).toBe(
+        `frantic_game_state_v${APP_VERSION}`
+      );
+      expect(STORAGE_KEYS.LANGUAGE).toBe(`frantic_lang_v${APP_VERSION}`);
+      expect(STORAGE_KEYS.THEME).toBe('frantic_theme_mode');
+    });
+
+    it('migrates a match saved under the legacy v2 key and removes it', () => {
+      const legacy = {
+        ...INITIAL_STATE,
+        config: {
+          ...INITIAL_STATE.config,
+          targetScore: 179,
+          presetName: 'long',
+        },
+      };
+      localStorage.setItem('frantic_game_state_v2', JSON.stringify(legacy));
+
+      const loaded = loadSavedGameState();
+
+      expect(loaded.config.targetScore).toBe(179);
+      expect(localStorage.getItem(STORAGE_KEYS.GAME_STATE)).not.toBeNull();
+      expect(localStorage.getItem('frantic_game_state_v2')).toBeNull();
+    });
+
+    it('prefers the newest older version when several exist', () => {
+      localStorage.setItem(`${VERSIONED_KEY_PREFIXES.LANGUAGE}2`, 'de');
+      localStorage.setItem(`${VERSIONED_KEY_PREFIXES.LANGUAGE}0.9.0`, 'it');
+      localStorage.setItem(`${VERSIONED_KEY_PREFIXES.LANGUAGE}0.10.0`, 'fr');
+
+      expect(loadSavedLanguage()).toBe('fr');
+      expect(localStorage.getItem(STORAGE_KEYS.LANGUAGE)).toBe('fr');
+      expect(
+        Object.keys(localStorage).filter((k) =>
+          k.startsWith(VERSIONED_KEY_PREFIXES.LANGUAGE)
+        )
+      ).toEqual([STORAGE_KEYS.LANGUAGE]);
+    });
+
+    it('keeps the current key when it already exists', () => {
+      localStorage.setItem(STORAGE_KEYS.LANGUAGE, 'it');
+      localStorage.setItem('frantic_lang_v2', 'de');
+
+      expect(loadSavedLanguage()).toBe('it');
     });
   });
 });
