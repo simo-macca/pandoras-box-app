@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, Sparkles, BookOpen } from 'lucide-react';
+import { Trophy, Layers, BookOpen } from 'lucide-react';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { soundEffects } from '@/utils/sound';
@@ -10,12 +10,15 @@ interface TabNavigationProps {
   activeTab: ActiveTab;
   onSelectTab: (tab: ActiveTab) => void;
   language: Language;
+  /** `desktop` renders inline tabs for the header, `mobile` a bottom tab bar. */
+  variant: 'desktop' | 'mobile';
 }
 
 export const TabNavigation: React.FC<TabNavigationProps> = ({
   activeTab,
   onSelectTab,
   language,
+  variant,
 }) => {
   const t = TRANSLATIONS[language];
 
@@ -24,96 +27,71 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
     onSelectTab(tab);
   };
 
+  // Icons: trophy = standings, layered cards = rule card deck, book = rules.
   const navItems = [
-    {
-      id: 'scoreboard' as ActiveTab,
-      label: t.nav.scoreboard,
-      icon: Trophy,
-    },
-    {
-      id: 'rulecards' as ActiveTab,
-      label: t.nav.ruleCards,
-      icon: Sparkles,
-    },
-    {
-      id: 'rules' as ActiveTab,
-      label: t.nav.directory,
-      icon: BookOpen,
-    },
+    { id: 'scoreboard' as ActiveTab, label: t.nav.scoreboard, icon: Trophy },
+    { id: 'rulecards' as ActiveTab, label: t.nav.ruleCards, icon: Layers },
+    { id: 'rules' as ActiveTab, label: t.nav.directory, icon: BookOpen },
   ];
 
-  return (
-    <>
-      {/* Desktop Navigation */}
-      <nav
-        aria-label="Desktop tabs"
-        className="hidden w-full border-b border-neutral-200 bg-neutral-100/80 px-4 py-2.5 transition-colors md:block dark:border-neutral-800 dark:bg-neutral-900/60"
-      >
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeTab === item.id;
-
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => handleTabClick(item.id)}
-                  className={`flex items-center gap-2 rounded-2xl px-5 py-2.5 text-sm font-bold transition-all ${
-                    isActive
-                      ? 'border border-amber-500/30 bg-amber-500/15 text-amber-600 shadow-sm dark:text-amber-400'
-                      : 'text-neutral-600 hover:bg-neutral-200/60 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800/60 dark:hover:text-white'
-                  }`}
-                >
-                  <Icon
-                    className={`h-4 w-4 shrink-0 ${
-                      isActive
-                        ? 'text-amber-500 dark:text-amber-400'
-                        : 'text-neutral-500 dark:text-neutral-400'
-                    }`}
-                  />
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+  if (variant === 'desktop') {
+    return (
+      <nav aria-label={t.nav.scoreboard} className="segmented">
+        {navItems.map(({ id, label, icon: Icon }) => {
+          const isActive = activeTab === id;
+          return (
+            <button
+              key={id}
+              type="button"
+              onClick={() => handleTabClick(id)}
+              aria-current={isActive ? 'page' : undefined}
+              className={`segmented-item h-9 px-4 text-sm ${
+                isActive ? 'segmented-item-active' : ''
+              }`}
+            >
+              <Icon className={`h-4 w-4 ${isActive ? 'text-amber-500' : ''}`} />
+              <span>{label}</span>
+            </button>
+          );
+        })}
       </nav>
+    );
+  }
 
-      {/* Mobile Bottom Bar */}
-      <div className="fixed right-0 bottom-0 left-0 z-40 border-t border-neutral-200 bg-white/95 px-2 pt-1 pb-2 shadow-[0_-4px_25px_rgba(0,0,0,0.15)] backdrop-blur-lg sm:pb-0 md:hidden dark:border-neutral-800 dark:bg-neutral-900/95 dark:shadow-[0_-4px_25px_rgba(0,0,0,0.5)]">
-        <div className="mx-auto grid h-16 max-w-lg grid-cols-3 items-center gap-1">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => handleTabClick(item.id)}
-                className={`flex h-full flex-col items-center justify-center rounded-xl px-1 py-1 transition-colors ${
+  return (
+    <nav
+      aria-label={t.nav.scoreboard}
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-neutral-200/70 bg-white/85 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl backdrop-saturate-150 md:hidden dark:border-white/[0.06] dark:bg-neutral-950/85"
+    >
+      <div className="mx-auto grid h-16 max-w-md grid-cols-3 px-2">
+        {navItems.map(({ id, label, icon: Icon }) => {
+          const isActive = activeTab === id;
+          return (
+            <button
+              key={id}
+              type="button"
+              onClick={() => handleTabClick(id)}
+              aria-current={isActive ? 'page' : undefined}
+              className={`flex flex-col items-center justify-center gap-1 text-[11px] font-semibold transition-colors ${
+                isActive
+                  ? 'text-neutral-900 dark:text-white'
+                  : 'text-neutral-500 dark:text-neutral-400'
+              }`}
+            >
+              <span
+                className={`flex h-7 w-14 items-center justify-center rounded-full transition-colors ${
                   isActive
-                    ? 'font-bold text-amber-600 dark:text-amber-400'
-                    : 'text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200'
+                    ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400'
+                    : ''
                 }`}
               >
-                <Icon
-                  className={`mb-1 h-5 w-5 shrink-0 transition-transform ${
-                    isActive
-                      ? 'scale-110 text-amber-600 dark:text-amber-400'
-                      : 'text-neutral-500 dark:text-neutral-400'
-                  }`}
-                />
-                <span className="w-full truncate px-0.5 text-center text-xs sm:text-sm">
-                  {item.label}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+                <Icon className="h-5 w-5" />
+              </span>
+              <span className="w-full truncate px-1 text-center">{label}</span>
+            </button>
+          );
+        })}
       </div>
-    </>
+    </nav>
   );
 };

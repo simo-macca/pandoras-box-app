@@ -98,6 +98,11 @@ export const en: TranslationStrings = {
     activeRuleCard: 'Active Rule Card',
     noActiveRuleCard: 'No rule card active',
     drawRuleCard: 'Draw Rule Card',
+    pointsLeft: '{points} pts left',
+    limitReached: 'Limit reached',
+    overLimit: 'Over the limit',
+    matchActions: 'Match actions',
+    roundsShort: 'Rounds',
   },
   scoring: {
     modalTitle: 'End-of-Round Hand Scoring',
@@ -247,6 +252,7 @@ export const en: TranslationStrings = {
     concludeMatch: 'Conclude Match',
     reviewBoard: 'Review Board',
     viewScoreboard: 'View Scoreboard',
+    limit: 'Limit',
   },
   events: {
     identityTheft: 'Identity Theft',

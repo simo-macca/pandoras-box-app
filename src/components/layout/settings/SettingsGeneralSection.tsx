@@ -1,8 +1,9 @@
 import React from 'react';
-import { Laptop, Sun, Moon, Volume2, VolumeX, Smartphone } from 'lucide-react';
+import { Monitor, Sun, Moon, Volume2, VolumeX, Vibrate } from 'lucide-react';
 import { Language, ThemeMode } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { LanguageSelector } from '@/components/layout/LanguageSelector';
+import { Switch } from '@/components/common/Switch';
 
 interface SettingsGeneralSectionProps {
   language: Language;
@@ -27,115 +28,83 @@ export const SettingsGeneralSection: React.FC<SettingsGeneralSectionProps> = ({
 }) => {
   const t = TRANSLATIONS[language];
 
+  const themes: { mode: ThemeMode; label: string; icon: typeof Sun }[] = [
+    { mode: 'system', label: t.settings.themeSystem, icon: Monitor },
+    { mode: 'light', label: t.settings.themeLight, icon: Sun },
+    { mode: 'dark', label: t.settings.themeDark, icon: Moon },
+  ];
+
+  const toggles = [
+    {
+      id: 'sound',
+      label: t.settings.soundEnabled,
+      checked: soundEnabled,
+      onToggle: onToggleSound,
+      icon: soundEnabled ? Volume2 : VolumeX,
+    },
+    {
+      id: 'haptics',
+      label: t.settings.hapticsEnabled,
+      checked: hapticsEnabled,
+      onToggle: onToggleHaptics,
+      icon: Vibrate,
+    },
+  ];
+
   return (
-    <div className="space-y-4">
-      {/* Appearance */}
-      <div>
-        <h3 className="mb-2 text-xs font-semibold tracking-wider text-neutral-500 uppercase sm:text-sm dark:text-neutral-400">
-          {t.settings.appearance}
-        </h3>
+    <div className="space-y-7">
+      <section>
+        <h3 className="eyebrow mb-3">{t.settings.appearance}</h3>
         <div className="grid grid-cols-3 gap-2">
-          <button
-            type="button"
-            onClick={() => onThemeChange('system')}
-            className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 transition-all sm:p-3 ${
-              theme === 'system'
-                ? 'border-blue-500 bg-blue-500/10 font-bold text-blue-600 dark:text-blue-400'
-                : 'border-neutral-200 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:text-neutral-300 dark:hover:border-neutral-700'
-            }`}
-          >
-            <Laptop className="mb-1 h-5 w-5 shrink-0" />
-            <span className="text-xs">{t.settings.themeSystem}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onThemeChange('light')}
-            className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 transition-all sm:p-3 ${
-              theme === 'light'
-                ? 'border-amber-500 bg-amber-500/10 font-bold text-amber-600'
-                : 'border-neutral-200 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:text-neutral-300 dark:hover:border-neutral-700'
-            }`}
-          >
-            <Sun className="mb-1 h-5 w-5 shrink-0" />
-            <span className="text-xs">{t.settings.themeLight}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => onThemeChange('dark')}
-            className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 transition-all sm:p-3 ${
-              theme === 'dark'
-                ? 'border-purple-500 bg-purple-500/10 font-bold text-purple-400'
-                : 'border-neutral-200 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:text-neutral-300 dark:hover:border-neutral-700'
-            }`}
-          >
-            <Moon className="mb-1 h-5 w-5 shrink-0" />
-            <span className="text-xs">{t.settings.themeDark}</span>
-          </button>
+          {themes.map(({ mode, label, icon: Icon }) => (
+            <button
+              key={mode}
+              type="button"
+              onClick={() => onThemeChange(mode)}
+              aria-pressed={theme === mode}
+              className={`option flex flex-col items-center justify-center gap-1.5 px-2 py-3 ${
+                theme === mode ? 'option-active' : ''
+              }`}
+            >
+              <Icon className="h-5 w-5" />
+              <span className="text-xs font-semibold">{label}</span>
+            </button>
+          ))}
         </div>
-      </div>
+      </section>
 
-      {/* Language */}
-      <div>
-        <h3 className="mb-3 text-xs font-semibold tracking-wider text-neutral-500 uppercase sm:text-sm dark:text-neutral-400">
-          {t.settings.language}
-        </h3>
+      <section>
+        <h3 className="eyebrow mb-3">{t.settings.language}</h3>
         <LanguageSelector
           currentLanguage={language}
           onSelectLanguage={onLanguageChange}
         />
-      </div>
+      </section>
 
-      {/* Audio & Haptic Feedback */}
-      <div>
-        <h3 className="mb-3 text-sm font-semibold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
-          {t.settings.soundAndHaptics}
-        </h3>
-        <div className="grid grid-cols-2 gap-3">
-          <button
-            type="button"
-            onClick={onToggleSound}
-            className={`flex items-center gap-3 rounded-2xl border p-3 transition-all ${
-              soundEnabled
-                ? 'border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                : 'border-neutral-200 text-neutral-500 dark:border-neutral-800'
-            }`}
-          >
-            {soundEnabled ? (
-              <Volume2 className="h-5 w-5 shrink-0" />
-            ) : (
-              <VolumeX className="h-5 w-5 shrink-0" />
-            )}
-            <div className="text-left">
-              <div className="text-xs font-bold">{t.settings.soundEnabled}</div>
-              <div className="text-[10px] opacity-75">
-                {soundEnabled ? 'ON' : 'OFF'}
-              </div>
-            </div>
-          </button>
-
-          <button
-            type="button"
-            onClick={onToggleHaptics}
-            className={`flex items-center gap-3 rounded-2xl border p-3 transition-all ${
-              hapticsEnabled
-                ? 'border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                : 'border-neutral-200 text-neutral-500 dark:border-neutral-800'
-            }`}
-          >
-            <Smartphone className="h-5 w-5 shrink-0" />
-            <div className="text-left">
-              <div className="text-xs font-bold">
-                {t.settings.hapticsEnabled}
-              </div>
-              <div className="text-[10px] opacity-75">
-                {hapticsEnabled ? 'ON' : 'OFF'}
-              </div>
-            </div>
-          </button>
+      <section>
+        <h3 className="eyebrow mb-3">{t.settings.soundAndHaptics}</h3>
+        <div className="card-muted divide-y divide-neutral-200/80 dark:divide-white/[0.06]">
+          {toggles.map(({ id, label, checked, onToggle, icon: Icon }) => (
+            <button
+              key={id}
+              type="button"
+              onClick={onToggle}
+              aria-pressed={checked}
+              className="flex w-full items-center gap-3 px-4 py-3 text-left"
+            >
+              <Icon
+                className={`h-5 w-5 shrink-0 ${
+                  checked ? 'text-amber-500' : 'text-neutral-400'
+                }`}
+              />
+              <span className="flex-1 text-sm font-semibold text-neutral-800 dark:text-neutral-100">
+                {label}
+              </span>
+              <Switch checked={checked} />
+            </button>
+          ))}
         </div>
-      </div>
+      </section>
     </div>
   );
 };

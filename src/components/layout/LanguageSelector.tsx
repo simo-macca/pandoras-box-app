@@ -1,4 +1,5 @@
 import React from 'react';
+import { Check } from 'lucide-react';
 import { Language } from '@/types/game';
 
 interface LanguageSelectorProps {
@@ -7,11 +8,13 @@ interface LanguageSelectorProps {
   className?: string;
 }
 
-const LANGUAGES: { code: Language; label: string; flag: string }[] = [
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
-  { code: 'it', label: 'Italiano', flag: '🇮🇹' },
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
+// Language codes instead of flag emoji: a language is not a country
+// (German is spoken in CH/AT/DE) and flags render as letters on Windows.
+const LANGUAGES: { code: Language; label: string }[] = [
+  { code: 'en', label: 'English' },
+  { code: 'de', label: 'Deutsch' },
+  { code: 'it', label: 'Italiano' },
+  { code: 'fr', label: 'Français' },
 ];
 
 export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
@@ -28,14 +31,26 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
             key={item.code}
             type="button"
             onClick={() => onSelectLanguage(item.code)}
-            className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 transition-all sm:p-3 ${
-              isActive
-                ? 'border-amber-500 bg-amber-500/10 font-bold text-amber-600 shadow-sm dark:text-amber-400'
-                : 'border-neutral-200 bg-neutral-50/50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300 dark:hover:border-neutral-700'
+            aria-pressed={isActive}
+            className={`option relative flex items-center gap-2.5 px-3 py-2.5 text-left ${
+              isActive ? 'option-active' : ''
             }`}
           >
-            <span className="mb-1 shrink-0 text-lg">{item.flag}</span>
-            <span className="text-xs">{item.label}</span>
+            <span
+              className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[11px] font-bold uppercase ${
+                isActive
+                  ? 'bg-amber-500 text-neutral-950'
+                  : 'bg-neutral-100 text-neutral-600 dark:bg-white/[0.08] dark:text-neutral-300'
+              }`}
+            >
+              {item.code}
+            </span>
+            <span className="min-w-0 truncate text-sm font-semibold">
+              {item.label}
+            </span>
+            {isActive && (
+              <Check className="ml-auto h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+            )}
           </button>
         );
       })}

@@ -218,7 +218,7 @@ export function App() {
   );
 
   return (
-    <div className="flex min-h-screen flex-col overflow-x-clip bg-neutral-100 font-sans text-neutral-900 transition-colors selection:bg-amber-500 selection:text-black dark:bg-neutral-950 dark:text-neutral-100">
+    <div className="app-backdrop flex min-h-dvh flex-col overflow-x-clip bg-neutral-50 font-sans text-neutral-900 antialiased transition-colors selection:bg-amber-500/30 dark:bg-neutral-950 dark:text-neutral-100">
       {/* Top Navigation */}
       <Navbar
         language={language}
@@ -229,17 +229,26 @@ export function App() {
         roundLimit={gameState.config.roundLimit}
         onOpenSetup={openSetup}
         onOpenSettings={() => openSettings('settings')}
+        navigation={
+          <TabNavigation
+            variant="desktop"
+            activeTab={activeTab}
+            onSelectTab={setActiveTab}
+            language={language}
+          />
+        }
       />
 
-      {/* Main Tab Bar */}
+      {/* Mobile bottom tab bar */}
       <TabNavigation
+        variant="mobile"
         activeTab={activeTab}
         onSelectTab={setActiveTab}
         language={language}
       />
 
       {/* Main View Area */}
-      <main className="mx-auto w-full max-w-7xl flex-1 px-3 py-4 pb-24 sm:px-6 sm:py-6 md:pb-6">
+      <main className="page-container flex-1 py-5 sm:py-8">
         {activeTab === 'scoreboard' && (
           <Leaderboard
             playerStats={playerStats}

@@ -17,9 +17,10 @@ export const AppLogo: React.FC<AppLogoProps> = ({
       alt={alt}
       width={size}
       height={size}
-      className={`shrink-0 object-contain drop-shadow-md transition-transform duration-200 select-none hover:scale-105 active:scale-95 ${className}`}
+      className={`shrink-0 object-contain shadow-sm select-none ${className}`}
       loading="eager"
       decoding="async"
+      draggable={false}
     />
   );
 };

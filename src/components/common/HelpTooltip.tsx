@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { HelpCircle, Info, X } from 'lucide-react';
+import { Info, X } from 'lucide-react';
 
 interface HelpTooltipProps {
   title: string;
@@ -77,12 +77,11 @@ export const HelpTooltip: React.FC<HelpTooltipProps> = ({
       {isOpen && (
         <div
           role="tooltip"
-          className={`animate-fade-in pointer-events-auto absolute bottom-full z-50 mb-2 w-72 rounded-2xl border border-neutral-200 bg-white p-3.5 text-left text-neutral-900 shadow-2xl sm:w-80 dark:border-neutral-700/80 dark:bg-neutral-800 dark:text-white ${alignmentClasses}`}
+          className={`animate-fade-in pointer-events-auto absolute bottom-full z-50 mb-2 w-[min(18rem,calc(100vw-2rem))] rounded-2xl border border-neutral-200/80 bg-white p-4 text-left text-neutral-900 shadow-(--shadow-lift) sm:w-80 dark:border-white/10 dark:bg-neutral-800 dark:text-white ${alignmentClasses}`}
         >
-          <div className="mb-2 flex items-center justify-between border-b border-neutral-200 pb-1.5 dark:border-neutral-700/60">
-            <span className="flex items-center gap-1.5 text-xs font-black tracking-wider text-amber-500 uppercase dark:text-amber-400">
-              <HelpCircle className="h-3.5 w-3.5" />
-              <span>{title}</span>
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <span className="text-sm font-bold text-neutral-900 dark:text-white">
+              {title}
             </span>
             <button
               type="button"
@@ -96,7 +95,7 @@ export const HelpTooltip: React.FC<HelpTooltipProps> = ({
               <X className="h-3.5 w-3.5" />
             </button>
           </div>
-          <p className="text-xs leading-relaxed font-normal text-neutral-600 dark:text-neutral-300">
+          <p className="text-[13px] leading-relaxed text-neutral-600 dark:text-neutral-300">
             {content}
           </p>
         </div>

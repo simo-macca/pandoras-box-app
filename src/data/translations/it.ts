@@ -99,6 +99,11 @@ export const it: TranslationStrings = {
     activeRuleCard: 'Carta Regola Attiva',
     noActiveRuleCard: 'Nessuna carta regola attiva',
     drawRuleCard: 'Pesca Carta Regola',
+    pointsLeft: 'ancora {points} pt',
+    limitReached: 'Limite raggiunto',
+    overLimit: 'Oltre il limite',
+    matchActions: 'Azioni partita',
+    roundsShort: 'Round',
   },
   scoring: {
     modalTitle: 'Conteggio Punti a Fine Round',
@@ -251,6 +256,7 @@ export const it: TranslationStrings = {
     concludeMatch: 'Concludi Partita',
     reviewBoard: 'Rivedi Tabellone',
     viewScoreboard: 'Vedi Tabellone',
+    limit: 'Limite',
   },
   events: {
     identityTheft: 'Identity Theft',

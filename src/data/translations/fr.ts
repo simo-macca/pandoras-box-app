@@ -99,6 +99,11 @@ export const fr: TranslationStrings = {
     activeRuleCard: 'Carte Règle Active',
     noActiveRuleCard: 'Aucune règle active',
     drawRuleCard: 'Tirer une Carte Règle',
+    pointsLeft: 'encore {points} pts',
+    limitReached: 'Limite atteinte',
+    overLimit: 'Limite dépassée',
+    matchActions: 'Actions de la partie',
+    roundsShort: 'Manches',
   },
   scoring: {
     modalTitle: 'Calcul des Points de Main',
@@ -251,6 +256,7 @@ export const fr: TranslationStrings = {
     concludeMatch: 'Terminer la Partie',
     reviewBoard: 'Revoir le Tableau',
     viewScoreboard: 'Voir le tableau',
+    limit: 'Limite',
   },
   events: {
     identityTheft: 'Identity Theft',

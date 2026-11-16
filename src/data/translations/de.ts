@@ -99,6 +99,11 @@ export const de: TranslationStrings = {
     activeRuleCard: 'Aktive Regelkarte',
     noActiveRuleCard: 'Keine Regelkarte aktiv',
     drawRuleCard: 'Regelkarte ziehen',
+    pointsLeft: 'noch {points} Pkt.',
+    limitReached: 'Limit erreicht',
+    overLimit: 'Über dem Limit',
+    matchActions: 'Partie-Aktionen',
+    roundsShort: 'Runden',
   },
   scoring: {
     modalTitle: 'Handkarten-Wertung',
@@ -252,6 +257,7 @@ export const de: TranslationStrings = {
     concludeMatch: 'Spiel beenden',
     reviewBoard: 'Rangliste ansehen',
     viewScoreboard: 'Punkteübersicht',
+    limit: 'Limit',
   },
   events: {
     identityTheft: 'Identity Theft',

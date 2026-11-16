@@ -90,6 +90,11 @@ export interface TranslationStrings {
     activeRuleCard: string;
     noActiveRuleCard: string;
     drawRuleCard: string;
+    pointsLeft: string;
+    limitReached: string;
+    overLimit: string;
+    matchActions: string;
+    roundsShort: string;
     endReason?: {
       destination: string;
       deck_empty: string;
@@ -236,6 +241,7 @@ export interface TranslationStrings {
     concludeMatch: string;
     reviewBoard: string;
     viewScoreboard: string;
+    limit: string;
   };
   events: {
     identityTheft: string;

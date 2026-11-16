@@ -4,22 +4,29 @@ import { Toaster } from 'react-hot-toast';
 /** Global toast container (undo prompts, confirmations, errors). */
 export const AppToaster: React.FC = () => (
   <Toaster
-    position="top-right"
-    containerStyle={{ top: 16, right: 16, zIndex: 99999 }}
+    position="top-center"
+    containerStyle={{
+      top: 'calc(env(safe-area-inset-top) + 72px)',
+      zIndex: 99999,
+    }}
     toastOptions={{
       duration: 4000,
       style: {
         borderRadius: '14px',
-        background: '#1f2937',
-        color: '#fff',
+        background: '#141826',
+        color: '#f8f9fb',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
+        padding: '10px 14px',
         fontSize: '13px',
         fontWeight: '600',
-        boxShadow:
-          '0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3)',
+        boxShadow: '0 12px 32px -8px rgba(11, 14, 23, 0.45)',
+      },
+      success: {
+        iconTheme: { primary: '#f59e0b', secondary: '#141826' },
       },
       error: {
-        style: { background: '#ef4444', color: '#ffffff' },
-        iconTheme: { primary: '#ffffff', secondary: '#ef4444' },
+        style: { background: '#be123c', color: '#ffffff' },
+        iconTheme: { primary: '#ffffff', secondary: '#be123c' },
       },
     }}
   />

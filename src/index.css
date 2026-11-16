@@ -1,8 +1,43 @@
 @import 'tailwindcss';
 @custom-variant dark (&:where(.dark, .dark *));
 
-@utility pb-safe {
-  padding-bottom: env(safe-area-inset-bottom, 1rem);
+/* -------------------------------------------------------------------------- */
+/* Design tokens                                                              */
+/* -------------------------------------------------------------------------- */
+
+@theme {
+  /* System font stack with tabular figures for scores. */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Inter',
+    'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+
+  /*
+   * The dark neutrals are tinted towards the brand navy of the app icon
+   * (#0c0f17) so every surface reads as one family instead of flat grey.
+   * Light neutrals stay close to Tailwind's defaults.
+   */
+  --color-neutral-50: #f8f9fb;
+  --color-neutral-100: #f1f3f7;
+  --color-neutral-200: #e3e6ed;
+  --color-neutral-300: #cdd2dd;
+  --color-neutral-400: #9aa1b2;
+  --color-neutral-500: #6b7286;
+  --color-neutral-600: #4d5468;
+  --color-neutral-700: #343a4d;
+  --color-neutral-800: #1f2436;
+  --color-neutral-900: #141826;
+  --color-neutral-950: #0b0e17;
+
+  --radius-card: 1.25rem;
+
+  --shadow-soft:
+    0 1px 2px rgb(15 23 42 / 0.04), 0 4px 16px -4px rgb(15 23 42 / 0.08);
+  --shadow-lift:
+    0 2px 4px rgb(15 23 42 / 0.06), 0 12px 32px -8px rgb(15 23 42 / 0.18);
+  --shadow-glow: 0 8px 24px -6px rgb(245 158 11 / 0.45);
+
+  --animate-fade-in: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-slide-up: slideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fadeIn {
@@ -16,9 +51,294 @@
   }
 }
 
-@utility animate-fade-in {
-  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 1rem);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Base                                                                       */
+/* -------------------------------------------------------------------------- */
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-amber-500);
+    outline-offset: 2px;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Components — reusable building blocks shared across the app.               */
+/* Utilities written next to these classes still win (components layer).     */
+/* -------------------------------------------------------------------------- */
+
+@layer components {
+  /* Layout ----------------------------------------------------------------- */
+
+  .page-container {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .app-backdrop {
+    background-image:
+      radial-gradient(
+        60rem 30rem at 50% -10rem,
+        rgb(245 158 11 / 0.08),
+        transparent 70%
+      ),
+      radial-gradient(
+        40rem 24rem at 100% 0%,
+        rgb(59 130 246 / 0.06),
+        transparent 70%
+      );
+    background-attachment: fixed;
+  }
+
+  /* Surfaces --------------------------------------------------------------- */
+
+  .card {
+    @apply rounded-(--radius-card) border border-neutral-200/80 bg-white shadow-(--shadow-soft) dark:border-white/[0.07] dark:bg-neutral-900/80 dark:shadow-none;
+  }
+
+  .card-interactive {
+    @apply transition-[border-color,box-shadow,transform] duration-200 hover:border-neutral-300 hover:shadow-(--shadow-lift) dark:hover:border-white/15;
+  }
+
+  .card-muted {
+    @apply rounded-2xl border border-neutral-200/80 bg-neutral-50 dark:border-white/[0.06] dark:bg-white/[0.03];
+  }
+
+  .card-tile {
+    @apply rounded-xl border border-neutral-200/80 bg-white dark:border-white/[0.07] dark:bg-white/[0.04];
+  }
+
+  /* Typography ------------------------------------------------------------- */
+
+  .eyebrow {
+    @apply text-[11px] font-semibold tracking-[0.08em] text-neutral-500 uppercase dark:text-neutral-400;
+  }
+
+  .section-title {
+    @apply text-lg font-bold tracking-tight text-neutral-900 sm:text-xl dark:text-white;
+  }
+
+  .section-subtitle {
+    @apply text-sm text-neutral-500 dark:text-neutral-400;
+  }
+
+  .text-muted {
+    @apply text-neutral-500 dark:text-neutral-400;
+  }
+
+  .score-number {
+    @apply font-bold tracking-tight tabular-nums;
+  }
+
+  /* Buttons ---------------------------------------------------------------- */
+
+  .btn {
+    @apply inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold whitespace-nowrap transition-[background-color,border-color,color,box-shadow,transform] duration-150 select-none active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40;
+  }
+
+  .btn-sm {
+    @apply h-8 gap-1.5 rounded-lg px-3 text-xs;
+  }
+
+  .btn-lg {
+    @apply h-12 rounded-2xl px-5 text-base;
+  }
+
+  .btn-block {
+    @apply w-full;
+  }
+
+  .btn-primary {
+    @apply bg-amber-500 text-neutral-950 shadow-(--shadow-glow) hover:bg-amber-400;
+  }
+
+  .btn-secondary {
+    @apply border border-neutral-200 bg-white text-neutral-800 shadow-sm hover:border-neutral-300 hover:bg-neutral-50 dark:border-white/10 dark:bg-white/[0.06] dark:text-neutral-100 dark:shadow-none dark:hover:bg-white/10;
+  }
+
+  .btn-ghost {
+    @apply text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-white/[0.08] dark:hover:text-white;
+  }
+
+  .btn-danger {
+    @apply bg-rose-600 text-white hover:bg-rose-500;
+  }
+
+  .btn-danger-soft {
+    @apply border border-rose-500/30 bg-rose-500/10 text-rose-700 hover:bg-rose-500/15 dark:text-rose-300;
+  }
+
+  .btn-indigo-soft {
+    @apply border border-indigo-500/30 bg-indigo-500/10 text-indigo-700 hover:bg-indigo-500/15 dark:text-indigo-300;
+  }
+
+  .btn-amber-soft {
+    @apply border border-amber-500/40 bg-amber-500/10 text-amber-700 hover:bg-amber-500/15 dark:text-amber-300;
+  }
+
+  .btn-icon {
+    @apply inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 active:scale-95 disabled:pointer-events-none disabled:opacity-40 dark:text-neutral-400 dark:hover:bg-white/[0.08] dark:hover:text-white;
+  }
+
+  .btn-icon-sm {
+    @apply h-8 w-8 rounded-lg;
+  }
+
+  /* Stepper (+ / −) buttons used by the hand calculator. */
+  .stepper-btn {
+    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-neutral-100 text-neutral-700 transition-colors hover:bg-neutral-200 active:scale-95 disabled:pointer-events-none disabled:opacity-30 dark:bg-white/[0.08] dark:text-neutral-200 dark:hover:bg-white/[0.14];
+  }
+
+  .stepper-btn-primary {
+    @apply bg-amber-500 text-neutral-950 hover:bg-amber-400 dark:bg-amber-500 dark:text-neutral-950 dark:hover:bg-amber-400;
+  }
+
+  /* Chips & badges --------------------------------------------------------- */
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-neutral-200 bg-white px-2.5 py-1 text-xs font-semibold text-neutral-700 dark:border-white/10 dark:bg-white/[0.05] dark:text-neutral-200;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold tracking-wide uppercase;
+  }
+
+  .icon-tile {
+    @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-xl;
+  }
+
+  /* Forms ------------------------------------------------------------------ */
+
+  .input {
+    @apply h-10 w-full rounded-xl border border-neutral-200 bg-white px-3 text-sm font-medium text-neutral-900 shadow-sm transition-colors placeholder:text-neutral-400 focus:border-amber-500 focus:ring-4 focus:ring-amber-500/15 focus:outline-none disabled:opacity-50 dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:[color-scheme:dark] dark:shadow-none;
+  }
+
+  .field-label {
+    @apply mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-neutral-600 dark:text-neutral-300;
+  }
+
+  /* Segmented control (tabs, toggles) ---------------------------------------- */
+
+  .segmented {
+    @apply inline-flex items-center gap-1 rounded-xl bg-neutral-100 p-1 dark:bg-white/[0.06];
+  }
+
+  .segmented-item {
+    @apply inline-flex h-8 items-center justify-center gap-1.5 rounded-lg px-3 text-xs font-semibold text-neutral-600 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white;
+  }
+
+  .segmented-item-active {
+    @apply bg-white text-neutral-900 shadow-sm dark:bg-white/[0.12] dark:text-white;
+  }
+
+  /* Selectable option tile (radio-like buttons). */
+  .option {
+    @apply rounded-xl border border-neutral-200 bg-white text-neutral-700 transition-colors hover:border-neutral-300 dark:border-white/10 dark:bg-white/[0.03] dark:text-neutral-300 dark:hover:border-white/20;
+  }
+
+  .option-active {
+    @apply border-amber-500 bg-amber-500/10 text-amber-800 ring-1 ring-amber-500/40 dark:border-amber-400/70 dark:bg-amber-500/10 dark:text-amber-200;
+  }
+
+  /* Modals ------------------------------------------------------------------- */
+
+  .modal-backdrop {
+    @apply animate-fade-in fixed inset-0 z-50 flex items-end justify-center bg-neutral-950/60 backdrop-blur-sm sm:items-center sm:p-4;
+  }
+
+  .modal-panel {
+    @apply animate-slide-up relative flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-3xl border border-neutral-200/80 bg-white shadow-2xl sm:max-h-[88dvh] sm:rounded-3xl dark:border-white/10 dark:bg-neutral-900;
+  }
+
+  .modal-header {
+    @apply flex shrink-0 items-center justify-between gap-3 border-b border-neutral-200/80 px-5 py-4 dark:border-white/[0.07];
+  }
+
+  .modal-title {
+    @apply text-base leading-tight font-bold text-neutral-900 sm:text-lg dark:text-white;
+  }
+
+  .modal-body {
+    @apply min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-4;
+  }
+
+  .modal-footer {
+    @apply flex shrink-0 items-center justify-end gap-2 border-t border-neutral-200/80 bg-neutral-50/80 px-5 py-3.5 pb-[max(0.875rem,env(safe-area-inset-bottom))] dark:border-white/[0.07] dark:bg-white/[0.02];
+  }
+
+  /* Small grabber shown on mobile bottom sheets. */
+  .sheet-handle {
+    @apply mx-auto mt-2 h-1 w-10 shrink-0 rounded-full bg-neutral-300 sm:hidden dark:bg-white/20;
+  }
+
+  /* Callouts ------------------------------------------------------------------ */
+
+  .callout {
+    @apply rounded-2xl border px-4 py-3 text-sm;
+  }
+
+  .callout-info {
+    @apply border-blue-500/25 bg-blue-500/[0.07] text-blue-900 dark:text-blue-200;
+  }
+
+  .callout-warning {
+    @apply border-amber-500/30 bg-amber-500/[0.08] text-amber-900 dark:text-amber-200;
+  }
+
+  .callout-danger {
+    @apply border-rose-500/30 bg-rose-500/[0.07] text-rose-900 dark:text-rose-200;
+  }
+
+  .callout-magic {
+    @apply border-purple-500/30 bg-purple-500/[0.08] text-purple-900 dark:text-purple-200;
+  }
+
+  /* Progress ------------------------------------------------------------------ */
+
+  .progress-track {
+    @apply relative h-2 w-full overflow-hidden rounded-full bg-neutral-100 dark:bg-white/[0.07];
+  }
+
+  .progress-bar {
+    @apply h-full rounded-full transition-[width] duration-500 ease-out;
+  }
+
+  .divider {
+    @apply h-px w-full bg-neutral-200/80 dark:bg-white/[0.07];
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Motion & scrollbars                                                        */
+/* -------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -30,7 +350,6 @@
   }
 }
 
-/* Custom scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -41,18 +360,18 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.4);
+  background: rgba(107, 114, 134, 0.35);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(156, 163, 175, 0.7);
+  background: rgba(107, 114, 134, 0.6);
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  background: rgba(100, 116, 139, 0.4);
+.scrollbar-none {
+  scrollbar-width: none;
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 116, 139, 0.7);
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
