@@ -90,14 +90,14 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
           </div>
 
           {/* Primary action first (full width on phones), then match events. */}
-          <div className="flex flex-wrap items-center gap-2 lg:flex-nowrap">
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center lg:flex-nowrap">
             <button
               type="button"
               onClick={() => {
                 soundEffects.playClick();
                 onOpenScoreModal();
               }}
-              className="btn btn-primary h-11 w-full sm:order-last sm:w-auto"
+              className="btn btn-primary col-span-2 h-11 sm:order-last"
               title={showGameOver ? t.gameOver.title : t.tabs.logRound}
             >
               {showGameOver ? (
@@ -116,7 +116,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   onApplyIdentityTheft();
                 }}
                 disabled={!canApplyIdentityTheft}
-                className="btn btn-indigo-soft flex-1 sm:flex-none"
+                className="btn btn-indigo-soft min-w-0 shrink"
                 title={
                   canApplyIdentityTheft
                     ? t.events.identityTheftDesc
@@ -124,7 +124,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                 }
               >
                 <ArrowLeftRight className="h-4 w-4" />
-                <span>{t.events.identityTheft}</span>
+                <span className="truncate">{t.events.identityTheft}</span>
               </button>
             )}
 
@@ -136,11 +136,11 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   onOpenSeppuku();
                 }}
                 disabled={players.length === 0}
-                className="btn btn-danger-soft flex-1 sm:flex-none"
+                className="btn btn-danger-soft min-w-0 shrink"
                 title={t.events.seppukuDesc}
               >
                 <Swords className="h-4 w-4" />
-                <span>{t.events.seppuku}</span>
+                <span className="truncate">{t.events.seppuku}</span>
               </button>
             )}
 
@@ -151,11 +151,11 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   soundEffects.playClick();
                   onConcludeGame();
                 }}
-                className="btn btn-amber-soft flex-1 sm:flex-none"
+                className="btn btn-amber-soft min-w-0 shrink"
                 title={t.gameOver.concludeMatch}
               >
                 <Flag className="h-4 w-4" />
-                <span>{t.gameOver.concludeMatch}</span>
+                <span className="truncate">{t.gameOver.concludeMatch}</span>
               </button>
             )}
 
@@ -166,11 +166,13 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   soundEffects.playClick();
                   onStartNewGame();
                 }}
-                className="btn btn-secondary flex-1 sm:flex-none"
+                className={`btn btn-secondary min-w-0 shrink ${
+                  isContinued && onConcludeGame ? '' : 'col-span-2'
+                }`}
                 title={t.nav.newGame}
               >
                 <RotateCcw className="h-4 w-4" />
-                <span>{t.nav.newGame}</span>
+                <span className="truncate">{t.nav.newGame}</span>
               </button>
             )}
           </div>

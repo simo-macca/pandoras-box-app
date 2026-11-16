@@ -4,6 +4,7 @@ import { PowerCardItem } from '@/types/rules';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { DictionarySectionHeader } from './DictionarySectionHeader';
+import { ExpandableText } from '@/components/common/ExpandableText';
 
 interface PowerCardsSectionProps {
   powerCards: PowerCardItem[];
@@ -39,9 +40,11 @@ export const PowerCardsSection: React.FC<PowerCardsSectionProps> = ({
                 0 {t.rules.pts}
               </span>
             </div>
-            <p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
-              {pc.description[language] || pc.description.en}
-            </p>
+            <ExpandableText
+              className="mt-2"
+              text={pc.description[language] || pc.description.en}
+              language={language}
+            />
           </div>
         ))}
       </div>

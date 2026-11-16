@@ -66,6 +66,8 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
   };
 
   const handleToggleActive = (cardId: string) => {
+    // The drawn card is only final once the shuffle has stopped.
+    if (isShuffling) return;
     soundEffects.playClick();
     if (activeRuleCardIds.includes(cardId)) {
       onChangeActiveRuleCards(activeRuleCardIds.filter((id) => id !== cardId));
@@ -76,6 +78,7 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
   };
 
   const handleInspect = (cardId: string) => {
+    if (isShuffling) return;
     soundEffects.playClick();
     setSelectedCardId(cardId);
   };
@@ -138,6 +141,7 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
         <RuleCardSpotlight
           card={selectedCard}
           isActive={activeRuleCardIds.includes(selectedCard.id)}
+          isShuffling={isShuffling}
           onToggleActive={() => handleToggleActive(selectedCard.id)}
           language={language}
         />
@@ -159,6 +163,7 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
               card={card}
               isActive={activeRuleCardIds.includes(card.id)}
               isSelected={selectedCardId === card.id}
+              disabled={isShuffling}
               onInspect={() => handleInspect(card.id)}
               onToggleActive={() => handleToggleActive(card.id)}
               language={language}

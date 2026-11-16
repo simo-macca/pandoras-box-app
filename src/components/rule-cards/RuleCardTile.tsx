@@ -8,6 +8,8 @@ interface RuleCardTileProps {
   card: RuleCardItem;
   isActive: boolean;
   isSelected: boolean;
+  /** Blocks inspecting/activating while the deck is shuffling. */
+  disabled?: boolean;
   onInspect: () => void;
   onToggleActive: () => void;
   language: Language;
@@ -18,6 +20,7 @@ export const RuleCardTile: React.FC<RuleCardTileProps> = ({
   card,
   isActive,
   isSelected,
+  disabled = false,
   onInspect,
   onToggleActive,
   language,
@@ -27,8 +30,9 @@ export const RuleCardTile: React.FC<RuleCardTileProps> = ({
   return (
     <div
       role="button"
-      tabIndex={0}
+      tabIndex={disabled ? -1 : 0}
       aria-pressed={isSelected}
+      aria-disabled={disabled}
       onClick={onInspect}
       onKeyDown={(e) => {
         if (e.target !== e.currentTarget) return;
@@ -71,6 +75,7 @@ export const RuleCardTile: React.FC<RuleCardTileProps> = ({
             e.stopPropagation();
             onToggleActive();
           }}
+          disabled={disabled}
           className={`btn btn-sm ${isActive ? 'btn-ghost' : 'btn-magic-soft'}`}
         >
           {isActive ? t.rulecards.deactivateCard : t.rulecards.activateCard}

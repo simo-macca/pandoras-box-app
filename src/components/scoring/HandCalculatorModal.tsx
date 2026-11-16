@@ -101,10 +101,10 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
           <button
             type="button"
             onClick={handleSubmit}
-            className="btn btn-primary flex-1 sm:flex-none"
+            className="btn btn-primary min-w-0 flex-1 shrink sm:flex-none"
           >
             <Check className="h-4 w-4 stroke-[2.5]" />
-            <span>
+            <span className="truncate">
               {isEditing ? t.scoring.saveChanges : t.scoring.submitRound}
             </span>
           </button>

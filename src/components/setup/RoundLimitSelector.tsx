@@ -12,7 +12,7 @@ interface RoundLimitSelectorProps {
 const ROUND_LIMIT_PRESETS = [5, 10, 15, 20];
 
 const optionClass = (isSelected: boolean) =>
-  `option flex h-10 items-center justify-center px-2 text-sm font-semibold ${
+  `option flex h-10 min-w-0 items-center justify-center px-3 text-center text-sm font-semibold sm:h-11 ${
     isSelected ? 'option-active' : ''
   }`;
 
@@ -42,11 +42,11 @@ export const RoundLimitSelector: React.FC<RoundLimitSelectorProps> = ({
         </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         <button
           type="button"
           onClick={() => onChange('')}
-          className={optionClass(!hasLimit)}
+          className={`${optionClass(!hasLimit)} col-span-2 px-5 sm:col-span-4`}
         >
           <span>{t.setup.roundLimitUnlimited}</span>
         </button>

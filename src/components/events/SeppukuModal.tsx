@@ -95,10 +95,10 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
           <button
             type="button"
             onClick={handleSubmit}
-            className="btn btn-danger flex-1 sm:flex-none"
+            className="btn btn-danger min-w-0 flex-1 shrink sm:flex-none"
           >
             <Swords className="h-4 w-4" />
-            <span>
+            <span className="truncate">
               {isEditing ? t.setup.saveChanges : t.events.seppukuApply}
             </span>
           </button>

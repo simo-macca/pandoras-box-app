@@ -92,4 +92,34 @@ describe('RuleCardDrawer component', () => {
 
     vi.useRealTimers();
   });
+
+  it('blocks activating rule cards until the shuffle has finished', () => {
+    vi.useFakeTimers();
+    const onChange = vi.fn();
+    render(
+      <RuleCardDrawer {...defaultProps} onChangeActiveRuleCards={onChange} />
+    );
+
+    act(() => {
+      screen.getByRole('button', { name: /draw random/i }).click();
+    });
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
+
+    // Every activate control is disabled mid-shuffle.
+    screen
+      .getAllByRole('button', { name: /^activate rule$/i })
+      .forEach((btn) => expect(btn).toBeDisabled());
+    expect(onChange).not.toHaveBeenCalled();
+
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    screen
+      .getAllByRole('button', { name: /^activate rule$/i })
+      .forEach((btn) => expect(btn).toBeEnabled());
+
+    vi.useRealTimers();
+  });
 });

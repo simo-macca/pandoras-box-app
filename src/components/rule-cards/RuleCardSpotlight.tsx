@@ -7,6 +7,8 @@ import { TRANSLATIONS } from '@/data/translations';
 interface RuleCardSpotlightProps {
   card: RuleCardItem;
   isActive: boolean;
+  /** While the deck is shuffling the card is not final and cannot be activated. */
+  isShuffling?: boolean;
   onToggleActive: () => void;
   language: Language;
 }
@@ -15,13 +17,16 @@ interface RuleCardSpotlightProps {
 export const RuleCardSpotlight: React.FC<RuleCardSpotlightProps> = ({
   card,
   isActive,
+  isShuffling = false,
   onToggleActive,
   language,
 }) => {
   const t = TRANSLATIONS[language];
 
   return (
-    <div className="card animate-fade-in border-purple-500/50 p-5 ring-1 ring-purple-500/20 sm:p-6 dark:border-purple-400/40">
+    <div
+      className={`card animate-fade-in ${isShuffling ? 'opacity-70' : ''} border-purple-500/50 p-5 ring-1 ring-purple-500/20 sm:p-6 dark:border-purple-400/40`}
+    >
       <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2">
@@ -43,6 +48,8 @@ export const RuleCardSpotlight: React.FC<RuleCardSpotlightProps> = ({
         <button
           type="button"
           onClick={onToggleActive}
+          disabled={isShuffling}
+          aria-busy={isShuffling}
           className={`btn ${isActive ? 'btn-secondary' : 'btn-magic'}`}
         >
           {isActive ? (

@@ -47,33 +47,35 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
 
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
-          {/* Avatar with rank */}
+          {/* Avatar; the leader gets a crown */}
           <div className="relative shrink-0">
             <div
               className={`flex h-11 w-11 items-center justify-center rounded-full text-sm font-bold ${theme.avatarBg}`}
             >
               {player.name.slice(0, 2).toUpperCase()}
             </div>
-            <span
-              className={`absolute -right-1 -bottom-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-bold tabular-nums ring-2 ring-white dark:ring-neutral-900 ${
-                player.isLeader
-                  ? 'bg-amber-400 text-neutral-950'
-                  : 'bg-neutral-200 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200'
-              }`}
-            >
-              {player.isLeader ? (
-                <Crown className="h-3 w-3 fill-current" />
-              ) : (
-                player.rank
-              )}
-            </span>
+            {player.isLeader && (
+              <span className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-amber-400 text-neutral-950 ring-2 ring-white dark:ring-neutral-900">
+                <Crown className="h-3.5 w-3.5 fill-current" />
+              </span>
+            )}
           </div>
 
           <div className="min-w-0">
             <h3 className="truncate text-base font-semibold text-neutral-900 dark:text-white">
               {player.name}
             </h3>
-            <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
+            <div className="mt-1 flex flex-wrap items-center gap-1.5">
+              <span
+                className={`inline-flex h-5 min-w-8 items-center justify-center rounded-full px-2 text-[11px] font-bold tabular-nums ${
+                  player.isLeader
+                    ? 'bg-amber-400 text-neutral-950'
+                    : 'bg-neutral-100 text-neutral-600 dark:bg-white/[0.08] dark:text-neutral-300'
+                }`}
+                title={`#${player.rank}`}
+              >
+                #{player.rank}
+              </span>
               {player.isLeader && (
                 <span className="badge bg-amber-500/15 text-amber-700 dark:text-amber-300">
                   {t.scoreboard.leading}
@@ -91,13 +93,6 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
                   {t.scoreboard.overLimit}
                 </span>
               )}
-              {!player.isLeader &&
-                !player.isInDanger &&
-                !player.isEliminated && (
-                  <span className="text-xs text-neutral-500 dark:text-neutral-400">
-                    #{player.rank}
-                  </span>
-                )}
             </div>
           </div>
         </div>

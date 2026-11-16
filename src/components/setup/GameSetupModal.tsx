@@ -216,22 +216,22 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
       <button
         type="button"
         onClick={() => setShowConfirmReset(true)}
-        className="btn btn-danger-soft"
+        className="btn btn-danger-soft min-w-0 shrink"
       >
         <RotateCcw className="h-4 w-4" />
-        <span>{t.setup.newGame}</span>
+        <span className="truncate">{t.setup.newGame}</span>
       </button>
       <button
         type="button"
         onClick={handleSaveOnly}
-        className="btn btn-primary flex-1 sm:flex-none"
+        className="btn btn-primary min-w-0 flex-1 shrink sm:flex-none"
       >
         {isMatchInProgress ? (
           <Check className="h-4 w-4" />
         ) : (
           <Play className="h-4 w-4 fill-current" />
         )}
-        <span>
+        <span className="truncate">
           {isMatchInProgress ? t.setup.saveChanges : t.setup.startMatch}
         </span>
       </button>

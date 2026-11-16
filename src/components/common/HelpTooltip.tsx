@@ -16,8 +16,17 @@ export const HelpTooltip: React.FC<HelpTooltipProps> = ({
   align = 'center',
   className = '',
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  // Hover shows a preview; a click pins the box open until it is closed
+  // (X, click outside or Escape), so it does not vanish when the pointer leaves.
+  const [isHovered, setIsHovered] = useState(false);
+  const [isPinned, setIsPinned] = useState(false);
+  const isOpen = isHovered || isPinned;
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const close = () => {
+    setIsPinned(false);
+    setIsHovered(false);
+  };
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent | TouchEvent) => {
@@ -25,13 +34,15 @@ export const HelpTooltip: React.FC<HelpTooltipProps> = ({
         containerRef.current &&
         !containerRef.current.contains(e.target as Node)
       ) {
-        setIsOpen(false);
+        setIsPinned(false);
+        setIsHovered(false);
       }
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setIsOpen(false);
+        setIsPinned(false);
+        setIsHovered(false);
       }
     };
 
@@ -57,16 +68,18 @@ export const HelpTooltip: React.FC<HelpTooltipProps> = ({
     <div
       ref={containerRef}
       className={`relative inline-flex items-center ${className}`}
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <button
         type="button"
         onClick={(e) => {
           e.stopPropagation();
-          setIsOpen(!isOpen);
+          if (isPinned) close();
+          else setIsPinned(true);
         }}
         aria-label={`Info: ${title}`}
+        aria-expanded={isOpen}
         className={`rounded-full p-1 text-neutral-400 transition-colors hover:text-amber-500 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:hover:text-amber-400 ${
           size === 'sm' ? 'h-5 w-5' : 'h-6 w-6'
         } ${isOpen ? 'text-amber-500 dark:text-amber-400' : ''}`}
@@ -83,17 +96,19 @@ export const HelpTooltip: React.FC<HelpTooltipProps> = ({
             <span className="text-sm font-bold text-neutral-900 dark:text-white">
               {title}
             </span>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsOpen(false);
-              }}
-              className="rounded p-0.5 text-neutral-400 transition-colors hover:text-neutral-700 dark:hover:text-white"
-              aria-label="Close info"
-            >
-              <X className="h-3.5 w-3.5" />
-            </button>
+            {isPinned && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  close();
+                }}
+                className="btn-icon -my-1 -mr-1 h-7 w-7 rounded-lg"
+                aria-label="Close info"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
           </div>
           <p className="text-[13px] leading-relaxed text-neutral-600 dark:text-neutral-300">
             {content}

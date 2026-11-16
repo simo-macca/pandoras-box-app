@@ -4,6 +4,7 @@ import { EventItem } from '@/types/rules';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { DictionarySectionHeader } from './DictionarySectionHeader';
+import { ExpandableText } from '@/components/common/ExpandableText';
 
 interface EventCardsSectionProps {
   events: EventItem[];
@@ -54,9 +55,11 @@ export const EventCardsSection: React.FC<EventCardsSectionProps> = ({
                 </span>
               </div>
             </div>
-            <p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
-              {ev.description[language] || ev.description.en}
-            </p>
+            <ExpandableText
+              className="mt-2"
+              text={ev.description[language] || ev.description.en}
+              language={language}
+            />
           </div>
         ))}
       </div>

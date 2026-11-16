@@ -21,6 +21,7 @@ import {
 import { TRANSLATIONS } from '@/data/translations';
 import { RULE_CARDS_DATA } from '@/data/ruleCards';
 import { SEPPUKU_POINTS } from '@/utils/scoring';
+import { PAWN_COLORS } from '@/utils/colors';
 import { HistoryScoreCell, ScoreCellTone } from './HistoryScoreCell';
 
 interface RoundHistoryEntryProps {
@@ -32,9 +33,9 @@ interface RoundHistoryEntryProps {
   language: Language;
 }
 
-/** Left accent per entry type; the card itself stays neutral. */
+/** Left accent for events; rounds use their winners' colours instead. */
 const ENTRY_ACCENTS: Record<string, string> = {
-  round: 'bg-amber-500',
+  round: 'bg-neutral-300 dark:bg-neutral-600',
   seppuku: 'bg-rose-500',
   'late-joiner': 'bg-emerald-500',
   'identity-theft': 'bg-indigo-500',
@@ -54,6 +55,28 @@ function getEntryKind(round: RoundEntry): EntryKind {
   if (round.eventType === 'seppuku') return 'seppuku';
   if (round.eventType === 'late-joiner') return 'late-joiner';
   return 'identity-theft';
+}
+
+/**
+ * Accent for a scored round: the winner's colour; several winners share the
+ * stripe in equal segments (seating order); no winner (e.g. Doomsday) keeps
+ * the neutral default.
+ */
+function getWinnerAccentStyle(
+  round: RoundEntry,
+  players: Player[]
+): React.CSSProperties | undefined {
+  const colors = players
+    .filter((p) => round.scores[p.id]?.isWinner)
+    .map((p) => PAWN_COLORS[p.color]?.hex)
+    .filter(Boolean);
+  if (colors.length === 0) return undefined;
+  if (colors.length === 1) return { backgroundColor: colors[0] };
+  const step = 100 / colors.length;
+  const stops = colors.map(
+    (c, i) => `${c} ${(i * step).toFixed(2)}% ${((i + 1) * step).toFixed(2)}%`
+  );
+  return { backgroundImage: `linear-gradient(to bottom, ${stops.join(', ')})` };
 }
 
 /** Rule cards that were active when the round was scored. */
@@ -216,6 +239,9 @@ export const RoundHistoryEntry: React.FC<RoundHistoryEntryProps> = ({
       <span
         aria-hidden="true"
         className={`absolute inset-y-0 left-0 w-1 ${ENTRY_ACCENTS[kind]}`}
+        style={
+          kind === 'round' ? getWinnerAccentStyle(round, players) : undefined
+        }
       />
       {/* Header: title and actions */}
       <div className="mb-3 flex items-center justify-between gap-2">

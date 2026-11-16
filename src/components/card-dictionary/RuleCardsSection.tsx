@@ -4,6 +4,7 @@ import { RuleCardItem } from '@/types/rules';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { DictionarySectionHeader } from './DictionarySectionHeader';
+import { ExpandableText } from '@/components/common/ExpandableText';
 
 interface RuleCardsSectionProps {
   ruleCards: RuleCardItem[];
@@ -34,9 +35,11 @@ export const RuleCardsSection: React.FC<RuleCardsSectionProps> = ({
             <h4 className="text-base font-semibold text-neutral-900 dark:text-white">
               {rc.name[language] || rc.name.en}
             </h4>
-            <p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
-              {rc.description[language] || rc.description.en}
-            </p>
+            <ExpandableText
+              className="mt-2"
+              text={rc.description[language] || rc.description.en}
+              language={language}
+            />
             {rc.flavor && (
               <div className="mt-auto pt-3">
                 <p className="border-l-2 border-purple-500/40 pl-3 text-xs text-neutral-500 italic dark:text-neutral-400">

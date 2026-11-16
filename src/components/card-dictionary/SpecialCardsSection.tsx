@@ -4,6 +4,7 @@ import { CardItem } from '@/types/rules';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { DictionarySectionHeader } from './DictionarySectionHeader';
+import { ExpandableText } from '@/components/common/ExpandableText';
 
 interface SpecialCardsSectionProps {
   cards: CardItem[];
@@ -39,9 +40,11 @@ export const SpecialCardsSection: React.FC<SpecialCardsSectionProps> = ({
                 {card.points} {t.rules.pts}
               </span>
             </div>
-            <p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
-              {card.description[language] || card.description.en}
-            </p>
+            <ExpandableText
+              className="mt-2"
+              text={card.description[language] || card.description.en}
+              language={language}
+            />
             {card.tip && (
               <div className="mt-auto pt-3">
                 <div className="callout callout-warning flex items-start gap-2 px-3 py-2 text-xs">
