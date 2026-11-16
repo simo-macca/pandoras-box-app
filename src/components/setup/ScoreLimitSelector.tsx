@@ -1,5 +1,4 @@
 import React from 'react';
-import { Target } from 'lucide-react';
 import { Language, GameConfig } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 
@@ -63,13 +62,10 @@ export const ScoreLimitSelector: React.FC<ScoreLimitSelectorProps> = ({
   ) => uses.map((u) => `${u.players}: ${lengthLabel[u.length]}`).join(' · ');
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <label className="flex items-center gap-2 text-sm font-bold text-neutral-800 dark:text-neutral-200">
-          <Target className="h-4 w-4 text-amber-500" />
-          <span>{t.setup.targetScore}</span>
-        </label>
-        <span className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+    <section className="space-y-3">
+      <div className="flex items-baseline justify-between gap-3">
+        <h3 className="eyebrow">{t.setup.targetScore}</h3>
+        <span className="text-xs text-neutral-400">
           {t.common.officialLimits}
         </span>
       </div>
@@ -84,16 +80,15 @@ export const ScoreLimitSelector: React.FC<ScoreLimitSelectorProps> = ({
               key={preset.score}
               type="button"
               onClick={() => onSelectPreset(preset.score)}
-              className={`flex flex-col items-center justify-center rounded-2xl border p-3 transition-all ${
-                isSelected
-                  ? 'border-amber-500 bg-amber-500/15 font-bold text-amber-600 shadow-[0_0_15px_rgba(245,158,11,0.2)] dark:text-amber-400'
-                  : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300 dark:hover:border-neutral-700'
+              aria-pressed={isSelected}
+              className={`option flex flex-col items-center justify-center gap-0.5 px-2 py-3 text-center ${
+                isSelected ? 'option-active' : ''
               }`}
             >
-              <span className="text-lg font-black text-neutral-900 dark:text-white">
+              <span className="score-number text-xl text-neutral-900 dark:text-white">
                 {preset.score}
               </span>
-              <span className="text-[10px] font-semibold text-neutral-400">
+              <span className="text-[11px] leading-tight text-neutral-500 dark:text-neutral-400">
                 {formatNote(preset.uses)}
               </span>
             </button>
@@ -102,14 +97,13 @@ export const ScoreLimitSelector: React.FC<ScoreLimitSelectorProps> = ({
       </div>
 
       {/* Custom Limit */}
-      <div className="flex items-center gap-2 pt-1">
+      <div className="flex items-center gap-2">
         <button
           type="button"
           onClick={onSelectCustom}
-          className={`rounded-xl border px-3 py-2 text-xs font-bold transition-all ${
-            presetName === 'custom'
-              ? 'border-amber-500 bg-amber-500/15 font-bold text-amber-600 dark:text-amber-400'
-              : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300 dark:hover:border-neutral-700'
+          aria-pressed={presetName === 'custom'}
+          className={`option h-10 shrink-0 px-4 text-sm font-semibold ${
+            presetName === 'custom' ? 'option-active' : ''
           }`}
         >
           {t.setup.customGame}
@@ -129,18 +123,18 @@ export const ScoreLimitSelector: React.FC<ScoreLimitSelectorProps> = ({
               }
             }}
             placeholder="150"
-            className="w-full rounded-xl border border-neutral-300 bg-neutral-100 px-3 py-2 text-sm font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
+            className="input pr-14 tabular-nums"
           />
-          <span className="pointer-events-none absolute top-2 right-3 text-xs font-semibold text-neutral-400">
+          <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-xs font-medium text-neutral-400">
             {t.setup.points}
           </span>
         </div>
       </div>
 
       <p className="text-xs leading-relaxed text-neutral-500 dark:text-neutral-400">
-        {t.setup.description}
+        {t.setup.targetScoreDesc}
       </p>
-    </div>
+    </section>
   );
 };
 

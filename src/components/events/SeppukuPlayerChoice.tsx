@@ -29,31 +29,29 @@ const OPTION_STYLES: Record<
   risk_number: {
     icon: Shield,
     selected:
-      'border-emerald-500 bg-emerald-500/15 shadow-sm ring-1 ring-emerald-500/50 dark:bg-emerald-950/40',
+      'border-emerald-500/70 bg-emerald-500/10 ring-1 ring-emerald-500/40',
     title: 'text-emerald-700 dark:text-emerald-300',
     iconColor: 'text-emerald-500',
     check: 'text-emerald-600 dark:text-emerald-400',
-    pill: 'border-emerald-500/30 bg-emerald-500/20 text-emerald-700 dark:text-emerald-300',
+    pill: 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300',
     total: 'text-emerald-600 dark:text-emerald-400',
   },
   risk_special: {
     icon: Skull,
-    selected:
-      'border-rose-500 bg-rose-500/15 shadow-sm ring-1 ring-rose-500/50 dark:bg-rose-950/40',
+    selected: 'border-rose-500/70 bg-rose-500/10 ring-1 ring-rose-500/40',
     title: 'text-rose-700 dark:text-rose-300',
     iconColor: 'text-rose-500',
     check: 'text-rose-600 dark:text-rose-400',
-    pill: 'border-rose-500/30 bg-rose-500/20 text-rose-700 dark:text-rose-300',
+    pill: 'bg-rose-500/15 text-rose-700 dark:text-rose-300',
     total: 'text-rose-600 dark:text-rose-400',
   },
   no_risk: {
     icon: Flame,
-    selected:
-      'border-amber-500 bg-amber-500/15 shadow-sm ring-1 ring-amber-500/50 dark:bg-amber-950/40',
+    selected: 'border-amber-500/70 bg-amber-500/10 ring-1 ring-amber-500/40',
     title: 'text-amber-700 dark:text-amber-300',
     iconColor: 'text-amber-500',
     check: 'text-amber-600 dark:text-amber-400',
-    pill: 'border-amber-500/30 bg-amber-500/20 text-amber-700 dark:text-amber-300',
+    pill: 'bg-amber-500/15 text-amber-700 dark:text-amber-300',
     total: 'text-amber-600 dark:text-amber-400',
   },
 };
@@ -89,22 +87,19 @@ export const SeppukuPlayerChoice: React.FC<SeppukuPlayerChoiceProps> = ({
   };
 
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-neutral-50/70 p-3 shadow-xs dark:border-neutral-800 dark:bg-neutral-800/40">
-      <div className="mb-2.5 flex items-center justify-between gap-2">
+    <div className="card-muted p-3 sm:p-4">
+      <div className="mb-3 flex items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-2">
-          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-neutral-200 text-[10px] font-bold text-neutral-600 dark:bg-neutral-700 dark:text-neutral-300">
+          <span
+            className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${colorTheme.avatarBg}`}
+          >
             {position}
           </span>
-          <span
-            className={`h-2.5 w-2.5 shrink-0 rounded-full ${colorTheme.accentBg}`}
-          />
-          <span className="truncate text-sm font-bold text-neutral-900 dark:text-white">
+          <span className="truncate text-sm font-semibold text-neutral-900 dark:text-white">
             {player.name}
           </span>
         </div>
-        <span
-          className={`font-mono text-xs font-black ${OPTION_STYLES[choice].total}`}
-        >
+        <span className={`score-number text-sm ${OPTION_STYLES[choice].total}`}>
           {formatPoints(SEPPUKU_POINTS[choice])}
         </span>
       </div>
@@ -122,15 +117,15 @@ export const SeppukuPlayerChoice: React.FC<SeppukuPlayerChoiceProps> = ({
               aria-pressed={isSelected}
               onClick={() => onSelect(outcome)}
               aria-label={`${player.name}: ${labels[outcome].title} (${points})`}
-              className={`flex flex-col justify-between rounded-xl border p-2.5 text-left transition-all ${
+              className={`flex flex-col justify-between rounded-xl border p-3 text-left transition-colors ${
                 isSelected
                   ? styles.selected
-                  : 'border-neutral-200 bg-white text-neutral-700 hover:border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300'
+                  : 'border-neutral-200/80 bg-white text-neutral-700 hover:border-neutral-300 dark:border-white/[0.07] dark:bg-white/[0.03] dark:text-neutral-300 dark:hover:border-white/15'
               }`}
             >
               <div className="flex items-center justify-between gap-1">
                 <div
-                  className={`flex items-center gap-1.5 text-xs font-bold ${styles.title}`}
+                  className={`flex items-center gap-1.5 text-sm font-semibold ${styles.title}`}
                 >
                   <Icon className={`h-4 w-4 shrink-0 ${styles.iconColor}`} />
                   <span>{labels[outcome].title}</span>
@@ -141,12 +136,12 @@ export const SeppukuPlayerChoice: React.FC<SeppukuPlayerChoiceProps> = ({
                   />
                 )}
               </div>
-              <p className="my-1.5 text-[11px] leading-tight text-neutral-500 dark:text-neutral-400">
+              <p className="my-1.5 text-xs leading-snug text-neutral-500 dark:text-neutral-400">
                 {labels[outcome].desc}
               </p>
               <div className="mt-auto">
                 <span
-                  className={`inline-flex items-center rounded-lg border px-2 py-0.5 font-mono text-[11px] font-black ${styles.pill}`}
+                  className={`badge text-[11px] normal-case tabular-nums ${styles.pill}`}
                 >
                   {points}
                 </span>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Play, RotateCcw, AlertTriangle, Users, Check } from 'lucide-react';
+import { Play, RotateCcw, AlertTriangle, Users, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Player, GameConfig, Language, PlayerColor } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
@@ -10,6 +10,7 @@ import { ALL_PLAYER_COLORS } from '@/utils/colors';
 import { soundEffects } from '@/utils/sound';
 import { getRecommendedPresets } from '@/utils/scoring';
 import { useModalA11y } from '@/hooks/useModalA11y';
+import { Modal } from '@/components/common/Modal';
 import { MIN_TARGET_SCORE } from '@/utils/storage';
 
 interface GameSetupModalProps {
@@ -210,122 +211,94 @@ export const GameSetupModal: React.FC<GameSetupModalProps> = ({
   const handleSaveOnly = () => submit(false);
   const handleResetAndStart = () => submit(true);
 
-  return (
-    <div
-      className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-2 backdrop-blur-sm sm:p-4"
-      role="dialog"
-      aria-modal="true"
-    >
-      <div className="relative flex max-h-[90dvh] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-800 dark:bg-neutral-900">
-        {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-b border-neutral-200 bg-neutral-50 px-4 py-3 sm:px-6 sm:py-4 dark:border-neutral-800 dark:bg-neutral-900/60">
-          <div className="min-w-0">
-            <h2 className="flex items-center gap-2 text-lg font-bold text-neutral-900 sm:text-xl dark:text-white">
-              <Users className="h-5 w-5 shrink-0 text-amber-500 dark:text-amber-400" />
-              <span className="truncate">{t.setup.title}</span>
-            </h2>
-            <p className="mt-0.5 truncate text-xs text-neutral-500 dark:text-neutral-400">
-              {t.setup.description}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label={t.common.close}
-            className="shrink-0 rounded-xl p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 sm:p-2 dark:hover:bg-neutral-800 dark:hover:text-white"
-          >
-            <X className="h-5 w-5 shrink-0" />
-          </button>
-        </div>
-
-        {/* Body */}
-        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-3 sm:space-y-6 sm:p-6">
-          {/* Players Config */}
-          <PlayerConfig
-            players={draftPlayers}
-            onAddPlayer={handleAddPlayer}
-            onRemovePlayer={handleRemovePlayer}
-            onUpdatePlayer={handleUpdatePlayer}
-            language={language}
-          />
-
-          <hr className="border-neutral-200 dark:border-neutral-800" />
-
-          {/* Score Limit Selector */}
-          <ScoreLimitSelector
-            targetScore={draftConfig.targetScore}
-            presetName={draftConfig.presetName}
-            customValue={customValue}
-            onSelectPreset={handleSelectScorePreset}
-            onSelectCustom={handleSelectCustom}
-            onCustomChange={handleCustomChange}
-            onSubmitCustom={handleSaveOnly}
-            language={language}
-          />
-
-          <hr className="border-neutral-200 dark:border-neutral-800" />
-
-          <RoundLimitSelector
-            value={draftRoundLimit}
-            onChange={setDraftRoundLimit}
-            language={language}
-          />
-        </div>
-
-        {/* Footer Actions */}
-        <div className="shrink-0 border-t border-neutral-200 bg-neutral-50 px-4 py-3 sm:px-6 sm:py-4 dark:border-neutral-800 dark:bg-neutral-900/60">
-          {!showConfirmReset ? (
-            <div className="flex items-center justify-between gap-2 sm:gap-3">
-              <button
-                type="button"
-                onClick={() => setShowConfirmReset(true)}
-                className="flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-bold text-red-600 transition-all hover:border-red-500 sm:px-4 sm:py-2.5 sm:text-sm dark:text-red-400"
-              >
-                <RotateCcw className="h-4 w-4 shrink-0" />
-                <span className="whitespace-nowrap">{t.setup.newGame}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleSaveOnly}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-linear-to-r from-amber-500 to-amber-600 px-4 py-2 text-xs font-extrabold text-white shadow-md transition-all hover:from-amber-400 hover:to-amber-500 active:scale-95 sm:px-6 sm:py-2.5 sm:text-sm"
-              >
-                {isMatchInProgress ? (
-                  <Check className="h-4 w-4 shrink-0" />
-                ) : (
-                  <Play className="h-4 w-4 shrink-0 fill-white" />
-                )}
-                <span className="whitespace-nowrap">
-                  {isMatchInProgress ? t.setup.saveChanges : t.setup.startMatch}
-                </span>
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              <div className="flex items-center justify-center gap-2 text-xs font-bold text-red-600 dark:text-red-400">
-                <AlertTriangle className="h-4 w-4 shrink-0" />
-                <span>{t.setup.confirmResetMessage}</span>
-              </div>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmReset(false)}
-                  className="flex-1 rounded-xl bg-neutral-200 px-3 py-2 text-xs font-semibold text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200"
-                >
-                  {t.setup.cancel}
-                </button>
-                <button
-                  type="button"
-                  onClick={handleResetAndStart}
-                  className="flex-1 rounded-xl bg-red-600 px-3 py-2 text-xs font-bold text-white hover:bg-red-700"
-                >
-                  {t.setup.confirm}
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
+  const footer = !showConfirmReset ? (
+    <div className="flex w-full items-center justify-between gap-2">
+      <button
+        type="button"
+        onClick={() => setShowConfirmReset(true)}
+        className="btn btn-danger-soft"
+      >
+        <RotateCcw className="h-4 w-4" />
+        <span>{t.setup.newGame}</span>
+      </button>
+      <button
+        type="button"
+        onClick={handleSaveOnly}
+        className="btn btn-primary flex-1 sm:flex-none"
+      >
+        {isMatchInProgress ? (
+          <Check className="h-4 w-4" />
+        ) : (
+          <Play className="h-4 w-4 fill-current" />
+        )}
+        <span>
+          {isMatchInProgress ? t.setup.saveChanges : t.setup.startMatch}
+        </span>
+      </button>
+    </div>
+  ) : (
+    <div className="w-full space-y-3">
+      <div
+        role="alert"
+        className="flex items-center justify-center gap-2 text-sm font-semibold text-rose-600 dark:text-rose-400"
+      >
+        <AlertTriangle className="h-4 w-4 shrink-0" />
+        <span>{t.setup.confirmResetMessage}</span>
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        <button
+          type="button"
+          onClick={() => setShowConfirmReset(false)}
+          className="btn btn-secondary"
+        >
+          {t.setup.cancel}
+        </button>
+        <button
+          type="button"
+          onClick={handleResetAndStart}
+          className="btn btn-danger"
+        >
+          {t.setup.confirm}
+        </button>
       </div>
     </div>
+  );
+
+  return (
+    <Modal
+      onClose={onClose}
+      closeLabel={t.common.close}
+      title={t.setup.title}
+      subtitle={t.setup.description}
+      icon={<Users className="h-5 w-5" />}
+      size="lg"
+      bodyClassName="space-y-8"
+      footer={footer}
+    >
+      <PlayerConfig
+        players={draftPlayers}
+        onAddPlayer={handleAddPlayer}
+        onRemovePlayer={handleRemovePlayer}
+        onUpdatePlayer={handleUpdatePlayer}
+        language={language}
+      />
+
+      <ScoreLimitSelector
+        targetScore={draftConfig.targetScore}
+        presetName={draftConfig.presetName}
+        customValue={customValue}
+        onSelectPreset={handleSelectScorePreset}
+        onSelectCustom={handleSelectCustom}
+        onCustomChange={handleCustomChange}
+        onSubmitCustom={handleSaveOnly}
+        language={language}
+      />
+
+      <RoundLimitSelector
+        value={draftRoundLimit}
+        onChange={setDraftRoundLimit}
+        language={language}
+      />
+    </Modal>
   );
 };
