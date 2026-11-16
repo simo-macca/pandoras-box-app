@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- New brand artwork: app icons, favicon and the social preview image (`og-image.png`) now show a hand of Frantic-coloured cards fanning out of Pandora's box, replacing the old artwork that still advertised a d20 dice roller. A maskable PWA icon (`icon-maskable-512.png`) was added for Android home screens; SVG sources live in `public/` (`icon.svg`, `favicon.svg`, `og-image.svg`).
+
 ## [1.2.1] – 2026-11-12
 
 ### Changed
