@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.3.0] – 2026-11-16
 
 ### Changed
 
@@ -13,6 +13,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - Round calculator: switch rows for Round Winner and Doomsday, shared stepper buttons, special cards show their point value instead of decorative icons.
 - Icons reviewed for meaning: rule cards use a layered-cards icon, Identity Theft a swap icon; flag emoji replaced by language codes.
 - Round history: the stripe on each round takes the winner's colour; with several winners it is split into one segment per winner, and rounds without a winner stay neutral.
+- Event entries in the round history (Seppuku, Identity Theft, late joiner) use a neutral hatched stripe and neutral badges, so they can't be confused with a player's colour; the leader's card no longer has a gold frame (the crown and #1 pill mark the leader).
 - Player cards show the rank as a padded `#1`, `#2` … pill; the leader keeps a crown on the avatar.
 - Match summary on phones: the danger zone gets its own full-width row with the number of players at risk and their names.
 - Info boxes open on hover and stay open after a click (with a close button) until closed, clicked outside or Escape.
