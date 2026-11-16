@@ -33,19 +33,26 @@ interface RoundHistoryEntryProps {
   language: Language;
 }
 
-/** Left accent for events; rounds use their winners' colours instead. */
-const ENTRY_ACCENTS: Record<string, string> = {
-  round: 'bg-neutral-300 dark:bg-neutral-600',
-  seppuku: 'bg-rose-500',
-  'late-joiner': 'bg-emerald-500',
-  'identity-theft': 'bg-indigo-500',
+/**
+ * Rounds get their winners' colours on the left stripe. Events must never be
+ * mistaken for a player colour (red, blue, green, purple, ...), so they use a
+ * neutral hatched stripe and neutral badges; the icon tells them apart.
+ */
+const NO_WINNER_ACCENT = 'bg-neutral-300 dark:bg-neutral-600';
+
+const EVENT_STRIPE: React.CSSProperties = {
+  backgroundImage:
+    'repeating-linear-gradient(135deg, var(--color-neutral-400) 0 4px, transparent 4px 8px)',
 };
+
+const EVENT_BADGE =
+  'bg-neutral-100 text-neutral-700 dark:bg-white/[0.08] dark:text-neutral-200';
 
 const BADGE_STYLES = {
   round: 'bg-amber-500/15 text-amber-700 dark:text-amber-300',
-  seppuku: 'bg-rose-500/15 text-rose-700 dark:text-rose-300',
-  'late-joiner': 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300',
-  'identity-theft': 'bg-indigo-500/15 text-indigo-700 dark:text-indigo-300',
+  seppuku: EVENT_BADGE,
+  'late-joiner': EVENT_BADGE,
+  'identity-theft': EVENT_BADGE,
 } as const;
 
 type EntryKind = keyof typeof BADGE_STYLES;
@@ -238,9 +245,11 @@ export const RoundHistoryEntry: React.FC<RoundHistoryEntryProps> = ({
     <article className="card relative overflow-hidden p-4">
       <span
         aria-hidden="true"
-        className={`absolute inset-y-0 left-0 w-1 ${ENTRY_ACCENTS[kind]}`}
+        className={`absolute inset-y-0 left-0 ${
+          kind === 'round' ? `w-1 ${NO_WINNER_ACCENT}` : 'w-1.5'
+        }`}
         style={
-          kind === 'round' ? getWinnerAccentStyle(round, players) : undefined
+          kind === 'round' ? getWinnerAccentStyle(round, players) : EVENT_STRIPE
         }
       />
       {/* Header: title and actions */}

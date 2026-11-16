@@ -26,13 +26,12 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
   const t = TRANSLATIONS[language];
   const theme = PAWN_COLORS[player.color];
 
-  const stateClasses = player.isLeader
-    ? 'border-amber-400/60 ring-1 ring-amber-400/30 dark:border-amber-400/40'
-    : player.isEliminated
-      ? 'border-rose-400/60 dark:border-rose-500/40'
-      : player.isInDanger
-        ? 'border-rose-300/70 dark:border-rose-500/30'
-        : '';
+  // The leader is marked by the crown and rank pill only (no gold frame).
+  const stateClasses = player.isEliminated
+    ? 'border-rose-400/60 dark:border-rose-500/40'
+    : player.isInDanger
+      ? 'border-rose-300/70 dark:border-rose-500/30'
+      : '';
 
   return (
     <article
