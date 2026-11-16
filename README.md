@@ -65,7 +65,7 @@ The full walkthrough is in the [Features & Player Guide](docs/FEATURES.md#game-n
 
 ### For developers
 
-Requires **Node.js 22.12 or later**.
+Requires **Node.js 22.12 or later**; Node 24 LTS is recommended and used by CI and Netlify (`.nvmrc`).
 
 ```bash
 git clone https://github.com/simo-macca/pandoras-box-app.git

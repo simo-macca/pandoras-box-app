@@ -2,14 +2,6 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
-
-### Fixed
-
-- `npm install` no longer warns about the deprecated `glob@11`: `workbox-build` (via `vite-plugin-pwa`) is pinned to `glob@^14` with an npm `overrides` entry until Workbox updates it. The generated service worker precaches the same files.
-- `markdownlint-cli2` 0.24.1 fixes a high-severity advisory in its `re2js` dependency.
-- CI uses `actions/checkout@v7` and `actions/setup-node@v7`, which run on Node 24 (GitHub is retiring Node 20 for actions). The GitHub Pages example in `docs/DEPLOYMENT.md` uses the current action versions too.
-
 ## [1.3.0] – 2026-11-16
 
 ### Changed
@@ -43,6 +35,10 @@ All notable changes to this project are documented here. The format follows [Kee
 - Rule cards can no longer be activated while the random draw is still shuffling.
 - Score Round actions, the number-card steppers and dialog footers no longer overflow on phones; the redundant Cancel button is hidden on phones (the header close button does the same).
 - Player cards, the game-over dialog and the history no longer show hard-coded English text (`DANGER`, `safety buffer`, `Limit reached!`, `Threshold`, `1st/2nd`); new keys exist in all four languages.
+- `npm install` no longer warns about the deprecated `glob@11`: `workbox-build` (via `vite-plugin-pwa`) is pinned to `glob@^14` with an npm `overrides` entry until Workbox updates it. The generated service worker precaches the same files.
+- `markdownlint-cli2` 0.24.1 fixes a high-severity advisory in its `re2js` dependency.
+- CI uses `actions/checkout@v7` and `actions/setup-node@v7`, which run on Node 24 (GitHub is retiring Node 20 for actions). The GitHub Pages example in `docs/DEPLOYMENT.md` uses the current action versions too.
+- Builds move to **Node 24 LTS**: CI, Netlify (`NODE_VERSION`) and a new `.nvmrc`. Node 22.12+ is still supported (`engines`).
 
 ## [1.2.1] – 2026-11-12
 

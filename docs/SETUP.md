@@ -19,11 +19,11 @@ How to install, run, test and verify the project locally.
 
 ## Prerequisites
 
-| Tool    | Version                                | Check           |
-| :------ | :------------------------------------- | :-------------- |
-| Node.js | **22.12 or later** (Node 22 LTS or 24) | `node -v`       |
-| npm     | 10 or later (bundled with Node)        | `npm -v`        |
-| Git     | any recent version                     | `git --version` |
+| Tool    | Version                                      | Check           |
+| :------ | :------------------------------------------- | :-------------- |
+| Node.js | **22.12 or later** (Node 24 LTS recommended) | `node -v`       |
+| npm     | 10 or later (bundled with Node)              | `npm -v`        |
+| Git     | any recent version                           | `git --version` |
 
 > [!NOTE]
 > Vitest 5, jsdom 30, ESLint 10 and lint-staged 17 require Node 22.12+. The minimum is declared in `package.json` (`engines`).
@@ -107,7 +107,7 @@ The commit is blocked if any step fails.
 
 ### On every push / pull request (GitHub Actions)
 
-[`.github/workflows/ci.yml`](../.github/workflows/ci.yml) runs `npm ci`, type-check, lint, Markdown lint, format check, tests and a production build on Node 22.
+[`.github/workflows/ci.yml`](../.github/workflows/ci.yml) runs `npm ci`, type-check, lint, Markdown lint, format check, tests and a production build on Node 24, the same version Netlify uses.
 
 ---
 
@@ -127,8 +127,8 @@ All optional; set them in the shell or in a local `.env` file (git-ignored).
 **`EBADENGINE` warnings or syntax errors during install/test** — upgrade Node:
 
 ```bash
-nvm install 22
-nvm use 22
+nvm install   # reads .nvmrc (Node 24)
+nvm use
 ```
 
 **Husky hooks don't run** — reinstall them:

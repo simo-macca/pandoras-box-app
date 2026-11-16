@@ -58,7 +58,7 @@ Check theme switching, the rulebook links, installation (_Install app_ in Chrome
 
 [`netlify.toml`](../netlify.toml) contains everything Netlify needs:
 
-- build command `npm run build`, publish folder `dist`, Node 22;
+- build command `npm run build`, publish folder `dist`, Node 24 (set in `netlify.toml`);
 - `Content-Type: application/pdf` and `Content-Disposition: inline` for `/rules/*`;
 - long-term caching for hashed `/assets/*`, `no-cache` for `sw.js`;
 - basic security headers (`X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`, `Permissions-Policy`);
@@ -99,7 +99,7 @@ Connect the repository in Netlify; every push to `main` deploys to production an
 [//]: # '         - uses: actions/checkout@v7'
 [//]: # '         - uses: actions/setup-node@v7'
 [//]: # '           with:'
-[//]: # '             node-version: 22'
+[//]: # '             node-version: 24'
 [//]: # '             cache: npm'
 [//]: # '         - run: npm ci'
 [//]: # '         - run: npm run test'
@@ -135,7 +135,7 @@ Connect the repository in Netlify; every push to `main` deploys to production an
 [//]: #
 [//]: # '## Other Hosts'
 [//]: #
-[//]: # '**Vercel / Cloudflare Pages** — framework preset _Vite_, build command `npm run build`, output `dist`, Node 22. Set `VITE_SITE_URL` to the production URL.'
+[//]: # '**Vercel / Cloudflare Pages** — framework preset _Vite_, build command `npm run build`, output `dist`, Node 24. Set `VITE_SITE_URL` to the production URL.'
 [//]: #
 [//]: # '**Nginx**'
 [//]: #

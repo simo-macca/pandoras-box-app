@@ -2,7 +2,7 @@
 
 ## Tech Stack & Scripts
 
-- **Framework & Runtime**: React 18.3, TypeScript 5.9, Vite 6, Tailwind CSS 4.3 (CSS-first config in `src/index.css`, no JS config), `vite-plugin-pwa` 2. Node.js ≥ 22.12.
+- **Framework & Runtime**: React 18.3, TypeScript 5.9, Vite 6, Tailwind CSS 4.3 (CSS-first config in `src/index.css`, no JS config), `vite-plugin-pwa` 2. Node.js ≥ 22.12 (Node 24 LTS used by CI, Netlify and `.nvmrc`).
 - **Tooling**: Vitest 5 + React Testing Library, ESLint 10 (typescript-eslint, react-hooks), Prettier 3 (Tailwind class sorting), markdownlint-cli2 (`.markdownlint-cli2.jsonc`, Prettier-compatible style), Husky + lint-staged.
 - **Exact Scripts**:
   - `dev`: `vite`
