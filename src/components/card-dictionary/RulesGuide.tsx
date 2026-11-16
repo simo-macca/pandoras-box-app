@@ -20,7 +20,7 @@ interface RulesGuideProps {
   language: Language;
 }
 
-const ICON_CLASS = 'h-5 w-5 stroke-[2.2]';
+const ICON_CLASS = 'h-[18px] w-[18px]';
 
 interface PresetGroupProps {
   title: string;
@@ -40,20 +40,15 @@ const PresetGroup: React.FC<PresetGroupProps> = ({
     { value: presets.long, label: t.setup.longGame },
   ];
   return (
-    <div className="space-y-2 rounded-2xl border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-700/80 dark:bg-neutral-800/50">
-      <span className="text-[11px] font-bold tracking-wider text-neutral-900 uppercase dark:text-white">
-        {title}
-      </span>
+    <div className="card-muted space-y-2 p-4">
+      <span className="eyebrow">{title}</span>
       <div className="grid grid-cols-3 gap-2 pt-1 text-center">
         {columns.map(({ value, label }) => (
-          <div
-            key={label}
-            className="rounded-xl border border-neutral-200 bg-white p-2 dark:border-neutral-700 dark:bg-neutral-900"
-          >
-            <div className="text-sm font-extrabold text-amber-500">
+          <div key={label} className="card-tile p-2.5">
+            <div className="score-number text-base text-amber-600 dark:text-amber-400">
               {value} pts
             </div>
-            <div className="text-[10px] font-semibold text-neutral-400">
+            <div className="text-[11px] text-neutral-500 dark:text-neutral-400">
               {label}
             </div>
           </div>
@@ -79,16 +74,14 @@ const PointTile: React.FC<PointTileProps> = ({
   highlight = false,
 }) => (
   <div
-    className={`rounded-2xl border p-3 ${
+    className={`rounded-xl border p-3 ${
       highlight
-        ? 'border-red-500/30 bg-red-500/10'
-        : 'border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-800/50'
+        ? 'border-rose-500/30 bg-rose-500/[0.07]'
+        : 'border-neutral-200/80 bg-neutral-50 dark:border-white/[0.06] dark:bg-white/[0.03]'
     }`}
   >
-    <span className={`font-mono text-base font-black ${pointsClass}`}>
-      {points}
-    </span>
-    <p className="mt-0.5 text-[11px] text-neutral-500 dark:text-neutral-400">
+    <span className={`score-number text-lg ${pointsClass}`}>{points}</span>
+    <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">
       {cardName ? (
         <>
           <strong>{cardName}</strong> ({description})
@@ -109,12 +102,12 @@ interface TimingCardProps {
 
 const TIMING_TONES = {
   cyan: {
-    box: 'border-cyan-500/25 bg-cyan-500/10',
+    box: 'border-cyan-500/25 bg-cyan-500/[0.07]',
     title: 'text-cyan-600 dark:text-cyan-400',
     badge: 'bg-cyan-500',
   },
   amber: {
-    box: 'border-amber-500/25 bg-amber-500/10',
+    box: 'border-amber-500/25 bg-amber-500/[0.07]',
     title: 'text-amber-600 dark:text-amber-400',
     badge: 'bg-amber-500',
   },
@@ -128,8 +121,8 @@ const TimingCard: React.FC<TimingCardProps> = ({
 }) => {
   const styles = TIMING_TONES[tone];
   return (
-    <div className={`space-y-1 rounded-2xl border p-3.5 ${styles.box}`}>
-      <span className={`flex items-center gap-1.5 font-black ${styles.title}`}>
+    <div className={`space-y-1.5 rounded-xl border p-3.5 ${styles.box}`}>
+      <span className={`flex items-center gap-1.5 font-bold ${styles.title}`}>
         <span
           className={`flex h-5 w-5 items-center justify-center rounded-md font-mono text-[10px] text-white ${styles.badge}`}
         >
@@ -137,9 +130,7 @@ const TimingCard: React.FC<TimingCardProps> = ({
         </span>
         <span>{label}</span>
       </span>
-      <p className="text-[11px] text-neutral-600 dark:text-neutral-300">
-        {text}
-      </p>
+      <p className="text-xs text-neutral-600 dark:text-neutral-300">{text}</p>
     </div>
   );
 };
@@ -151,7 +142,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
   const l = (map: Record<Language, string>) => map[language];
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
+    <div className="mx-auto max-w-4xl space-y-5">
       <OfficialPdfBanner language={language} />
 
       <GuideSection
@@ -197,7 +188,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
       >
         <div className="space-y-2 text-xs leading-relaxed text-neutral-700 sm:text-sm dark:text-neutral-300">
           <p>{l(turns.body)}</p>
-          <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 p-3.5 text-xs font-medium text-amber-700 dark:text-amber-300">
+          <div className="callout callout-warning text-xs font-medium">
             <strong>{l(turns.endTitle)}</strong>
             <ul className="mt-1 list-inside list-disc space-y-1">
               {turns.endConditions.map((condition) => (
@@ -250,7 +241,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
             highlight
           />
         </div>
-        <p className="text-[11px] text-neutral-500 italic dark:text-neutral-400">
+        <p className="text-xs text-neutral-500 italic dark:text-neutral-400">
           * {l(points.powerCardsNote)}
         </p>
       </GuideSection>
@@ -264,7 +255,7 @@ export const RulesGuide: React.FC<RulesGuideProps> = ({ language }) => {
           <p>
             <RichText text={l(blackCards.body)} />
           </p>
-          <div className="space-y-1.5 rounded-2xl border border-neutral-200 bg-neutral-50 p-3 dark:border-neutral-700/80 dark:bg-neutral-800/80">
+          <div className="card-muted space-y-1.5 p-3">
             <div className="flex items-center gap-1.5 text-xs font-bold text-amber-600 dark:text-amber-400">
               <Info className="h-4 w-4" />
               <span>{l(blackCards.ruleTitle)}</span>

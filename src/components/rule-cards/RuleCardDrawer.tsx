@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Sparkles, Shuffle, Loader2 } from 'lucide-react';
+import { Layers, Shuffle, Loader2 } from 'lucide-react';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { RULE_CARDS_DATA } from '@/data/ruleCards';
@@ -81,36 +81,39 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Draw banner */}
-      <div className="relative overflow-hidden rounded-3xl border-2 border-purple-500/30 bg-linear-to-br from-purple-100/80 via-indigo-50/60 to-purple-50 p-6 text-center shadow-sm dark:border-purple-500/40 dark:from-purple-900/40 dark:via-indigo-900/30 dark:to-purple-900/20 dark:shadow-xl">
-        <div className="relative z-10 mx-auto max-w-xl space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/40 bg-purple-500/20 px-3 py-1 text-xs font-black tracking-wider text-purple-600 uppercase dark:text-purple-300">
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>{t.rulecards.expansionTag}</span>
-          </div>
-
-          <h2 className="text-2xl font-black text-neutral-900 sm:text-3xl dark:text-white">
+      <section className="card relative overflow-hidden px-5 py-8 text-center sm:px-8 sm:py-10">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 -top-32 mx-auto h-64 w-[36rem] max-w-full rounded-full bg-purple-500/20 blur-3xl"
+        />
+        <div className="relative mx-auto max-w-xl space-y-3">
+          <span className="chip border-purple-500/30 bg-purple-500/10 text-purple-700 dark:text-purple-300">
+            <Layers className="h-3.5 w-3.5" />
+            {t.rulecards.expansionTag}
+          </span>
+          <h2 className="text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl dark:text-white">
             {t.rulecards.title}
           </h2>
-          <p className="text-xs text-neutral-600 sm:text-sm dark:text-neutral-300">
+          <p className="text-sm text-neutral-600 dark:text-neutral-300">
             {t.rulecards.subtitle}
           </p>
-          <p className="text-[11px] text-neutral-500 dark:text-neutral-400">
+          <p className="text-xs text-neutral-500 dark:text-neutral-400">
             {t.rulecards.multipleHint}
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-3">
             <button
               type="button"
               onClick={handleDrawRandom}
               disabled={isShuffling || deck.length === 0}
-              className="inline-flex transform items-center gap-2 rounded-2xl bg-linear-to-r from-purple-600 to-indigo-600 px-6 py-3 text-sm font-extrabold text-white shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all hover:from-purple-500 hover:to-indigo-500 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
+              className="btn btn-magic btn-lg"
             >
               {isShuffling ? (
-                <Loader2 className="h-4 w-4 shrink-0 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
-                <Shuffle className="h-4 w-4 shrink-0" />
+                <Shuffle className="h-4 w-4" />
               )}
               <span>{t.rulecards.drawRandom}</span>
             </button>
@@ -122,14 +125,14 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
                   soundEffects.playClick();
                   onChangeActiveRuleCards([]);
                 }}
-                className="rounded-2xl px-4 py-3 text-xs font-bold text-neutral-600 transition-colors hover:bg-red-500/10 hover:text-red-500 dark:text-neutral-300"
+                className="btn btn-ghost btn-lg"
               >
                 {t.rulecards.clearAll} ({activeRuleCardIds.length})
               </button>
             )}
           </div>
         </div>
-      </div>
+      </section>
 
       {selectedCard && (
         <RuleCardSpotlight
@@ -142,11 +145,14 @@ export const RuleCardDrawer: React.FC<RuleCardDrawerProps> = ({
 
       {/* All rule cards */}
       <div>
-        <h3 className="mb-3 text-sm font-bold tracking-wider text-neutral-500 uppercase dark:text-neutral-400">
-          {t.rulecards.allRuleCards} ({RULE_CARDS_DATA.length})
+        <h3 className="section-title mb-4 flex items-center gap-2">
+          {t.rulecards.allRuleCards}
+          <span className="chip px-2 py-0.5 tabular-nums">
+            {RULE_CARDS_DATA.length}
+          </span>
         </h3>
 
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {RULE_CARDS_DATA.map((card) => (
             <RuleCardTile
               key={card.id}

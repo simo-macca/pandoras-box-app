@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import {
-  Sparkles,
   Search,
+  SearchX,
   X,
-  HelpCircle,
   BookOpen,
   ExternalLink,
+  FileText,
 } from 'lucide-react';
 import { Language } from '@/types/game';
 import { OFFICIAL_PDF_LINKS } from '@/data/rulebookLinks';
@@ -38,94 +38,79 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
     [activeCategory, searchQuery, language]
   );
 
-  const subTabClass = (tab: SubTab) =>
-    `flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition-all sm:text-sm ${
-      subTab === tab
-        ? 'bg-amber-500 font-black text-neutral-950 shadow-md'
-        : 'text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'
-    }`;
-
   const selectSubTab = (tab: SubTab) => {
     soundEffects.playClick();
     setSubTab(tab);
   };
 
-  return (
-    <div className="mx-auto max-w-5xl space-y-6 pb-20 md:pb-8">
-      {/* Sub-tab Navigation (Guide vs Dictionary) */}
-      <div className="flex flex-col items-stretch justify-between gap-3 rounded-3xl border border-neutral-200 bg-white p-2.5 shadow-sm sm:flex-row sm:items-center dark:border-neutral-800 dark:bg-neutral-900">
-        <div className="flex items-center gap-1.5 rounded-2xl bg-neutral-100 p-1 dark:bg-neutral-800/80">
-          <button
-            type="button"
-            aria-pressed={subTab === 'guide'}
-            onClick={() => selectSubTab('guide')}
-            className={subTabClass('guide')}
-          >
-            <BookOpen className="h-4 w-4" />
-            <span>{t.rules.guideTab}</span>
-          </button>
+  const subTabs = [
+    { id: 'guide' as SubTab, label: t.rules.guideTab, icon: BookOpen },
+    { id: 'dictionary' as SubTab, label: t.rules.dictionaryTab, icon: Search },
+  ];
 
-          <button
-            type="button"
-            aria-pressed={subTab === 'dictionary'}
-            onClick={() => selectSubTab('dictionary')}
-            className={subTabClass('dictionary')}
-          >
-            <Search className="h-4 w-4" />
-            <span>{t.rules.dictionaryTab}</span>
-          </button>
+  return (
+    <div className="mx-auto max-w-5xl space-y-6">
+      {/* Guide / dictionary switch + official rulebook link */}
+      <div className="flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center">
+        <div className="segmented grid grid-cols-2 sm:inline-flex">
+          {subTabs.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              type="button"
+              aria-pressed={subTab === id}
+              onClick={() => selectSubTab(id)}
+              className={`segmented-item h-9 px-4 text-sm ${
+                subTab === id ? 'segmented-item-active' : ''
+              }`}
+            >
+              <Icon className="h-4 w-4" />
+              <span>{label}</span>
+            </button>
+          ))}
         </div>
 
         <a
           href={OFFICIAL_PDF_LINKS[language]}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-purple-500/30 bg-linear-to-r from-purple-500/15 to-indigo-500/15 px-4 py-2 text-xs font-bold text-purple-700 shadow-sm transition-all hover:border-purple-500/50 hover:from-purple-500/25 hover:to-indigo-500/25 hover:shadow-md sm:text-sm dark:border-purple-500/30 dark:text-purple-300"
+          className="btn btn-secondary"
           title={`${t.rules.viewOfficialRules} (${language.toUpperCase()})`}
         >
-          <BookOpen className="h-4 w-4 shrink-0 text-purple-600 dark:text-purple-400" />
-          <span>
+          <FileText className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+          <span className="truncate">
             {t.rules.viewOfficialRules} ({language.toUpperCase()})
           </span>
-          <ExternalLink className="h-3.5 w-3.5 shrink-0 opacity-70" />
+          <ExternalLink className="h-3.5 w-3.5 opacity-60" />
         </a>
       </div>
 
       {subTab === 'guide' ? (
         <RulesGuide language={language} />
       ) : (
-        <div className="space-y-6">
-          {/* Search Header */}
-          <div className="space-y-4 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-6 dark:border-neutral-800 dark:bg-neutral-900/90">
+        <div className="space-y-8">
+          {/* Search header */}
+          <section className="card space-y-4 p-5 sm:p-6">
             <div>
-              <h2 className="flex items-center gap-2 text-xl font-black text-neutral-900 sm:text-2xl dark:text-white">
-                <Sparkles className="h-6 w-6 text-amber-500 dark:text-amber-400" />
-                <span>{t.rules.title}</span>
-              </h2>
-              <p className="mt-1 text-xs text-neutral-500 sm:text-sm dark:text-neutral-400">
-                {t.rules.searchSubtitle}
-              </p>
+              <h2 className="section-title">{t.rules.title}</h2>
+              <p className="section-subtitle mt-1">{t.rules.searchSubtitle}</p>
             </div>
 
-            {/* Search Input */}
-            <div className="relative flex w-full items-center">
-              <div className="pointer-events-none absolute left-3.5 text-neutral-400">
-                <Search className="h-4 w-4" />
-              </div>
+            <div className="relative">
+              <Search className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-neutral-400" />
               <input
-                type="text"
+                type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t.rules.searchPlaceholder}
                 aria-label={t.rules.searchPlaceholder}
-                className="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-2.5 pr-9 pl-10 text-sm font-medium text-neutral-900 transition-all placeholder:text-neutral-400 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-500"
+                className="input h-11 pr-10 pl-10 [&::-webkit-search-cancel-button]:hidden"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
                   aria-label={t.common.clearSearch}
-                  className="absolute right-3 rounded-md p-1 text-neutral-400 transition-colors hover:text-neutral-700 dark:hover:text-white"
+                  className="btn-icon btn-icon-sm absolute top-1/2 right-1.5 -translate-y-1/2"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -140,17 +125,19 @@ export const CardDictionary: React.FC<CardDictionaryProps> = ({ language }) => {
               }}
               language={language}
             />
-          </div>
+          </section>
 
           {results.total === 0 ? (
-            <div className="space-y-2 rounded-3xl border border-neutral-200 bg-white p-8 text-center text-neutral-500 dark:border-neutral-800 dark:bg-neutral-900">
-              <HelpCircle className="mx-auto h-8 w-8 text-neutral-400 dark:text-neutral-600" />
-              <p className="text-sm font-bold text-neutral-800 dark:text-neutral-300">
+            <div className="card flex flex-col items-center gap-2 border-dashed px-6 py-12 text-center">
+              <div className="icon-tile bg-neutral-100 text-neutral-400 dark:bg-white/[0.06]">
+                <SearchX className="h-5 w-5" />
+              </div>
+              <p className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">
                 {t.rules.noResults}
               </p>
             </div>
           ) : (
-            <div className="space-y-8">
+            <div className="space-y-10">
               <SpecialCardsSection
                 cards={results.specials}
                 language={language}

@@ -21,21 +21,21 @@ export const RuleCardSpotlight: React.FC<RuleCardSpotlightProps> = ({
   const t = TRANSLATIONS[language];
 
   return (
-    <div className="animate-fade-in rounded-3xl border-2 border-purple-500/60 bg-white p-5 shadow-lg transition-all dark:bg-neutral-900">
+    <div className="card animate-fade-in border-purple-500/50 p-5 ring-1 ring-purple-500/20 sm:p-6 dark:border-purple-400/40">
       <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-purple-600 dark:text-purple-400">
+            <span className="eyebrow text-purple-700 dark:text-purple-300">
               {t.rulecards.drawnCard}
             </span>
             {isActive && (
-              <span className="flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/20 px-2 py-0.5 text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400">
+              <span className="badge bg-emerald-500/15 text-emerald-700 dark:text-emerald-300">
                 <Check className="h-3 w-3 stroke-3" />
                 <span>{t.rulecards.activeForRound}</span>
               </span>
             )}
           </div>
-          <h3 className="mt-1 text-xl font-black text-neutral-900 dark:text-white">
+          <h3 className="mt-1 text-xl font-bold tracking-tight text-neutral-900 sm:text-2xl dark:text-white">
             {card.name[language]}
           </h3>
         </div>
@@ -43,11 +43,7 @@ export const RuleCardSpotlight: React.FC<RuleCardSpotlightProps> = ({
         <button
           type="button"
           onClick={onToggleActive}
-          className={`flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-xs font-extrabold transition-all ${
-            isActive
-              ? 'bg-neutral-200 text-neutral-800 hover:bg-red-500/10 hover:text-red-500 dark:bg-neutral-800 dark:text-neutral-200'
-              : 'bg-emerald-600 text-white shadow-md hover:bg-emerald-500'
-          }`}
+          className={`btn ${isActive ? 'btn-secondary' : 'btn-magic'}`}
         >
           {isActive ? (
             <>
@@ -63,12 +59,12 @@ export const RuleCardSpotlight: React.FC<RuleCardSpotlightProps> = ({
         </button>
       </div>
 
-      <p className="mt-3 text-sm leading-relaxed font-medium text-neutral-700 dark:text-neutral-300">
+      <p className="mt-4 text-[15px] leading-relaxed text-neutral-700 dark:text-neutral-300">
         {card.description[language]}
       </p>
 
       {card.flavor?.[language] && (
-        <div className="mt-3 border-l-2 border-purple-500/40 pl-3 text-xs text-neutral-500 italic dark:text-neutral-400">
+        <div className="mt-4 border-l-2 border-purple-500/40 pl-3 text-sm text-neutral-500 italic dark:text-neutral-400">
           "{card.flavor[language]}"
         </div>
       )}

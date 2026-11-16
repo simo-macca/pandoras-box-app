@@ -37,17 +37,17 @@ export const RuleCardTile: React.FC<RuleCardTileProps> = ({
           onInspect();
         }
       }}
-      className={`flex cursor-pointer flex-col justify-between rounded-2xl border p-4 text-left transition-all focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:outline-none ${
+      className={`card card-interactive flex cursor-pointer flex-col justify-between p-4 text-left ${
         isActive
-          ? 'border-emerald-500 bg-emerald-500/10 shadow-md ring-1 ring-emerald-500/50'
+          ? 'border-emerald-500/60 ring-1 ring-emerald-500/30 dark:border-emerald-400/50'
           : isSelected
-            ? 'border-purple-500 bg-purple-500/10 shadow-sm'
-            : 'border-neutral-200 bg-neutral-50 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:hover:border-neutral-700'
+            ? 'border-purple-500/60 ring-1 ring-purple-500/30 dark:border-purple-400/50'
+            : ''
       }`}
     >
       <div>
-        <div className="mb-1 flex items-center justify-between">
-          <h4 className="text-sm font-extrabold text-neutral-900 dark:text-white">
+        <div className="mb-1.5 flex items-center justify-between gap-2">
+          <h4 className="text-sm font-semibold text-neutral-900 dark:text-white">
             {card.name[language]}
           </h4>
           {isActive && (
@@ -56,13 +56,13 @@ export const RuleCardTile: React.FC<RuleCardTileProps> = ({
             </span>
           )}
         </div>
-        <p className="line-clamp-3 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
+        <p className="line-clamp-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
           {card.description[language]}
         </p>
       </div>
 
-      <div className="mt-3 flex items-center justify-between border-t border-neutral-200/60 pt-2 dark:border-neutral-700/60">
-        <span className="text-[10px] text-neutral-400">
+      <div className="mt-4 flex items-center justify-between gap-2 border-t border-neutral-200/70 pt-3 dark:border-white/[0.06]">
+        <span className="text-xs text-neutral-400">
           {isSelected ? t.rulecards.selected : t.rulecards.clickToInspect}
         </span>
         <button
@@ -71,11 +71,7 @@ export const RuleCardTile: React.FC<RuleCardTileProps> = ({
             e.stopPropagation();
             onToggleActive();
           }}
-          className={`rounded-lg px-2 py-0.5 text-[11px] font-bold transition-colors ${
-            isActive
-              ? 'text-red-500 hover:bg-red-500/10'
-              : 'text-purple-600 hover:bg-purple-500/10 dark:text-purple-400'
-          }`}
+          className={`btn btn-sm ${isActive ? 'btn-ghost' : 'btn-magic-soft'}`}
         >
           {isActive ? t.rulecards.deactivateCard : t.rulecards.activateCard}
         </button>
