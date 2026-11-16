@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import {
-  Edit3,
+  Pencil,
   Trash2,
   Trophy,
-  Sparkles,
+  Layers,
   Skull,
   Bomb,
-  UserCheck,
+  ArrowLeftRight,
   Swords,
   UserPlus,
   X,
@@ -32,25 +32,19 @@ interface RoundHistoryEntryProps {
   language: Language;
 }
 
-const ENTRY_STYLES: Record<string, string> = {
-  round:
-    'border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900',
-  seppuku:
-    'border-rose-500/30 bg-rose-500/3 dark:border-rose-500/20 dark:bg-rose-950/20',
-  'late-joiner':
-    'border-emerald-500/30 bg-emerald-500/3 dark:border-emerald-500/20 dark:bg-emerald-950/20',
-  'identity-theft':
-    'border-indigo-500/30 bg-indigo-500/3 dark:border-indigo-500/20 dark:bg-indigo-950/20',
+/** Left accent per entry type; the card itself stays neutral. */
+const ENTRY_ACCENTS: Record<string, string> = {
+  round: 'bg-amber-500',
+  seppuku: 'bg-rose-500',
+  'late-joiner': 'bg-emerald-500',
+  'identity-theft': 'bg-indigo-500',
 };
 
 const BADGE_STYLES = {
-  round:
-    'border-amber-500/30 bg-amber-500/15 text-amber-600 dark:text-amber-400',
-  seppuku: 'border-rose-500/30 bg-rose-500/15 text-rose-600 dark:text-rose-400',
-  'late-joiner':
-    'border-emerald-500/30 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400',
-  'identity-theft':
-    'border-indigo-500/30 bg-indigo-500/15 text-indigo-600 dark:text-indigo-400',
+  round: 'bg-amber-500/15 text-amber-700 dark:text-amber-300',
+  seppuku: 'bg-rose-500/15 text-rose-700 dark:text-rose-300',
+  'late-joiner': 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300',
+  'identity-theft': 'bg-indigo-500/15 text-indigo-700 dark:text-indigo-300',
 } as const;
 
 type EntryKind = keyof typeof BADGE_STYLES;
@@ -91,16 +85,16 @@ export const RoundHistoryEntry: React.FC<RoundHistoryEntryProps> = ({
       return (
         <>
           <span
-            className={`shrink-0 rounded-xl border px-2.5 py-1 text-xs font-black whitespace-nowrap tabular-nums ${BADGE_STYLES.round}`}
+            className={`shrink-0 rounded-lg px-2.5 py-1 text-xs font-bold whitespace-nowrap tabular-nums ${BADGE_STYLES.round}`}
           >
             {t.scoreboard.round} {round.roundNumber}
           </span>
           {getRoundRuleCards(round).map((card) => (
             <span
               key={card.id}
-              className="flex max-w-40 items-center gap-1 truncate rounded-xl border border-purple-500/30 bg-purple-500/15 px-2 py-1 text-xs font-bold text-purple-600 sm:max-w-50 sm:px-2.5 dark:text-purple-400"
+              className="flex max-w-40 items-center gap-1 truncate rounded-lg bg-purple-500/12 px-2 py-1 text-xs font-semibold text-purple-700 sm:max-w-56 dark:text-purple-300"
             >
-              <Sparkles className="h-3 w-3 shrink-0" />
+              <Layers className="h-3 w-3 shrink-0" />
               <span className="truncate">{card.name[language]}</span>
             </span>
           ))}
@@ -111,7 +105,7 @@ export const RoundHistoryEntry: React.FC<RoundHistoryEntryProps> = ({
     const meta = {
       seppuku: { icon: Swords, label: t.events.seppuku },
       'late-joiner': { icon: UserPlus, label: t.events.lateJoiner },
-      'identity-theft': { icon: UserCheck, label: t.events.identityTheft },
+      'identity-theft': { icon: ArrowLeftRight, label: t.events.identityTheft },
     }[kind];
     const Icon = meta.icon;
     const metadata = round.eventMetadata;
@@ -123,13 +117,13 @@ export const RoundHistoryEntry: React.FC<RoundHistoryEntryProps> = ({
     return (
       <>
         <span
-          className={`flex shrink-0 items-center gap-1 rounded-xl border px-2.5 py-1 text-xs font-black whitespace-nowrap tabular-nums ${BADGE_STYLES[kind]}`}
+          className={`flex shrink-0 items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold whitespace-nowrap tabular-nums ${BADGE_STYLES[kind]}`}
         >
           <Icon className="h-3.5 w-3.5 shrink-0" />
           <span>{meta.label}</span>
         </span>
         {detail && (
-          <span className="hidden truncate text-xs font-semibold text-neutral-500 sm:inline dark:text-neutral-400">
+          <span className="hidden truncate text-xs text-neutral-500 sm:inline dark:text-neutral-400">
             {detail}
           </span>
         )}
@@ -218,11 +212,13 @@ export const RoundHistoryEntry: React.FC<RoundHistoryEntryProps> = ({
   };
 
   return (
-    <div
-      className={`rounded-3xl border p-3 shadow-sm transition-all sm:p-4 ${ENTRY_STYLES[kind]}`}
-    >
+    <article className="card relative overflow-hidden p-4">
+      <span
+        aria-hidden="true"
+        className={`absolute inset-y-0 left-0 w-1 ${ENTRY_ACCENTS[kind]}`}
+      />
       {/* Header: title and actions */}
-      <div className="mb-3 flex items-center justify-between gap-2 border-b border-neutral-100 pb-3 dark:border-neutral-800">
+      <div className="mb-3 flex items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-2">{renderTitle()}</div>
 
         <div className="flex shrink-0 items-center gap-1">
@@ -230,11 +226,11 @@ export const RoundHistoryEntry: React.FC<RoundHistoryEntryProps> = ({
             <button
               type="button"
               onClick={() => onEditRound(round.roundNumber)}
-              className="rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-amber-500 dark:hover:bg-neutral-800"
+              className="btn-icon btn-icon-sm"
               title={t.scoreboard.editRound}
               aria-label={t.scoreboard.editRound}
             >
-              <Edit3 className="h-3.5 w-3.5 shrink-0" />
+              <Pencil className="h-4 w-4" />
             </button>
           )}
 
@@ -242,17 +238,17 @@ export const RoundHistoryEntry: React.FC<RoundHistoryEntryProps> = ({
             <button
               type="button"
               onClick={() => onEditSeppuku(round.id!)}
-              className="rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-rose-500/10 hover:text-rose-500 dark:hover:bg-neutral-800"
+              className="btn-icon btn-icon-sm"
               title={t.events.editSeppukuTooltip}
               aria-label={t.events.editSeppukuTooltip}
             >
-              <Edit3 className="h-3.5 w-3.5 shrink-0" />
+              <Pencil className="h-4 w-4" />
             </button>
           )}
 
           {onDeleteRound &&
             (isConfirmingDelete ? (
-              <div className="flex items-center gap-1 text-[11px]">
+              <div className="flex items-center gap-1">
                 <button
                   type="button"
                   onClick={() => {
@@ -260,14 +256,14 @@ export const RoundHistoryEntry: React.FC<RoundHistoryEntryProps> = ({
                     else onDeleteRound(round.roundNumber);
                     setIsConfirmingDelete(false);
                   }}
-                  className="rounded-lg bg-red-600 px-2 py-0.5 font-bold text-white"
+                  className="btn btn-danger btn-sm h-7 px-2.5"
                 >
                   {t.setup.confirm}
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsConfirmingDelete(false)}
-                  className="rounded-lg p-1 text-neutral-400 hover:text-neutral-200"
+                  className="btn-icon btn-icon-sm h-7 w-7"
                   aria-label={t.setup.cancel}
                 >
                   <X className="h-3.5 w-3.5 shrink-0" />
@@ -277,18 +273,18 @@ export const RoundHistoryEntry: React.FC<RoundHistoryEntryProps> = ({
               <button
                 type="button"
                 onClick={() => setIsConfirmingDelete(true)}
-                className="rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-red-500/10 hover:text-red-500"
+                className="btn-icon btn-icon-sm hover:bg-rose-500/10 hover:text-rose-600 dark:hover:bg-rose-500/15 dark:hover:text-rose-400"
                 title={t.scoreboard.deleteRound}
                 aria-label={t.scoreboard.deleteRound}
               >
-                <Trash2 className="h-3.5 w-3.5 shrink-0" />
+                <Trash2 className="h-4 w-4" />
               </button>
             ))}
         </div>
       </div>
 
       {/* Per-player results */}
-      <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 sm:gap-2">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
         {players.map((player) => {
           const score = round.scores[player.id];
           return score ? (
@@ -298,6 +294,6 @@ export const RoundHistoryEntry: React.FC<RoundHistoryEntryProps> = ({
           ) : null;
         })}
       </div>
-    </div>
+    </article>
   );
 };

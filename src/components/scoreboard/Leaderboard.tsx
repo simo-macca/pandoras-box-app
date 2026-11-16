@@ -1,5 +1,12 @@
 import React from 'react';
-import { Trophy, PlusCircle, RotateCcw, UserCheck, Swords } from 'lucide-react';
+import {
+  Trophy,
+  Plus,
+  RotateCcw,
+  ArrowLeftRight,
+  Swords,
+  Flag,
+} from 'lucide-react';
 import { PlayerStats } from '@/utils/stats';
 import { RoundEntry, Player, Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
@@ -56,9 +63,10 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
 }) => {
   const t = TRANSLATIONS[language];
 
+  const showGameOver = isGameOver && !isContinued;
+
   return (
-    <div className="space-y-4 pb-20 sm:space-y-6 md:pb-6">
-      {/* Active Rule Card Banner */}
+    <div className="space-y-6 sm:space-y-8">
       {onOpenRuleCardDrawer && (
         <ActiveRuleCardBanner
           activeRuleCardIds={activeRuleCardIds}
@@ -68,26 +76,38 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
         />
       )}
 
-      {/* Top Stats Overview */}
       <StatsOverviewCards
         playerStats={playerStats}
         targetScore={targetScore}
         language={language}
       />
 
-      {/* Main Leaderboard Cards */}
-      <div className="space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="flex min-w-0 items-center gap-1.5 text-base font-black text-neutral-900 sm:gap-2 sm:text-lg md:text-xl dark:text-white">
-            <span className="truncate">{t.scoreboard.title}</span>
-            <span className="hidden text-xs font-medium text-neutral-500 sm:inline">
-              ({t.scoreboard.lowestScoreLeads})
-            </span>
-          </h2>
+      <section className="space-y-4">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+          <div className="min-w-0">
+            <h2 className="section-title">{t.scoreboard.title}</h2>
+            <p className="section-subtitle">{t.scoreboard.lowestScoreLeads}</p>
+          </div>
 
-          {/* max-w-full lets the actions wrap on narrow screens instead of
-              overflowing (shrink-0 kept them at their single-row width). */}
-          <div className="flex max-w-full flex-wrap items-center gap-2">
+          {/* Primary action first (full width on phones), then match events. */}
+          <div className="flex flex-wrap items-center gap-2 lg:flex-nowrap">
+            <button
+              type="button"
+              onClick={() => {
+                soundEffects.playClick();
+                onOpenScoreModal();
+              }}
+              className="btn btn-primary h-11 w-full sm:order-last sm:w-auto"
+              title={showGameOver ? t.gameOver.title : t.tabs.logRound}
+            >
+              {showGameOver ? (
+                <Trophy className="h-4 w-4" />
+              ) : (
+                <Plus className="h-4 w-4 stroke-[2.5]" />
+              )}
+              <span>{showGameOver ? t.gameOver.title : t.tabs.logRound}</span>
+            </button>
+
             {onApplyIdentityTheft && (
               <button
                 type="button"
@@ -96,17 +116,15 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   onApplyIdentityTheft();
                 }}
                 disabled={!canApplyIdentityTheft}
-                className="flex items-center gap-1.5 rounded-xl border border-indigo-500/40 bg-indigo-500/10 px-2.5 py-1.5 text-xs font-bold text-indigo-700 shadow-sm transition-all hover:bg-indigo-500/20 active:scale-95 disabled:pointer-events-none disabled:opacity-40 sm:gap-2 sm:px-3 dark:border-indigo-500/30 dark:bg-indigo-950/40 dark:text-indigo-300 dark:hover:bg-indigo-900/50"
+                className="btn btn-indigo-soft flex-1 sm:flex-none"
                 title={
                   canApplyIdentityTheft
                     ? t.events.identityTheftDesc
                     : t.events.identicalScoresWarning
                 }
               >
-                <UserCheck className="h-3.5 w-3.5 shrink-0 stroke-[2.2]" />
-                <span className="whitespace-nowrap">
-                  {t.events.identityTheft}
-                </span>
+                <ArrowLeftRight className="h-4 w-4" />
+                <span>{t.events.identityTheft}</span>
               </button>
             )}
 
@@ -118,26 +136,11 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   onOpenSeppuku();
                 }}
                 disabled={players.length === 0}
-                className="flex items-center gap-1.5 rounded-xl border border-rose-500/40 bg-rose-500/10 px-2.5 py-1.5 text-xs font-bold text-rose-700 shadow-sm transition-all hover:bg-rose-500/20 active:scale-95 disabled:pointer-events-none disabled:opacity-40 sm:gap-2 sm:px-3 dark:border-rose-500/30 dark:bg-rose-950/40 dark:text-rose-300 dark:hover:bg-rose-900/50"
+                className="btn btn-danger-soft flex-1 sm:flex-none"
                 title={t.events.seppukuDesc}
               >
-                <Swords className="h-3.5 w-3.5 shrink-0 stroke-[2.2]" />
-                <span className="whitespace-nowrap">{t.events.seppuku}</span>
-              </button>
-            )}
-
-            {onStartNewGame && (
-              <button
-                type="button"
-                onClick={() => {
-                  soundEffects.playClick();
-                  onStartNewGame();
-                }}
-                className="flex items-center gap-1.5 rounded-xl border border-neutral-300 bg-white px-2.5 py-1.5 text-xs font-bold text-neutral-700 shadow-sm transition-all hover:bg-neutral-100 hover:text-neutral-900 sm:gap-2 sm:px-3 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700"
-                title={t.nav.newGame}
-              >
-                <RotateCcw className="h-3.5 w-3.5 shrink-0 stroke-[2.2]" />
-                <span className="whitespace-nowrap">{t.nav.newGame}</span>
+                <Swords className="h-4 w-4" />
+                <span>{t.events.seppuku}</span>
               </button>
             )}
 
@@ -148,43 +151,32 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   soundEffects.playClick();
                   onConcludeGame();
                 }}
-                className="flex items-center gap-1.5 rounded-xl border border-amber-500/50 bg-amber-500/10 px-2.5 py-1.5 text-xs font-bold text-amber-600 shadow-sm transition-all hover:bg-amber-500/20 hover:text-amber-700 sm:gap-2 sm:px-3 dark:text-amber-400 dark:hover:text-amber-300"
+                className="btn btn-amber-soft flex-1 sm:flex-none"
                 title={t.gameOver.concludeMatch}
               >
-                <Trophy className="h-3.5 w-3.5 shrink-0 stroke-[2.2]" />
-                <span className="whitespace-nowrap">
-                  {t.gameOver.concludeMatch}
-                </span>
+                <Flag className="h-4 w-4" />
+                <span>{t.gameOver.concludeMatch}</span>
               </button>
             )}
 
-            <button
-              type="button"
-              onClick={() => {
-                soundEffects.playClick();
-                onOpenScoreModal();
-              }}
-              className="group flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1.5 text-xs font-black text-neutral-950 shadow-md ring-1 shadow-amber-500/25 ring-amber-400/40 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:from-amber-400 hover:to-amber-500 hover:shadow-lg hover:shadow-amber-500/40 hover:ring-amber-300 active:translate-y-0 active:scale-95 sm:gap-2 sm:px-3.5"
-              title={
-                isGameOver && !isContinued ? t.gameOver.title : t.tabs.logRound
-              }
-            >
-              {isGameOver && !isContinued ? (
-                <>
-                  <Trophy className="h-4 w-4 shrink-0 stroke-[2.2]" />
-                  <span className="whitespace-nowrap">{t.gameOver.title}</span>
-                </>
-              ) : (
-                <>
-                  <PlusCircle className="h-4 w-4 shrink-0 stroke-[2.5] transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-90" />
-                  <span className="whitespace-nowrap">{t.tabs.logRound}</span>
-                </>
-              )}
-            </button>
+            {onStartNewGame && (
+              <button
+                type="button"
+                onClick={() => {
+                  soundEffects.playClick();
+                  onStartNewGame();
+                }}
+                className="btn btn-secondary flex-1 sm:flex-none"
+                title={t.nav.newGame}
+              >
+                <RotateCcw className="h-4 w-4" />
+                <span>{t.nav.newGame}</span>
+              </button>
+            )}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-2.5 sm:gap-3 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 xl:grid-cols-3">
           {playerStats.map((player) => (
             <PlayerCard
               key={player.id}
@@ -194,20 +186,17 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
             />
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* Round History */}
-      <div className="border-t border-neutral-200 pt-4 dark:border-neutral-800">
-        <RoundHistoryTable
-          rounds={rounds}
-          players={players}
-          onUndoLastRound={onUndoLastRound}
-          onEditRound={onEditRound}
-          onDeleteRound={onDeleteRound}
-          onEditSeppuku={onEditSeppuku}
-          language={language}
-        />
-      </div>
+      <RoundHistoryTable
+        rounds={rounds}
+        players={players}
+        onUndoLastRound={onUndoLastRound}
+        onEditRound={onEditRound}
+        onDeleteRound={onDeleteRound}
+        onEditSeppuku={onEditSeppuku}
+        language={language}
+      />
     </div>
   );
 };

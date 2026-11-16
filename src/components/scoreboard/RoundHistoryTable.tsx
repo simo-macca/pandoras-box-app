@@ -1,5 +1,5 @@
 import React from 'react';
-import { RotateCcw, Calendar } from 'lucide-react';
+import { Undo2, History } from 'lucide-react';
 import { Player, RoundEntry, Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { soundEffects } from '@/utils/sound';
@@ -30,24 +30,26 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
 
   if (rounds.length === 0) {
     return (
-      <div className="space-y-2 rounded-3xl border border-neutral-200 bg-neutral-50 p-8 text-center text-neutral-500 dark:border-neutral-800 dark:bg-neutral-900">
-        <Calendar className="mx-auto h-8 w-8 stroke-1 text-neutral-400" />
-        <p className="text-sm font-bold text-neutral-700 dark:text-neutral-300">
+      <section className="card flex flex-col items-center gap-2 border-dashed px-6 py-12 text-center">
+        <div className="icon-tile mb-1 bg-neutral-100 text-neutral-400 dark:bg-white/[0.06]">
+          <History className="h-5 w-5" />
+        </div>
+        <p className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">
           {t.scoreboard.noRoundsYet}
         </p>
-        <p className="text-xs text-neutral-400">
+        <p className="max-w-xs text-sm text-neutral-500 dark:text-neutral-400">
           {t.scoreboard.startFirstRound}
         </p>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between gap-2">
-        <h3 className="flex items-center gap-2 text-base font-bold text-neutral-900 dark:text-white">
+    <section className="space-y-4">
+      <div className="flex items-center justify-between gap-3">
+        <h3 className="section-title flex items-center gap-2">
           <span>{t.scoreboard.historyTitle}</span>
-          <span className="rounded-full bg-neutral-200 px-2.5 py-0.5 font-mono text-xs font-bold text-amber-500 tabular-nums dark:bg-neutral-800">
+          <span className="chip px-2 py-0.5 tabular-nums">
             {countPlayedRounds(rounds)}
           </span>
         </h3>
@@ -58,11 +60,11 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
             soundEffects.playClick();
             onUndoLastRound();
           }}
-          className="flex shrink-0 items-center gap-1.5 rounded-xl border border-neutral-200 bg-neutral-100 px-3 py-1.5 text-xs font-semibold text-neutral-700 transition-all hover:bg-neutral-200 active:scale-95 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
+          className="btn btn-secondary btn-sm"
           title={t.common.undoLastRoundHint}
         >
-          <RotateCcw className="h-3.5 w-3.5 shrink-0 text-amber-500" />
-          <span className="whitespace-nowrap">{t.scoreboard.undoRound}</span>
+          <Undo2 className="h-3.5 w-3.5" />
+          <span>{t.scoreboard.undoRound}</span>
         </button>
       </div>
 
@@ -82,6 +84,6 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
           />
         ))}
       </div>
-    </div>
+    </section>
   );
 };

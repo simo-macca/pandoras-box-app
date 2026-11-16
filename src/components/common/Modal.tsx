@@ -24,6 +24,8 @@ interface ModalProps {
   size?: keyof typeof SIZE_CLASSES;
   /** Replaces the default header entirely (e.g. the game-over hero). */
   customHeader?: React.ReactNode;
+  /** Id of the heading inside `customHeader` that names the dialog. */
+  labelledBy?: string;
   bodyClassName?: string;
   panelClassName?: string;
   children: React.ReactNode;
@@ -45,6 +47,7 @@ export const Modal: React.FC<ModalProps> = ({
   footer,
   size = 'md',
   customHeader,
+  labelledBy,
   bodyClassName = '',
   panelClassName = '',
   children,
@@ -57,14 +60,12 @@ export const Modal: React.FC<ModalProps> = ({
         className={`modal-panel ${SIZE_CLASSES[size]} ${panelClassName}`}
         role="dialog"
         aria-modal="true"
-        aria-labelledby={titleId}
+        aria-labelledby={labelledBy ?? titleId}
       >
         <div className="sheet-handle" aria-hidden="true" />
 
         {customHeader ? (
-          <div id={titleId} className="contents">
-            {customHeader}
-          </div>
+          customHeader
         ) : (
           <div className="modal-header">
             <div className="flex min-w-0 items-center gap-3">

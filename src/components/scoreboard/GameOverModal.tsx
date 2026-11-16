@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import confetti from 'canvas-confetti';
-import { Trophy, Crown, RotateCcw, X, Award, Play, Eye } from 'lucide-react';
+import { Trophy, Crown, RotateCcw, X, Play, Eye } from 'lucide-react';
 import { PlayerStats } from '@/utils/stats';
 import { PAWN_COLORS } from '@/utils/colors';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { soundEffects } from '@/utils/sound';
 import { useModalA11y } from '@/hooks/useModalA11y';
+import { Modal } from '@/components/common/Modal';
 
 interface GameOverModalProps {
   isOpen: boolean;
@@ -81,146 +82,90 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
 
   const winnerTheme = PAWN_COLORS[winner.color];
 
-  return (
-    <div className="animate-fade-in fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-2 backdrop-blur-md sm:p-4">
+  const stats = [
+    {
+      label: t.gameOver.lowestPoints,
+      value: `${winner.totalScore} ${t.scoreboard.pts}`,
+      className: 'text-amber-600 dark:text-amber-400',
+    },
+    {
+      label: t.gameOver.roundsPlayed,
+      value: String(roundsCount),
+      className: '',
+    },
+    { label: t.gameOver.limit, value: String(targetScore), className: '' },
+  ];
+
+  const hero = (
+    <div className="relative shrink-0 overflow-hidden px-5 pt-6 pb-5 text-center sm:pt-8">
       <div
-        className="flex max-h-[90dvh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border-2 border-amber-500/60 bg-white shadow-2xl dark:border-amber-500/60 dark:bg-neutral-900 dark:shadow-[0_0_50px_rgba(245,158,11,0.3)]"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="game-over-title"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 -top-24 mx-auto h-56 w-[28rem] max-w-full rounded-full bg-amber-400/25 blur-3xl"
+      />
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label={t.common.close}
+        className="btn-icon btn-icon-sm absolute top-3 right-3"
       >
-        <div className="relative shrink-0 border-b border-neutral-200 bg-linear-to-b from-amber-500/15 via-amber-500/5 to-transparent p-4 text-center sm:p-6 dark:border-neutral-800 dark:from-amber-500/20 dark:via-neutral-900/40">
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label={t.common.close}
-            className="absolute top-3 right-3 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 sm:top-4 sm:right-4 dark:hover:bg-neutral-800 dark:hover:text-white"
-          >
-            <X className="h-5 w-5 shrink-0" />
-          </button>
+        <X className="h-5 w-5" />
+      </button>
 
-          <div className="mx-auto mb-2 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-linear-to-tr from-amber-500 to-amber-300 shadow-[0_0_30px_rgba(245,158,11,0.5)] sm:mb-3 sm:h-16 sm:w-16">
-            <Trophy className="h-8 w-8 shrink-0 stroke-[2.2] text-neutral-950 sm:h-9 sm:w-9" />
-          </div>
+      <div className="relative mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-300 to-amber-500 text-neutral-950 shadow-(--shadow-glow)">
+        <Trophy className="h-8 w-8" />
+      </div>
+      <p className="eyebrow relative">{t.gameOver.title}</p>
+      <h2
+        id="game-over-title"
+        className="relative mt-1 flex items-center justify-center gap-2 truncate text-2xl font-bold tracking-tight sm:text-3xl"
+        style={{ color: winnerTheme.hex }}
+      >
+        <Crown className="h-6 w-6 shrink-0 fill-amber-400 text-amber-400" />
+        <span className="truncate">{winner.name}</span>
+      </h2>
+      <p className="relative mx-auto mt-1 max-w-sm text-sm text-neutral-500 dark:text-neutral-400">
+        {t.gameOver.winnerSubtitle}
+      </p>
 
-          <h2
-            id="game-over-title"
-            className="text-xl font-black tracking-wide text-neutral-900 sm:text-2xl md:text-3xl dark:text-white"
-          >
-            {t.gameOver.title}
-          </h2>
-
-          <div className="mt-1.5 flex items-center justify-center gap-1.5 sm:mt-2 sm:gap-2">
-            <Crown className="h-4 w-4 shrink-0 animate-bounce fill-amber-400 text-amber-400 sm:h-5 sm:w-5" />
-            <span
-              className="truncate text-lg font-black sm:text-xl md:text-2xl"
-              style={{ color: winnerTheme.hex }}
+      <dl className="card-muted relative mx-auto mt-5 grid max-w-sm grid-cols-3 divide-x divide-neutral-200/80 dark:divide-white/[0.06]">
+        {stats.map((stat) => (
+          <div key={stat.label} className="px-2 py-3">
+            <dt className="eyebrow truncate text-[10px]">{stat.label}</dt>
+            <dd
+              className={`score-number mt-0.5 text-lg whitespace-nowrap text-neutral-900 dark:text-white ${stat.className}`}
             >
-              {winner.name}
-            </span>
-            <Crown className="h-4 w-4 shrink-0 animate-bounce fill-amber-400 text-amber-400 sm:h-5 sm:w-5" />
+              {stat.value}
+            </dd>
           </div>
+        ))}
+      </dl>
+    </div>
+  );
 
-          <p className="mx-auto mt-1 max-w-sm truncate text-xs text-neutral-600 dark:text-slate-300">
-            {t.gameOver.winnerSubtitle}
-          </p>
-
-          <div className="mt-3 inline-flex items-center gap-3 rounded-xl border border-amber-500/30 bg-neutral-100 px-3 py-1.5 sm:mt-4 sm:gap-4 sm:px-4 sm:py-2 dark:bg-neutral-950/80">
-            <div>
-              <span className="block text-[10px] font-bold text-neutral-500 uppercase dark:text-slate-400">
-                {t.gameOver.lowestPoints}
-              </span>
-              <span className="font-mono text-base font-black whitespace-nowrap text-amber-500 tabular-nums sm:text-xl dark:text-amber-400">
-                {winner.totalScore} pts
-              </span>
-            </div>
-            <div className="h-7 w-px bg-neutral-200 sm:h-8 dark:bg-slate-700" />
-            <div>
-              <span className="block text-[10px] font-bold text-neutral-500 uppercase dark:text-slate-400">
-                {t.gameOver.roundsPlayed}
-              </span>
-              <span className="font-mono text-base font-black whitespace-nowrap text-neutral-800 tabular-nums sm:text-xl dark:text-slate-200">
-                {roundsCount}
-              </span>
-            </div>
-            <div className="h-7 w-px bg-neutral-200 sm:h-8 dark:bg-slate-700" />
-            <div>
-              <span className="block text-[10px] font-bold text-neutral-500 uppercase dark:text-slate-400">
-                Threshold
-              </span>
-              <span className="font-mono text-base font-black whitespace-nowrap text-rose-500 tabular-nums sm:text-xl dark:text-rose-400">
-                {targetScore}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="min-h-0 flex-1 space-y-2 overflow-y-auto px-4 py-3 sm:p-5">
-          <h3 className="mb-2 text-xs font-bold tracking-wider text-neutral-500 uppercase dark:text-slate-400">
-            {t.gameOver.finalStandings}
-          </h3>
-
-          {standings.map((player) => {
-            const isWinner = player.id === winner.id;
-
-            return (
-              <div
-                key={player.id}
-                className={`flex items-center justify-between gap-2 rounded-xl border p-2.5 transition-all sm:p-3 ${
-                  isWinner
-                    ? 'border-amber-500/60 bg-amber-500/15 shadow-md ring-1 ring-amber-500/40'
-                    : 'border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-800/40'
-                }`}
-              >
-                <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs font-bold text-neutral-700 tabular-nums dark:bg-slate-800 dark:text-slate-200">
-                    {isWinner ? (
-                      <Award className="h-4 w-4 shrink-0 text-amber-500 dark:text-amber-400" />
-                    ) : (
-                      <span>#{player.rank}</span>
-                    )}
-                  </div>
-
-                  <div className="flex min-w-0 items-center gap-2">
-                    <span className="truncate text-sm font-bold text-neutral-900 dark:text-white">
-                      {player.name}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="shrink-0 text-right">
-                  <span
-                    className={`font-mono text-base font-black whitespace-nowrap tabular-nums ${
-                      isWinner
-                        ? 'text-amber-500 dark:text-amber-400'
-                        : 'text-neutral-700 dark:text-slate-300'
-                    }`}
-                  >
-                    {player.totalScore} pts
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="flex shrink-0 flex-col gap-2.5 border-t border-neutral-200 bg-neutral-50 p-4 sm:p-5 dark:border-neutral-800 dark:bg-neutral-900/90">
-          {/* Primary Action (New Match) */}
+  return (
+    <Modal
+      onClose={onClose}
+      closeLabel={t.common.close}
+      title={t.gameOver.title}
+      customHeader={hero}
+      labelledBy="game-over-title"
+      size="md"
+      bodyClassName="space-y-2 border-t border-neutral-200/80 dark:border-white/[0.07]"
+      footer={
+        <div className="flex w-full flex-col gap-2">
           <button
             type="button"
             onClick={() => {
               soundEffects.playClick();
               onPlayAgain();
             }}
-            className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-amber-500 to-amber-600 px-4 py-2.5 text-xs font-black text-neutral-950 shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all hover:from-amber-400 active:scale-95 sm:text-sm"
+            className="btn btn-primary btn-lg btn-block"
           >
-            <RotateCcw className="h-4 w-4 shrink-0 stroke-[2.5]" />
-            <span className="whitespace-nowrap">{t.gameOver.newMatch}</span>
+            <RotateCcw className="h-4 w-4" />
+            <span>{t.gameOver.newMatch}</span>
           </button>
-
-          {/* Secondary Actions */}
           <div
-            className={`grid w-full gap-2 sm:gap-3 ${onContinue ? 'grid-cols-2' : 'grid-cols-1'}`}
+            className={`grid w-full gap-2 ${onContinue ? 'grid-cols-2' : 'grid-cols-1'}`}
           >
             <button
               type="button"
@@ -228,12 +173,11 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
                 soundEffects.playClick();
                 onClose();
               }}
-              className="flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-bold text-neutral-700 shadow-sm transition-all hover:bg-neutral-100 hover:text-neutral-900 active:scale-[0.98] sm:text-sm dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-white"
+              className="btn btn-secondary min-w-0"
             >
-              <Eye className="h-4 w-4 shrink-0 stroke-[2.2]" />
+              <Eye className="h-4 w-4" />
               <span className="truncate">{t.gameOver.viewScoreboard}</span>
             </button>
-
             {onContinue && (
               <button
                 type="button"
@@ -241,15 +185,60 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
                   soundEffects.playClick();
                   onContinue();
                 }}
-                className="flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-bold text-neutral-700 shadow-sm transition-all hover:bg-neutral-100 hover:text-neutral-900 active:scale-[0.98] sm:text-sm dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-white"
+                className="btn btn-secondary min-w-0"
               >
-                <Play className="h-4 w-4 shrink-0 stroke-[2.2]" />
+                <Play className="h-4 w-4" />
                 <span className="truncate">{t.gameOver.continueGame}</span>
               </button>
             )}
           </div>
         </div>
-      </div>
-    </div>
+      }
+    >
+      <h3 className="eyebrow mb-2">{t.gameOver.finalStandings}</h3>
+      <ol className="space-y-2">
+        {standings.map((player) => {
+          const isWinner = player.id === winner.id;
+          const theme = PAWN_COLORS[player.color];
+          return (
+            <li
+              key={player.id}
+              className={`flex items-center justify-between gap-3 rounded-xl border px-3 py-2.5 ${
+                isWinner
+                  ? 'border-amber-400/60 bg-amber-500/10'
+                  : 'border-neutral-200/80 dark:border-white/[0.07]'
+              }`}
+            >
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="w-6 shrink-0 text-center text-sm font-bold text-neutral-400 tabular-nums">
+                  {isWinner ? (
+                    <Crown className="mx-auto h-4 w-4 fill-amber-400 text-amber-400" />
+                  ) : (
+                    player.rank
+                  )}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="h-2.5 w-2.5 shrink-0 rounded-full"
+                  style={{ backgroundColor: theme.hex }}
+                />
+                <span className="truncate text-sm font-semibold text-neutral-900 dark:text-white">
+                  {player.name}
+                </span>
+              </div>
+              <span
+                className={`score-number shrink-0 text-base whitespace-nowrap ${
+                  isWinner
+                    ? 'text-amber-600 dark:text-amber-400'
+                    : 'text-neutral-700 dark:text-neutral-300'
+                }`}
+              >
+                {player.totalScore} {t.scoreboard.pts}
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+    </Modal>
   );
 };

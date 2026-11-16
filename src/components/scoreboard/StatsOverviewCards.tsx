@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Crown, Flag, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { PlayerStats } from '@/utils/stats';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
@@ -11,6 +11,31 @@ interface StatsOverviewCardsProps {
   language: Language;
 }
 
+interface StatTileProps {
+  label: React.ReactNode;
+  icon: React.ReactNode;
+  iconClassName: string;
+  children: React.ReactNode;
+}
+
+const StatTile: React.FC<StatTileProps> = ({
+  label,
+  icon,
+  iconClassName,
+  children,
+}) => (
+  <div className="flex min-w-0 items-center gap-3 p-4 sm:p-5">
+    <div className={`icon-tile ${iconClassName}`}>{icon}</div>
+    <div className="min-w-0 flex-1">
+      <div className="eyebrow flex items-center gap-1">{label}</div>
+      <div className="mt-0.5 truncate text-lg font-bold text-neutral-900 dark:text-white">
+        {children}
+      </div>
+    </div>
+  </div>
+);
+
+/** Match summary strip: leader, point limit and danger zone. */
 export const StatsOverviewCards: React.FC<StatsOverviewCardsProps> = ({
   playerStats,
   targetScore,
@@ -23,80 +48,73 @@ export const StatsOverviewCards: React.FC<StatsOverviewCardsProps> = ({
   );
 
   return (
-    <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3">
-      {/* Current Leader */}
-      <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm sm:p-4 dark:border-neutral-800 dark:bg-neutral-900">
-        <div className="min-w-0 space-y-0.5">
-          <span className="text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
-            {t.scoreboard.currentLeader}
+    <div className="card grid grid-cols-1 divide-y divide-neutral-200/80 sm:grid-cols-3 sm:divide-x sm:divide-y-0 dark:divide-white/[0.06]">
+      <StatTile
+        label={t.scoreboard.currentLeader}
+        icon={<Crown className="h-5 w-5" />}
+        iconClassName="bg-amber-500/15 text-amber-600 dark:text-amber-400"
+      >
+        <span className="truncate">{leader?.name || '—'}</span>{' '}
+        {leader && (
+          <span className="text-sm font-semibold text-neutral-500 tabular-nums dark:text-neutral-400">
+            · {leader.totalScore} {t.scoreboard.pts}
           </span>
-          <div className="flex items-center gap-1.5 truncate text-base font-black text-neutral-900 sm:text-lg dark:text-white">
-            <span className="truncate">{leader?.name || '—'}</span>
-            <span className="font-mono text-xs font-bold whitespace-nowrap text-amber-500 tabular-nums">
-              ({leader?.totalScore} pts)
-            </span>
-          </div>
-        </div>
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-amber-500/30 bg-amber-500/15 text-amber-500 sm:h-10 sm:w-10">
-          <Trophy className="h-5 w-5 shrink-0 stroke-[2.2]" />
-        </div>
-      </div>
+        )}
+      </StatTile>
 
-      {/* Target Score / Elimination Limit */}
-      <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm sm:p-4 dark:border-neutral-800 dark:bg-neutral-900">
-        <div className="min-w-0 space-y-0.5">
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
-              {t.scoreboard.eliminationLimit}
-            </span>
+      <StatTile
+        label={
+          <>
+            {t.scoreboard.eliminationLimit}
             <HelpTooltip
               title={t.scoreboard.limitHelpTitle}
               content={t.scoreboard.limitHelpDesc}
               align="left"
             />
-          </div>
-          <div className="font-mono text-base font-black whitespace-nowrap text-rose-500 tabular-nums sm:text-lg">
-            {targetScore} {t.scoreboard.pts}
-          </div>
-        </div>
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-rose-500/30 bg-rose-500/15 text-rose-500 sm:h-10 sm:w-10">
-          <AlertTriangle className="h-5 w-5 shrink-0 stroke-[2.2]" />
-        </div>
-      </div>
+          </>
+        }
+        icon={<Flag className="h-5 w-5" />}
+        iconClassName="bg-blue-500/15 text-blue-600 dark:text-blue-400"
+      >
+        <span className="tabular-nums">
+          {targetScore} {t.scoreboard.pts}
+        </span>
+      </StatTile>
 
-      {/* Danger Zone */}
-      <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm sm:p-4 dark:border-neutral-800 dark:bg-neutral-900">
-        <div className="min-w-0 space-y-0.5">
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
-              {t.scoreboard.dangerZone}
-            </span>
+      <StatTile
+        label={
+          <>
+            {t.scoreboard.dangerZone}
             <HelpTooltip
               title={t.scoreboard.dangerHelpTitle}
               content={t.scoreboard.dangerHelpDesc}
               align="right"
             />
-          </div>
-          <div className="text-base font-black text-neutral-800 sm:text-lg dark:text-neutral-200">
-            {playersInDanger.length > 0 ? (
-              <span className="font-bold whitespace-nowrap text-rose-500 tabular-nums">
-                {playersInDanger.length} × {t.scoreboard.dangerZone}
-              </span>
-            ) : (
-              <span className="font-bold text-emerald-500">
-                {t.common.allSafe}
-              </span>
-            )}
-          </div>
-        </div>
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-100 text-neutral-400 sm:h-10 sm:w-10 dark:border-neutral-700 dark:bg-neutral-800">
-          {playersInDanger.length > 0 ? (
-            <AlertTriangle className="h-5 w-5 shrink-0 text-rose-500" />
+          </>
+        }
+        icon={
+          playersInDanger.length > 0 ? (
+            <AlertTriangle className="h-5 w-5" />
           ) : (
-            <ShieldCheck className="h-5 w-5 shrink-0 text-emerald-500" />
-          )}
-        </div>
-      </div>
+            <ShieldCheck className="h-5 w-5" />
+          )
+        }
+        iconClassName={
+          playersInDanger.length > 0
+            ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400'
+            : 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
+        }
+      >
+        {playersInDanger.length > 0 ? (
+          <span className="text-rose-600 tabular-nums dark:text-rose-400">
+            {playersInDanger.length} × {t.scoreboard.dangerZone}
+          </span>
+        ) : (
+          <span className="text-emerald-600 dark:text-emerald-400">
+            {t.common.allSafe}
+          </span>
+        )}
+      </StatTile>
     </div>
   );
 };
