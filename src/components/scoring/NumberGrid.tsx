@@ -34,59 +34,62 @@ export const NumberGrid: React.FC<NumberGridProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-2 gap-1.5 min-[440px]:grid-cols-5 sm:gap-2">
+    <div className="grid grid-cols-2 gap-2 min-[480px]:grid-cols-5">
       {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => {
         const count = counts[num] || 0;
+        const isActive = count > 0;
         return (
           <div
             key={num}
-            className={`flex min-w-0 flex-row items-center justify-between rounded-2xl border p-1.5 transition-all min-[360px]:p-2 min-[440px]:flex-col min-[440px]:justify-between ${
-              count > 0
-                ? 'border-amber-500 bg-amber-500/15 shadow-sm'
-                : 'border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-800/40'
+            className={`flex min-w-0 items-center justify-between gap-2 rounded-xl border p-2 transition-colors min-[480px]:flex-col min-[480px]:items-stretch ${
+              isActive
+                ? 'border-amber-500/60 bg-amber-500/10'
+                : 'border-neutral-200/80 bg-white dark:border-white/[0.07] dark:bg-white/[0.03]'
             } ${disabled ? 'pointer-events-none opacity-40' : ''}`}
           >
-            {/* Number Badge & Points */}
-            <div className="flex items-center gap-1.5 min-[440px]:mb-1.5 min-[440px]:w-full min-[440px]:justify-between">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-neutral-900 text-xs font-black text-white dark:bg-neutral-100 dark:text-neutral-900">
+            <div className="flex items-center justify-between gap-1.5">
+              <span
+                className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-sm font-bold ${
+                  isActive
+                    ? 'bg-amber-500 text-neutral-950'
+                    : 'bg-neutral-900 text-white dark:bg-white/[0.12]'
+                }`}
+              >
                 {num}
               </span>
               {/* Hidden on very narrow phones; the player total is shown above. */}
-              <span className="text-[10px] font-bold whitespace-nowrap text-neutral-400 tabular-nums max-[359px]:hidden">
+              <span className="text-[11px] font-medium whitespace-nowrap text-neutral-400 tabular-nums max-[359px]:hidden">
                 {num * count} pts
               </span>
             </div>
 
-            {/* Stepper Buttons */}
-            <div className="flex items-center justify-between gap-1 min-[440px]:mt-1 min-[440px]:w-full">
+            <div className="flex items-center justify-between gap-1">
               <button
                 type="button"
                 onClick={() => handleDecrement(num)}
                 disabled={count === 0 || disabled}
                 aria-label={`Decrease number ${num}`}
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs text-neutral-800 transition-colors hover:bg-neutral-300 disabled:opacity-30 sm:h-8 sm:w-8 sm:text-sm dark:bg-neutral-700/80 dark:text-neutral-200 dark:hover:bg-neutral-600"
+                className="stepper-btn h-8 w-8"
               >
-                <Minus className="h-3 w-3 shrink-0 sm:h-3.5 sm:w-3.5" />
+                <Minus className="h-3.5 w-3.5" />
               </button>
-
               <span
-                className={`min-w-4 text-center text-xs font-extrabold whitespace-nowrap tabular-nums sm:min-w-5 sm:text-sm ${
-                  count > 0
-                    ? 'text-amber-600 dark:text-amber-400'
+                className={`min-w-5 text-center text-sm font-bold tabular-nums ${
+                  isActive
+                    ? 'text-amber-700 dark:text-amber-300'
                     : 'text-neutral-400'
                 }`}
               >
                 {count}
               </span>
-
               <button
                 type="button"
                 onClick={() => handleIncrement(num)}
                 disabled={disabled}
                 aria-label={`Increase number ${num}`}
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-amber-500 text-xs font-bold text-neutral-950 shadow-sm transition-colors hover:bg-amber-400 sm:h-8 sm:w-8 sm:text-sm"
+                className="stepper-btn stepper-btn-primary h-8 w-8"
               >
-                <Plus className="h-3 w-3 shrink-0 stroke-[2.5] sm:h-3.5 sm:w-3.5" />
+                <Plus className="h-3.5 w-3.5 stroke-[2.5]" />
               </button>
             </div>
           </div>

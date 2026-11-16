@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Plus,
-  Minus,
-  Skull,
-  Hourglass,
-  Zap,
-  CopyCheck,
-  Sparkles,
-} from 'lucide-react';
+import { Plus, Minus } from 'lucide-react';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { soundEffects } from '@/utils/sound';
@@ -31,8 +23,9 @@ interface SpecialCountersProps {
 }
 
 interface CounterRowProps {
-  icon: React.ReactNode;
-  iconBorderClass: string;
+  /** Points per card, shown in the coloured tile. */
+  points: number;
+  tileClass: string;
   title: string;
   subtitle: string;
   count: number;
@@ -45,8 +38,8 @@ interface CounterRowProps {
 }
 
 const CounterRow: React.FC<CounterRowProps> = ({
-  icon,
-  iconBorderClass,
+  points,
+  tileClass,
   title,
   subtitle,
   count,
@@ -56,34 +49,39 @@ const CounterRow: React.FC<CounterRowProps> = ({
   ariaLabel,
   max,
 }) => (
-  <div className="flex items-center justify-between gap-2 rounded-2xl border border-neutral-200 bg-neutral-50 p-2.5 sm:p-3 dark:border-neutral-800 dark:bg-neutral-800/40">
-    <div className="flex min-w-0 items-center gap-2.5">
+  <div
+    className={`flex items-center justify-between gap-3 px-3 py-2.5 sm:px-4 ${
+      count > 0 ? 'bg-amber-500/[0.06]' : ''
+    }`}
+  >
+    <div className="flex min-w-0 items-center gap-3">
       <div
-        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border ${iconBorderClass}`}
+        className={`flex h-10 w-10 shrink-0 flex-col items-center justify-center rounded-xl text-sm leading-none font-bold tabular-nums ${tileClass}`}
+        aria-hidden="true"
       >
-        {icon}
+        {points}
       </div>
       <div className="min-w-0">
-        <div className="text-xs leading-tight font-bold text-neutral-900 dark:text-white">
+        <div className="truncate text-sm font-semibold text-neutral-900 dark:text-white">
           {title}
         </div>
-        <div className="mt-0.5 text-[11px] leading-snug text-neutral-500 tabular-nums dark:text-neutral-400">
+        <div className="mt-0.5 text-xs leading-snug text-neutral-500 tabular-nums dark:text-neutral-400">
           {subtitle}
         </div>
       </div>
     </div>
 
-    <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+    <div className="flex shrink-0 items-center gap-1.5">
       <button
         type="button"
         onClick={onDecrement}
         disabled={count === 0 || disabled}
         aria-label={`Decrease ${ariaLabel}`}
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs text-neutral-800 transition-colors hover:bg-neutral-300 disabled:opacity-30 sm:h-9 sm:w-9 sm:rounded-xl sm:text-sm dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-600"
+        className="stepper-btn"
       >
-        <Minus className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" />
+        <Minus className="h-4 w-4" />
       </button>
-      <span className="min-w-5 text-center text-xs font-black whitespace-nowrap text-neutral-900 tabular-nums sm:min-w-6 sm:text-sm dark:text-white">
+      <span className="min-w-6 text-center text-sm font-bold text-neutral-900 tabular-nums dark:text-white">
         {count}
       </span>
       <button
@@ -91,9 +89,9 @@ const CounterRow: React.FC<CounterRowProps> = ({
         onClick={onIncrement}
         disabled={disabled || (max !== undefined && count >= max)}
         aria-label={`Increase ${ariaLabel}`}
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-neutral-200 text-xs text-neutral-800 transition-colors hover:bg-neutral-300 disabled:opacity-30 sm:h-9 sm:w-9 sm:rounded-xl sm:text-sm dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-600"
+        className="stepper-btn"
       >
-        <Plus className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" />
+        <Plus className="h-4 w-4" />
       </button>
     </div>
   </div>
@@ -131,12 +129,12 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
 
   return (
     <div
-      className={`space-y-3 ${disabled ? 'pointer-events-none opacity-40' : ''}`}
+      className={`card-muted divide-y divide-neutral-200/80 overflow-hidden dark:divide-white/[0.06] ${disabled ? 'pointer-events-none opacity-40' : ''}`}
     >
       {/* Standard Specials (7 pts each) */}
       <CounterRow
-        icon={<Sparkles className="h-5 w-5 shrink-0" />}
-        iconBorderClass="border-purple-500/30 bg-purple-500/15 text-purple-600 dark:text-purple-400"
+        points={CARD_POINTS.SPECIAL}
+        tileClass="bg-purple-500/15 text-purple-700 dark:text-purple-300"
         title={t.scoring.standardSpecials}
         subtitle={`Skip, Gift, Thief, Exchange, etc. (+${CARD_POINTS.SPECIAL} pts)`}
         count={specialCardsCount}
@@ -152,8 +150,8 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
 
       {/* Curse Card (13 pts) */}
       <CounterRow
-        icon={<Skull className="h-5 w-5 shrink-0" />}
-        iconBorderClass="border-rose-500/30 bg-rose-500/15 text-rose-600 dark:text-rose-400"
+        points={CARD_POINTS.CURSE}
+        tileClass="bg-rose-500/15 text-rose-700 dark:text-rose-300"
         title={t.scoring.curseCard}
         subtitle={`+${CARD_POINTS.CURSE} pts · ${t.scoring.uniqueCardHint}`}
         count={curseCount}
@@ -168,8 +166,8 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
 
       {/* The End Card (17 pts) */}
       <CounterRow
-        icon={<Hourglass className="h-5 w-5 shrink-0" />}
-        iconBorderClass="border-amber-500/30 bg-amber-500/15 text-amber-600 dark:text-amber-400"
+        points={CARD_POINTS.THE_END}
+        tileClass="bg-amber-500/15 text-amber-700 dark:text-amber-300"
         title={t.scoring.theEndCard}
         subtitle={`+${CARD_POINTS.THE_END} pts · ${t.scoring.uniqueCardHint}`}
         count={theEndCount}
@@ -184,8 +182,8 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
 
       {/* Fuck You Card (42 pts) */}
       <CounterRow
-        icon={<Zap className="h-5 w-5 shrink-0" />}
-        iconBorderClass="border-red-600/40 bg-red-600/20 text-red-600 dark:text-red-400"
+        points={CARD_POINTS.FUCK_YOU}
+        tileClass="bg-neutral-900 text-white dark:bg-white dark:text-neutral-950"
         title={t.scoring.fuckYouCard}
         subtitle={`+${CARD_POINTS.FUCK_YOU} pts · ${t.scoring.uniqueCardHint}`}
         count={fuckYouCount}
@@ -200,8 +198,8 @@ export const SpecialCounters: React.FC<SpecialCountersProps> = ({
 
       {/* Mimicry Card (7 pts) */}
       <CounterRow
-        icon={<CopyCheck className="h-5 w-5 shrink-0" />}
-        iconBorderClass="border-blue-500/30 bg-blue-500/15 text-blue-600 dark:text-blue-400"
+        points={CARD_POINTS.MIMICRY}
+        tileClass="bg-blue-500/15 text-blue-700 dark:text-blue-300"
         title={t.scoring.mimicryCard}
         subtitle={`+${CARD_POINTS.MIMICRY} pts · ${t.scoring.uniqueCardHint}`}
         count={mimicryCount}

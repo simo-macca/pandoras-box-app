@@ -24,11 +24,13 @@ const StatTile: React.FC<StatTileProps> = ({
   iconClassName,
   children,
 }) => (
-  <div className="flex min-w-0 items-center gap-3 p-4 sm:p-5">
-    <div className={`icon-tile ${iconClassName}`}>{icon}</div>
+  <div className="flex min-w-0 items-center gap-3 p-3 sm:p-5">
+    <div className={`icon-tile hidden sm:flex ${iconClassName}`}>{icon}</div>
     <div className="min-w-0 flex-1">
-      <div className="eyebrow flex items-center gap-1">{label}</div>
-      <div className="mt-0.5 truncate text-lg font-bold text-neutral-900 dark:text-white">
+      <div className="eyebrow flex items-center gap-1 text-[10px] sm:text-[11px]">
+        {label}
+      </div>
+      <div className="mt-0.5 truncate text-sm font-bold text-neutral-900 sm:text-lg dark:text-white">
         {children}
       </div>
     </div>
@@ -48,7 +50,7 @@ export const StatsOverviewCards: React.FC<StatsOverviewCardsProps> = ({
   );
 
   return (
-    <div className="card grid grid-cols-1 divide-y divide-neutral-200/80 sm:grid-cols-3 sm:divide-x sm:divide-y-0 dark:divide-white/[0.06]">
+    <div className="card grid grid-cols-3 divide-x divide-neutral-200/80 dark:divide-white/[0.06]">
       <StatTile
         label={t.scoreboard.currentLeader}
         icon={<Crown className="h-5 w-5" />}
@@ -56,7 +58,7 @@ export const StatsOverviewCards: React.FC<StatsOverviewCardsProps> = ({
       >
         <span className="truncate">{leader?.name || '—'}</span>{' '}
         {leader && (
-          <span className="text-sm font-semibold text-neutral-500 tabular-nums dark:text-neutral-400">
+          <span className="hidden text-sm font-semibold text-neutral-500 tabular-nums sm:inline dark:text-neutral-400">
             · {leader.totalScore} {t.scoreboard.pts}
           </span>
         )}

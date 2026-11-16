@@ -1,5 +1,5 @@
 import React from 'react';
-import { RefreshCw } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 import { Language, Player } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { getPlayerColorTheme } from '@/utils/colors';
@@ -22,38 +22,36 @@ export const ActivePlayerBanner: React.FC<ActivePlayerBannerProps> = ({
   const colorTheme = getPlayerColorTheme(player.color);
 
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-neutral-50 p-3 sm:p-3.5 dark:border-neutral-700/80 dark:bg-neutral-800/60">
-      <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+    <div className="card-muted flex items-center justify-between gap-3 p-3 sm:p-4">
+      <div className="flex min-w-0 items-center gap-3">
         <div
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl text-sm font-black text-white shadow-sm sm:h-10 sm:w-10 sm:text-base"
-          style={{ backgroundColor: colorTheme.hex }}
+          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold ${colorTheme.avatarBg}`}
         >
           {player.name.slice(0, 2).toUpperCase()}
         </div>
-        <div className="min-w-0 truncate text-sm font-black text-neutral-900 sm:text-base dark:text-white">
-          {player.name}
+        <div className="min-w-0">
+          <div className="truncate text-base font-semibold text-neutral-900 dark:text-white">
+            {player.name}
+          </div>
+          <button
+            type="button"
+            onClick={onReset}
+            className="mt-0.5 inline-flex items-center gap-1 text-xs font-medium text-neutral-500 transition-colors hover:text-amber-600 dark:text-neutral-400 dark:hover:text-amber-400"
+            title={t.scoring.quickZero}
+          >
+            <RotateCcw className="h-3 w-3" />
+            <span>{t.scoring.quickZero}</span>
+          </button>
         </div>
       </div>
 
-      <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-        <button
-          type="button"
-          onClick={onReset}
-          className="flex items-center gap-1 rounded-lg p-1.5 text-xs font-semibold text-neutral-400 transition-colors hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-700 dark:hover:text-white"
-          title={t.scoring.quickZero}
-        >
-          <RefreshCw className="h-3.5 w-3.5 shrink-0" />
-          <span className="hidden sm:inline">{t.scoring.quickZero}</span>
-        </button>
-
-        <div className="text-right">
-          <div className="text-[10px] font-bold tracking-wider text-neutral-400 uppercase">
-            {t.scoring.playerTotal}
-          </div>
-          <div className="text-xl font-black whitespace-nowrap text-amber-500 tabular-nums sm:text-2xl">
-            {totalPoints}{' '}
-            <span className="text-xs font-semibold text-neutral-400">pts</span>
-          </div>
+      <div className="shrink-0 text-right">
+        <div className="eyebrow text-[10px]">{t.scoring.playerTotal}</div>
+        <div className="score-number text-3xl leading-tight text-amber-600 dark:text-amber-400">
+          {totalPoints}{' '}
+          <span className="text-xs font-medium text-neutral-400">
+            {t.scoreboard.pts}
+          </span>
         </div>
       </div>
     </div>

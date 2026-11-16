@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Zap, Bomb, Check, Globe } from 'lucide-react';
+import { Bomb, Skull } from 'lucide-react';
 import { Language, TableTimeBombMode, TimeBombModifier } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
+import { Switch } from '@/components/common/Switch';
 
 interface ScoringModifiersProps {
   isDoomsday: boolean;
@@ -77,120 +78,125 @@ export const ScoringModifiers: React.FC<ScoringModifiersProps> = ({
   };
 
   return (
-    <div className="space-y-3 rounded-2xl border border-neutral-200 bg-neutral-50 p-3 sm:p-4 dark:border-neutral-800 dark:bg-neutral-800/30">
-      <div className="flex items-center justify-between">
-        <h4 className="flex items-center gap-2 text-xs font-bold tracking-wider text-neutral-700 uppercase dark:text-neutral-300">
-          <Zap className="h-3.5 w-3.5 shrink-0 text-amber-500 dark:text-amber-400" />
-          <span>{t.scoring.eventsAndModifiers}</span>
-        </h4>
-        <span className="flex items-center gap-1 text-[10px] font-semibold text-neutral-400">
-          <Globe className="h-3 w-3" />
-          <span>{t.scoring.tableEventsTitle}</span>
+    <section>
+      <div className="mb-3 flex items-baseline justify-between gap-3">
+        <h3 className="eyebrow">{t.scoring.eventsAndModifiers}</h3>
+        <span className="text-xs text-neutral-400">
+          {t.scoring.tableEventsTitle}
         </span>
       </div>
 
-      {/* Doomsday Switch */}
-      <button
-        type="button"
-        onClick={onToggleDoomsday}
-        className={`flex w-full items-center justify-between rounded-xl border p-3 transition-all ${
-          isDoomsday
-            ? 'border-purple-500 bg-purple-500/15 font-bold text-purple-600 dark:text-purple-400'
-            : 'border-neutral-200 bg-white text-neutral-700 dark:border-neutral-700 dark:bg-neutral-800/80 dark:text-neutral-300'
-        }`}
-      >
-        <div className="text-left">
-          <div className="text-xs font-bold">{t.scoring.doomsdayToggle}</div>
-          <div className="text-[10px] opacity-75">{t.scoring.doomsdayHint}</div>
-        </div>
-        <div
-          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${
+      <div className="card-muted space-y-4 p-4">
+        {/* Doomsday switch */}
+        <button
+          type="button"
+          onClick={onToggleDoomsday}
+          aria-pressed={isDoomsday}
+          className={`flex w-full items-center gap-3 rounded-xl border p-3 text-left transition-colors ${
             isDoomsday
-              ? 'border-purple-600 bg-purple-600 text-white'
-              : 'border-neutral-400 dark:border-neutral-600'
+              ? 'border-purple-500/60 bg-purple-500/10'
+              : 'border-neutral-200/80 bg-white hover:border-neutral-300 dark:border-white/[0.07] dark:bg-white/[0.03] dark:hover:border-white/15'
           }`}
         >
-          {isDoomsday && <Check className="h-3.5 w-3.5 shrink-0 stroke-3" />}
-        </div>
-      </button>
-
-      {/* Table-wide Time Bomb Mode */}
-      {onChangeTableTimeBomb && (
-        <div className="space-y-1">
-          <label
-            htmlFor="table-time-bomb-select"
-            className="flex items-center gap-1 text-[11px] font-bold text-neutral-600 dark:text-neutral-400"
+          <div
+            className={`icon-tile h-9 w-9 ${
+              isDoomsday
+                ? 'bg-purple-500 text-white'
+                : 'bg-purple-500/10 text-purple-600 dark:text-purple-300'
+            }`}
           >
-            <Bomb className="h-3.5 w-3.5 shrink-0 text-amber-500" />
-            <span>{t.scoring.timeBombTableLabel}</span>
-          </label>
-          <select
-            id="table-time-bomb-select"
-            value={tableTimeBombMode}
-            onChange={(e) =>
-              onChangeTableTimeBomb(e.target.value as TableTimeBombMode)
-            }
-            disabled={isDoomsday}
-            className="w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
-          >
-            <option value="none">{t.scoring.timeBombTableNone}</option>
-            <option value="defused">{t.scoring.timeBombTableDefused}</option>
-            <option value="exploded">{t.scoring.timeBombTableExploded}</option>
-          </select>
-        </div>
-      )}
+            <Skull className="h-4 w-4" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="text-sm font-semibold text-neutral-900 dark:text-white">
+              {t.scoring.doomsdayToggle}
+            </div>
+            <div className="text-xs text-neutral-500 dark:text-neutral-400">
+              {t.scoring.doomsdayHint}
+            </div>
+          </div>
+          <Switch checked={isDoomsday} tone="purple" />
+        </button>
 
-      {/* Time Bomb Selector (Player Override) */}
-      <div className="space-y-1 border-t border-neutral-200/60 pt-1 dark:border-neutral-700/60">
-        <label
-          htmlFor="player-time-bomb-select"
-          className="flex items-center gap-1 text-[11px] font-bold text-neutral-600 dark:text-neutral-400"
-        >
-          <Bomb className="h-3.5 w-3.5 shrink-0 text-amber-500" />
-          <span>{t.scoring.timeBombPlayerLabel}</span>
-        </label>
-        <select
-          id="player-time-bomb-select"
-          value={timeBombModifier}
-          onChange={(e) => onChangeTimeBomb(e.target.value as TimeBombModifier)}
-          disabled={isDoomsday}
-          className="w-full rounded-xl border border-neutral-300 bg-white px-3 py-2 text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
-        >
-          <option value="none">{t.scoring.timeBombNone}</option>
-          {isWinner ? (
-            <option value="winner_bonus">{t.scoring.timeBombWinner}</option>
-          ) : (
-            <option value="loser_penalty">{t.scoring.timeBombLoser}</option>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {/* Table-wide Time Bomb mode */}
+          {onChangeTableTimeBomb && (
+            <div>
+              <label htmlFor="table-time-bomb-select" className="field-label">
+                <Bomb className="h-3.5 w-3.5 text-amber-500" />
+                <span>{t.scoring.timeBombTableLabel}</span>
+              </label>
+              <select
+                id="table-time-bomb-select"
+                value={tableTimeBombMode}
+                onChange={(e) =>
+                  onChangeTableTimeBomb(e.target.value as TableTimeBombMode)
+                }
+                disabled={isDoomsday}
+                className="input"
+              >
+                <option value="none">{t.scoring.timeBombTableNone}</option>
+                <option value="defused">
+                  {t.scoring.timeBombTableDefused}
+                </option>
+                <option value="exploded">
+                  {t.scoring.timeBombTableExploded}
+                </option>
+              </select>
+            </div>
           )}
-          <option value="expired_double">{t.scoring.timeBombExpired}</option>
-        </select>
-      </div>
 
-      {/* Custom +/- modifier: label on its own line, input and hint below */}
-      <div className="space-y-1 border-t border-neutral-200/60 pt-2 dark:border-neutral-700/60">
-        <label
-          htmlFor="custom-modifier-input"
-          className="block text-[11px] font-bold text-neutral-600 dark:text-neutral-400"
-        >
-          {t.scoring.customModifier}
-        </label>
-        <div className="flex items-center gap-2">
-          <input
-            id="custom-modifier-input"
-            type="text"
-            inputMode="numeric"
-            pattern="[+-]?[0-9]*"
-            placeholder="0"
-            value={localCustomModifier}
-            onChange={handleCustomModifierChange}
-            onBlur={handleCustomModifierBlur}
-            className="w-24 shrink-0 rounded-xl border border-neutral-300 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-500 focus:outline-none sm:w-32 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
-          />
-          <p className="min-w-0 text-[10px] leading-snug text-neutral-400">
-            {t.scoring.customModifierHint}
-          </p>
+          {/* Time Bomb override for the selected player */}
+          <div>
+            <label htmlFor="player-time-bomb-select" className="field-label">
+              <Bomb className="h-3.5 w-3.5 text-amber-500" />
+              <span>{t.scoring.timeBombPlayerLabel}</span>
+            </label>
+            <select
+              id="player-time-bomb-select"
+              value={timeBombModifier}
+              onChange={(e) =>
+                onChangeTimeBomb(e.target.value as TimeBombModifier)
+              }
+              disabled={isDoomsday}
+              className="input"
+            >
+              <option value="none">{t.scoring.timeBombNone}</option>
+              {isWinner ? (
+                <option value="winner_bonus">{t.scoring.timeBombWinner}</option>
+              ) : (
+                <option value="loser_penalty">{t.scoring.timeBombLoser}</option>
+              )}
+              <option value="expired_double">
+                {t.scoring.timeBombExpired}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        {/* Custom +/- adjustment */}
+        <div>
+          <label htmlFor="custom-modifier-input" className="field-label">
+            {t.scoring.customModifier}
+          </label>
+          <div className="flex items-center gap-3">
+            <input
+              id="custom-modifier-input"
+              type="text"
+              inputMode="numeric"
+              pattern="[+-]?[0-9]*"
+              placeholder="0"
+              value={localCustomModifier}
+              onChange={handleCustomModifierChange}
+              onBlur={handleCustomModifierBlur}
+              className="input w-28 shrink-0 text-center tabular-nums"
+            />
+            <p className="min-w-0 text-xs leading-snug text-neutral-500 dark:text-neutral-400">
+              {t.scoring.customModifierHint}
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };

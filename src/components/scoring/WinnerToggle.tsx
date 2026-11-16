@@ -1,7 +1,8 @@
 import React from 'react';
-import { Check, Trophy } from 'lucide-react';
+import { Trophy } from 'lucide-react';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
+import { Switch } from '@/components/common/Switch';
 
 interface WinnerToggleProps {
   isWinner: boolean;
@@ -25,39 +26,36 @@ export const WinnerToggle: React.FC<WinnerToggleProps> = ({
       onClick={onToggle}
       disabled={disabled}
       aria-pressed={isWinner}
-      className={`flex w-full items-center justify-between rounded-2xl border p-3.5 transition-all ${
-        disabled
-          ? 'cursor-not-allowed border-neutral-200 bg-neutral-100 text-neutral-400 opacity-60 dark:border-neutral-800 dark:bg-neutral-800/20'
-          : isWinner
-            ? 'border-emerald-500 bg-emerald-500/15 font-bold text-emerald-600 shadow-md dark:text-emerald-400'
-            : 'border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800/40 dark:text-neutral-300 dark:hover:border-neutral-700'
+      className={`flex w-full items-center gap-3 rounded-2xl border p-3.5 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+        isWinner
+          ? 'border-emerald-500/60 bg-emerald-500/10'
+          : 'border-neutral-200/80 bg-white hover:border-neutral-300 dark:border-white/[0.07] dark:bg-white/[0.03] dark:hover:border-white/15'
       }`}
     >
-      <div className="flex items-center gap-3">
-        <div
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${
-            isWinner
-              ? 'bg-emerald-500 text-white'
-              : 'bg-neutral-200 text-neutral-400 dark:bg-neutral-700'
-          }`}
-        >
-          <Trophy className="h-4 w-4 shrink-0" />
-        </div>
-        <div className="text-left">
-          <div className="text-xs font-black">{t.scoring.isWinner}</div>
-          <div className="text-[11px] opacity-75">{t.scoring.isWinnerHint}</div>
-        </div>
-      </div>
-
       <div
-        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border ${
+        className={`icon-tile ${
           isWinner
-            ? 'border-emerald-500 bg-emerald-500 text-white'
-            : 'border-neutral-300 dark:border-neutral-700'
+            ? 'bg-emerald-500 text-white'
+            : 'bg-neutral-100 text-neutral-400 dark:bg-white/[0.06]'
         }`}
       >
-        {isWinner && <Check className="h-4 w-4 shrink-0 stroke-3" />}
+        <Trophy className="h-5 w-5" />
       </div>
+      <div className="min-w-0 flex-1">
+        <div
+          className={`text-sm font-semibold ${
+            isWinner
+              ? 'text-emerald-700 dark:text-emerald-300'
+              : 'text-neutral-900 dark:text-white'
+          }`}
+        >
+          {t.scoring.isWinner}
+        </div>
+        <div className="text-xs text-neutral-500 dark:text-neutral-400">
+          {t.scoring.isWinnerHint}
+        </div>
+      </div>
+      <Switch checked={isWinner} tone="emerald" />
     </button>
   );
 };
