@@ -17,6 +17,10 @@ All notable changes to this project are documented here. The format follows [Kee
 - Match summary on phones: the danger zone gets its own full-width row with the number of players at risk and their names.
 - Info boxes open on hover and stay open after a click (with a close button) until closed, clicked outside or Escape.
 - Long card descriptions in the dictionary are clamped to three lines with a **See more / See less** toggle.
+- Info boxes on the scoreboard open below the icon with normal (not uppercase) text; the stat label no longer clips them.
+- **See more / See less** also on the active rule card banner (Standings) and on the Rule Cards tab.
+- Footer on phones and tablets: links centred on top, the notice below, clear of the back-to-top button.
+- Supercharge 1ST / 2ND timing badges in the rules guide have proper padding.
 - Round-limit options: "Unlimited" has its own row so long translations fit.
 - New brand artwork: app icons, favicon and the social preview image (`og-image.png`) now show a hand of Frantic-coloured cards fanning out of Pandora's box, replacing the old artwork that still advertised a d20 dice roller. A maskable PWA icon (`icon-maskable-512.png`) was added for Android home screens; SVG sources live in `public/` (`icon.svg`, `favicon.svg`, `og-image.svg`).
 
@@ -28,7 +32,7 @@ All notable changes to this project are documented here. The format follows [Kee
 ### Fixed
 
 - Rule cards can no longer be activated while the random draw is still shuffling.
-- Score Round actions and dialog footers no longer overflow on phones with longer translations.
+- Score Round actions, the number-card steppers and dialog footers no longer overflow on phones; the redundant Cancel button is hidden on phones (the header close button does the same).
 - Player cards, the game-over dialog and the history no longer show hard-coded English text (`DANGER`, `safety buffer`, `Limit reached!`, `Threshold`, `1st/2nd`); new keys exist in all four languages.
 
 ## [1.2.1] – 2026-11-12

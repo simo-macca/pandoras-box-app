@@ -46,9 +46,9 @@ export const RoundHistoryTable: React.FC<RoundHistoryTableProps> = ({
 
   return (
     <section className="space-y-4">
-      <div className="flex items-center justify-between gap-3">
-        <h3 className="section-title flex items-center gap-2">
-          <span>{t.scoreboard.historyTitle}</span>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h3 className="section-title flex min-w-0 items-center gap-2">
+          <span className="truncate">{t.scoreboard.historyTitle}</span>
           <span className="chip px-2 py-0.5 tabular-nums">
             {countPlayedRounds(rounds)}
           </span>

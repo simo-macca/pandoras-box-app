@@ -121,16 +121,20 @@ const TimingCard: React.FC<TimingCardProps> = ({
 }) => {
   const styles = TIMING_TONES[tone];
   return (
-    <div className={`space-y-1.5 rounded-xl border p-3.5 ${styles.box}`}>
-      <span className={`flex items-center gap-1.5 font-bold ${styles.title}`}>
+    <div className={`space-y-2 rounded-xl border p-4 ${styles.box}`}>
+      <span
+        className={`flex items-center gap-2.5 text-sm font-bold ${styles.title}`}
+      >
         <span
-          className={`flex h-5 w-5 items-center justify-center rounded-md font-mono text-[10px] text-white ${styles.badge}`}
+          className={`inline-flex h-6 min-w-10 shrink-0 items-center justify-center rounded-md px-2 text-[11px] leading-none font-bold tracking-wide text-white tabular-nums ${styles.badge}`}
         >
           {badge}
         </span>
         <span>{label}</span>
       </span>
-      <p className="text-xs text-neutral-600 dark:text-neutral-300">{text}</p>
+      <p className="text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
+        {text}
+      </p>
     </div>
   );
 };

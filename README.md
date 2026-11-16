@@ -43,8 +43,11 @@ The app replaces pen-and-paper scoring at the table: it calculates every player'
 - **Mid-game changes** — edit names, colours, the point limit and an optional round limit (house rule) while a match is running; late joiners start at _highest current score + 1_ (a house rule, clearly labelled as such).
 - **Undo everywhere** — every action shows an undo toast; any past round can be edited or deleted.
 - **Offline & private** — installable Progressive Web App; all data stays in the browser (`localStorage`) and can be exported/imported as JSON.
-- **Polished UX** — responsive mobile-first layout, light/dark/system theme without flash, keyboard support (Esc closes dialogs), procedural sound effects and optional haptics.
-- **Quality gates** — strict TypeScript, ESLint, Prettier, markdownlint, 175 automated tests (Vitest + React Testing Library) and GitHub Actions CI.
+- **Modern, responsive UI** — one design system for phones, tablets and desktops: bottom tab bar and bottom-sheet dialogs on phones, header tabs and centred dialogs on desktop, light/dark/system theme without flash, keyboard support (Esc closes dialogs), procedural sound effects and optional haptics.
+- **Readable history** — each round's stripe takes the winner's colour (split into one segment per winner on a tie); the leaderboard shows a rank pill, a crown for the leader and a dedicated danger-zone row on phones.
+- **Comfort details** — info boxes preview on hover and stay open after a click; long card and rule card descriptions fold behind **See more**; a back-to-top button; rule cards can only be activated once the random draw has finished shuffling.
+- **Open source** — a GitHub link in the header and footer leads to this repository for issues, ideas and contributions.
+- **Quality gates** — strict TypeScript, ESLint, Prettier, markdownlint, 180+ automated tests (Vitest + React Testing Library) and GitHub Actions CI.
 
 ---
 
@@ -106,7 +109,7 @@ src/
 ├── App.tsx                 # Root: wires state, tabs and dialogs
 ├── components/
 │   ├── card-dictionary/    # Rules tab: rules summary + searchable card dictionary
-│   ├── common/             # Shared widgets (logo, tooltip, rich text)
+│   ├── common/             # Shared widgets (Modal, Switch, ExpandableText, tooltip, logo)
 │   ├── events/             # Seppuku dialog
 │   ├── layout/             # Navbar, tabs, footer, settings, toaster
 │   ├── rule-cards/         # Pandora's Box rule card drawer and banner
@@ -120,6 +123,10 @@ src/
 ```
 
 Each folder keeps its tests in `__tests__/`. The full map, with the state engine and data flow, is in [Architecture](docs/ARCHITECTURE.md).
+
+**Styling** — Tailwind CSS 4 utilities plus a small set of reusable component classes defined in `src/index.css` (`card`, `btn` with `btn-primary` / `btn-secondary` / `btn-ghost` / `btn-magic`, `segmented`, `option`, `input`, `modal-*`, `callout-*`, `eyebrow`, `section-title`) and design tokens (brand-tinted neutrals, radii, shadows). Reuse them before writing long utility strings.
+
+**Brand assets** — the logo (a hand of Frantic-coloured cards fanning out of Pandora's box), favicons, PWA icons and the social preview are drawn as SVG in `public/` and exported to PNG; see [Deployment](docs/DEPLOYMENT.md).
 
 ---
 
@@ -174,4 +181,4 @@ The PDFs in [`public/rules/`](public/rules/) are the official files published by
 >
 > This is an unofficial, non-commercial fan project for scorekeeping and rules reference. It is not affiliated with, endorsed by, or sponsored by Rulefactory. All game names, rules, card texts, artwork, trademarks and the rulebook PDFs remain the property of Rulefactory. Event cards credited to community authors (e.g. _Seppuku_ by D'Sinead Conception) keep their original attribution.
 
-The **source code** is released under the [MIT License](LICENSE). The licence does not extend to Rulefactory's material.
+The **source code** is released under the [MIT License](LICENSE) and lives at [github.com/simo-macca/pandoras-box-app](https://github.com/simo-macca/pandoras-box-app) — issues and pull requests are welcome. The licence does not extend to Rulefactory's material.

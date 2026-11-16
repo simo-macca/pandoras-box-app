@@ -89,13 +89,17 @@ export const SeppukuModal: React.FC<SeppukuModalProps> = ({
       bodyClassName="space-y-4"
       footer={
         <>
-          <button type="button" onClick={onClose} className="btn btn-secondary">
+          <button
+            type="button"
+            onClick={onClose}
+            className="btn btn-secondary hidden sm:inline-flex"
+          >
             {t.setup.cancel}
           </button>
           <button
             type="button"
             onClick={handleSubmit}
-            className="btn btn-danger min-w-0 flex-1 shrink sm:flex-none"
+            className="btn btn-danger min-w-0 flex-1 sm:flex-none"
           >
             <Swords className="h-4 w-4" />
             <span className="truncate">

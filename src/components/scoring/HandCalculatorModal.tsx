@@ -95,13 +95,17 @@ export const HandCalculatorModal: React.FC<HandCalculatorModalProps> = ({
       bodyClassName="space-y-6"
       footer={
         <>
-          <button type="button" onClick={onClose} className="btn btn-secondary">
+          <button
+            type="button"
+            onClick={onClose}
+            className="btn btn-secondary hidden sm:inline-flex"
+          >
             {t.scoring.cancel}
           </button>
           <button
             type="button"
             onClick={handleSubmit}
-            className="btn btn-primary min-w-0 flex-1 shrink sm:flex-none"
+            className="btn btn-primary min-w-0 flex-1 sm:flex-none"
           >
             <Check className="h-4 w-4 stroke-[2.5]" />
             <span className="truncate">

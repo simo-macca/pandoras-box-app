@@ -34,14 +34,14 @@ export const NumberGrid: React.FC<NumberGridProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-2 gap-2 min-[480px]:grid-cols-5">
+    <div className="grid grid-cols-2 gap-2 min-[400px]:grid-cols-3 sm:grid-cols-5">
       {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => {
         const count = counts[num] || 0;
         const isActive = count > 0;
         return (
           <div
             key={num}
-            className={`flex min-w-0 items-center justify-between gap-2 rounded-xl border p-2 transition-colors min-[480px]:flex-col min-[480px]:items-stretch ${
+            className={`flex min-w-0 flex-col gap-2 rounded-xl border p-2 transition-colors ${
               isActive
                 ? 'border-amber-500/60 bg-amber-500/10'
                 : 'border-neutral-200/80 bg-white dark:border-white/[0.07] dark:bg-white/[0.03]'
@@ -57,19 +57,18 @@ export const NumberGrid: React.FC<NumberGridProps> = ({
               >
                 {num}
               </span>
-              {/* Hidden on very narrow phones; the player total is shown above. */}
-              <span className="text-[11px] font-medium whitespace-nowrap text-neutral-400 tabular-nums max-[359px]:hidden">
+              <span className="truncate text-[11px] font-medium text-neutral-400 tabular-nums">
                 {num * count} pts
               </span>
             </div>
 
-            <div className="flex items-center justify-between gap-1">
+            <div className="flex min-w-0 items-center justify-between gap-1">
               <button
                 type="button"
                 onClick={() => handleDecrement(num)}
                 disabled={count === 0 || disabled}
                 aria-label={`Decrease number ${num}`}
-                className="stepper-btn h-8 w-8"
+                className="stepper-btn h-8 w-8 shrink-0"
               >
                 <Minus className="h-3.5 w-3.5" />
               </button>
@@ -87,7 +86,7 @@ export const NumberGrid: React.FC<NumberGridProps> = ({
                 onClick={() => handleIncrement(num)}
                 disabled={disabled}
                 aria-label={`Increase number ${num}`}
-                className="stepper-btn stepper-btn-primary h-8 w-8"
+                className="stepper-btn stepper-btn-primary h-8 w-8 shrink-0"
               >
                 <Plus className="h-3.5 w-3.5 stroke-[2.5]" />
               </button>

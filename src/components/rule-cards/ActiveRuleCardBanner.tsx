@@ -3,6 +3,7 @@ import { Layers, X, Shuffle } from 'lucide-react';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { RULE_CARDS_DATA } from '@/data/ruleCards';
+import { ExpandableText } from '@/components/common/ExpandableText';
 import { soundEffects } from '@/utils/sound';
 
 interface ActiveRuleCardBannerProps {
@@ -105,9 +106,12 @@ export const ActiveRuleCardBanner: React.FC<ActiveRuleCardBannerProps> = ({
             <h3 className="text-sm font-bold text-neutral-900 dark:text-white">
               {card.name[language]}
             </h3>
-            <p className="mt-1 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
-              {card.description[language]}
-            </p>
+            <ExpandableText
+              className="mt-1"
+              text={card.description[language]}
+              language={language}
+              lines={2}
+            />
           </li>
         ))}
       </ul>

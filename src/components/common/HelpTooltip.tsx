@@ -6,6 +6,8 @@ interface HelpTooltipProps {
   content: string;
   size?: 'sm' | 'md';
   align?: 'left' | 'center' | 'right';
+  /** Open above (default) or below the icon. */
+  placement?: 'top' | 'bottom';
   className?: string;
 }
 
@@ -14,6 +16,7 @@ export const HelpTooltip: React.FC<HelpTooltipProps> = ({
   content,
   size = 'sm',
   align = 'center',
+  placement = 'top',
   className = '',
 }) => {
   // Hover shows a preview; a click pins the box open until it is closed
@@ -90,7 +93,7 @@ export const HelpTooltip: React.FC<HelpTooltipProps> = ({
       {isOpen && (
         <div
           role="tooltip"
-          className={`animate-fade-in pointer-events-auto absolute bottom-full z-50 mb-2 w-[min(18rem,calc(100vw-2rem))] rounded-2xl border border-neutral-200/80 bg-white p-4 text-left text-neutral-900 shadow-(--shadow-lift) sm:w-80 dark:border-white/10 dark:bg-neutral-800 dark:text-white ${alignmentClasses}`}
+          className={`animate-fade-in pointer-events-auto absolute z-50 w-[min(18rem,calc(100vw-2rem))] text-sm font-normal tracking-normal normal-case ${placement === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'} rounded-2xl border border-neutral-200/80 bg-white p-4 text-left text-neutral-900 shadow-(--shadow-lift) sm:w-80 dark:border-white/10 dark:bg-neutral-800 dark:text-white ${alignmentClasses}`}
         >
           <div className="mb-2 flex items-center justify-between gap-2">
             <span className="text-sm font-bold text-neutral-900 dark:text-white">

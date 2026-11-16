@@ -57,9 +57,14 @@ export const ExpandableText: React.FC<ExpandableTextProps> = ({
       {(isOverflowing || isExpanded) && (
         <button
           type="button"
-          onClick={() => setIsExpanded((v) => !v)}
+          onClick={(e) => {
+            // Cards around the text may be clickable themselves.
+            e.stopPropagation();
+            setIsExpanded((v) => !v);
+          }}
+          onKeyDown={(e) => e.stopPropagation()}
           aria-expanded={isExpanded}
-          className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-amber-700 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300"
+          className="mt-2 inline-flex h-7 items-center gap-1 rounded-full bg-amber-500/10 px-2.5 text-xs font-semibold text-amber-700 transition-colors hover:bg-amber-500/20 dark:text-amber-300"
         >
           {isExpanded ? t.common.showLess : t.common.showMore}
           <ChevronDown

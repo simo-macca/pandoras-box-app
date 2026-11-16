@@ -31,11 +31,7 @@
       "type": "image/svg+xml"
     }
   ],
-  "categories": [
-    "games",
-    "utilities",
-    "entertainment"
-  ],
+  "categories": ["games", "utilities", "entertainment"],
   "id": "./",
   "scope": "./",
   "lang": "en"

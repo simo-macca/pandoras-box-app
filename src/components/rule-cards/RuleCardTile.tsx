@@ -3,6 +3,7 @@ import { Check } from 'lucide-react';
 import { Language } from '@/types/game';
 import { RuleCardItem } from '@/types/rules';
 import { TRANSLATIONS } from '@/data/translations';
+import { ExpandableText } from '@/components/common/ExpandableText';
 
 interface RuleCardTileProps {
   card: RuleCardItem;
@@ -60,9 +61,11 @@ export const RuleCardTile: React.FC<RuleCardTileProps> = ({
             </span>
           )}
         </div>
-        <p className="line-clamp-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
-          {card.description[language]}
-        </p>
+        <ExpandableText
+          text={card.description[language]}
+          language={language}
+          lines={3}
+        />
       </div>
 
       <div className="mt-4 flex items-center justify-between gap-2 border-t border-neutral-200/70 pt-3 dark:border-white/[0.06]">

@@ -12,7 +12,9 @@ interface StatsOverviewCardsProps {
 }
 
 interface StatTileProps {
-  label: React.ReactNode;
+  label: string;
+  /** Rendered after the label outside the truncated text (e.g. a HelpTooltip). */
+  labelExtra?: React.ReactNode;
   icon: React.ReactNode;
   iconClassName: string;
   children: React.ReactNode;
@@ -24,6 +26,7 @@ interface StatTileProps {
 
 const StatTile: React.FC<StatTileProps> = ({
   label,
+  labelExtra,
   icon,
   iconClassName,
   children,
@@ -37,8 +40,10 @@ const StatTile: React.FC<StatTileProps> = ({
       {icon}
     </div>
     <div className="min-w-0 flex-1">
-      <div className="eyebrow flex items-center gap-1 truncate text-[10px] sm:text-[11px]">
-        {label}
+      {/* Only the text truncates: an overflow-hidden row would clip the tooltip. */}
+      <div className="eyebrow flex min-w-0 items-center gap-1 text-[10px] sm:text-[11px]">
+        <span className="truncate">{label}</span>
+        {labelExtra}
       </div>
       <div className="mt-0.5 truncate text-sm font-bold text-neutral-900 sm:text-lg dark:text-white">
         {children}
@@ -76,15 +81,14 @@ export const StatsOverviewCards: React.FC<StatsOverviewCardsProps> = ({
       </StatTile>
 
       <StatTile
-        label={
-          <>
-            {t.scoreboard.eliminationLimit}
-            <HelpTooltip
-              title={t.scoreboard.limitHelpTitle}
-              content={t.scoreboard.limitHelpDesc}
-              align="left"
-            />
-          </>
+        label={t.scoreboard.eliminationLimit}
+        labelExtra={
+          <HelpTooltip
+            title={t.scoreboard.limitHelpTitle}
+            content={t.scoreboard.limitHelpDesc}
+            align="right"
+            placement="bottom"
+          />
         }
         icon={<Flag className="h-5 w-5" />}
         iconClassName="bg-blue-500/15 text-blue-600 dark:text-blue-400"
@@ -96,15 +100,14 @@ export const StatsOverviewCards: React.FC<StatsOverviewCardsProps> = ({
       </StatTile>
 
       <StatTile
-        label={
-          <>
-            {t.scoreboard.dangerZone}
-            <HelpTooltip
-              title={t.scoreboard.dangerHelpTitle}
-              content={t.scoreboard.dangerHelpDesc}
-              align="right"
-            />
-          </>
+        label={t.scoreboard.dangerZone}
+        labelExtra={
+          <HelpTooltip
+            title={t.scoreboard.dangerHelpTitle}
+            content={t.scoreboard.dangerHelpDesc}
+            align="right"
+            placement="bottom"
+          />
         }
         icon={
           playersInDanger.length > 0 ? (
