@@ -96,8 +96,8 @@ Connect the repository in Netlify; every push to `main` deploys to production an
 [//]: # '     build:'
 [//]: # '       runs-on: ubuntu-latest'
 [//]: # '       steps:'
-[//]: # '         - uses: actions/checkout@v4'
-[//]: # '         - uses: actions/setup-node@v4'
+[//]: # '         - uses: actions/checkout@v7'
+[//]: # '         - uses: actions/setup-node@v7'
 [//]: # '           with:'
 [//]: # '             node-version: 22'
 [//]: # '             cache: npm'
@@ -109,7 +109,7 @@ Connect the repository in Netlify; every push to `main` deploys to production an
 [//]: # '             VITE_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}'
 [//]: # '         # SPA fallback: GitHub Pages serves 404.html for unknown paths'
 [//]: # '         - run: cp dist/index.html dist/404.html'
-[//]: # '         - uses: actions/upload-pages-artifact@v3'
+[//]: # '         - uses: actions/upload-pages-artifact@v5'
 [//]: # '           with:'
 [//]: # '             path: dist'
 [//]: #
@@ -121,7 +121,7 @@ Connect the repository in Netlify; every push to `main` deploys to production an
 [//]: # '         url: ${{ steps.deployment.outputs.page_url }}'
 [//]: # '       steps:'
 [//]: # '         - id: deployment'
-[//]: # '           uses: actions/deploy-pages@v4'
+[//]: # '           uses: actions/deploy-pages@v5'
 [//]: # '   ```'
 [//]: #
 [//]: # '3. Push to `main`. The site appears at `https://<user>.github.io/pandoras-box-app/`.'

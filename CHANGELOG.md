@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+
+- `npm install` no longer warns about the deprecated `glob@11`: `workbox-build` (via `vite-plugin-pwa`) is pinned to `glob@^14` with an npm `overrides` entry until Workbox updates it. The generated service worker precaches the same files.
+- `markdownlint-cli2` 0.24.1 fixes a high-severity advisory in its `re2js` dependency.
+- CI uses `actions/checkout@v7` and `actions/setup-node@v7`, which run on Node 24 (GitHub is retiring Node 20 for actions). The GitHub Pages example in `docs/DEPLOYMENT.md` uses the current action versions too.
+
 ## [1.3.0] – 2026-11-16
 
 ### Changed
