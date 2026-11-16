@@ -33,6 +33,8 @@ dist/
 └── site.webmanifest, icons, og-image.*
 ```
 
+Brand assets in `public/` are drawn as SVG and exported to PNG: `favicon.svg` → `favicon-32x32.png`, `icon-192.png`, `icon-512.png`; `icon.svg` (full-bleed, safe-zone artwork) → `apple-touch-icon.png` (180 px), `icon-maskable-512.png`; `og-image.svg` → `og-image.png` (1200 × 630). After editing an SVG, re-export its PNGs with any SVG renderer (e.g. `@resvg/resvg-js`, Inkscape or `rsvg-convert`).
+
 Build-time variables (see [SETUP.md](SETUP.md#environment-variables)):
 
 - `BASE_PATH` — base path when the site is not at the domain root;

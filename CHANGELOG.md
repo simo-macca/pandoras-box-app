@@ -12,6 +12,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - Scoreboard: compact match summary, player cards with colour avatar, rank and status badges, Score Round as the full-width primary action on phones.
 - Round calculator: switch rows for Round Winner and Doomsday, shared stepper buttons, special cards show their point value instead of decorative icons.
 - Icons reviewed for meaning: rule cards use a layered-cards icon, Identity Theft a swap icon; flag emoji replaced by language codes.
+- New brand artwork: app icons, favicon and the social preview image (`og-image.png`) now show a hand of Frantic-coloured cards fanning out of Pandora's box, replacing the old artwork that still advertised a d20 dice roller. A maskable PWA icon (`icon-maskable-512.png`) was added for Android home screens; SVG sources live in `public/` (`icon.svg`, `favicon.svg`, `og-image.svg`).
 
 ### Fixed
 
