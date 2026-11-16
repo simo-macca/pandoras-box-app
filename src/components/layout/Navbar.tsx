@@ -4,6 +4,8 @@ import { Language, ThemeMode } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
 import { ThemeToggle } from './ThemeToggle';
 import { AppLogo } from '@/components/common/AppLogo';
+import { GitHubIcon } from '@/components/common/GitHubIcon';
+import { REPOSITORY_URL } from '@/data/appInfo';
 
 interface NavbarProps {
   language: Language;
@@ -91,6 +93,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Users className="h-4 w-4" />
             <span className="hidden sm:inline">{t.setup.playerCount}</span>
           </button>
+
+          <a
+            href={REPOSITORY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-icon h-9 w-9"
+            title={t.common.github}
+            aria-label={t.common.github}
+          >
+            <GitHubIcon className="h-[18px] w-[18px]" />
+          </a>
 
           {onOpenSettings && (
             <button

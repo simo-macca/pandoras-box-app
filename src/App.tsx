@@ -14,6 +14,7 @@ import { GameSetupModal } from '@/components/setup/GameSetupModal';
 import { SettingsModal } from '@/components/layout/SettingsModal';
 import { SeppukuModal } from '@/components/events/SeppukuModal';
 import { AppToaster } from '@/components/layout/AppToaster';
+import { BackToTopButton } from '@/components/layout/BackToTopButton';
 import {
   GameConfig,
   GameState,
@@ -363,6 +364,7 @@ export function App() {
         language={language}
       />
 
+      <BackToTopButton language={language} />
       <AppToaster />
     </div>
   );

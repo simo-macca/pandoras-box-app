@@ -53,7 +53,7 @@
 
 For major changes, new features, or multi-file refactoring:
 
-1. **Plan First & Wait**: Do NOT edit code yet. Present a concise, numbered implementation plan with files and checkpoints; STOP and wait for approval.
-2. **Create a Branch**: Immediately after plan approval, create/switch to a branch (`git checkout -b <type>/<short-name>`). Never work directly on `main`.
+1. **Start Immediately**: No separate planning round is needed; begin the work right away. Ask only when a decision genuinely depends on the user (e.g. an ambiguous requirement or a destructive action).
+2. **Create a Branch**: Before the first edit, create/switch to a branch (`git checkout -b <type>/<short-name>`). Never work directly on `main`.
 3. **Incremental Checkpoint Commits**: Execute step-by-step; stage relevant files (`git add`) and commit atomically (`git commit`) after each logical milestone.
 4. **Final Verification & Push**: Run `npm run build` and `npm run test` once. Commit fixes and `git push` feature branch (verify branch is not `main`).

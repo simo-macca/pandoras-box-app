@@ -2,6 +2,8 @@ import React from 'react';
 import { ExternalLink } from 'lucide-react';
 import { Language } from '@/types/game';
 import { TRANSLATIONS } from '@/data/translations';
+import { REPOSITORY_URL } from '@/data/appInfo';
+import { GitHubIcon } from '@/components/common/GitHubIcon';
 
 interface FooterProps {
   language: Language;
@@ -25,7 +27,17 @@ export const Footer: React.FC<FooterProps> = ({
           · {t.settings.copyright}
         </p>
 
-        <div className="flex shrink-0 items-center gap-1">
+        <div className="flex shrink-0 flex-wrap items-center justify-center gap-1">
+          <a
+            href={REPOSITORY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-ghost btn-sm"
+            title={t.common.github}
+          >
+            <GitHubIcon className="h-3.5 w-3.5" />
+            GitHub
+          </a>
           <a
             href="https://rulefactory.ch"
             target="_blank"

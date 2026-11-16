@@ -19,6 +19,11 @@ export const de: TranslationStrings = {
     players: 'Spieler',
     doubleSpecialActive:
       'Regelkarte «Double Special» aktiv: Alle Spezialkarten zählen doppelt.',
+    github: 'Quellcode auf GitHub',
+    backToTop: 'Nach oben',
+    showMore: 'Mehr anzeigen',
+    showLess: 'Weniger anzeigen',
+    playersInDanger: '{count} in Gefahr',
   },
   nav: {
     scoreboard: 'Spielstand',

@@ -16,6 +16,11 @@ export interface TranslationStrings {
     themeSystem: string;
     players: string;
     doubleSpecialActive: string;
+    github: string;
+    backToTop: string;
+    showMore: string;
+    showLess: string;
+    playersInDanger: string;
   };
   nav: {
     scoreboard: string;
