@@ -89,7 +89,7 @@ pandoras-box-app/
 ├── src/
 │   ├── App.tsx                     # Root: wires state, tabs and modals
 │   ├── main.tsx                    # React entry point
-│   ├── index.css                   # Tailwind entry, custom utilities, reduced-motion
+│   ├── index.css                   # Tailwind entry, design tokens, component classes, reduced-motion
 │   ├── components/
 │   │   ├── card-dictionary/        # Rules tab: CardDictionary, CategoryFilter,
 │   │   │                           # RulesGuide (+ GuideSection), OfficialPdfBanner,
@@ -240,7 +240,7 @@ Netlify serves `sw.js` with `Cache-Control: no-cache` so updates are picked up p
 ## UI Layer
 
 - Components are typed `React.FC<Props>` with a props interface at the top of the file.
-- Styling uses Tailwind utilities only; dark mode uses the `dark` class on `<html>`, set by an inline script in `index.html` before first paint and kept in sync by `useTheme`.
+- Styling uses Tailwind utilities plus a small set of component classes defined in `src/index.css` (`card`, `btn` + `btn-primary` / `btn-secondary` / …, `segmented`, `option`, `input`, `modal-*`, `callout-*`, `progress-*`). Dialogs render through `components/common/Modal`. Dark mode uses the `dark` class on `<html>`, set by an inline script in `index.html` before first paint and kept in sync by `useTheme`.
 - Dialogs are controlled (`isOpen`, `onClose`), expose `role="dialog"` and `aria-modal`, and close on Esc.
 - Asset URLs use `import.meta.env.BASE_URL`, so the app works at a domain root (Netlify) or under a sub-path (GitHub Pages).
 - Animations respect `prefers-reduced-motion`.

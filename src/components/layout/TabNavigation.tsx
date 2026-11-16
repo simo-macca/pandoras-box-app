@@ -61,7 +61,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
   return (
     <nav
       aria-label={t.nav.scoreboard}
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-neutral-200/70 bg-white/85 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl backdrop-saturate-150 md:hidden dark:border-white/[0.06] dark:bg-neutral-950/85"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-neutral-200/70 bg-white/85 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl backdrop-saturate-150 lg:hidden dark:border-white/[0.06] dark:bg-neutral-950/85"
     >
       <div className="mx-auto grid h-16 max-w-md grid-cols-3 px-2">
         {navItems.map(({ id, label, icon: Icon }) => {

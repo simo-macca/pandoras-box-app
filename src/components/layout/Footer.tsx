@@ -16,7 +16,7 @@ export const Footer: React.FC<FooterProps> = ({
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="mt-auto border-t border-neutral-200/70 pt-6 pb-28 md:pb-8 dark:border-white/[0.06]">
+    <footer className="mt-auto border-t border-neutral-200/70 pt-6 pb-28 lg:pb-8 dark:border-white/[0.06]">
       <div className="page-container flex flex-col items-center justify-between gap-3 text-center text-xs text-neutral-500 sm:flex-row sm:text-left dark:text-neutral-400">
         <p className="max-w-xl">
           <span className="font-semibold text-neutral-700 dark:text-neutral-300">

@@ -2,6 +2,21 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- **New UI design** across phones, tablets and desktops: a shared design system in `src/index.css` (tokens plus reusable classes such as `card`, `btn-*`, `segmented`, `option`, `input`, `modal-*`, `callout-*`), dark mode tinted to the brand navy, and consistent spacing, radii and typography.
+- Header with the match status and, from `lg` up, the main tabs; a bottom tab bar on phones and tablets with safe-area padding.
+- Dialogs share one `Modal` component: a bottom sheet on phones, a centred card on larger screens, with a sticky footer for the main action.
+- Scoreboard: compact match summary, player cards with colour avatar, rank and status badges, Score Round as the full-width primary action on phones.
+- Round calculator: switch rows for Round Winner and Doomsday, shared stepper buttons, special cards show their point value instead of decorative icons.
+- Icons reviewed for meaning: rule cards use a layered-cards icon, Identity Theft a swap icon; flag emoji replaced by language codes.
+
+### Fixed
+
+- Player cards, the game-over dialog and the history no longer show hard-coded English text (`DANGER`, `safety buffer`, `Limit reached!`, `Threshold`, `1st/2nd`); new keys exist in all four languages.
+
 ## [1.2.1] – 2026-11-12
 
 ### Changed

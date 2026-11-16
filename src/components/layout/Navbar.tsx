@@ -65,7 +65,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {navigation && (
-          <div className="hidden flex-1 justify-center md:flex">
+          <div className="hidden flex-1 justify-center lg:flex">
             {navigation}
           </div>
         )}
