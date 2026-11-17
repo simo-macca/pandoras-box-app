@@ -177,7 +177,7 @@ The PDFs in [`public/rules/`](public/rules/) are the official files published by
 
 ## Disclaimer & Credits
 
-> **Frantic** and **Pandora's Box** are card games created and published by **[Rulefactory GmbH](https://rulefactory.ch/)** (Wil, Switzerland). Concept: Fabian Engeler, Pascal Frick, Pierre Lippuner, Stefan Weisskopf. Design: Pierre Lippuner.
+> **Frantic** and **Pandora's Box** are card games created and published by **[Rulefactory AG](https://rulefactory.ch/)** (St. Gallen). Concept: Fabian Engeler, Pascal Frick, Pierre Lippuner, Stefan Weisskopf. Design: Pierre Lippuner.
 >
 > This is an unofficial, non-commercial fan project for scorekeeping and rules reference. It is not affiliated with, endorsed by, or sponsored by Rulefactory. All game names, rules, card texts, artwork, trademarks and the rulebook PDFs remain the property of Rulefactory. Event cards credited to community authors (e.g. _Seppuku_ by D'Sinead Conception) keep their original attribution.
 
