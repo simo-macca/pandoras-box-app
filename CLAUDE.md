@@ -5,6 +5,7 @@ Offline score-keeper PWA for the card game Frantic / Pandora's Box (Rulefactory)
 - Architecture and folder map: [`.claude/context/overview.md`](.claude/context/overview.md)
 - Decisions log: [`.claude/context/decisions.md`](.claude/context/decisions.md)
 - Path-scoped rules (loaded automatically): [`.claude/rules/`](.claude/rules/): `components.md`, `state-logic.md`, `tests.md`, `docs.md`
+- Releases: run the `release` skill (`/release`); see [`.claude/skills/release/SKILL.md`](.claude/skills/release/SKILL.md)
 
 ## Stack & Scripts
 

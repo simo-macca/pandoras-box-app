@@ -9,6 +9,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - Agent instructions moved to the Claude Code layout: `AGENTS.md` → `CLAUDE.md`, `.agents/rules/` → `.claude/rules/` (path-scoped via `paths:`), and the architecture map → `.claude/context/overview.md`, next to a new decisions log (`.claude/context/decisions.md`). `AGENTS.md` now only points other AI tools to these files.
 - Agent test rule: tests import the module under test via the `@/` alias as well.
 - `.gitignore` ignores the personal Claude Code files (`.claude/settings.local.json`, `CLAUDE.local.md`).
+- Agent release workflow as a Claude Code skill (`.claude/skills/release/SKILL.md`): CHANGELOG version section, `package.json` bump, `chore(release)` commit and `vX.Y.Z` tag.
 
 ## [1.3.0] – 2026-11-16
 

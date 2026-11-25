@@ -2,6 +2,10 @@
 
 Newest first. One entry per significant change or decision.
 
+## 2026-11-25: Release skill
+
+- Release steps captured in `.claude/skills/release/SKILL.md` (manual `/release` only), following the existing `chore(release): X.Y.Z` + annotated `vX.Y.Z` tag pattern.
+
 ## 2026-11-25: Agent instructions moved to Claude Code layout
 
 - `AGENTS.md` → `CLAUDE.md`; `.agents/rules/` → `.claude/rules/` (`paths:` frontmatter); architecture map → `.claude/context/overview.md`.
